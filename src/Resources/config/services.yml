@@ -1,0 +1,10 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        bind:
+            Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface $clientsRepository: '@heptacom_admin_open_auth_client.repository'
+
+    Heptacom\AdminOpenAuth\Database\ClientDefinition:
+        tags:
+            - { name: shopware.entity.definition , entity: 'heptacom_admin_open_auth_client' }
