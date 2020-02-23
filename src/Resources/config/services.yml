@@ -5,6 +5,24 @@ services:
         bind:
             Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface $clientsRepository: '@heptacom_admin_open_auth_client.repository'
 
+    _instanceof:
+        Heptacom\AdminOpenAuth\Contract\ProviderInterface:
+            tags:
+                - 'heptacom_admin_opean_auth.client_provider'
+
+    Heptacom\AdminOpenAuth\:
+        resource: '../../*'
+        exclude:
+            - '../../Database/*Collection.php'
+            - '../../Database/*Entity.php'
+            - '../../Exception/*'
+            - '../../Migration/*'
+            - '../../Resources/*'
+
     Heptacom\AdminOpenAuth\Database\ClientDefinition:
         tags:
             - { name: shopware.entity.definition , entity: 'heptacom_admin_open_auth_client' }
+
+    Heptacom\AdminOpenAuth\ClientLoader:
+        arguments:
+            - !tagged_iterator heptacom_admin_opean_auth.client_provider
