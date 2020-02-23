@@ -4,18 +4,19 @@ namespace Heptacom\AdminOpenAuth\Database;
 
 use Shopware\Core\Framework\DataAbstractionLayer\EntityDefinition;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\CreatedAtField;
+use Shopware\Core\Framework\DataAbstractionLayer\Field\FkField;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\Flag\PrimaryKey;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\Flag\Required;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\IdField;
-use Shopware\Core\Framework\DataAbstractionLayer\Field\JsonField;
-use Shopware\Core\Framework\DataAbstractionLayer\Field\OneToManyAssociationField;
+use Shopware\Core\Framework\DataAbstractionLayer\Field\ManyToOneAssociationField;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\StringField;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\UpdatedAtField;
 use Shopware\Core\Framework\DataAbstractionLayer\FieldCollection;
+use Shopware\Core\System\User\UserDefinition;
 
-class ClientDefinition extends EntityDefinition
+class LoginDefinition extends EntityDefinition
 {
-    public const ENTITY_NAME = 'heptacom_admin_open_auth_client';
+    public const ENTITY_NAME = 'heptacom_admin_open_auth_login';
 
     public function getEntityName(): string
     {
@@ -24,25 +25,28 @@ class ClientDefinition extends EntityDefinition
 
     public function getEntityClass(): string
     {
-        return ClientEntity::class;
+        return LoginEntity::class;
     }
 
     public function getCollectionClass(): string
     {
-        return ClientCollection::class;
+        return LoginCollection::class;
     }
 
     protected function defineFields(): FieldCollection
     {
         return new FieldCollection([
             (new IdField('id', 'id'))->addFlags(new PrimaryKey(), new Required()),
-            (new StringField('name', 'name'))->addFlags(new Required()),
-            (new StringField('provider', 'provider'))->addFlags(new Required()),
-            (new JsonField('config', 'config', [], []))->addFlags(new Required()),
+            (new IdField('state', 'state'))->addFlags(new Required()),
+            new StringField('password', 'password'),
             new CreatedAtField(),
             new UpdatedAtField(),
 
-            new OneToManyAssociationField('logins', LoginDefinition::class, 'client_id', 'id'),
+            (new FkField('client_id', 'clientId', ClientDefinition::class))->addFlags(new Required()),
+            new FkField('user_id', 'userId', UserDefinition::class),
+
+            new ManyToOneAssociationField('client', 'client_id', ClientDefinition::class, 'id', false),
+            new ManyToOneAssociationField('user', 'user_id', UserDefinition::class, 'id', false),
         ]);
     }
 }
