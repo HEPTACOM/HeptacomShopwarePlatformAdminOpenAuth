@@ -11,7 +11,7 @@ services:
     _instanceof:
         Heptacom\AdminOpenAuth\Contract\ProviderInterface:
             tags:
-                - 'heptacom_admin_opean_auth.client_provider'
+                - 'heptacom_admin_open_auth.client_provider'
 
     Heptacom\AdminOpenAuth\:
         resource: '../../*'
@@ -37,7 +37,7 @@ services:
 
     Heptacom\AdminOpenAuth\ClientLoader:
         arguments:
-            - !tagged_iterator heptacom_admin_opean_auth.client_provider
+            - !tagged_iterator heptacom_admin_open_auth.client_provider
     Heptacom\AdminOpenAuth\UserResolver:
         arguments:
             - '@user.repository'
