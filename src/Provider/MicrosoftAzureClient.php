@@ -13,13 +13,19 @@ class MicrosoftAzureClient implements ClientInterface
      */
     private $azureClient;
 
-    public function __construct(string $appId, string $appSecret, string $redirectUri)
+    /**
+     * @var bool
+     */
+    private $storeToken;
+
+    public function __construct(string $appId, string $appSecret, string $redirectUri, bool $storeToken)
     {
         $this->azureClient = new Azure([
             'clientId' => $appId,
             'clientSecret' => $appSecret,
             'redirectUri' => $redirectUri,
         ]);
+        $this->storeToken = $storeToken;
     }
 
     public function getLoginUrl(string $state): string
@@ -34,8 +40,8 @@ class MicrosoftAzureClient implements ClientInterface
 
         return (new UserStruct())
             ->setPrimaryKey($user['objectId'])
-            ->setAccessToken($token->getToken())
-            ->setRefreshToken($token->getRefreshToken())
+            ->setAccessToken($this->storeToken ? $token->getToken() : null)
+            ->setRefreshToken($this->storeToken ? $token->getRefreshToken() : null)
             ->setDisplayName($user['displayName'])
             ->setPrimaryEmail($user['mail'])
             ->setEmails([]);
