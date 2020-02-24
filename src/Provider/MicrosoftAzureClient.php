@@ -3,7 +3,7 @@
 namespace Heptacom\AdminOpenAuth\Provider;
 
 use Heptacom\AdminOpenAuth\Contract\ClientInterface;
-use Heptacom\AdminOpenAuth\Contract\UserStruct;
+use Heptacom\AdminOpenAuth\Struct\UserStruct;
 use TheNetworg\OAuth2\Client\Provider\Azure;
 
 class MicrosoftAzureClient implements ClientInterface
