@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS `heptacom_admin_open_auth_user_email` (
 		FOREIGN KEY (`client_id`) REFERENCES `heptacom_admin_open_auth_client` (`id`)
 			ON UPDATE CASCADE ON DELETE CASCADE,
     CONSTRAINT `fk.heptacom_admin_open_auth_user_email.user_id`
-		FOREIGN KEY (`client_id`) REFERENCES `user` (`id`)
+		FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
 )
     ENGINE = InnoDB
     DEFAULT CHARSET = utf8mb4

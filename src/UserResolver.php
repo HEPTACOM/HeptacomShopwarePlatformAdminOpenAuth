@@ -76,7 +76,7 @@ class UserResolver
         string $clientId,
         Context $context
     ): void {
-        $this->userKey->add($userId, $user->getPrimaryEmail(), $clientId, $context);
+        $this->userKey->add($userId, $user->getPrimaryKey(), $clientId, $context);
         $this->userEmail->add($userId, $user->getPrimaryEmail(), $clientId, $context);
 
         foreach ($user->getEmails() as $email) {
