@@ -3,7 +3,7 @@
     "license": "MIT",
     "description": "Shopware plugin to allow OAuth providers to provide admin logins",
     "type": "shopware-platform-plugin",
-    "version": "0.6.0",
+    "version": "0.7.0",
     "keywords": [
         "ecommerce",
         "shopware",
@@ -30,7 +30,8 @@
     "require": {
         "php": ">= 7.2",
         "league/oauth2-client": "~2.0",
-        "thenetworg/oauth2-azure": "^1.4"
+        "thenetworg/oauth2-azure": "^1.4",
+        "mrjoops/oauth2-jira": "^0.2.4"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.16",
