@@ -7,6 +7,7 @@ services:
             Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface $loginsRepository: '@heptacom_admin_open_auth_login.repository'
             Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface $userEmailsRepository: '@heptacom_admin_open_auth_user_email.repository'
             Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface $userKeysRepository: '@heptacom_admin_open_auth_user_key.repository'
+            Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface $userTokensRepository: '@heptacom_admin_open_auth_user_token.repository'
 
     _instanceof:
         Heptacom\AdminOpenAuth\Contract\ProviderInterface:
@@ -34,6 +35,9 @@ services:
     Heptacom\AdminOpenAuth\Database\UserKeyDefinition:
         tags:
             - { name: shopware.entity.definition , entity: 'heptacom_admin_open_auth_user_key' }
+    Heptacom\AdminOpenAuth\Database\UserTokenDefinition:
+        tags:
+            - { name: shopware.entity.definition , entity: 'heptacom_admin_open_auth_user_token' }
 
     Heptacom\AdminOpenAuth\ClientLoader:
         arguments:

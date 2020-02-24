@@ -45,6 +45,7 @@ class ClientDefinition extends EntityDefinition
             new OneToManyAssociationField('logins', LoginDefinition::class, 'client_id', 'id'),
             new OneToManyAssociationField('userEmails', UserEmailDefinition::class, 'client_id', 'id'),
             new OneToManyAssociationField('userKeys', UserKeyDefinition::class, 'client_id', 'id'),
+            new OneToManyAssociationField('userTokens', UserTokenDefinition::class, 'client_id', 'id'),
         ]);
     }
 }
