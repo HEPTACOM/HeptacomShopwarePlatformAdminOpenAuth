@@ -37,18 +37,25 @@ class UserResolver
      */
     private $userKey;
 
+    /**
+     * @var UserToken
+     */
+    private $userToken;
+
     public function __construct(
         EntityRepositoryInterface $userRepository,
         UserProvisioner $userProvisioner,
         Login $login,
         UserEmail $userEmail,
-        UserKey $userKey
+        UserKey $userKey,
+        UserToken $userToken
     ) {
         $this->userRepository = $userRepository;
         $this->userProvisioner = $userProvisioner;
         $this->login = $login;
         $this->userEmail = $userEmail;
         $this->userKey = $userKey;
+        $this->userToken = $userToken;
     }
 
     public function resolve(UserStruct $user, string $state, string $clientId, Context $context): void
@@ -76,6 +83,14 @@ class UserResolver
         string $clientId,
         Context $context
     ): void {
+        if (!empty($user->getRefreshToken())) {
+            $this->userToken->setRefreshToken($userId, $clientId, $user->getRefreshToken(), $context);
+
+            if (!empty($user->getAccessToken())) {
+                $this->userToken->setAccessToken($userId, $clientId, $user->getAccessToken(), $context);
+            }
+        }
+
         $this->userKey->add($userId, $user->getPrimaryKey(), $clientId, $context);
         $this->userEmail->add($userId, $user->getPrimaryEmail(), $clientId, $context);
 

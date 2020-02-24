@@ -28,10 +28,12 @@ class MicrosoftAzureProvider implements ProviderInterface
             throw new ProvideClientInvalidConfigurationException($clientId, self::class, 'redirectUri missing');
         }
 
+        $storeToken = array_key_exists('storeToken', $config) && $config['storeToken'];
+
         $appId = $config['appId'];
         $appSecret = $config['appSecret'];
         $redirectUri = $config['redirectUri'];
 
-        return new MicrosoftAzureClient($appId, $appSecret, $redirectUri);
+        return new MicrosoftAzureClient($appId, $appSecret, $redirectUri, $storeToken);
     }
 }

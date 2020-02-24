@@ -39,6 +39,11 @@ class ClientEntity extends Entity
      */
     protected $userKeys;
 
+    /**
+     * @var UserTokenCollection|null
+     */
+    protected $userTokens;
+
     public function getName(): ?string
     {
         return $this->name;
@@ -107,6 +112,18 @@ class ClientEntity extends Entity
     public function setUserKeys(?UserKeyCollection $userKeys): self
     {
         $this->userKeys = $userKeys;
+
+        return $this;
+    }
+
+    public function getUserTokens(): ?UserTokenCollection
+    {
+        return $this->userTokens;
+    }
+
+    public function setUserTokens(?UserTokenCollection $userTokens): self
+    {
+        $this->userTokens = $userTokens;
 
         return $this;
     }
