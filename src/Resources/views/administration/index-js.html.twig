@@ -1,0 +1,55 @@
+<style>
+    .heptacom-admin-open-auth--button {
+        text-align: center;
+        margin-top: 20px;
+    }
+</style>
+<script>
+    const clientRoutes = {{ url('administration.heptacom.admin_open_auth.routes')|json_encode|raw }};
+    const credentialsRoutes = {{ url('administration.heptacom.admin_open_auth.credentials')|json_encode|raw }};
+
+    const waitForLoginForm = function() {
+        if (!document.querySelector('.sw-login')) {
+            setTimeout(waitForLoginForm, 200);
+            return;
+        }
+
+        fetch(clientRoutes)
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (data) {
+                const container = document.querySelector('.sw-login__content');
+                data.clients.forEach(function (item) {
+                    const link = document.createElement('a');
+                    link.classList.add(
+                        'sw-button',
+                        'sw-button--block',
+                        'sw-button--ghost',
+                        'heptacom-admin-open-auth--button'
+                    );
+                    link.href = item.url;
+                    link.innerHTML = item.name;
+                    container.appendChild(link);
+                });
+            });
+    };
+    waitForLoginForm();
+
+    const match = window.location.search ? window.location.search.match(/[?&]state=([^&]+?)(&|$)/) : null;
+
+    if (match && match.length > 2) {
+        fetch(credentialsRoutes + '?state=' + match[1])
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (data) {
+                Shopware.Service()
+                    .get('loginService')
+                    .loginByUsername(data.username, data.password)
+                    .then(function () {
+                        window.location = window.location.origin + window.location.pathname;
+                    });
+            });
+    }
+</script>
