@@ -2,6 +2,8 @@
 
 namespace Heptacom\AdminOpenAuth\Contract;
 
+use Heptacom\AdminOpenAuth\Struct\UserStruct;
+
 interface ClientInterface
 {
     public function getLoginUrl(string $state): string;

@@ -2,16 +2,9 @@
 
 namespace Heptacom\AdminOpenAuth\Controller;
 
-use Heptacom\AdminOpenAuth\ClientLoader;
-use Heptacom\AdminOpenAuth\Database\ClientEntity;
-use Heptacom\AdminOpenAuth\Database\LoginEntity;
-use Heptacom\AdminOpenAuth\Login;
-use Heptacom\AdminOpenAuth\UserResolver;
+use Heptacom\AdminOpenAuth\Contract\OpenAuthenticationFlowInterface;
 use Shopware\Core\Framework\Context;
-use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
-use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\Routing\Annotation\RouteScope;
-use Shopware\Core\Framework\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -26,35 +19,13 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 class AdministrationController extends AbstractController
 {
     /**
-     * @var EntityRepositoryInterface
+     * @var OpenAuthenticationFlowInterface
      */
-    private $clientsRepository;
+    private $flow;
 
-    /**
-     * @var ClientLoader
-     */
-    private $clientLoader;
-
-    /**
-     * @var UserResolver
-     */
-    private $userResolver;
-
-    /**
-     * @var Login
-     */
-    private $login;
-
-    public function __construct(
-        EntityRepositoryInterface $clientsRepository,
-        ClientLoader $clientLoader,
-        UserResolver $userResolver,
-        Login $login
-    ) {
-        $this->clientsRepository = $clientsRepository;
-        $this->clientLoader = $clientLoader;
-        $this->userResolver = $userResolver;
-        $this->login = $login;
+    public function __construct(OpenAuthenticationFlowInterface $flow)
+    {
+        $this->flow = $flow;
     }
 
     /**
@@ -69,8 +40,8 @@ class AdministrationController extends AbstractController
     {
         $state = $request->query->get('state');
         $code = $request->query->get('code');
-        $user = $this->clientLoader->load($clientId, $context)->getUser($state, $code);
-        $this->userResolver->resolve($user, $state, $clientId, $context);
+        $this->flow->upsertUser($clientId, $state, $code, $context);
+
         $adminRoute = $this->generateUrl(
             'administration.index',
             ['state' => $state],
@@ -90,11 +61,10 @@ class AdministrationController extends AbstractController
      */
     public function remoteLogin(string $clientId, Context $context): Response
     {
-        $state = Uuid::randomHex();
-        $this->login->initiate($clientId, $state, $context);
-        $target = $this->clientLoader->load($clientId, $context)->getLoginUrl($state);
-
-        return RedirectResponse::create($target, Response::HTTP_TEMPORARY_REDIRECT);
+        return RedirectResponse::create(
+            $this->flow->getRedirectUrl($clientId, $context),
+            Response::HTTP_TEMPORARY_REDIRECT
+        );
     }
 
     /**
@@ -108,16 +78,9 @@ class AdministrationController extends AbstractController
     public function getCredentials(Request $request, Context $context): JsonResponse
     {
         $state = $request->get('state');
-        $login = $this->login->pop($state, $context);
+        $login = $this->flow->popCredentials($state, $context);
 
-        if (!$login instanceof LoginEntity) {
-            return JsonResponse::create([], Response::HTTP_NOT_FOUND);
-        }
-
-        return JsonResponse::create([
-            'username' => $login->getUser()->getUsername(),
-            'password' => $login->getPassword(),
-        ]);
+        return JsonResponse::create($login, empty($login) ? Response::HTTP_NOT_FOUND : Response::HTTP_OK);
     }
 
     /**
@@ -130,20 +93,6 @@ class AdministrationController extends AbstractController
      */
     public function clientRoutes(Context $context): JsonResponse
     {
-        return JsonResponse::create([
-            'clients' => array_values($this->clientsRepository
-                ->search(new Criteria(), $context)
-                ->getEntities()
-                ->map(function (ClientEntity $client): array {
-                    return [
-                        'name' => $client->getName(),
-                        'url' => $this->generateUrl(
-                            'administration.heptacom.admin_open_auth.remote_login',
-                            ['clientId' => $client->getId()],
-                            UrlGeneratorInterface::ABSOLUTE_URL
-                        ),
-                    ];
-                })),
-        ]);
+        return JsonResponse::create(['clients' => $this->flow->getLoginRoutes($context)]);
     }
 }

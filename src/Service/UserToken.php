@@ -1,7 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace Heptacom\AdminOpenAuth;
+namespace Heptacom\AdminOpenAuth\Service;
 
+use Heptacom\AdminOpenAuth\Contract\UserTokenInterface;
 use Heptacom\AdminOpenAuth\Database\UserTokenCollection;
 use Heptacom\AdminOpenAuth\Database\UserTokenEntity;
 use Shopware\Core\Framework\Context;
@@ -10,7 +11,7 @@ use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
 use Shopware\Core\Framework\Uuid\Uuid;
 
-class UserToken
+class UserToken implements UserTokenInterface
 {
     /**
      * @var EntityRepositoryInterface

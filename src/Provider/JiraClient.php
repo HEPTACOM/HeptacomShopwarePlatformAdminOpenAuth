@@ -3,8 +3,8 @@
 namespace Heptacom\AdminOpenAuth\Provider;
 
 use Heptacom\AdminOpenAuth\Contract\ClientInterface;
-use Heptacom\AdminOpenAuth\Contract\UserStruct;
 use Heptacom\AdminOpenAuth\OpenAuth\Atlassian;
+use Heptacom\AdminOpenAuth\Struct\UserStruct;
 use Mrjoops\OAuth2\Client\Provider\JiraResourceOwner;
 
 class JiraClient implements ClientInterface

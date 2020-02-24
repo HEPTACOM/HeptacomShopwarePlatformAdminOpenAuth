@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Heptacom\AdminOpenAuth\Contract;
+namespace Heptacom\AdminOpenAuth\Struct;
 
 use Shopware\Core\Framework\Struct\Struct;
 

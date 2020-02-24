@@ -1,8 +1,13 @@
 <?php declare(strict_types=1);
 
-namespace Heptacom\AdminOpenAuth;
+namespace Heptacom\AdminOpenAuth\Service;
 
-use Heptacom\AdminOpenAuth\Contract\UserStruct;
+use Heptacom\AdminOpenAuth\Contract\LoginInterface;
+use Heptacom\AdminOpenAuth\Contract\UserEmailInterface;
+use Heptacom\AdminOpenAuth\Contract\UserKeyInterface;
+use Heptacom\AdminOpenAuth\Contract\UserResolverInterface;
+use Heptacom\AdminOpenAuth\Contract\UserTokenInterface;
+use Heptacom\AdminOpenAuth\Struct\UserStruct;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
@@ -10,7 +15,7 @@ use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsAnyFilter;
 use Shopware\Core\Framework\Util\Random;
 use Shopware\Core\System\User\Service\UserProvisioner;
 
-class UserResolver
+class UserResolver implements UserResolverInterface
 {
     /**
      * @var EntityRepositoryInterface
@@ -23,32 +28,32 @@ class UserResolver
     private $userProvisioner;
 
     /**
-     * @var Login
+     * @var LoginInterface
      */
     private $login;
 
     /**
-     * @var UserEmail
+     * @var UserEmailInterface
      */
     private $userEmail;
 
     /**
-     * @var UserKey
+     * @var UserKeyInterface
      */
     private $userKey;
 
     /**
-     * @var UserToken
+     * @var UserTokenInterface
      */
     private $userToken;
 
     public function __construct(
         EntityRepositoryInterface $userRepository,
         UserProvisioner $userProvisioner,
-        Login $login,
-        UserEmail $userEmail,
-        UserKey $userKey,
-        UserToken $userToken
+        LoginInterface $login,
+        UserEmailInterface $userEmail,
+        UserKeyInterface $userKey,
+        UserTokenInterface $userToken
     ) {
         $this->userRepository = $userRepository;
         $this->userProvisioner = $userProvisioner;
