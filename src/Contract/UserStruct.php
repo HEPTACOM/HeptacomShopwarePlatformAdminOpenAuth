@@ -26,6 +26,16 @@ class UserStruct extends Struct
      */
     protected $primaryKey;
 
+    /**
+     * @var string|null
+     */
+    protected $accessToken;
+
+    /**
+     * @var string|null
+     */
+    protected $refreshToken;
+
     public function getPrimaryEmail(): string
     {
         return $this->primaryEmail;
@@ -70,6 +80,30 @@ class UserStruct extends Struct
     public function setPrimaryKey(string $primaryKey): self
     {
         $this->primaryKey = $primaryKey;
+
+        return $this;
+    }
+
+    public function getAccessToken(): ?string
+    {
+        return $this->accessToken;
+    }
+
+    public function setAccessToken(?string $accessToken): self
+    {
+        $this->accessToken = $accessToken;
+
+        return $this;
+    }
+
+    public function getRefreshToken(): ?string
+    {
+        return $this->refreshToken;
+    }
+
+    public function setRefreshToken(?string $refreshToken): self
+    {
+        $this->refreshToken = $refreshToken;
 
         return $this;
     }

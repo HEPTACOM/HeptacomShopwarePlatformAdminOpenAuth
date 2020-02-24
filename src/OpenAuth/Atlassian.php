@@ -21,6 +21,7 @@ class Atlassian extends Jira
         return [
             'read:me',
             'read:jira-user',
+            'offline_access',
         ];
     }
 }

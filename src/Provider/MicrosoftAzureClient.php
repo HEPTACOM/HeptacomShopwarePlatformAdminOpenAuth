@@ -34,6 +34,8 @@ class MicrosoftAzureClient implements ClientInterface
 
         return (new UserStruct())
             ->setPrimaryKey($user['objectId'])
+            ->setAccessToken($token->getToken())
+            ->setRefreshToken($token->getRefreshToken())
             ->setDisplayName($user['displayName'])
             ->setPrimaryEmail($user['mail'])
             ->setEmails([]);

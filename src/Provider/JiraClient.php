@@ -32,13 +32,15 @@ class JiraClient implements ClientInterface
     {
         $token = $this->jiraClient->getAccessToken('authorization_code', [
             'code' => $code,
-            'scope' => 'read:jira-user',
+            'scope' => 'read:jira-user offline_access',
         ]);
         /** @var JiraResourceOwner $user */
         $user = $this->jiraClient->getResourceOwner($token);
 
         return (new UserStruct())
             ->setPrimaryKey($user->getId())
+            ->setRefreshToken($token->getRefreshToken())
+            ->setAccessToken($token->getToken())
             ->setDisplayName($user->getName())
             ->setPrimaryEmail($user->getEmail())
             ->setEmails([]);
