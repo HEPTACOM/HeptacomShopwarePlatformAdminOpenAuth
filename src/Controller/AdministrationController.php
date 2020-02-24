@@ -2,7 +2,7 @@
 
 namespace Heptacom\AdminOpenAuth\Controller;
 
-use Heptacom\AdminOpenAuth\Service\OpenAuthenticationFlow;
+use Heptacom\AdminOpenAuth\Contract\OpenAuthenticationFlowInterface;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\Routing\Annotation\RouteScope;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,11 +19,11 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 class AdministrationController extends AbstractController
 {
     /**
-     * @var OpenAuthenticationFlow
+     * @var OpenAuthenticationFlowInterface
      */
     private $flow;
 
-    public function __construct(OpenAuthenticationFlow $flow)
+    public function __construct(OpenAuthenticationFlowInterface $flow)
     {
         $this->flow = $flow;
     }

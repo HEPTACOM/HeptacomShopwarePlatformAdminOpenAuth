@@ -2,7 +2,10 @@
 
 namespace Heptacom\AdminOpenAuth\Service;
 
+use Heptacom\AdminOpenAuth\Contract\ClientLoaderInterface;
+use Heptacom\AdminOpenAuth\Contract\LoginInterface;
 use Heptacom\AdminOpenAuth\Contract\OpenAuthenticationFlowInterface;
+use Heptacom\AdminOpenAuth\Contract\UserResolverInterface;
 use Heptacom\AdminOpenAuth\Database\ClientEntity;
 use Heptacom\AdminOpenAuth\Database\LoginEntity;
 use Shopware\Core\Framework\Context;
@@ -15,17 +18,17 @@ use Symfony\Component\Routing\RouterInterface;
 class OpenAuthenticationFlow implements OpenAuthenticationFlowInterface
 {
     /**
-     * @var Login
+     * @var LoginInterface
      */
     private $login;
 
     /**
-     * @var ClientLoader
+     * @var ClientLoaderInterface
      */
     private $clientLoader;
 
     /**
-     * @var UserResolver
+     * @var UserResolverInterface
      */
     private $userResolver;
 
@@ -40,9 +43,9 @@ class OpenAuthenticationFlow implements OpenAuthenticationFlowInterface
     private $router;
 
     public function __construct(
-        Login $login,
-        ClientLoader $clientLoader,
-        UserResolver $userResolver,
+        LoginInterface $login,
+        ClientLoaderInterface $clientLoader,
+        UserResolverInterface $userResolver,
         EntityRepositoryInterface $clientsRepository,
         RouterInterface $router
     ) {

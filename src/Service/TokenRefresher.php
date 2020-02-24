@@ -2,7 +2,9 @@
 
 namespace Heptacom\AdminOpenAuth\Service;
 
+use Heptacom\AdminOpenAuth\Contract\ClientLoaderInterface;
 use Heptacom\AdminOpenAuth\Contract\TokenRefresherInterface;
+use Heptacom\AdminOpenAuth\Contract\UserTokenInterface;
 use Heptacom\AdminOpenAuth\Database\UserTokenEntity;
 use Heptacom\AdminOpenAuth\Exception\LoadClientException;
 use Shopware\Core\Framework\Context;
@@ -10,16 +12,16 @@ use Shopware\Core\Framework\Context;
 class TokenRefresher implements TokenRefresherInterface
 {
     /**
-     * @var UserToken
+     * @var UserTokenInterface
      */
     private $userToken;
 
     /**
-     * @var ClientLoader
+     * @var ClientLoaderInterface
      */
     private $clientLoader;
 
-    public function __construct(UserToken $userToken, ClientLoader $clientLoader)
+    public function __construct(UserTokenInterface $userToken, ClientLoaderInterface $clientLoader)
     {
         $this->userToken = $userToken;
         $this->clientLoader = $clientLoader;
