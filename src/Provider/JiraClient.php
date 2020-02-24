@@ -45,4 +45,13 @@ class JiraClient implements ClientInterface
             ->setPrimaryEmail($user->getEmail())
             ->setEmails([]);
     }
+
+    public function refreshToken(string $refreshToken): ?string
+    {
+        $token = $this->jiraClient->getAccessToken('refresh_token', [
+            'refresh_token' => $refreshToken,
+        ]);
+
+        return $token->getToken();
+    }
 }

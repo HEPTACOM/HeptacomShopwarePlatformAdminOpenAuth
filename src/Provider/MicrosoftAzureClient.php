@@ -40,4 +40,13 @@ class MicrosoftAzureClient implements ClientInterface
             ->setPrimaryEmail($user['mail'])
             ->setEmails([]);
     }
+
+    public function refreshToken(string $refreshToken): ?string
+    {
+        $token = $this->azureClient->getAccessToken('refresh_token', [
+            'refresh_token' => $refreshToken,
+        ]);
+
+        return $token->getToken();
+    }
 }
