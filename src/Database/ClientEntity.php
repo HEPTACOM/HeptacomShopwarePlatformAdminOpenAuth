@@ -29,6 +29,11 @@ class ClientEntity extends Entity
      */
     protected $logins;
 
+    /**
+     * @var UserEmailCollection|null
+     */
+    protected $userEmails;
+
     public function getName(): ?string
     {
         return $this->name;
@@ -37,6 +42,7 @@ class ClientEntity extends Entity
     public function setName(?string $name): self
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -48,6 +54,7 @@ class ClientEntity extends Entity
     public function setProvider(?string $provider): self
     {
         $this->provider = $provider;
+
         return $this;
     }
 
@@ -59,6 +66,7 @@ class ClientEntity extends Entity
     public function setConfig(?array $config): self
     {
         $this->config = $config;
+
         return $this;
     }
 
@@ -70,6 +78,18 @@ class ClientEntity extends Entity
     public function setLogins(?LoginCollection $logins): self
     {
         $this->logins = $logins;
+
+        return $this;
+    }
+
+    public function getUserEmails(): ?UserEmailCollection
+    {
+        return $this->userEmails;
+    }
+
+    public function setUserEmails(?UserEmailCollection $userEmails): ClientEntity
+    {
+        $this->userEmails = $userEmails;
 
         return $this;
     }
