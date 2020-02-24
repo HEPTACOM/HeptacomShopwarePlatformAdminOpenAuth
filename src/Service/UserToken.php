@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Heptacom\AdminOpenAuth;
+namespace Heptacom\AdminOpenAuth\Service;
 
 use Heptacom\AdminOpenAuth\Database\UserTokenCollection;
 use Heptacom\AdminOpenAuth\Database\UserTokenEntity;

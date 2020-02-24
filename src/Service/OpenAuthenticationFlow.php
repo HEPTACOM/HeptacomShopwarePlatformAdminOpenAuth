@@ -2,12 +2,9 @@
 
 namespace Heptacom\AdminOpenAuth\Service;
 
-use Heptacom\AdminOpenAuth\ClientLoader;
 use Heptacom\AdminOpenAuth\Database\ClientEntity;
 use Heptacom\AdminOpenAuth\Database\LoginEntity;
 use Heptacom\AdminOpenAuth\Exception\LoadClientException;
-use Heptacom\AdminOpenAuth\Login;
-use Heptacom\AdminOpenAuth\UserResolver;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;

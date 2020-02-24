@@ -1,8 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace Heptacom\AdminOpenAuth;
+namespace Heptacom\AdminOpenAuth\Service;
 
 use Heptacom\AdminOpenAuth\Database\UserTokenEntity;
+use Heptacom\AdminOpenAuth\Exception\LoadClientException;
 use Shopware\Core\Framework\Context;
 
 class TokenRefresher
@@ -30,7 +31,7 @@ class TokenRefresher
         if ($token instanceof UserTokenEntity && !empty($token->getRefreshToken())) {
             try {
                 $client = $this->clientLoader->load($clientId, $context);
-            } catch (Exception\LoadClientException $ignored) {
+            } catch (LoadClientException $ignored) {
                 return false;
             }
 

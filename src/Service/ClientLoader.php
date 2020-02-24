@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Heptacom\AdminOpenAuth;
+namespace Heptacom\AdminOpenAuth\Service;
 
 use Heptacom\AdminOpenAuth\Contract\ClientInterface;
 use Heptacom\AdminOpenAuth\Contract\ProviderInterface;
