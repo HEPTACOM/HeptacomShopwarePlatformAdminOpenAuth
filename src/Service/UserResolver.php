@@ -2,6 +2,7 @@
 
 namespace Heptacom\AdminOpenAuth\Service;
 
+use Heptacom\AdminOpenAuth\Contract\UserResolverInterface;
 use Heptacom\AdminOpenAuth\Struct\UserStruct;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
@@ -10,7 +11,7 @@ use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsAnyFilter;
 use Shopware\Core\Framework\Util\Random;
 use Shopware\Core\System\User\Service\UserProvisioner;
 
-class UserResolver
+class UserResolver implements UserResolverInterface
 {
     /**
      * @var EntityRepositoryInterface

@@ -3,17 +3,19 @@
 namespace Heptacom\AdminOpenAuth\Service;
 
 use Heptacom\AdminOpenAuth\Contract\ClientInterface;
+use Heptacom\AdminOpenAuth\Contract\ClientLoaderInterface;
 use Heptacom\AdminOpenAuth\Contract\ProviderInterface;
 use Heptacom\AdminOpenAuth\Database\ClientCollection;
 use Heptacom\AdminOpenAuth\Exception\LoadClientClientNotFoundException;
 use Heptacom\AdminOpenAuth\Exception\LoadClientException;
 use Heptacom\AdminOpenAuth\Exception\LoadClientMatchingProviderNotFoundException;
+use Heptacom\AdminOpenAuth\Exception\ProvideClientException;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Traversable;
 
-class ClientLoader
+class ClientLoader implements ClientLoaderInterface
 {
     /**
      * @var ProviderInterface[]
@@ -34,9 +36,6 @@ class ClientLoader
         $this->clientsRepository = $clientsRepository;
     }
 
-    /**
-     * @throws LoadClientException
-     */
     public function load(string $clientId, Context $context): ClientInterface
     {
         /** @var ClientCollection $searchResult */
@@ -48,7 +47,11 @@ class ClientLoader
 
         foreach ($this->providers as $provider) {
             if ($provider->provides() === $searchResult->first()->getProvider()) {
-                return $provider->provideClient($clientId, $searchResult->first()->getConfig() ?? [], $context);
+                try {
+                    return $provider->provideClient($clientId, $searchResult->first()->getConfig() ?? [], $context);
+                } catch (ProvideClientException $e) {
+                    throw new LoadClientException($e->getMessage(), $clientId, $e);
+                }
             }
         }
 

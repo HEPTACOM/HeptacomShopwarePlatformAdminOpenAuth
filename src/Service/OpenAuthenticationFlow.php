@@ -2,9 +2,9 @@
 
 namespace Heptacom\AdminOpenAuth\Service;
 
+use Heptacom\AdminOpenAuth\Contract\OpenAuthenticationFlowInterface;
 use Heptacom\AdminOpenAuth\Database\ClientEntity;
 use Heptacom\AdminOpenAuth\Database\LoginEntity;
-use Heptacom\AdminOpenAuth\Exception\LoadClientException;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
@@ -12,7 +12,7 @@ use Shopware\Core\Framework\Uuid\Uuid;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 
-class OpenAuthenticationFlow
+class OpenAuthenticationFlow implements OpenAuthenticationFlowInterface
 {
     /**
      * @var Login
@@ -53,9 +53,6 @@ class OpenAuthenticationFlow
         $this->router = $router;
     }
 
-    /**
-     * @throws LoadClientException
-     */
     public function getRedirectUrl(string $clientId, Context $context): string
     {
         $state = Uuid::randomHex();
@@ -64,9 +61,6 @@ class OpenAuthenticationFlow
         return $this->clientLoader->load($clientId, $context)->getLoginUrl($state);
     }
 
-    /**
-     * @throws LoadClientException
-     */
     public function upsertUser(string $clientId, string $state, string $code, Context $context): void
     {
         $user = $this->clientLoader->load($clientId, $context)->getUser($state, $code);

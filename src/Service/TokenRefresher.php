@@ -2,11 +2,12 @@
 
 namespace Heptacom\AdminOpenAuth\Service;
 
+use Heptacom\AdminOpenAuth\Contract\TokenRefresherInterface;
 use Heptacom\AdminOpenAuth\Database\UserTokenEntity;
 use Heptacom\AdminOpenAuth\Exception\LoadClientException;
 use Shopware\Core\Framework\Context;
 
-class TokenRefresher
+class TokenRefresher implements TokenRefresherInterface
 {
     /**
      * @var UserToken

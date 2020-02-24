@@ -2,6 +2,7 @@
 
 namespace Heptacom\AdminOpenAuth\Service;
 
+use Heptacom\AdminOpenAuth\Contract\LoginInterface;
 use Heptacom\AdminOpenAuth\Database\LoginCollection;
 use Heptacom\AdminOpenAuth\Database\LoginEntity;
 use Shopware\Core\Framework\Context;
@@ -10,7 +11,7 @@ use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
 use Shopware\Core\Framework\Uuid\Uuid;
 
-class Login
+class Login implements LoginInterface
 {
     /**
      * @var EntityRepositoryInterface
