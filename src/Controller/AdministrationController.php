@@ -62,7 +62,7 @@ class AdministrationController extends AbstractController
      *     methods={"GET"},
      *     name="administration.heptacom.admin_open_auth.login",
      *     path="/admin/open-auth/{clientId}/redirect",
-     *     defaults={"auth_required"=false}
+     *     defaults={"auth_required" = false}
      * )
      */
     public function login(string $clientId, Request $request, Context $context): Response
@@ -85,7 +85,7 @@ class AdministrationController extends AbstractController
      *     methods={"GET"},
      *     name="administration.heptacom.admin_open_auth.remote_login",
      *     path="/admin/open-auth/{clientId}/remote",
-     *     defaults={"auth_required"=false}
+     *     defaults={"auth_required" = false}
      * )
      */
     public function remoteLogin(string $clientId, Context $context): Response
@@ -102,7 +102,7 @@ class AdministrationController extends AbstractController
      *     methods={"GET"},
      *     name="administration.heptacom.admin_open_auth.credentials",
      *     path="/admin/open-auth/credentials",
-     *     defaults={"auth_required"=false}
+     *     defaults={"auth_required" = false}
      * )
      */
     public function getCredentials(Request $request, Context $context): JsonResponse
@@ -125,7 +125,7 @@ class AdministrationController extends AbstractController
      *     methods={"GET"},
      *     name="administration.heptacom.admin_open_auth.routes",
      *     path="/admin/open-auth/routes",
-     *     defaults={"auth_required"=false}
+     *     defaults={"auth_required" = false}
      * )
      */
     public function clientRoutes(Context $context): JsonResponse
