@@ -34,6 +34,7 @@ class UserStruct extends Struct
     public function setPrimaryEmail(string $primaryEmail): self
     {
         $this->primaryEmail = $primaryEmail;
+
         return $this;
     }
 

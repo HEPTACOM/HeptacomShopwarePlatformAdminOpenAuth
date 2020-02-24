@@ -38,3 +38,6 @@ services:
     Heptacom\AdminOpenAuth\ClientLoader:
         arguments:
             - !tagged_iterator heptacom_admin_opean_auth.client_provider
+    Heptacom\AdminOpenAuth\UserResolver:
+        arguments:
+            - '@user.repository'
