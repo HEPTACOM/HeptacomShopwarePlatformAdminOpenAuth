@@ -2,9 +2,10 @@
 
 namespace Heptacom\AdminOpenAuth\Contract;
 
+use Heptacom\AdminOpenAuth\Struct\TokenPairStruct;
 use Shopware\Core\Framework\Context;
 
 interface TokenRefresherInterface
 {
-    public function refresh(string $clientId, string $userId, Context $context): bool;
+    public function refresh(string $clientId, string $userId, Context $context): ?TokenPairStruct;
 }

@@ -3,11 +3,18 @@
 namespace Heptacom\AdminOpenAuth\Provider;
 
 use Heptacom\AdminOpenAuth\Contract\ClientInterface;
+use Heptacom\AdminOpenAuth\Contract\TokenPairFactoryInterface;
+use Heptacom\AdminOpenAuth\Struct\TokenPairStruct;
 use Heptacom\AdminOpenAuth\Struct\UserStruct;
 use TheNetworg\OAuth2\Client\Provider\Azure;
 
 class MicrosoftAzureClient implements ClientInterface
 {
+    /**
+     * @var TokenPairFactoryInterface
+     */
+    private $tokenPairFactory;
+
     /**
      * @var Azure
      */
@@ -18,8 +25,9 @@ class MicrosoftAzureClient implements ClientInterface
      */
     private $storeToken;
 
-    public function __construct(string $appId, string $appSecret, string $redirectUri, bool $storeToken)
+    public function __construct(TokenPairFactoryInterface $tokenPairFactory, string $appId, string $appSecret, string $redirectUri, bool $storeToken)
     {
+        $this->tokenPairFactory = $tokenPairFactory;
         $this->azureClient = new Azure([
             'clientId' => $appId,
             'clientSecret' => $appSecret,
@@ -40,19 +48,16 @@ class MicrosoftAzureClient implements ClientInterface
 
         return (new UserStruct())
             ->setPrimaryKey($user['objectId'])
-            ->setAccessToken($this->storeToken ? $token->getToken() : null)
-            ->setRefreshToken($this->storeToken ? $token->getRefreshToken() : null)
+            ->setTokenPair($this->storeToken ? $this->tokenPairFactory->fromLeagueToken($token) : null)
             ->setDisplayName($user['displayName'])
             ->setPrimaryEmail($user['mail'])
             ->setEmails([]);
     }
 
-    public function refreshToken(string $refreshToken): ?string
+    public function refreshToken(string $refreshToken): TokenPairStruct
     {
-        $token = $this->azureClient->getAccessToken('refresh_token', [
+        return $this->tokenPairFactory->fromLeagueToken($this->azureClient->getAccessToken('refresh_token', [
             'refresh_token' => $refreshToken,
-        ]);
-
-        return $token->getToken();
+        ]));
     }
 }
