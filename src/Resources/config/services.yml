@@ -21,6 +21,7 @@ services:
             - '../../Database/*Entity.php'
             - '../../Exception/*'
             - '../../Migration/*'
+            - '../../Provider/*Client.php'
             - '../../Resources/*'
 
     Heptacom\AdminOpenAuth\Database\ClientDefinition:
