@@ -4,11 +4,22 @@ namespace Heptacom\AdminOpenAuth\Provider;
 
 use Heptacom\AdminOpenAuth\Contract\ClientInterface;
 use Heptacom\AdminOpenAuth\Contract\ProviderInterface;
+use Heptacom\AdminOpenAuth\Contract\TokenPairFactoryInterface;
 use Heptacom\AdminOpenAuth\Exception\ProvideClientInvalidConfigurationException;
 use Shopware\Core\Framework\Context;
 
 class JiraProvider implements ProviderInterface
 {
+    /**
+     * @var TokenPairFactoryInterface
+     */
+    private $tokenPairFactory;
+
+    public function __construct(TokenPairFactoryInterface $tokenPairFactory)
+    {
+        $this->tokenPairFactory = $tokenPairFactory;
+    }
+
     public function provides(): string
     {
         return 'jira';
@@ -34,6 +45,6 @@ class JiraProvider implements ProviderInterface
         $appSecret = $config['appSecret'];
         $redirectUri = $config['redirectUri'];
 
-        return new JiraClient($appId, $appSecret, $redirectUri, $storeToken);
+        return new JiraClient($this->tokenPairFactory, $appId, $appSecret, $redirectUri, $storeToken);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Heptacom\AdminOpenAuth\Contract;
 
+use Heptacom\AdminOpenAuth\Struct\TokenPairStruct;
 use Heptacom\AdminOpenAuth\Struct\UserStruct;
 
 interface ClientInterface
@@ -10,5 +11,5 @@ interface ClientInterface
 
     public function getUser(string $state, string $code): UserStruct;
 
-    public function refreshToken(string $refreshToken): ?string;
+    public function refreshToken(string $refreshToken): TokenPairStruct;
 }

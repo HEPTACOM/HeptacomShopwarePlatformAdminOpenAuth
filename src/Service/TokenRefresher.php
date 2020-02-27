@@ -7,6 +7,7 @@ use Heptacom\AdminOpenAuth\Contract\TokenRefresherInterface;
 use Heptacom\AdminOpenAuth\Contract\UserTokenInterface;
 use Heptacom\AdminOpenAuth\Database\UserTokenEntity;
 use Heptacom\AdminOpenAuth\Exception\LoadClientException;
+use Heptacom\AdminOpenAuth\Struct\TokenPairStruct;
 use Shopware\Core\Framework\Context;
 
 class TokenRefresher implements TokenRefresherInterface
@@ -27,7 +28,7 @@ class TokenRefresher implements TokenRefresherInterface
         $this->clientLoader = $clientLoader;
     }
 
-    public function refresh(string $clientId, string $userId, Context $context): bool
+    public function refresh(string $clientId, string $userId, Context $context): ?TokenPairStruct
     {
         $token = $this->userToken->getToken($clientId, $userId, $context);
 
@@ -35,16 +36,22 @@ class TokenRefresher implements TokenRefresherInterface
             try {
                 $client = $this->clientLoader->load($clientId, $context);
             } catch (LoadClientException $ignored) {
-                return false;
+                return null;
             }
 
-            $accessToken = $client->refreshToken($token->getRefreshToken());
+            $tokenPair = $client->refreshToken($token->getRefreshToken());
 
-            if (!empty($accessToken)) {
-                $this->userToken->setAccessToken($userId, $clientId, $accessToken, $context);
+            if (!empty($tokenPair->getAccessToken())) {
+                $this->userToken->setAccessToken($userId, $clientId, $tokenPair->getAccessToken(), $context);
             }
+
+            if (!empty($tokenPair->getRefreshToken())) {
+                $this->userToken->setRefreshToken($userId, $clientId, $tokenPair->getRefreshToken(), $context);
+            }
+
+            return $tokenPair;
         }
 
-        return false;
+        return null;
     }
 }

@@ -21,6 +21,7 @@ services:
             - '../../Database/*Entity.php'
             - '../../Exception/*'
             - '../../Migration/*'
+            - '../../Provider/*Client.php'
             - '../../Resources/*'
 
     Heptacom\AdminOpenAuth\Database\ClientDefinition:
@@ -39,9 +40,9 @@ services:
         tags:
             - { name: shopware.entity.definition , entity: 'heptacom_admin_open_auth_user_token' }
 
-    Heptacom\AdminOpenAuth\ClientLoader:
+    Heptacom\AdminOpenAuth\Service\ClientLoader:
         arguments:
             - !tagged_iterator heptacom_admin_open_auth.client_provider
-    Heptacom\AdminOpenAuth\UserResolver:
+    Heptacom\AdminOpenAuth\Service\UserResolver:
         arguments:
             - '@user.repository'

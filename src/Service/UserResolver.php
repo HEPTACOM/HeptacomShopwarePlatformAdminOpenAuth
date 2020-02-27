@@ -88,11 +88,13 @@ class UserResolver implements UserResolverInterface
         string $clientId,
         Context $context
     ): void {
-        if (!empty($user->getRefreshToken())) {
-            $this->userToken->setRefreshToken($userId, $clientId, $user->getRefreshToken(), $context);
+        if ($tokenPair = $user->getTokenPair()) {
+            if (!empty($tokenPair->getRefreshToken())) {
+                $this->userToken->setRefreshToken($userId, $clientId, $tokenPair->getRefreshToken(), $context);
+            }
 
-            if (!empty($user->getAccessToken())) {
-                $this->userToken->setAccessToken($userId, $clientId, $user->getAccessToken(), $context);
+            if (!empty($tokenPair->getAccessToken())) {
+                $this->userToken->setAccessToken($userId, $clientId, $tokenPair->getAccessToken(), $context);
             }
         }
 

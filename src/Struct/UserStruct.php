@@ -27,14 +27,9 @@ class UserStruct extends Struct
     protected $primaryKey;
 
     /**
-     * @var string|null
+     * @var TokenPairStruct|null
      */
-    protected $accessToken;
-
-    /**
-     * @var string|null
-     */
-    protected $refreshToken;
+    protected $tokenPair;
 
     public function getPrimaryEmail(): string
     {
@@ -84,26 +79,14 @@ class UserStruct extends Struct
         return $this;
     }
 
-    public function getAccessToken(): ?string
+    public function getTokenPair(): ?TokenPairStruct
     {
-        return $this->accessToken;
+        return $this->tokenPair;
     }
 
-    public function setAccessToken(?string $accessToken): self
+    public function setTokenPair(?TokenPairStruct $tokenPair): self
     {
-        $this->accessToken = $accessToken;
-
-        return $this;
-    }
-
-    public function getRefreshToken(): ?string
-    {
-        return $this->refreshToken;
-    }
-
-    public function setRefreshToken(?string $refreshToken): self
-    {
-        $this->refreshToken = $refreshToken;
+        $this->tokenPair = $tokenPair;
 
         return $this;
     }
