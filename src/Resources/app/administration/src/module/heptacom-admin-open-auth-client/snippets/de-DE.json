@@ -1,0 +1,21 @@
+{
+    "heptacom-admin-open-auth-client": {
+        "module": {
+            "description": "Erlaubt die Anmeldung über OAuth Anbieter",
+            "name": "HEPTACOM Open Authentication Login",
+            "title": "OAuth Anmeldung"
+        },
+        "pages": {
+            "listing": {
+                "actions": {
+                    "refresh": "Neuladen"
+                },
+                "columns": {
+                    "createdAt": "Erstellt",
+                    "name": "Name",
+                    "provider": "Anbieter"
+                }
+            }
+        }
+    }
+}

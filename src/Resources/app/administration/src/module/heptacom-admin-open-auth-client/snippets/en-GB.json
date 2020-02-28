@@ -1,0 +1,21 @@
+{
+    "heptacom-admin-open-auth-client": {
+        "module": {
+            "description": "Allow OAuth providers to provide admin logins",
+            "name": "HEPTACOM Open Authentication Login",
+            "title": "OAuth Login"
+        },
+        "pages": {
+            "listing": {
+                "actions": {
+                    "refresh": "Refresh"
+                },
+                "columns": {
+                    "createdAt": "Created",
+                    "name": "Name",
+                    "provider": "Provider"
+                }
+            }
+        }
+    }
+}
