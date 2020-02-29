@@ -1,0 +1,47 @@
+{% block sw_profile_index_content %}
+    {% parent %}
+
+    {% block sw_profile_index_heptacom_admin_open_auth_card %}
+        <sw-card
+            :title="$tc('sw-profile-index.titleHeptacomAdminOpenAuthCard')"
+            :isLoading="isUserLoading"
+            class="sw-profile__card sw-card--grid"
+        >
+            {% block sw_profile_index_heptacom_admin_open_auth_card_clients %}
+                <template>
+                    {% block sw_profile_index_heptacom_admin_open_auth_card_clients_cards %}
+                        <sw-container rows="1fr 1fr">
+                            <sw-card-section
+                                v-for="client of heptacomAdminOpenAuthClients"
+                                :key="client.id"
+                                divider="bottom"
+                            >
+                                {% block sw_profile_index_heptacom_admin_open_auth_card_clients_cards_item %}
+                                    <sw-container columns="1fr auto">
+                                        {% block sw_profile_index_heptacom_admin_open_auth_card_clients_cards_item_provider %}
+                                            <div>
+                                                {{ $te('heptacomAdminOpenAuthClient.providers.' + client.provider)
+                                                    ? $t('heptacomAdminOpenAuthClient.providers.' + client.provider)
+                                                    : client.provider }}
+                                            </div>
+                                        {% endblock %}
+
+                                        {% block sw_profile_index_heptacom_admin_open_auth_card_clients_cards_item_action %}
+                                            <sw-button
+                                                v-if="client.userKeys.length > 0"
+                                                @click="revokeHeptacomAdminOpenAuthUserKey(client)"
+                                                icon="default-basic-x-line"
+                                            >
+                                                {{ $t('sw-profile-index.heptacomAdminOpenAuth.userKeys.actions.revoke') }}
+                                            </sw-button>
+                                        {% endblock %}
+                                    </sw-container>
+                                {% endblock %}
+                            </sw-card-section>
+                        </sw-container>
+                    {% endblock %}
+                </template>
+            {% endblock %}
+        </sw-card>
+    {% endblock %}
+{% endblock %}
