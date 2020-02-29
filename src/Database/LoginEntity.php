@@ -26,11 +26,6 @@ class LoginEntity extends Entity
     protected $userId;
 
     /**
-     * @var string|null
-     */
-    protected $password;
-
-    /**
      * @var ClientEntity|null
      */
     protected $client;
@@ -72,18 +67,6 @@ class LoginEntity extends Entity
     public function setUserId(?string $userId): self
     {
         $this->userId = $userId;
-
-        return $this;
-    }
-
-    public function getPassword(): ?string
-    {
-        return $this->password;
-    }
-
-    public function setPassword(?string $password): self
-    {
-        $this->password = $password;
 
         return $this;
     }

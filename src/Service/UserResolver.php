@@ -66,24 +66,19 @@ class UserResolver implements UserResolverInterface
     public function resolve(UserStruct $user, string $state, string $clientId, Context $context): void
     {
         $userId = $this->findUserId($user, $clientId, $context);
-        $password = Random::getAlphanumericString(254);
 
-        if ($userId !== null) {
-            $this->updatePassword($userId, $password, $context);
-            $this->postUpdates($user, $userId, $password, $state, $clientId, $context);
-
-            return;
+        if ($userId === null) {
+            $password = Random::getAlphanumericString(254);
+            $this->userProvisioner->provision($user->getPrimaryEmail(), $password, ['email' => $user->getPrimaryEmail()]);
+            $userId = $this->findUserId($user, $clientId, $context);
         }
 
-        $this->userProvisioner->provision($user->getPrimaryEmail(), $password, ['email' => $user->getPrimaryEmail()]);
-        $userId = $this->findUserId($user, $clientId, $context);
-        $this->postUpdates($user, $userId, $password, $state, $clientId, $context);
+        $this->postUpdates($user, $userId, $state, $clientId, $context);
     }
 
     protected function postUpdates(
         UserStruct $user,
         string $userId,
-        string $password,
         string $state,
         string $clientId,
         Context $context
@@ -105,7 +100,7 @@ class UserResolver implements UserResolverInterface
             $this->userEmail->add($userId, $email, $clientId, $context);
         }
 
-        $this->login->setCredentials($state, $userId, $password, $context);
+        $this->login->setCredentials($state, $userId, $context);
     }
 
     protected function findUserId(UserStruct $user, string $clientId, Context $context): ?string
@@ -125,13 +120,5 @@ class UserResolver implements UserResolverInterface
         $criteria->addFilter(new EqualsAnyFilter('email', $emails));
 
         return $this->userRepository->searchIds($criteria, $context)->firstId();
-    }
-
-    private function updatePassword(string $userId, string $password, Context $context): void
-    {
-        $this->userRepository->update([[
-            'id' => $userId,
-            'password' => password_hash($password, PASSWORD_BCRYPT),
-        ]], $context);
     }
 }

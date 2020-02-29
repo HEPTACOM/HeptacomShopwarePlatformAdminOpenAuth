@@ -35,7 +35,7 @@ class Login implements LoginInterface
         return $id;
     }
 
-    public function setCredentials(string $state, string $userId, string $password, Context $context): bool
+    public function setCredentials(string $state, string $userId, Context $context): bool
     {
         $criteria = new Criteria();
         $criteria->addFilter(new EqualsFilter('state', $state));
@@ -45,7 +45,6 @@ class Login implements LoginInterface
         foreach ($ids->getIds() as $id) {
             $update[] = [
                 'id' => $id,
-                'password' => $password,
                 'userId' => $userId,
             ];
         }
