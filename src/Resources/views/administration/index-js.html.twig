@@ -39,17 +39,25 @@
     const match = window.location.search ? window.location.search.match(/[?&]state=([^&]+?)(&|$)/) : null;
 
     if (match && match.length > 2) {
-        fetch(credentialsRoutes + '?state=' + match[1])
-            .then(function (response) {
-                return response.json();
-            })
-            .then(function (data) {
-                Shopware.Service()
-                    .get('loginService')
-                    .loginByUsername(data.username, data.password)
-                    .then(function () {
-                        window.location = window.location.origin + window.location.pathname;
-                    });
+        const loginService = Shopware.Service().get('loginService');
+        const httpClient = Shopware.Service().get('userService').client;
+        const token = match[1];
+
+        httpClient.post('/oauth/token', {
+            grant_type: 'heptacom_admin_open_auth_one_time_token',
+            client_id: 'administration',
+            scopes: 'write',
+            one_time_token: token
+        }, {
+            baseURL: Shopware.Context.api.apiPath
+        }).then((response) => {
+            loginService.setBearerAuthentication({
+                access: response.data.access_token,
+                refresh: response.data.refresh_token,
+                expiry: response.data.expires_in
             });
+
+            window.location = window.location.origin + window.location.pathname;
+        });
     }
 </script>

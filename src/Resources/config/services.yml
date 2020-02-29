@@ -13,6 +13,9 @@ services:
         Heptacom\AdminOpenAuth\Contract\ProviderInterface:
             tags:
                 - 'heptacom_admin_open_auth.client_provider'
+        Symfony\Component\EventDispatcher\EventSubscriberInterface:
+            tags:
+                - 'kernel.event_subscriber'
 
     Heptacom\AdminOpenAuth\:
         resource: '../../*'
@@ -21,6 +24,7 @@ services:
             - '../../Database/*Entity.php'
             - '../../Exception/*'
             - '../../Migration/*'
+            - '../../OpenAuth/*'
             - '../../Provider/*Client.php'
             - '../../Resources/*'
 
@@ -39,6 +43,17 @@ services:
     Heptacom\AdminOpenAuth\Database\UserTokenDefinition:
         tags:
             - { name: shopware.entity.definition , entity: 'heptacom_admin_open_auth_user_token' }
+
+    Heptacom\AdminOpenAuth\OpenAuth\OneTimeTokenClientRepository:
+        decorates: Shopware\Core\Framework\Api\OAuth\ClientRepository
+        arguments:
+            - '@Heptacom\AdminOpenAuth\OpenAuth\OneTimeTokenClientRepository.inner'
+
+    Heptacom\AdminOpenAuth\Subscriber\ApiAuthentication:
+        arguments:
+            - '@shopware.api.authorization_server'
+            - '@Shopware\Core\Framework\Api\OAuth\UserRepository'
+            - '@Shopware\Core\Framework\Api\OAuth\RefreshTokenRepository'
 
     Heptacom\AdminOpenAuth\Service\ClientLoader:
         arguments:
