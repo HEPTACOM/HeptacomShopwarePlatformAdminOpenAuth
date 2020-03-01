@@ -23,12 +23,13 @@ class Login implements LoginInterface
         $this->loginsRepository = $loginsRepository;
     }
 
-    public function initiate(string $clientId, string $state, Context $context): string
+    public function initiate(string $clientId, ?string $userId, string $state, Context $context): string
     {
         $id = Uuid::randomHex();
         $this->loginsRepository->create([[
             'id' => $id,
             'clientId' => $clientId,
+            'userId' => $userId,
             'state' => $state,
         ]], $context);
 

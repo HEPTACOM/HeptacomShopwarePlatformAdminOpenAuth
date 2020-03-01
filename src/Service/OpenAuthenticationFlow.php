@@ -58,7 +58,7 @@ class OpenAuthenticationFlow implements OpenAuthenticationFlowInterface
     public function getRedirectUrl(string $clientId, Context $context): string
     {
         $state = Uuid::randomHex();
-        $this->login->initiate($clientId, $state, $context);
+        $this->login->initiate($clientId, null, $state, $context);
 
         return $this->clientLoader->load($clientId, $context)->getLoginUrl($state);
     }
