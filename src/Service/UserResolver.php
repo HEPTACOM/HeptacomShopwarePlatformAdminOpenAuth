@@ -65,7 +65,7 @@ class UserResolver implements UserResolverInterface
 
     public function resolve(UserStruct $user, string $state, string $clientId, Context $context): void
     {
-        $userId = $this->findUserId($user, $clientId, $context);
+        $userId = $this->login->getUser($state, $context) ?? $this->findUserId($user, $clientId, $context);
 
         if ($userId === null) {
             $password = Random::getAlphanumericString(254);
