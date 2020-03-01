@@ -3,6 +3,7 @@
 namespace Heptacom\AdminOpenAuth\Controller;
 
 use Heptacom\AdminOpenAuth\Contract\OpenAuthenticationFlowInterface;
+use Shopware\Core\Framework\Api\Context\AdminApiSource;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\Routing\Annotation\RouteScope;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -78,5 +79,22 @@ class AdministrationController extends AbstractController
     public function clientRoutes(Context $context): JsonResponse
     {
         return JsonResponse::create(['clients' => $this->flow->getLoginRoutes($context)]);
+    }
+
+    /**
+     * @Route(
+     *     methods={"GET"},
+     *     name="api.heptacom.admin_open_auth.remote_connect",
+     *     path="/api/v{version}/_admin/open-auth/{clientId}/connect"
+     * )
+     */
+    public function remoteConnect(string $clientId, Context $context): Response
+    {
+        /** @var AdminApiSource $adminApiSource */
+        $adminApiSource = $context->getSource();
+
+        return JsonResponse::create([
+            'target' => $this->flow->getRedirectUrlToConnect($clientId, $adminApiSource->getUserId(), $context),
+        ]);
     }
 }

@@ -63,6 +63,14 @@ class OpenAuthenticationFlow implements OpenAuthenticationFlowInterface
         return $this->clientLoader->load($clientId, $context)->getLoginUrl($state);
     }
 
+    public function getRedirectUrlToConnect(string $clientId, string $userId, Context $context): string
+    {
+        $state = Uuid::randomHex();
+        $this->login->initiate($clientId, $userId, $state, $context);
+
+        return $this->clientLoader->load($clientId, $context)->getLoginUrl($state);
+    }
+
     public function upsertUser(string $clientId, string $state, string $code, Context $context): void
     {
         $user = $this->clientLoader->load($clientId, $context)->getUser($state, $code);
