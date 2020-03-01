@@ -8,6 +8,7 @@
                     "createdAt": "Connected at"
                 },
                 "actions": {
+                    "connect": "Connect",
                     "revoke": "Disconnect"
                 }
             }

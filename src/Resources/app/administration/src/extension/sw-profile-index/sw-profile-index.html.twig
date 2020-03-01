@@ -34,6 +34,13 @@
                                             >
                                                 {{ $t('sw-profile-index.heptacomAdminOpenAuth.userKeys.actions.revoke') }}
                                             </sw-button>
+                                            <sw-button
+                                                v-else
+                                                @click="redirectToLoginMask(client.id)"
+                                                icon="default-basic-x-line"
+                                            >
+                                                {{ $t('sw-profile-index.heptacomAdminOpenAuth.userKeys.actions.connect') }}
+                                            </sw-button>
                                         {% endblock %}
                                     </sw-container>
                                 {% endblock %}

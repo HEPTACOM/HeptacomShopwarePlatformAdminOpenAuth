@@ -64,6 +64,15 @@ Component.override('sw-profile-index', {
                 .then(() => this.loadHeptacomAdminOpenAuth(this.user.id));
         },
 
+        redirectToLoginMask(clientId) {
+            this.heptacomAdminOpenAuthClientsRepository
+                .httpClient
+                .get(`/_admin/open-auth/${clientId}/connect`)
+                .then(response => {
+                    window.location.href = response.data.target;
+                });
+        },
+
         getUserData() {
             return this.$super('getUserData').then(user => {
                 return this.loadHeptacomAdminOpenAuth(user.id).then(() => user);

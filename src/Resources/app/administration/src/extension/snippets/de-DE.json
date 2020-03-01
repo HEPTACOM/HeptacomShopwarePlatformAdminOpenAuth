@@ -8,6 +8,7 @@
                     "createdAt": "Verbunden am"
                 },
                 "actions": {
+                    "connect": "Verbinden",
                     "revoke": "Verbindung trennen"
                 }
             }
