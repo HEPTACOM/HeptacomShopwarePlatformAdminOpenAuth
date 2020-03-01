@@ -3,6 +3,7 @@
 namespace Heptacom\AdminOpenAuth\Database;
 
 use Shopware\Core\Framework\DataAbstractionLayer\EntityDefinition;
+use Shopware\Core\Framework\DataAbstractionLayer\Field\BoolField;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\CreatedAtField;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\Flag\PrimaryKey;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\Flag\Required;
@@ -38,6 +39,9 @@ class ClientDefinition extends EntityDefinition
             (new IdField('id', 'id'))->addFlags(new PrimaryKey(), new Required()),
             (new StringField('name', 'name'))->addFlags(new Required()),
             (new StringField('provider', 'provider'))->addFlags(new Required()),
+            (new BoolField('active', 'active'))->addFlags(new Required()),
+            (new BoolField('login', 'login'))->addFlags(new Required()),
+            (new BoolField('connect', 'connect'))->addFlags(new Required()),
             (new JsonField('config', 'config', [], []))->addFlags(new Required()),
             new CreatedAtField(),
             new UpdatedAtField(),

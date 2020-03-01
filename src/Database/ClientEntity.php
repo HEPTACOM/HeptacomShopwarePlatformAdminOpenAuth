@@ -20,6 +20,21 @@ class ClientEntity extends Entity
     protected $provider;
 
     /**
+     * @var bool|null
+     */
+    protected $active;
+
+    /**
+     * @var bool|null
+     */
+    protected $login;
+
+    /**
+     * @var bool|null
+     */
+    protected $connect;
+
+    /**
      * @var array|null
      */
     protected $config;
@@ -64,6 +79,42 @@ class ClientEntity extends Entity
     public function setProvider(?string $provider): self
     {
         $this->provider = $provider;
+
+        return $this;
+    }
+
+    public function getActive(): ?bool
+    {
+        return $this->active;
+    }
+
+    public function setActive(?bool $active): self
+    {
+        $this->active = $active;
+
+        return $this;
+    }
+
+    public function getLogin(): ?bool
+    {
+        return $this->login;
+    }
+
+    public function setLogin(?bool $login): self
+    {
+        $this->login = $login;
+
+        return $this;
+    }
+
+    public function getConnect(): ?bool
+    {
+        return $this->connect;
+    }
+
+    public function setConnect(?bool $connect): self
+    {
+        $this->connect = $connect;
 
         return $this;
     }

@@ -1,5 +1,6 @@
 # Changelog
 
+* Add flags to enable clients for logging in and connecting
 * Add connect button in administration user profile
 * Add configuration in administration
 * Add option to revoke connections in personal user profile
