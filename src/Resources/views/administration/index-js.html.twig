@@ -6,7 +6,6 @@
 </style>
 <script>
     const clientRoutes = {{ url('administration.heptacom.admin_open_auth.routes')|json_encode|raw }};
-    const credentialsRoutes = {{ url('administration.heptacom.admin_open_auth.credentials')|json_encode|raw }};
 
     const waitForLoginForm = function() {
         if (!document.querySelector('.sw-login')) {

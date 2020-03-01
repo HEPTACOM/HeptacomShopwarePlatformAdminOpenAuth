@@ -70,22 +70,6 @@ class AdministrationController extends AbstractController
     /**
      * @Route(
      *     methods={"GET"},
-     *     name="administration.heptacom.admin_open_auth.credentials",
-     *     path="/admin/open-auth/credentials",
-     *     defaults={"auth_required" = false}
-     * )
-     */
-    public function getCredentials(Request $request, Context $context): JsonResponse
-    {
-        $state = $request->get('state');
-        $login = $this->flow->popCredentials($state, $context);
-
-        return JsonResponse::create($login, empty($login) ? Response::HTTP_NOT_FOUND : Response::HTTP_OK);
-    }
-
-    /**
-     * @Route(
-     *     methods={"GET"},
      *     name="administration.heptacom.admin_open_auth.routes",
      *     path="/admin/open-auth/routes",
      *     defaults={"auth_required" = false}

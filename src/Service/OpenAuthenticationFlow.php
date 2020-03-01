@@ -7,7 +7,6 @@ use Heptacom\AdminOpenAuth\Contract\LoginInterface;
 use Heptacom\AdminOpenAuth\Contract\OpenAuthenticationFlowInterface;
 use Heptacom\AdminOpenAuth\Contract\UserResolverInterface;
 use Heptacom\AdminOpenAuth\Database\ClientEntity;
-use Heptacom\AdminOpenAuth\Database\LoginEntity;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
@@ -68,20 +67,6 @@ class OpenAuthenticationFlow implements OpenAuthenticationFlowInterface
     {
         $user = $this->clientLoader->load($clientId, $context)->getUser($state, $code);
         $this->userResolver->resolve($user, $state, $clientId, $context);
-    }
-
-    public function popCredentials(string $state, Context $context): ?array
-    {
-        $login = $this->login->pop($state, $context);
-
-        if (!$login instanceof LoginEntity) {
-            return null;
-        }
-
-        return [
-            'username' => $login->getUser()->getUsername(),
-            'password' => $login->getPassword(),
-        ];
     }
 
     public function getLoginRoutes(Context $context): array

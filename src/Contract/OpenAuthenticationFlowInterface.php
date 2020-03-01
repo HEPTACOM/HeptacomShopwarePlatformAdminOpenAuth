@@ -17,7 +17,5 @@ interface OpenAuthenticationFlowInterface
      */
     public function upsertUser(string $clientId, string $state, string $code, Context $context): void;
 
-    public function popCredentials(string $state, Context $context): ?array;
-
     public function getLoginRoutes(Context $context): array;
 }
