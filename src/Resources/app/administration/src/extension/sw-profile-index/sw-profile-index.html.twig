@@ -10,7 +10,7 @@
             {% block sw_profile_index_heptacom_admin_open_auth_card_clients %}
                 <template>
                     {% block sw_profile_index_heptacom_admin_open_auth_card_clients_cards %}
-                        <sw-container rows="1fr 1fr">
+                        <sw-container rows="1fr">
                             <sw-card-section
                                 v-for="client of heptacomAdminOpenAuthClients"
                                 :key="client.id"
@@ -35,7 +35,7 @@
                                                 {{ $t('sw-profile-index.heptacomAdminOpenAuth.userKeys.actions.revoke') }}
                                             </sw-button>
                                             <sw-button
-                                                v-else
+                                                v-else-if="client.active && client.connect"
                                                 @click="redirectToLoginMask(client.id)"
                                                 icon="default-basic-x-line"
                                             >

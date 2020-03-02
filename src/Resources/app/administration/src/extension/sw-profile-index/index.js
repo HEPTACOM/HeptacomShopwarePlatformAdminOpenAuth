@@ -44,7 +44,9 @@ Component.override('sw-profile-index', {
             return this.heptacomAdminOpenAuthClientsRepository
                 .search(criteria, Context.api)
                 .then(result => {
-                    this.heptacomAdminOpenAuthClients = result;
+                    this.heptacomAdminOpenAuthClients = result.filter(client =>
+                        (client.active && client.connect) || client.userKeys.length > 0
+                    );
                     this.heptacomAdminOpenAuthLoading = false;
                 });
         },
