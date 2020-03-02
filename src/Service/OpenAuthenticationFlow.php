@@ -90,8 +90,14 @@ class OpenAuthenticationFlow implements OpenAuthenticationFlowInterface
 
     public function getLoginRoutes(Context $context): array
     {
+        $criteria = new Criteria();
+        $criteria->addFilter(
+            new EqualsFilter('active', true),
+            new EqualsFilter('login', true)
+        );
+
         return array_values($this->clientsRepository
-            ->search(new Criteria(), $context)
+            ->search($criteria, $context)
             ->getEntities()
             ->map(function (ClientEntity $client): array {
                 return [
