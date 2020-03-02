@@ -7,9 +7,12 @@ use Heptacom\AdminOpenAuth\Contract\LoginInterface;
 use Heptacom\AdminOpenAuth\Contract\OpenAuthenticationFlowInterface;
 use Heptacom\AdminOpenAuth\Contract\UserResolverInterface;
 use Heptacom\AdminOpenAuth\Database\ClientEntity;
+use Heptacom\AdminOpenAuth\Database\LoginEntity;
+use Heptacom\AdminOpenAuth\Exception\LoadClientException;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
+use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
 use Shopware\Core\Framework\Uuid\Uuid;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
@@ -57,6 +60,10 @@ class OpenAuthenticationFlow implements OpenAuthenticationFlowInterface
 
     public function getRedirectUrl(string $clientId, Context $context): string
     {
+        if ($this->clientLoader->canLogin($clientId, $context)) {
+            throw new LoadClientException('Client can not login', $clientId);
+        }
+
         $state = Uuid::randomHex();
         $this->login->initiate($clientId, null, $state, $context);
 
@@ -65,6 +72,10 @@ class OpenAuthenticationFlow implements OpenAuthenticationFlowInterface
 
     public function getRedirectUrlToConnect(string $clientId, string $userId, Context $context): string
     {
+        if ($this->clientLoader->canConnect($clientId, $context)) {
+            throw new LoadClientException('Client can not connect', $clientId);
+        }
+
         $state = Uuid::randomHex();
         $this->login->initiate($clientId, $userId, $state, $context);
 

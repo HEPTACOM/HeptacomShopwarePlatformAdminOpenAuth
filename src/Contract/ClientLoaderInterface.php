@@ -11,4 +11,8 @@ interface ClientLoaderInterface
      * @throws LoadClientException
      */
     public function load(string $clientId, Context $context): ClientInterface;
+
+    public function canLogin(string $clientId, Context $context): bool;
+
+    public function canConnect(string $clientId, Context $context): bool;
 }
