@@ -9,6 +9,8 @@ interface ProviderInterface
 {
     public function provides(): string;
 
+    public function initializeClientConfiguration(string $clientId, Context $context): void;
+
     /**
      * @throws ProvideClientException
      */

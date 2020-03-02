@@ -7,6 +7,9 @@ use Heptacom\AdminOpenAuth\Contract\ProviderInterface;
 use Heptacom\AdminOpenAuth\Contract\TokenPairFactoryInterface;
 use Heptacom\AdminOpenAuth\Exception\ProvideClientInvalidConfigurationException;
 use Shopware\Core\Framework\Context;
+use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\RouterInterface;
 
 class JiraProvider implements ProviderInterface
 {
@@ -15,14 +18,48 @@ class JiraProvider implements ProviderInterface
      */
     private $tokenPairFactory;
 
-    public function __construct(TokenPairFactoryInterface $tokenPairFactory)
-    {
+    /**
+     * @var EntityRepositoryInterface
+     */
+    private $clientsRepository;
+
+    /**
+     * @var RouterInterface
+     */
+    private $router;
+
+    public function __construct(
+        TokenPairFactoryInterface $tokenPairFactory,
+        EntityRepositoryInterface $clientsRepository,
+        RouterInterface $router
+    ) {
         $this->tokenPairFactory = $tokenPairFactory;
+        $this->clientsRepository = $clientsRepository;
+        $this->router = $router;
     }
 
     public function provides(): string
     {
         return 'jira';
+    }
+
+    public function initializeClientConfiguration(string $clientId, Context $context): void
+    {
+        $this->clientsRepository->update([[
+            'id' => $clientId,
+            'config' => [
+                'appId' => '',
+                'appSecret' => '',
+                'redirectUri' => $this->router->generate('administration.heptacom.admin_open_auth.login', [
+                    'clientId' => $clientId,
+                ], UrlGeneratorInterface::ABSOLUTE_URL),
+                'storeToken' => true,
+            ],
+            'active' => false,
+            'login' => true,
+            'connect' => true,
+            'provider' => 'jira',
+        ]], $context);
     }
 
     public function provideClient(string $clientId, array $config, Context $context): ClientInterface
