@@ -3,6 +3,7 @@
 namespace Heptacom\AdminOpenAuth\Controller;
 
 use Heptacom\AdminOpenAuth\Contract\OpenAuthenticationFlowInterface;
+use Heptacom\AdminOpenAuth\Contract\ProviderRepositoryInterface;
 use Shopware\Core\Framework\Api\Context\AdminApiSource;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\Routing\Annotation\RouteScope;
@@ -95,6 +96,20 @@ class AdministrationController extends AbstractController
 
         return JsonResponse::create([
             'target' => $this->flow->getRedirectUrlToConnect($clientId, $adminApiSource->getUserId(), $context),
+        ]);
+    }
+
+    /**
+     * @Route(
+     *     methods={"GET"},
+     *     name="api.heptacom.admin_open_auth.provider.list",
+     *     path="/api/v{version}/_action/heptacom_admin_open_auth_provider/list"
+     * )
+     */
+    public function providerList(ProviderRepositoryInterface $providerRepository): Response
+    {
+        return JsonResponse::create([
+            'data' => $providerRepository->getProviderKeys(),
         ]);
     }
 }

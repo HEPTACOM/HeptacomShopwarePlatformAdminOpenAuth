@@ -1,5 +1,6 @@
 import './extension/sw-profile-index';
 import './module/heptacom-admin-open-auth-client';
+import './init/services.init';
 import globalSnippets from './snippets';
 import extensionSnippets from './extension/snippets';
 
