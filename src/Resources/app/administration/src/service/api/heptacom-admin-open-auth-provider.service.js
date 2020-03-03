@@ -13,6 +13,14 @@ class HeptacomAdminOpenAuthProviderApiService extends ApiService {
             .get(`_action/${this.getApiBasePath()}/list`, { headers })
             .then(response => ApiService.handleResponse(response));
     }
+
+    factorize(providerKey) {
+        const headers = this.getBasicHeaders();
+
+        return this.httpClient
+            .post(`_action/${this.getApiBasePath()}/factorize`, { provider_key: providerKey }, { headers })
+            .then(response => ApiService.handleResponse(response));
+    }
 }
 
 export default HeptacomAdminOpenAuthProviderApiService;

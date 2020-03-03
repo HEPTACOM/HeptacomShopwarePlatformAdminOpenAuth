@@ -14,7 +14,7 @@ use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
-use Traversable;
+use Shopware\Core\Framework\Uuid\Uuid;
 
 class ClientLoader implements ClientLoaderInterface
 {
@@ -74,5 +74,26 @@ class ClientLoader implements ClientLoaderInterface
         );
 
         return $this->clientsRepository->searchIds($criteria, $context)->firstId() !== null;
+    }
+
+    public function create(string $providerKey, Context $context): string
+    {
+        $id = Uuid::randomHex();
+
+        $this->clientsRepository->create([[
+            'id' => $id,
+            'name' => $providerKey,
+            'provider' => $providerKey,
+            'active' => false,
+            'login' => false,
+            'connect' => false,
+            'config' => [],
+        ]], $context);
+
+        foreach ($this->providers->getMatchingProviders($providerKey) as $provider) {
+            $provider->initializeClientConfiguration($id, $context);
+        }
+
+        return $id;
     }
 }

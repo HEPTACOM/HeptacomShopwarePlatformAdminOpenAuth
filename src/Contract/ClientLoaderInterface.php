@@ -15,4 +15,6 @@ interface ClientLoaderInterface
     public function canLogin(string $clientId, Context $context): bool;
 
     public function canConnect(string $clientId, Context $context): bool;
+
+    public function create(string $providerKey, Context $context): string;
 }
