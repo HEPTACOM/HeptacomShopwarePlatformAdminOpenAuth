@@ -59,7 +59,7 @@ services:
             - '@Shopware\Core\Framework\Api\OAuth\UserRepository'
             - '@Shopware\Core\Framework\Api\OAuth\RefreshTokenRepository'
 
-    Heptacom\AdminOpenAuth\Service\ClientLoader:
+    Heptacom\AdminOpenAuth\Service\ProviderRepository:
         arguments:
             - !tagged_iterator heptacom_admin_open_auth.client_provider
     Heptacom\AdminOpenAuth\Service\UserResolver:

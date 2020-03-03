@@ -4,7 +4,7 @@ namespace Heptacom\AdminOpenAuth\Service;
 
 use Heptacom\AdminOpenAuth\Contract\ClientInterface;
 use Heptacom\AdminOpenAuth\Contract\ClientLoaderInterface;
-use Heptacom\AdminOpenAuth\Contract\ProviderInterface;
+use Heptacom\AdminOpenAuth\Contract\ProviderRepositoryInterface;
 use Heptacom\AdminOpenAuth\Database\ClientCollection;
 use Heptacom\AdminOpenAuth\Exception\LoadClientClientNotFoundException;
 use Heptacom\AdminOpenAuth\Exception\LoadClientException;
@@ -19,7 +19,7 @@ use Traversable;
 class ClientLoader implements ClientLoaderInterface
 {
     /**
-     * @var ProviderInterface[]
+     * @var ProviderRepositoryInterface
      */
     private $providers;
 
@@ -28,12 +28,9 @@ class ClientLoader implements ClientLoaderInterface
      */
     private $clientsRepository;
 
-    /**
-     * @param iterable|Traversable|ProviderInterface[] $providers
-     */
-    public function __construct(Traversable $providers, EntityRepositoryInterface $clientsRepository)
+    public function __construct(ProviderRepositoryInterface $providers, EntityRepositoryInterface $clientsRepository)
     {
-        $this->providers = iterator_to_array($providers);
+        $this->providers = $providers;
         $this->clientsRepository = $clientsRepository;
     }
 
@@ -46,13 +43,11 @@ class ClientLoader implements ClientLoaderInterface
             throw new LoadClientClientNotFoundException($clientId);
         }
 
-        foreach ($this->providers as $provider) {
-            if ($provider->provides() === $searchResult->first()->getProvider()) {
-                try {
-                    return $provider->provideClient($clientId, $searchResult->first()->getConfig() ?? [], $context);
-                } catch (ProvideClientException $e) {
-                    throw new LoadClientException($e->getMessage(), $clientId, $e);
-                }
+        foreach ($this->providers->getMatchingProviders($searchResult->first()->getProvider()) as $provider) {
+            try {
+                return $provider->provideClient($clientId, $searchResult->first()->getConfig() ?? [], $context);
+            } catch (ProvideClientException $e) {
+                throw new LoadClientException($e->getMessage(), $clientId, $e);
             }
         }
 
