@@ -1,3 +1,4 @@
+import './page/create';
 import './page/listing';
 import snippets from './snippets';
 
@@ -13,6 +14,10 @@ Module.register('heptacom-admin-open-auth-client', {
     snippets,
 
     routes: {
+        create: {
+            component: 'heptacom-admin-open-auth-client-create-page',
+            path: 'create'
+        },
         settings: {
             component: 'heptacom-admin-open-auth-client-listing-page',
             path: 'settings'

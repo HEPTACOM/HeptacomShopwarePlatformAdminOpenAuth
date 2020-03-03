@@ -6,8 +6,14 @@
             "title": "OAuth Login"
         },
         "pages": {
+            "create": {
+                "actions": {
+                    "create": "Choose"
+                }
+            },
             "listing": {
                 "actions": {
+                    "create": "Create",
                     "refresh": "Refresh"
                 },
                 "columns": {
