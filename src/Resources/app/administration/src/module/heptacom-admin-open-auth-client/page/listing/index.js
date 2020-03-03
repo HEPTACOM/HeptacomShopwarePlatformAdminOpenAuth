@@ -20,7 +20,8 @@ Component.register('heptacom-admin-open-auth-client-listing-page', {
             items: null,
             columns: [{
                 property: 'name',
-                label: this.$t('heptacom-admin-open-auth-client.pages.listing.columns.name')
+                label: this.$t('heptacom-admin-open-auth-client.pages.listing.columns.name'),
+                routerLink: 'heptacom.admin.open.auth.client.edit'
             }, {
                 property: 'provider',
                 label: this.$t('heptacom-admin-open-auth-client.pages.listing.columns.provider')
@@ -71,7 +72,7 @@ Component.register('heptacom-admin-open-auth-client-listing-page', {
         },
 
         loadClients() {
-            this.items = [];
+            this.items = null;
 
             return this.clientRepository
                 .search(this.clientCriteria, Context.api)

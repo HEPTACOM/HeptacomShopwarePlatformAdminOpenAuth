@@ -55,7 +55,11 @@ Component.register('heptacom-admin-open-auth-client-create-page', {
         },
 
         createClient(provider) {
-            return this.HeptacomAdminOpenAuthProviderApiService.factorize(provider.key);
+            return this.HeptacomAdminOpenAuthProviderApiService
+                .factorize(provider.key)
+                .then(response => {
+                    this.$router.push({ name: 'heptacom.admin.open.auth.client.edit', params: { id: response.data.id } });
+                });
         }
     }
 });

@@ -11,6 +11,19 @@
                     "create": "Auswählen"
                 }
             },
+            "edit": {
+                "title": "Anbieter bearbeiter",
+                "actions": {
+                    "save": "Speichern",
+                    "cancel": "Abbrechen"
+                },
+                "fields": {
+                    "name": "Name",
+                    "active": "Aktiv",
+                    "login": "Als Anmeldung verwenden",
+                    "connect": "Zum Verknüpfen verwenden"
+                }
+            },
             "listing": {
                 "actions": {
                     "create": "Erstellen",

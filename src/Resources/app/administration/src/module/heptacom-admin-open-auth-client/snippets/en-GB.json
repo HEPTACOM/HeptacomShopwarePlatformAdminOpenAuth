@@ -11,6 +11,19 @@
                     "create": "Choose"
                 }
             },
+            "edit": {
+                "title": "Edit provider",
+                "actions": {
+                    "save": "Save",
+                    "cancel": "Cancel"
+                },
+                "fields": {
+                    "name": "Name",
+                    "active": "Active",
+                    "login": "Use as login",
+                    "connect": "Use to connect"
+                }
+            },
             "listing": {
                 "actions": {
                     "create": "Create",

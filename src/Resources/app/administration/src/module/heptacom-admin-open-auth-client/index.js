@@ -1,4 +1,5 @@
 import './page/create';
+import './page/edit';
 import './page/listing';
 import snippets from './snippets';
 
@@ -16,11 +17,31 @@ Module.register('heptacom-admin-open-auth-client', {
     routes: {
         create: {
             component: 'heptacom-admin-open-auth-client-create-page',
-            path: 'create'
+            path: 'create',
+            meta: {
+                parentPath: 'heptacom.admin.open.auth.client.settings'
+            },
+        },
+        edit: {
+            component: 'heptacom-admin-open-auth-client-edit-page',
+            path: 'edit/:id',
+            meta: {
+                parentPath: 'heptacom.admin.open.auth.client.settings'
+            },
+            props: {
+                default(route) {
+                    return {
+                        clientId: route.params.id,
+                    };
+                }
+            }
         },
         settings: {
             component: 'heptacom-admin-open-auth-client-listing-page',
-            path: 'settings'
+            path: 'settings',
+            meta: {
+                parentPath: 'sw.settings.index'
+            }
         },
     },
 
