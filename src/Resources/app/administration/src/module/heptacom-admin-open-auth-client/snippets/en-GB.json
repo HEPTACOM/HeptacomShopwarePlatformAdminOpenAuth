@@ -30,9 +30,11 @@
                     "refresh": "Refresh"
                 },
                 "columns": {
+                    "active": "State",
                     "createdAt": "Created",
                     "name": "Name",
-                    "provider": "Provider"
+                    "provider": "Provider",
+                    "users": "Users"
                 }
             }
         }

@@ -1,3 +1,4 @@
+import './heptacom-admin-open-auth-client-listing-page.scss';
 import template from './heptacom-admin-open-auth-client-listing-page.html.twig';
 
 const { Component, Context, Data, Mixin } = Shopware;
@@ -19,12 +20,21 @@ Component.register('heptacom-admin-open-auth-client-listing-page', {
             isLoading: true,
             items: null,
             columns: [{
+                property: 'active',
+                label: this.$t('heptacom-admin-open-auth-client.pages.listing.columns.active'),
+                allowResize: false,
+                width: '50px'
+            }, {
                 property: 'name',
                 label: this.$t('heptacom-admin-open-auth-client.pages.listing.columns.name'),
                 routerLink: 'heptacom.admin.open.auth.client.edit'
             }, {
                 property: 'provider',
                 label: this.$t('heptacom-admin-open-auth-client.pages.listing.columns.provider')
+            }, {
+                property: 'userKeys.length',
+                label: this.$t('heptacom-admin-open-auth-client.pages.listing.columns.users'),
+                width: '100px'
             }, {
                 property: 'createdAt',
                 label: this.$t('heptacom-admin-open-auth-client.pages.listing.columns.createdAt'),
@@ -46,6 +56,7 @@ Component.register('heptacom-admin-open-auth-client-listing-page', {
             const result = new Criteria();
             const params = this.getListingParams();
 
+            result.addAssociation('userKeys');
             result.setLimit(params.limit);
             result.setPage(params.page);
             result.addSorting(Criteria.sort(params.sortBy || 'name', params.sortDirection || 'ASC'));
@@ -79,6 +90,30 @@ Component.register('heptacom-admin-open-auth-client-listing-page', {
                 .then(items => {
                     this.items = items;
                 });
+        },
+
+        getLoginColor(client) {
+            if (!client.active) {
+                return '#333333';
+            }
+
+            if (client.login) {
+                return '#00cc00'
+            }
+
+            return '#cc0000';
+        },
+
+        getConnectColor(client) {
+            if (!client.active) {
+                return '#333333';
+            }
+
+            if (client.connect) {
+                return '#00cc00'
+            }
+
+            return '#cc0000';
         }
     }
 });
