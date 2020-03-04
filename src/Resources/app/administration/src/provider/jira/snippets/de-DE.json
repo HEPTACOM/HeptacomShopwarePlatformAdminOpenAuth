@@ -1,0 +1,14 @@
+{
+    "heptacomAdminOpenAuthClient": {
+        "providers": {
+            "jira": "Atlassian Jira"
+        },
+        "providerFields": {
+            "jira": {
+                "redirectUri": "Rücksende-URL",
+                "appId": "Anwendungsschlüssel",
+                "appSecret": "Anwendungsgehemnis"
+            }
+        }
+    }
+}
