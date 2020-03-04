@@ -48,6 +48,10 @@ services:
         decorates: Shopware\Core\Framework\Api\OAuth\ClientRepository
         arguments:
             - '@Heptacom\AdminOpenAuth\OpenAuth\OneTimeTokenClientRepository.inner'
+    Heptacom\AdminOpenAuth\OpenAuth\OneTimeTokenScopeRepository:
+        decorates: Shopware\Core\Framework\Api\OAuth\ScopeRepository
+        arguments:
+            - '@Heptacom\AdminOpenAuth\OpenAuth\OneTimeTokenScopeRepository.inner'
 
     Heptacom\AdminOpenAuth\Subscriber\ApiAuthentication:
         arguments:
