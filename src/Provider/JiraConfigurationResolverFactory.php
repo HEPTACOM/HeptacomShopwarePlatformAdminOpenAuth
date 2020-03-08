@@ -11,17 +11,16 @@ class JiraConfigurationResolverFactory implements ProviderConfigurationResolverF
     {
         $result = new OptionsResolver();
         $result->setDefined([
-            'appId',
-            'appSecret',
+            'clientId',
+            'clientSecret',
             'redirectUri',
             'scopes',
             'storeToken',
-
         ]);
 
         $result->setRequired([
-            'appId',
-            'appSecret',
+            'clientId',
+            'clientSecret',
             'redirectUri',
         ]);
 
@@ -30,8 +29,8 @@ class JiraConfigurationResolverFactory implements ProviderConfigurationResolverF
             'storeToken' => true,
         ]);
 
-        $result->setAllowedTypes('appId', 'string');
-        $result->setAllowedTypes('appSecret', 'string');
+        $result->setAllowedTypes('clientId', 'string');
+        $result->setAllowedTypes('clientSecret', 'string');
         $result->setAllowedTypes('redirectUri', 'string');
         $result->setAllowedTypes('scopes', 'array');
         $result->setAllowedTypes('storeToken', 'bool');
