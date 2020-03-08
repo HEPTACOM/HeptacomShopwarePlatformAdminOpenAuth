@@ -60,7 +60,7 @@ class OpenAuthenticationFlow implements OpenAuthenticationFlowInterface
 
     public function getRedirectUrl(string $clientId, Context $context): string
     {
-        if ($this->clientLoader->canLogin($clientId, $context)) {
+        if (!$this->clientLoader->canLogin($clientId, $context)) {
             throw new LoadClientException('Client can not login', $clientId);
         }
 
@@ -72,7 +72,7 @@ class OpenAuthenticationFlow implements OpenAuthenticationFlowInterface
 
     public function getRedirectUrlToConnect(string $clientId, string $userId, Context $context): string
     {
-        if ($this->clientLoader->canConnect($clientId, $context)) {
+        if (!$this->clientLoader->canConnect($clientId, $context)) {
             throw new LoadClientException('Client can not connect', $clientId);
         }
 
