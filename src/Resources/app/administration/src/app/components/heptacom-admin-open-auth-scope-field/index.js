@@ -24,7 +24,9 @@ Component.register('heptacom-admin-open-auth-scope-field', {
 
     data() {
         return {
-            innerValue: []
+            innerValue: this.value
+                .filter(name => this.defaultScopes.indexOf(name) === -1)
+                .map(name => ({ name })),
         }
     },
 
@@ -47,9 +49,7 @@ Component.register('heptacom-admin-open-auth-scope-field', {
             },
 
             set(value) {
-                this.innerValue = value.map(innerValue => ({
-                    name: innerValue,
-                }));
+                this.innerValue = value.map(name => ({ name }));
             }
         }
     },
