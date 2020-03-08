@@ -53,6 +53,7 @@ class JiraProvider implements ProviderInterface
                 'redirectUri' => $this->router->generate('administration.heptacom.admin_open_auth.login', [
                     'clientId' => $clientId,
                 ], UrlGeneratorInterface::ABSOLUTE_URL),
+                'scopes' => [],
                 'storeToken' => true,
             ],
             'active' => false,
@@ -77,11 +78,11 @@ class JiraProvider implements ProviderInterface
         }
 
         $storeToken = array_key_exists('storeToken', $config) && $config['storeToken'];
-
+        $scopes = array_key_exists('scopes', $config) ? $config['scopes'] : [];
         $appId = $config['appId'];
         $appSecret = $config['appSecret'];
         $redirectUri = $config['redirectUri'];
 
-        return new JiraClient($this->tokenPairFactory, $appId, $appSecret, $redirectUri, $storeToken);
+        return new JiraClient($this->tokenPairFactory, $appId, $appSecret, $redirectUri, $storeToken, $scopes);
     }
 }

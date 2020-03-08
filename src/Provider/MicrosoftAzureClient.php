@@ -25,13 +25,14 @@ class MicrosoftAzureClient implements ClientInterface
      */
     private $storeToken;
 
-    public function __construct(TokenPairFactoryInterface $tokenPairFactory, string $appId, string $appSecret, string $redirectUri, bool $storeToken)
+    public function __construct(TokenPairFactoryInterface $tokenPairFactory, string $appId, string $appSecret, string $redirectUri, bool $storeToken, array $scopes)
     {
         $this->tokenPairFactory = $tokenPairFactory;
         $this->azureClient = new Azure([
             'clientId' => $appId,
             'clientSecret' => $appSecret,
             'redirectUri' => $redirectUri,
+            'scope' => $scopes,
         ]);
         $this->storeToken = $storeToken;
     }
@@ -59,5 +60,15 @@ class MicrosoftAzureClient implements ClientInterface
         return $this->tokenPairFactory->fromLeagueToken($this->azureClient->getAccessToken('refresh_token', [
             'refresh_token' => $refreshToken,
         ]));
+    }
+
+    public function getInnerClient(): Azure
+    {
+        return $this->azureClient;
+    }
+
+    public function isStoreToken(): bool
+    {
+        return $this->storeToken;
     }
 }

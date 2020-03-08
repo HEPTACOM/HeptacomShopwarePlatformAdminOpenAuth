@@ -31,14 +31,27 @@ class JiraClient implements ClientInterface
         string $appId,
         string $appSecret,
         string $redirectUri,
-        bool $storeToken
+        bool $storeToken,
+        array $scopes
     ) {
+        $allScopes = [
+            'read:me',
+            'read:jira-user',
+        ];
+
+        if ($storeToken) {
+            $scopes[] = 'offline_access';
+        }
+
+        $allScopes = array_unique(array_merge($scopes, $allScopes));
+
         $this->tokenPairFactory = $tokenPairFactory;
         $this->jiraClient = new Atlassian([
             'clientId' => $appId,
             'clientSecret' => $appSecret,
             'redirectUri' => $redirectUri,
-        ], $storeToken);
+            'scopes' => $allScopes
+        ]);
         $this->storeToken = $storeToken;
     }
 
@@ -49,16 +62,7 @@ class JiraClient implements ClientInterface
 
     public function getUser(string $state, string $code): UserStruct
     {
-        $scope = 'read:jira-user';
-
-        if ($this->storeToken) {
-            $scope .= ' offline_access';
-        }
-
-        $token = $this->jiraClient->getAccessToken('authorization_code', [
-            'code' => $code,
-            'scope' => $scope,
-        ]);
+        $token = $this->jiraClient->getAccessToken('authorization_code', ['code' => $code]);
         /** @var JiraResourceOwner $user */
         $user = $this->jiraClient->getResourceOwner($token);
 

@@ -7,15 +7,9 @@ use Mrjoops\OAuth2\Client\Provider\Jira;
 class Atlassian extends Jira
 {
     /**
-     * @var bool
+     * @var array|string[]
      */
-    private $storeToken;
-
-    public function __construct(array $options = [], bool $storeToken = false, array $collaborators = [])
-    {
-        parent::__construct($options, $collaborators);
-        $this->storeToken = $storeToken;
-    }
+    protected $scopes;
 
     public function getBaseAccessTokenUrl(array $params)
     {
@@ -29,15 +23,6 @@ class Atlassian extends Jira
 
     protected function getDefaultScopes()
     {
-        $scopes = [
-            'read:me',
-            'read:jira-user',
-        ];
-
-        if ($this->storeToken) {
-            $scopes[] = 'offline_access';
-        }
-
-        return $scopes;
+        return $this->scopes;
     }
 }
