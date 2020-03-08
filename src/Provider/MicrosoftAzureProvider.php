@@ -56,8 +56,8 @@ class MicrosoftAzureProvider implements ProviderInterface
         $this->clientsRepository->update([[
             'id' => $clientId,
             'config' => [
-                'appId' => '',
-                'appSecret' => '',
+                'clientId' => '',
+                'clientSecret' => '',
                 'redirectUri' => $this->router->generate('administration.heptacom.admin_open_auth.login', [
                     'clientId' => $clientId,
                 ], UrlGeneratorInterface::ABSOLUTE_URL),

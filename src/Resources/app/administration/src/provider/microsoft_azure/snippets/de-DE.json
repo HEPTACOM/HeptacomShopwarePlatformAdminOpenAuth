@@ -5,10 +5,10 @@
         },
         "providerFields": {
             "microsoft_azure": {
-                "redirectUri": "Rücksende-URL",
                 "additionalScopes": "Anwendungsberechtigungen",
-                "appId": "Anwendungsschlüssel",
-                "appSecret": "Anwendungsgehemnis"
+                "clientId": "Anwendungsschlüssel",
+                "clientSecret": "Anwendungsgehemnis",
+                "redirectUri": "Rücksende-URL"
             }
         }
     }

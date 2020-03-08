@@ -5,10 +5,10 @@
         },
         "providerFields": {
             "microsoft_azure": {
-                "redirectUri": "Redirect URL",
                 "additionalScopes": "Application scopes",
-                "appId": "Application identifier",
-                "appSecret": "Application secret"
+                "clientId": "Application identifier",
+                "clientSecret": "Application secret",
+                "redirectUri": "Redirect URL"
             }
         }
     }

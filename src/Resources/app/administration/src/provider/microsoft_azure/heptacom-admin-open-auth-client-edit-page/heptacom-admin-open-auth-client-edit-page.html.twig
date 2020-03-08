@@ -12,12 +12,12 @@
             disabled
         ></sw-text-field>
         <sw-text-field
-            :label="$t('heptacomAdminOpenAuthClient.providerFields.microsoft_azure.appId')"
-            v-model="item.config.appId"
+            :label="$t('heptacomAdminOpenAuthClient.providerFields.microsoft_azure.clientId')"
+            v-model="item.config.clientId"
         ></sw-text-field>
         <sw-password-field
-            :label="$t('heptacomAdminOpenAuthClient.providerFields.microsoft_azure.appSecret')"
-            v-model="item.config.appSecret"
+            :label="$t('heptacomAdminOpenAuthClient.providerFields.microsoft_azure.clientSecret')"
+            v-model="item.config.clientSecret"
         ></sw-password-field>
         <heptacom-admin-open-auth-scope-field
             :label="$t('heptacomAdminOpenAuthClient.providerFields.microsoft_azure.additionalScopes')"
