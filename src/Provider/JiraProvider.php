@@ -10,6 +10,7 @@ use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
+use Throwable;
 
 class JiraProvider implements ProviderInterface
 {
@@ -28,14 +29,21 @@ class JiraProvider implements ProviderInterface
      */
     private $router;
 
+    /**
+     * @var JiraConfigurationResolverFactory
+     */
+    private $configurationResolverFactory;
+
     public function __construct(
         TokenPairFactoryInterface $tokenPairFactory,
         EntityRepositoryInterface $clientsRepository,
-        RouterInterface $router
+        RouterInterface $router,
+        JiraConfigurationResolverFactory $configurationResolverFactory
     ) {
         $this->tokenPairFactory = $tokenPairFactory;
         $this->clientsRepository = $clientsRepository;
         $this->router = $router;
+        $this->configurationResolverFactory = $configurationResolverFactory;
     }
 
     public function provides(): string
@@ -65,24 +73,12 @@ class JiraProvider implements ProviderInterface
 
     public function provideClient(string $clientId, array $config, Context $context): ClientInterface
     {
-        if (!array_key_exists('appId', $config)) {
-            throw new ProvideClientInvalidConfigurationException($clientId, self::class, 'appId missing');
+        try {
+            $values = $this->configurationResolverFactory->getOptionResolver()->resolve($config);
+        } catch (Throwable $e) {
+            throw new ProvideClientInvalidConfigurationException($clientId, self::class, $e->getMessage(), $e);
         }
 
-        if (!array_key_exists('appSecret', $config)) {
-            throw new ProvideClientInvalidConfigurationException($clientId, self::class, 'appSecret missing');
-        }
-
-        if (!array_key_exists('redirectUri', $config)) {
-            throw new ProvideClientInvalidConfigurationException($clientId, self::class, 'redirectUri missing');
-        }
-
-        $storeToken = array_key_exists('storeToken', $config) && $config['storeToken'];
-        $scopes = array_key_exists('scopes', $config) ? $config['scopes'] : [];
-        $appId = $config['appId'];
-        $appSecret = $config['appSecret'];
-        $redirectUri = $config['redirectUri'];
-
-        return new JiraClient($this->tokenPairFactory, $appId, $appSecret, $redirectUri, $storeToken, $scopes);
+        return new JiraClient($this->tokenPairFactory, $values);
     }
 }

@@ -26,31 +26,24 @@ class JiraClient implements ClientInterface
      */
     private $storeToken;
 
-    public function __construct(
-        TokenPairFactoryInterface $tokenPairFactory,
-        string $appId,
-        string $appSecret,
-        string $redirectUri,
-        bool $storeToken,
-        array $scopes
-    ) {
-        $allScopes = [
-            'read:me',
-            'read:jira-user',
-        ];
+    public function __construct(TokenPairFactoryInterface $tokenPairFactory, array $options)
+    {
+        $storeToken = $options['storeToken'];
+        $scopes = $options['scopes'];
 
         if ($storeToken) {
             $scopes[] = 'offline_access';
         }
 
-        $allScopes = array_unique(array_merge($scopes, $allScopes));
-
         $this->tokenPairFactory = $tokenPairFactory;
         $this->jiraClient = new Atlassian([
-            'clientId' => $appId,
-            'clientSecret' => $appSecret,
-            'redirectUri' => $redirectUri,
-            'scopes' => $allScopes
+            'clientId' => $options['appId'],
+            'clientSecret' => $options['appSecret'],
+            'redirectUri' => $options['redirectUri'],
+            'scopes' => array_unique(array_merge($scopes, [
+                'read:me',
+                'read:jira-user',
+            ]))
         ]);
         $this->storeToken = $storeToken;
     }

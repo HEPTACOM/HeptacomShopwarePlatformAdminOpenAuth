@@ -25,16 +25,16 @@ class MicrosoftAzureClient implements ClientInterface
      */
     private $storeToken;
 
-    public function __construct(TokenPairFactoryInterface $tokenPairFactory, string $appId, string $appSecret, string $redirectUri, bool $storeToken, array $scopes)
+    public function __construct(TokenPairFactoryInterface $tokenPairFactory, array $values)
     {
         $this->tokenPairFactory = $tokenPairFactory;
         $this->azureClient = new Azure([
-            'clientId' => $appId,
-            'clientSecret' => $appSecret,
-            'redirectUri' => $redirectUri,
-            'scope' => $scopes,
+            'clientId' => $values['appId'],
+            'clientSecret' => $values['appSecret'],
+            'redirectUri' => $values['redirectUri'],
+            'scope' => $values['scopes'],
         ]);
-        $this->storeToken = $storeToken;
+        $this->storeToken = $values['storeToken'];
     }
 
     public function getLoginUrl(string $state): string
