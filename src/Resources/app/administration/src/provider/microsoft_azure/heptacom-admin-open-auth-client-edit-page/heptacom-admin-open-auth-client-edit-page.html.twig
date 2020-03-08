@@ -19,5 +19,9 @@
             :label="$t('heptacomAdminOpenAuthClient.providerFields.microsoft_azure.appSecret')"
             v-model="item.config.appSecret"
         ></sw-password-field>
+        <heptacom-admin-open-auth-scope-field
+            :label="$t('heptacomAdminOpenAuthClient.providerFields.microsoft_azure.additionalScopes')"
+            v-model="item.config.scopes"
+        ></heptacom-admin-open-auth-scope-field>
     </sw-card>
 {% endblock %}

@@ -6,6 +6,7 @@
         "providerFields": {
             "microsoft_azure": {
                 "redirectUri": "Redirect URL",
+                "additionalScopes": "Application scopes",
                 "appId": "Application identifier",
                 "appSecret": "Application secret"
             }

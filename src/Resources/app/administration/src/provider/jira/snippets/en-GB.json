@@ -6,6 +6,7 @@
         "providerFields": {
             "jira": {
                 "redirectUri": "Redirect URL",
+                "additionalScopes": "Application scopes",
                 "appId": "Application identifier",
                 "appSecret": "Application secret"
             }
