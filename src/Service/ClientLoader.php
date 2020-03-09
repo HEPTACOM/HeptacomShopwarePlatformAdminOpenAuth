@@ -13,7 +13,6 @@ use Heptacom\AdminOpenAuth\Exception\ProvideClientException;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
-use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
 use Shopware\Core\Framework\Uuid\Uuid;
 
 class ClientLoader implements ClientLoaderInterface
@@ -52,28 +51,6 @@ class ClientLoader implements ClientLoaderInterface
         }
 
         throw new LoadClientMatchingProviderNotFoundException($clientId);
-    }
-
-    public function canLogin(string $clientId, Context $context): bool
-    {
-        $criteria = new Criteria([$clientId]);
-        $criteria->addFilter(
-            new EqualsFilter('active', true),
-            new EqualsFilter('login', true)
-        );
-
-        return $this->clientsRepository->searchIds($criteria, $context)->firstId() !== null;
-    }
-
-    public function canConnect(string $clientId, Context $context): bool
-    {
-        $criteria = new Criteria([$clientId]);
-        $criteria->addFilter(
-            new EqualsFilter('active', true),
-            new EqualsFilter('connect', true)
-        );
-
-        return $this->clientsRepository->searchIds($criteria, $context)->firstId() !== null;
     }
 
     public function create(string $providerKey, Context $context): string

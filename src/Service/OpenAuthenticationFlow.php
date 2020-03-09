@@ -2,6 +2,7 @@
 
 namespace Heptacom\AdminOpenAuth\Service;
 
+use Heptacom\AdminOpenAuth\Contract\ClientFeatureCheckerInterface;
 use Heptacom\AdminOpenAuth\Contract\ClientLoaderInterface;
 use Heptacom\AdminOpenAuth\Contract\LoginInterface;
 use Heptacom\AdminOpenAuth\Contract\OpenAuthenticationFlowInterface;
@@ -44,23 +45,30 @@ class OpenAuthenticationFlow implements OpenAuthenticationFlowInterface
      */
     private $router;
 
+    /**
+     * @var ClientFeatureCheckerInterface
+     */
+    private $clientFeatureChecker;
+
     public function __construct(
         LoginInterface $login,
         ClientLoaderInterface $clientLoader,
         UserResolverInterface $userResolver,
         EntityRepositoryInterface $clientsRepository,
-        RouterInterface $router
+        RouterInterface $router,
+        ClientFeatureCheckerInterface $clientFeatureChecker
     ) {
         $this->login = $login;
         $this->clientLoader = $clientLoader;
         $this->userResolver = $userResolver;
         $this->clientsRepository = $clientsRepository;
         $this->router = $router;
+        $this->clientFeatureChecker = $clientFeatureChecker;
     }
 
     public function getRedirectUrl(string $clientId, Context $context): string
     {
-        if (!$this->clientLoader->canLogin($clientId, $context)) {
+        if (!$this->clientFeatureChecker->canLogin($clientId, $context)) {
             throw new LoadClientException('Client can not login', $clientId);
         }
 
@@ -72,7 +80,7 @@ class OpenAuthenticationFlow implements OpenAuthenticationFlowInterface
 
     public function getRedirectUrlToConnect(string $clientId, string $userId, Context $context): string
     {
-        if (!$this->clientLoader->canConnect($clientId, $context)) {
+        if (!$this->clientFeatureChecker->canConnect($clientId, $context)) {
             throw new LoadClientException('Client can not connect', $clientId);
         }
 
