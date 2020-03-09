@@ -25,7 +25,8 @@ Component.register('heptacom-admin-open-auth-client-edit-page', {
         return {
             isLoading: true,
             isSaveSuccessful: false,
-            item: null
+            item: null,
+            showDeleteModal: false
         }
     },
 
@@ -86,6 +87,28 @@ Component.register('heptacom-admin-open-auth-client-edit-page', {
 
                 throw exception;
             });
+        },
+
+        onConfirmDelete() {
+            this.showDeleteModal = false;
+            this.isLoading = true;
+
+            return this.clientRepository
+                .delete(this.item.id, Context.api)
+                .then(() => {
+                    this.$router.push({ name: 'heptacom.admin.open.auth.client.settings' });
+                }).catch(exception => {
+                    this.isLoading = false;
+                    const clientName = this.client.name;
+                    this.createNotificationError({
+                        title: this.$tc('global.notification.notificationSaveErrorTitle'),
+                        message: this.$tc(
+                            'global.notification.notificationSaveErrorMessage', 0, { entityName: clientName }
+                        )
+                    });
+
+                    throw exception;
+                });
         }
     }
 });

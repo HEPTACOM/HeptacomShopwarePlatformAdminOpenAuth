@@ -14,6 +14,16 @@
 
         {% block heptacom_admin_open_auth_client_edit_page_search_bar_actions %}
             <template #smart-bar-actions>
+                {% block heptacom_admin_open_auth_client_edit_page_search_bar_actions_delete %}
+                    <sw-button
+                        :disabled="isLoading"
+                        @click="showDeleteModal = true"
+                        variant="danger"
+                    >
+                        {{ $t('heptacom-admin-open-auth-client.pages.edit.actions.delete') }}
+                    </sw-button>
+                {% endblock %}
+
                 {% block heptacom_admin_open_auth_client_edit_page_search_bar_actions_cancel %}
                     <sw-button
                         :disabled="isLoading"
@@ -74,6 +84,50 @@
 
                     {% block heptacom_admin_open_auth_client_edit_page_content_provider_settings %}{% endblock %}
                 </sw-card-view>
+
+                {% block heptacom_admin_open_auth_client_edit_page_content_modal_delete %}
+                    <sw-modal
+                        v-if="showDeleteModal"
+                        :title="$t('heptacom-admin-open-auth-client.pages.edit.modals.delete.title')"
+                        @modal-close="showDeleteModal = false"
+                        variant="small"
+                    >
+                        {% block heptacom_admin_open_auth_client_edit_page_content_modal_delete_confirm_text %}
+                            <p>
+                                {{ $t('heptacom-admin-open-auth-client.pages.edit.modals.delete.warning') }}
+                            </p>
+                            <p>
+                                <strong>{{ dynamicName }}</strong>
+                            </p>
+                            <p>
+                                {{ $t('heptacom-admin-open-auth-client.pages.edit.modals.delete.explanation') }}
+                            </p>
+                        {% endblock %}
+
+                        {% block heptacom_admin_open_auth_client_edit_page_content_modal_delete_footer %}
+                            <template #modal-footer>
+                                {% block heptacom_admin_open_auth_client_edit_page_content_modal_delete_abort %}
+                                    <sw-button
+                                        size="small"
+                                        @click="showDeleteModal = false"
+                                    >
+                                        {{ $t('heptacom-admin-open-auth-client.pages.edit.modals.delete.cancel') }}
+                                    </sw-button>
+                                {% endblock %}
+
+                                {% block heptacom_admin_open_auth_client_edit_page_content_modal_delete_delete %}
+                                    <sw-button
+                                        size="small"
+                                        variant="danger"
+                                        @click="onConfirmDelete"
+                                    >
+                                        {{ $t('heptacom-admin-open-auth-client.pages.edit.modals.delete.confirm') }}
+                                    </sw-button>
+                                {% endblock %}
+                            </template>
+                        {% endblock %}
+                    </sw-modal>
+                {% endblock %}
             </template>
         {% endblock %}
     </sw-page>

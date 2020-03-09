@@ -14,8 +14,9 @@
             "edit": {
                 "title": "Anbieter bearbeiter",
                 "actions": {
-                    "save": "Speichern",
-                    "cancel": "Abbrechen"
+                    "cancel": "Abbrechen",
+                    "delete": "Löschen",
+                    "save": "Speichern"
                 },
                 "fields": {
                     "name": "Name",
@@ -23,6 +24,15 @@
                     "login": "Als Anmeldung verwenden",
                     "connect": "Zum Verknüpfen verwenden",
                     "storeUserToken": "Benutzerberechtigungsschlüssel speichern"
+                },
+                "modals": {
+                    "delete": {
+                        "cancel": "Abbrechen",
+                        "confirm": "Anbieter löschen",
+                        "explanation": "Dieser Vorgang ist unwiderruflich. Bei Löschung funktionieren keine Anmeldungen, Verknüpfungen oder Anfragen mehr zu diesem Anbieter",
+                        "title": "Anbieter löschen",
+                        "warning": "Sind Sie sich sicher, dass Sie diese Anbieterkonfiguration löschen wollen?"
+                    }
                 }
             },
             "listing": {
