@@ -8,7 +8,6 @@ use Heptacom\AdminOpenAuth\Contract\LoginInterface;
 use Heptacom\AdminOpenAuth\Contract\OpenAuthenticationFlowInterface;
 use Heptacom\AdminOpenAuth\Contract\UserResolverInterface;
 use Heptacom\AdminOpenAuth\Database\ClientEntity;
-use Heptacom\AdminOpenAuth\Database\LoginEntity;
 use Heptacom\AdminOpenAuth\Exception\LoadClientException;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
