@@ -8,3 +8,4 @@
 * Add Microsoft provider
 * Add Atlassian provider
 * Add token storage
+* Add authorized http client to easily access remote APIs
