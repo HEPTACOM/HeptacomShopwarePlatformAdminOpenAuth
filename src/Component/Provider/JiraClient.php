@@ -7,6 +7,7 @@ use Heptacom\AdminOpenAuth\Component\OpenAuth\Atlassian;
 use Heptacom\AdminOpenAuth\Contract\TokenPairFactoryInterface;
 use Heptacom\AdminOpenAuth\Struct\TokenPairStruct;
 use Heptacom\AdminOpenAuth\Struct\UserStruct;
+use League\OAuth2\Client\Provider\AbstractProvider;
 use Mrjoops\OAuth2\Client\Provider\JiraResourceOwner;
 
 class JiraClient implements ClientInterface
@@ -53,7 +54,7 @@ class JiraClient implements ClientInterface
         ]));
     }
 
-    public function getInnerClient(): Atlassian
+    public function getInnerClient(): AbstractProvider
     {
         return $this->jiraClient;
     }

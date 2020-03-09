@@ -4,6 +4,7 @@ namespace Heptacom\AdminOpenAuth\Component\Contract;
 
 use Heptacom\AdminOpenAuth\Struct\TokenPairStruct;
 use Heptacom\AdminOpenAuth\Struct\UserStruct;
+use League\OAuth2\Client\Provider\AbstractProvider;
 
 interface ClientInterface
 {
@@ -12,4 +13,6 @@ interface ClientInterface
     public function getUser(string $state, string $code): UserStruct;
 
     public function refreshToken(string $refreshToken): TokenPairStruct;
+
+    public function getInnerClient(): AbstractProvider;
 }

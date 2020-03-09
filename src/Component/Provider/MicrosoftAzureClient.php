@@ -6,6 +6,7 @@ use Heptacom\AdminOpenAuth\Component\Contract\ClientInterface;
 use Heptacom\AdminOpenAuth\Contract\TokenPairFactoryInterface;
 use Heptacom\AdminOpenAuth\Struct\TokenPairStruct;
 use Heptacom\AdminOpenAuth\Struct\UserStruct;
+use League\OAuth2\Client\Provider\AbstractProvider;
 use TheNetworg\OAuth2\Client\Provider\Azure;
 
 class MicrosoftAzureClient implements ClientInterface
@@ -51,7 +52,7 @@ class MicrosoftAzureClient implements ClientInterface
         ]));
     }
 
-    public function getInnerClient(): Azure
+    public function getInnerClient(): AbstractProvider
     {
         return $this->azureClient;
     }
