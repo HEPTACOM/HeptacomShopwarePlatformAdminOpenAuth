@@ -94,12 +94,9 @@ class UserResolver implements UserResolverInterface
     ): void {
         if ($this->clientFeatureChecker->canStoreUserTokens($clientId, $context) &&
             ($tokenPair = $user->getTokenPair()) !== null) {
-            if (!empty($tokenPair->getRefreshToken())) {
-                $this->userToken->setRefreshToken($userId, $clientId, $tokenPair->getRefreshToken(), $context);
-            }
 
-            if (!empty($tokenPair->getAccessToken())) {
-                $this->userToken->setAccessToken($userId, $clientId, $tokenPair->getAccessToken(), $context);
+            if (!empty($tokenPair->getRefreshToken())) {
+                $this->userToken->setToken($userId, $clientId, $tokenPair, $context);
             }
         }
 

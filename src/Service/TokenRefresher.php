@@ -54,14 +54,7 @@ class TokenRefresher implements TokenRefresherInterface
             }
 
             $tokenPair = $client->refreshToken($token->getRefreshToken());
-
-            if (!empty($tokenPair->getAccessToken())) {
-                $this->userToken->setAccessToken($userId, $clientId, $tokenPair->getAccessToken(), $context);
-            }
-
-            if (!empty($tokenPair->getRefreshToken())) {
-                $this->userToken->setRefreshToken($userId, $clientId, $tokenPair->getRefreshToken(), $context);
-            }
+            $this->userToken->setToken($userId, $clientId, $tokenPair, $context);
 
             return $tokenPair;
         }

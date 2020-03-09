@@ -5,6 +5,7 @@ namespace Heptacom\AdminOpenAuth\Service;
 use Heptacom\AdminOpenAuth\Contract\UserTokenInterface;
 use Heptacom\AdminOpenAuth\Database\UserTokenCollection;
 use Heptacom\AdminOpenAuth\Database\UserTokenEntity;
+use Heptacom\AdminOpenAuth\Struct\TokenPairStruct;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
@@ -23,7 +24,7 @@ class UserToken implements UserTokenInterface
         $this->userTokensRepository = $userTokensRepository;
     }
 
-    public function setRefreshToken(string $userId, string $clientId, string $refreshToken, Context $context): string
+    public function setToken(string $userId, string $clientId, TokenPairStruct $token, Context $context): string
     {
         $criteria = new Criteria();
         $criteria->addFilter(
@@ -36,7 +37,8 @@ class UserToken implements UserTokenInterface
             $id = $exists->firstId();
             $this->userTokensRepository->update([[
                 'id' => $id,
-                'refreshToken' => $refreshToken,
+                'refreshToken' => $token->getRefreshToken(),
+                'accessToken' => $token->getAccessToken(),
             ]], $context);
 
             return $id;
@@ -46,37 +48,8 @@ class UserToken implements UserTokenInterface
         $this->userTokensRepository->create([[
             'id' => $id,
             'userId' => $userId,
-            'refreshToken' => $refreshToken,
-            'clientId' => $clientId,
-        ]], $context);
-
-        return $id;
-    }
-
-    public function setAccessToken(string $userId, string $clientId, string $accessToken, Context $context): string
-    {
-        $criteria = new Criteria();
-        $criteria->addFilter(
-            new EqualsFilter('userId', $userId),
-            new EqualsFilter('clientId', $clientId)
-        );
-        $exists = $this->userTokensRepository->searchIds($criteria, $context);
-
-        if ($exists->getTotal() > 0) {
-            $id = $exists->firstId();
-            $this->userTokensRepository->update([[
-                'id' => $id,
-                'accessToken' => $accessToken,
-            ]], $context);
-
-            return $id;
-        }
-
-        $id = Uuid::randomHex();
-        $this->userTokensRepository->create([[
-            'id' => $id,
-            'userId' => $userId,
-            'accessToken' => $accessToken,
+            'refreshToken' => $token->getRefreshToken(),
+            'accessToken' => $token->getAccessToken(),
             'clientId' => $clientId,
         ]], $context);
 
