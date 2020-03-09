@@ -135,7 +135,8 @@ class AdministrationController extends AbstractController
     ): Response {
         $providerKey = $request->get('provider_key');
         $clientId = $clientLoader->create($providerKey, $context);
-        $criteria = new Criteria([$clientId]);
+        $criteria = new Criteria();
+        $criteria->setIds([$clientId]);
         $entity = $clientsRepository->search($criteria, $context)->first();
 
         return $responseFactory->createDetailResponse($criteria, $entity, $definition, $request, $context, false);

@@ -22,7 +22,8 @@ class ClientFeatureChecker implements ClientFeatureCheckerInterface
 
     public function canLogin(string $clientId, Context $context): bool
     {
-        $criteria = new Criteria([$clientId]);
+        $criteria = new Criteria();
+        $criteria->setIds([$clientId]);
         $criteria->addFilter(
             new EqualsFilter('active', true),
             new EqualsFilter('login', true)
@@ -33,7 +34,8 @@ class ClientFeatureChecker implements ClientFeatureCheckerInterface
 
     public function canConnect(string $clientId, Context $context): bool
     {
-        $criteria = new Criteria([$clientId]);
+        $criteria = new Criteria();
+        $criteria->setIds([$clientId]);
         $criteria->addFilter(
             new EqualsFilter('active', true),
             new EqualsFilter('connect', true)
@@ -44,7 +46,8 @@ class ClientFeatureChecker implements ClientFeatureCheckerInterface
 
     public function canStoreUserTokens(string $clientId, Context $context): bool
     {
-        $criteria = new Criteria([$clientId]);
+        $criteria = new Criteria();
+        $criteria->setIds([$clientId]);
         $criteria->addFilter(new EqualsFilter('store_user_token', true));
 
         return $this->clientsRepository->searchIds($criteria, $context)->firstId() !== null;

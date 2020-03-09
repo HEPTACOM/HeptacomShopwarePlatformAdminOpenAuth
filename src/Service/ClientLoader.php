@@ -35,8 +35,11 @@ class ClientLoader implements ClientLoaderInterface
 
     public function load(string $clientId, Context $context): ClientInterface
     {
+        $criteria = new Criteria();
+        $criteria->setIds([$clientId]);
+
         /** @var ClientCollection $searchResult */
-        $searchResult = $this->clientsRepository->search(new Criteria([$clientId]), $context)->getEntities();
+        $searchResult = $this->clientsRepository->search($criteria, $context)->getEntities();
 
         if ($searchResult->count() === 0) {
             throw new LoadClientClientNotFoundException($clientId);
