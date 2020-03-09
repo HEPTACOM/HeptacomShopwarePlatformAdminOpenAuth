@@ -41,4 +41,12 @@ class ClientFeatureChecker implements ClientFeatureCheckerInterface
 
         return $this->clientsRepository->searchIds($criteria, $context)->firstId() !== null;
     }
+
+    public function canStoreUserTokens(string $clientId, Context $context): bool
+    {
+        $criteria = new Criteria([$clientId]);
+        $criteria->addFilter(new EqualsFilter('store_user_token', true));
+
+        return $this->clientsRepository->searchIds($criteria, $context)->firstId() !== null;
+    }
 }

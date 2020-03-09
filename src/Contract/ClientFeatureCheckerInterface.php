@@ -9,4 +9,6 @@ interface ClientFeatureCheckerInterface
     public function canLogin(string $clientId, Context $context): bool;
 
     public function canConnect(string $clientId, Context $context): bool;
+
+    public function canStoreUserTokens(string $clientId, Context $context): bool;
 }
