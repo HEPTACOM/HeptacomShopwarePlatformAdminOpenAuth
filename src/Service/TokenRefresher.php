@@ -38,7 +38,7 @@ class TokenRefresher implements TokenRefresherInterface
         $this->clientFeatureChecker = $clientFeatureChecker;
     }
 
-    public function refresh(string $clientId, string $userId, Context $context): ?TokenPairStruct
+    public function refresh(string $clientId, string $userId, int $secondsValid, Context $context): ?TokenPairStruct
     {
         if (!$this->clientFeatureChecker->canStoreUserTokens($clientId, $context)) {
             return null;
@@ -47,6 +47,18 @@ class TokenRefresher implements TokenRefresherInterface
         $token = $this->userToken->getToken($clientId, $userId, $context);
 
         if ($token instanceof UserTokenEntity && !empty($token->getRefreshToken())) {
+            if ($token->getExpiresAt() !== null) {
+                $now = date_create();
+                $expirationDelta = $token->getExpiresAt()->getTimestamp() - $now->getTimestamp();
+
+                if ($expirationDelta > $secondsValid && $expirationDelta > 0) {
+                    return (new TokenPairStruct())
+                        ->setAccessToken($token->getAccessToken())
+                        ->setExpiresAt($token->getExpiresAt())
+                        ->setRefreshToken($token->getRefreshToken());
+                }
+            }
+
             try {
                 $client = $this->clientLoader->load($clientId, $context);
             } catch (LoadClientException $ignored) {
