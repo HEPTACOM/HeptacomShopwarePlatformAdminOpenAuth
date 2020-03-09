@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Heptacom\AdminOpenAuth\Provider;
+namespace Heptacom\AdminOpenAuth\Service\Provider;
 
 use Heptacom\AdminOpenAuth\Contract\ProviderConfigurationResolverFactoryInterface;
 use Shopware\Core\Framework\Context;

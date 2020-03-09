@@ -1,8 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace Heptacom\AdminOpenAuth\Provider;
+namespace Heptacom\AdminOpenAuth\Service\Provider;
 
-use Heptacom\AdminOpenAuth\Contract\ClientInterface;
+use Heptacom\AdminOpenAuth\Component\Contract\ClientInterface;
+use Heptacom\AdminOpenAuth\Component\Provider\JiraClient;
 use Heptacom\AdminOpenAuth\Contract\ProviderInterface;
 use Heptacom\AdminOpenAuth\Contract\TokenPairFactoryInterface;
 use Heptacom\AdminOpenAuth\Exception\ProvideClientInvalidConfigurationException;
@@ -62,7 +63,6 @@ class JiraProvider implements ProviderInterface
                     'clientId' => $clientId,
                 ], UrlGeneratorInterface::ABSOLUTE_URL),
                 'scopes' => [],
-                'storeToken' => true,
             ],
             'active' => false,
             'login' => true,

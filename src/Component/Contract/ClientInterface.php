@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Heptacom\AdminOpenAuth\Contract;
+namespace Heptacom\AdminOpenAuth\Component\Contract;
 
 use Heptacom\AdminOpenAuth\Struct\TokenPairStruct;
 use Heptacom\AdminOpenAuth\Struct\UserStruct;

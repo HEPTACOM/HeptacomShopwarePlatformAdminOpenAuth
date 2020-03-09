@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Heptacom\AdminOpenAuth\OpenAuth;
+namespace Heptacom\AdminOpenAuth\Component\OpenAuth;
 
 use Mrjoops\OAuth2\Client\Provider\Jira;
 

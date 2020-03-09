@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Heptacom\AdminOpenAuth\OpenAuth;
+namespace Heptacom\AdminOpenAuth\Component\OpenAuth;
 
 use Heptacom\AdminOpenAuth\Contract\LoginInterface;
 use Heptacom\AdminOpenAuth\Database\LoginEntity;

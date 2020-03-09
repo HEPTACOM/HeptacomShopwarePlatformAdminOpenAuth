@@ -2,6 +2,7 @@
 
 namespace Heptacom\AdminOpenAuth\Contract;
 
+use Heptacom\AdminOpenAuth\Component\Contract\ClientInterface;
 use Heptacom\AdminOpenAuth\Exception\ProvideClientException;
 use Shopware\Core\Framework\Context;
 

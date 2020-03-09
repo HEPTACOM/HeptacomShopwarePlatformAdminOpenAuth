@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace Heptacom\AdminOpenAuth\Provider;
+namespace Heptacom\AdminOpenAuth\Component\Provider;
 
-use Heptacom\AdminOpenAuth\Contract\ClientInterface;
+use Heptacom\AdminOpenAuth\Component\Contract\ClientInterface;
+use Heptacom\AdminOpenAuth\Component\OpenAuth\Atlassian;
 use Heptacom\AdminOpenAuth\Contract\TokenPairFactoryInterface;
-use Heptacom\AdminOpenAuth\OpenAuth\Atlassian;
 use Heptacom\AdminOpenAuth\Struct\TokenPairStruct;
 use Heptacom\AdminOpenAuth\Struct\UserStruct;
 use Mrjoops\OAuth2\Client\Provider\JiraResourceOwner;

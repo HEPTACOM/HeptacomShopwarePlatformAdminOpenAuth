@@ -2,7 +2,7 @@
 
 namespace Heptacom\AdminOpenAuth\Service;
 
-use Heptacom\AdminOpenAuth\Contract\ClientInterface;
+use Heptacom\AdminOpenAuth\Component\Contract\ClientInterface;
 use Heptacom\AdminOpenAuth\Contract\ClientLoaderInterface;
 use Heptacom\AdminOpenAuth\Contract\ProviderRepositoryInterface;
 use Heptacom\AdminOpenAuth\Database\ClientCollection;
