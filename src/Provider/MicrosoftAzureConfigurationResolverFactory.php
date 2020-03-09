@@ -3,11 +3,12 @@
 namespace Heptacom\AdminOpenAuth\Provider;
 
 use Heptacom\AdminOpenAuth\Contract\ProviderConfigurationResolverFactoryInterface;
+use Shopware\Core\Framework\Context;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class MicrosoftAzureConfigurationResolverFactory implements ProviderConfigurationResolverFactoryInterface
 {
-    public function getOptionResolver(): OptionsResolver
+    public function getOptionResolver(string $clientId, Context $context): OptionsResolver
     {
         $result = new OptionsResolver();
         $result->setDefined([

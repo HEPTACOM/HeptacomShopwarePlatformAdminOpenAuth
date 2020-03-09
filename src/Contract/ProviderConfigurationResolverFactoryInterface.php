@@ -2,9 +2,10 @@
 
 namespace Heptacom\AdminOpenAuth\Contract;
 
+use Shopware\Core\Framework\Context;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 interface ProviderConfigurationResolverFactoryInterface
 {
-    public function getOptionResolver(): OptionsResolver;
+    public function getOptionResolver(string $clientId, Context $context): OptionsResolver;
 }

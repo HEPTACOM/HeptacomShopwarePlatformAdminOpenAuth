@@ -74,7 +74,7 @@ class MicrosoftAzureProvider implements ProviderInterface
     public function provideClient(string $clientId, array $config, Context $context): ClientInterface
     {
         try {
-            $values = $this->configurationResolverFactory->getOptionResolver()->resolve($config);
+            $values = $this->configurationResolverFactory->getOptionResolver($clientId, $context)->resolve($config);
         } catch (Throwable $e) {
             throw new ProvideClientInvalidConfigurationException($clientId, self::class, $e->getMessage(), $e);
         }
