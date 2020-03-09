@@ -63,6 +63,11 @@
                                     :label="$t('heptacom-admin-open-auth-client.pages.edit.fields.connect')"
                                     v-model="item.connect"
                                 ></sw-switch-field>
+                                <sw-switch-field
+                                    :disabled="!item.active"
+                                    :label="$t('heptacom-admin-open-auth-client.pages.edit.fields.storeUserToken')"
+                                    v-model="item.storeUserToken"
+                                ></sw-switch-field>
                             </template>
                         </sw-card>
                     {% endblock %}

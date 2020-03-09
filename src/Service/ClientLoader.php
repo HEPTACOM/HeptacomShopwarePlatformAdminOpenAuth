@@ -64,6 +64,7 @@ class ClientLoader implements ClientLoaderInterface
             'active' => false,
             'login' => false,
             'connect' => false,
+            'store_user_token' => false,
             'config' => [],
         ]], $context);
 

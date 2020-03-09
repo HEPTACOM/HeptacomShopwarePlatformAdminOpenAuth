@@ -67,6 +67,7 @@ class MicrosoftAzureProvider implements ProviderInterface
             'active' => false,
             'login' => true,
             'connect' => true,
+            'store_user_token' => true,
             'provider' => 'microsoft_azure',
         ]], $context);
     }

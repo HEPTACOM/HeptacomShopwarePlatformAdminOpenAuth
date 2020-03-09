@@ -67,6 +67,7 @@ class JiraProvider implements ProviderInterface
             'active' => false,
             'login' => true,
             'connect' => true,
+            'store_user_token' => true,
             'provider' => 'jira',
         ]], $context);
     }

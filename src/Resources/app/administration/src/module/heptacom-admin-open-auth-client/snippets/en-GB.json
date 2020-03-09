@@ -21,7 +21,8 @@
                     "name": "Name",
                     "active": "Active",
                     "login": "Use as login",
-                    "connect": "Use to connect"
+                    "connect": "Use to connect",
+                    "storeUserToken": "Store user access keys"
                 }
             },
             "listing": {

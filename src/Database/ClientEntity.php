@@ -35,6 +35,11 @@ class ClientEntity extends Entity
     protected $connect;
 
     /**
+     * @var bool|null
+     */
+    protected $storeUserToken;
+
+    /**
      * @var array|null
      */
     protected $config;
@@ -115,6 +120,18 @@ class ClientEntity extends Entity
     public function setConnect(?bool $connect): self
     {
         $this->connect = $connect;
+
+        return $this;
+    }
+
+    public function getStoreUserToken(): ?bool
+    {
+        return $this->storeUserToken;
+    }
+
+    public function setStoreUserToken(?bool $storeUserToken): self
+    {
+        $this->storeUserToken = $storeUserToken;
 
         return $this;
     }
