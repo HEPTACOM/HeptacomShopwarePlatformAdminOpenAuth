@@ -7,3 +7,4 @@
 * Add custom login grant
 * Add Microsoft provider
 * Add Atlassian provider
+* Add token storage

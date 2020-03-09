@@ -39,6 +39,7 @@ class UserToken implements UserTokenInterface
                 'id' => $id,
                 'refreshToken' => $token->getRefreshToken(),
                 'accessToken' => $token->getAccessToken(),
+                'expiresAt' => $token->getExpiresAt(),
             ]], $context);
 
             return $id;
@@ -50,6 +51,7 @@ class UserToken implements UserTokenInterface
             'userId' => $userId,
             'refreshToken' => $token->getRefreshToken(),
             'accessToken' => $token->getAccessToken(),
+            'expiresAt' => $token->getExpiresAt(),
             'clientId' => $clientId,
         ]], $context);
 
