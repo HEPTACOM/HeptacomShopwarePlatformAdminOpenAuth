@@ -52,4 +52,9 @@ class JiraClient implements ClientInterface
             'refresh_token' => $refreshToken,
         ]));
     }
+
+    public function getInnerClient(): Atlassian
+    {
+        return $this->jiraClient;
+    }
 }
