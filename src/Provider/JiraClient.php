@@ -21,27 +21,8 @@ class JiraClient implements ClientInterface
      */
     private $jiraClient;
 
-    /**
-     * @var bool
-     */
-    private $storeToken;
-
     public function __construct(TokenPairFactoryInterface $tokenPairFactory, array $options)
     {
-        $this->storeToken = $options['storeToken'];
-        unset($options['storeToken']);
-
-        $scopes = $options['scopes'];
-
-        if ($this->storeToken) {
-            $scopes[] = 'offline_access';
-        }
-
-        $options['scopes'] = array_unique(array_merge($scopes, [
-            'read:me',
-            'read:jira-user',
-        ]));
-
         $this->tokenPairFactory = $tokenPairFactory;
         $this->jiraClient = new Atlassian($options);
     }
@@ -59,7 +40,7 @@ class JiraClient implements ClientInterface
 
         return (new UserStruct())
             ->setPrimaryKey($user->getId())
-            ->setTokenPair($this->storeToken ? $this->tokenPairFactory->fromLeagueToken($token) : null)
+            ->setTokenPair($this->tokenPairFactory->fromLeagueToken($token))
             ->setDisplayName($user->getName())
             ->setPrimaryEmail($user->getEmail())
             ->setEmails([]);

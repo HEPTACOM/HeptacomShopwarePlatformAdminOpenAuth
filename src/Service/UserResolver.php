@@ -2,6 +2,7 @@
 
 namespace Heptacom\AdminOpenAuth\Service;
 
+use Heptacom\AdminOpenAuth\Contract\ClientFeatureCheckerInterface;
 use Heptacom\AdminOpenAuth\Contract\LoginInterface;
 use Heptacom\AdminOpenAuth\Contract\UserEmailInterface;
 use Heptacom\AdminOpenAuth\Contract\UserKeyInterface;
@@ -48,13 +49,19 @@ class UserResolver implements UserResolverInterface
      */
     private $userToken;
 
+    /**
+     * @var ClientFeatureCheckerInterface
+     */
+    private $clientFeatureChecker;
+
     public function __construct(
         EntityRepositoryInterface $userRepository,
         UserProvisioner $userProvisioner,
         LoginInterface $login,
         UserEmailInterface $userEmail,
         UserKeyInterface $userKey,
-        UserTokenInterface $userToken
+        UserTokenInterface $userToken,
+        ClientFeatureCheckerInterface $clientFeatureChecker
     ) {
         $this->userRepository = $userRepository;
         $this->userProvisioner = $userProvisioner;
@@ -62,6 +69,7 @@ class UserResolver implements UserResolverInterface
         $this->userEmail = $userEmail;
         $this->userKey = $userKey;
         $this->userToken = $userToken;
+        $this->clientFeatureChecker = $clientFeatureChecker;
     }
 
     public function resolve(UserStruct $user, string $state, string $clientId, Context $context): void
@@ -84,7 +92,8 @@ class UserResolver implements UserResolverInterface
         string $clientId,
         Context $context
     ): void {
-        if ($tokenPair = $user->getTokenPair()) {
+        if ($this->clientFeatureChecker->canStoreUserTokens($clientId, $context) &&
+            ($tokenPair = $user->getTokenPair()) !== null) {
             if (!empty($tokenPair->getRefreshToken())) {
                 $this->userToken->setRefreshToken($userId, $clientId, $tokenPair->getRefreshToken(), $context);
             }

@@ -2,6 +2,7 @@
 
 namespace Heptacom\AdminOpenAuth\Service;
 
+use Heptacom\AdminOpenAuth\Contract\ClientFeatureCheckerInterface;
 use Heptacom\AdminOpenAuth\Contract\ClientLoaderInterface;
 use Heptacom\AdminOpenAuth\Contract\TokenRefresherInterface;
 use Heptacom\AdminOpenAuth\Contract\UserTokenInterface;
@@ -22,14 +23,27 @@ class TokenRefresher implements TokenRefresherInterface
      */
     private $clientLoader;
 
-    public function __construct(UserTokenInterface $userToken, ClientLoaderInterface $clientLoader)
-    {
+    /**
+     * @var ClientFeatureCheckerInterface
+     */
+    private $clientFeatureChecker;
+
+    public function __construct(
+        UserTokenInterface $userToken,
+        ClientLoaderInterface $clientLoader,
+        ClientFeatureCheckerInterface $clientFeatureChecker
+    ) {
         $this->userToken = $userToken;
         $this->clientLoader = $clientLoader;
+        $this->clientFeatureChecker = $clientFeatureChecker;
     }
 
     public function refresh(string $clientId, string $userId, Context $context): ?TokenPairStruct
     {
+        if (!$this->clientFeatureChecker->canStoreUserTokens($clientId, $context)) {
+            return null;
+        }
+
         $token = $this->userToken->getToken($clientId, $userId, $context);
 
         if ($token instanceof UserTokenEntity && !empty($token->getRefreshToken())) {
