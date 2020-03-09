@@ -16,7 +16,6 @@ class MicrosoftAzureConfigurationResolverFactory implements ProviderConfiguratio
             'clientSecret',
             'redirectUri',
             'scopes',
-            'storeToken',
         ]);
 
         $result->setRequired([
@@ -27,14 +26,12 @@ class MicrosoftAzureConfigurationResolverFactory implements ProviderConfiguratio
 
         $result->setDefaults([
             'scopes' => [],
-            'storeToken' => true,
         ]);
 
         $result->setAllowedTypes('clientId', 'string');
         $result->setAllowedTypes('clientSecret', 'string');
         $result->setAllowedTypes('redirectUri', 'string');
         $result->setAllowedTypes('scopes', 'array');
-        $result->setAllowedTypes('storeToken', 'bool');
 
         return $result;
     }

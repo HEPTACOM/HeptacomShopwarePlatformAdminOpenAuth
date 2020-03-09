@@ -28,7 +28,6 @@ class JiraConfigurationResolverFactory implements ProviderConfigurationResolverF
             'clientSecret',
             'redirectUri',
             'scopes',
-            'storeToken',
         ]);
 
         $result->setRequired([
@@ -39,14 +38,12 @@ class JiraConfigurationResolverFactory implements ProviderConfigurationResolverF
 
         $result->setDefaults([
             'scopes' => [],
-            'storeToken' => true,
         ]);
 
         $result->setAllowedTypes('clientId', 'string');
         $result->setAllowedTypes('clientSecret', 'string');
         $result->setAllowedTypes('redirectUri', 'string');
         $result->setAllowedTypes('scopes', 'array');
-        $result->setAllowedTypes('storeToken', 'bool');
 
         $result->addNormalizer('scopes', function (Options $options, $value) use ($context, $clientId) {
             $scopes = (array) $value;
