@@ -1,6 +1,20 @@
 image: atlassian/default-image:2
 
 pipelines:
+    branches:
+        master:
+            -   step:
+                    name: Mirror to Github
+                    script:
+                        - git remote add github git@github.com:HEPTACOM/HeptacomShopwarePlatformAdminOpenAuth.git
+                        - git push --force github master
+    tags:
+        '*':
+            -   step:
+                    name: Mirror tags to Github
+                    script:
+                        - git remote add github git@github.com:HEPTACOM/HeptacomShopwarePlatformAdminOpenAuth.git
+                        - git push --force github tag $BITBUCKET_TAG
     pull-requests:
         '**':
             -   step:
