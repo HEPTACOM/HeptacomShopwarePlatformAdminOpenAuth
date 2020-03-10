@@ -4,6 +4,7 @@ namespace Heptacom\AdminOpenAuth\Database;
 
 use Shopware\Core\Framework\DataAbstractionLayer\EntityDefinition;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\CreatedAtField;
+use Shopware\Core\Framework\DataAbstractionLayer\Field\DateTimeField;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\FkField;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\Flag\PrimaryKey;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\Flag\Required;
@@ -39,6 +40,7 @@ class UserTokenDefinition extends EntityDefinition
             (new IdField('id', 'id'))->addFlags(new PrimaryKey(), new Required()),
             (new LongTextField('refresh_token', 'refreshToken'))->addFlags(new Required()),
             new LongTextField('access_token', 'accessToken'),
+            new DateTimeField('expires_at', 'expiresAt'),
             new CreatedAtField(),
             new UpdatedAtField(),
 

@@ -23,12 +23,13 @@ class Login implements LoginInterface
         $this->loginsRepository = $loginsRepository;
     }
 
-    public function initiate(string $clientId, string $state, Context $context): string
+    public function initiate(string $clientId, ?string $userId, string $state, Context $context): string
     {
         $id = Uuid::randomHex();
         $this->loginsRepository->create([[
             'id' => $id,
             'clientId' => $clientId,
+            'userId' => $userId,
             'state' => $state,
         ]], $context);
 
@@ -70,5 +71,16 @@ class Login implements LoginInterface
         }
 
         return $logins->first();
+    }
+
+    public function getUser(string $state, Context $context): ?string
+    {
+        $criteria = new Criteria();
+        $criteria->addFilter(new EqualsFilter('state', $state));
+        /** @var LoginCollection $logins */
+        $logins = $this->loginsRepository->search($criteria, $context)->getEntities();
+        $first = $logins->first();
+
+        return $first === null ? null : $first->getUserId();
     }
 }

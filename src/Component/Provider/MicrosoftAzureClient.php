@@ -1,11 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace Heptacom\AdminOpenAuth\Provider;
+namespace Heptacom\AdminOpenAuth\Component\Provider;
 
-use Heptacom\AdminOpenAuth\Contract\ClientInterface;
+use Heptacom\AdminOpenAuth\Component\Contract\ClientInterface;
 use Heptacom\AdminOpenAuth\Contract\TokenPairFactoryInterface;
 use Heptacom\AdminOpenAuth\Struct\TokenPairStruct;
 use Heptacom\AdminOpenAuth\Struct\UserStruct;
+use League\OAuth2\Client\Provider\AbstractProvider;
 use TheNetworg\OAuth2\Client\Provider\Azure;
 
 class MicrosoftAzureClient implements ClientInterface
@@ -20,20 +21,10 @@ class MicrosoftAzureClient implements ClientInterface
      */
     private $azureClient;
 
-    /**
-     * @var bool
-     */
-    private $storeToken;
-
-    public function __construct(TokenPairFactoryInterface $tokenPairFactory, string $appId, string $appSecret, string $redirectUri, bool $storeToken)
+    public function __construct(TokenPairFactoryInterface $tokenPairFactory, array $options)
     {
         $this->tokenPairFactory = $tokenPairFactory;
-        $this->azureClient = new Azure([
-            'clientId' => $appId,
-            'clientSecret' => $appSecret,
-            'redirectUri' => $redirectUri,
-        ]);
-        $this->storeToken = $storeToken;
+        $this->azureClient = new Azure($options);
     }
 
     public function getLoginUrl(string $state): string
@@ -48,7 +39,7 @@ class MicrosoftAzureClient implements ClientInterface
 
         return (new UserStruct())
             ->setPrimaryKey($user['objectId'])
-            ->setTokenPair($this->storeToken ? $this->tokenPairFactory->fromLeagueToken($token) : null)
+            ->setTokenPair($this->tokenPairFactory->fromLeagueToken($token))
             ->setDisplayName($user['displayName'])
             ->setPrimaryEmail($user['mail'])
             ->setEmails([]);
@@ -59,5 +50,10 @@ class MicrosoftAzureClient implements ClientInterface
         return $this->tokenPairFactory->fromLeagueToken($this->azureClient->getAccessToken('refresh_token', [
             'refresh_token' => $refreshToken,
         ]));
+    }
+
+    public function getInnerClient(): AbstractProvider
+    {
+        return $this->azureClient;
     }
 }

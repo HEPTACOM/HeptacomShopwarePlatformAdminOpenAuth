@@ -7,5 +7,5 @@ use Shopware\Core\Framework\Context;
 
 interface TokenRefresherInterface
 {
-    public function refresh(string $clientId, string $userId, Context $context): ?TokenPairStruct;
+    public function refresh(string $clientId, string $userId, int $secondsValid, Context $context): ?TokenPairStruct;
 }

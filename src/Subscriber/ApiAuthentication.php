@@ -2,8 +2,8 @@
 
 namespace Heptacom\AdminOpenAuth\Subscriber;
 
+use Heptacom\AdminOpenAuth\Component\OpenAuth\OneTimeTokenGrant;
 use Heptacom\AdminOpenAuth\Contract\LoginInterface;
-use Heptacom\AdminOpenAuth\OpenAuth\OneTimeTokenGrant;
 use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
 use League\OAuth2\Server\Repositories\UserRepositoryInterface;

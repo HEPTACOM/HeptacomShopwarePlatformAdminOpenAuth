@@ -1,12 +1,13 @@
 <?php declare(strict_types=1);
 
-namespace Heptacom\AdminOpenAuth\Provider;
+namespace Heptacom\AdminOpenAuth\Component\Provider;
 
-use Heptacom\AdminOpenAuth\Contract\ClientInterface;
+use Heptacom\AdminOpenAuth\Component\Contract\ClientInterface;
+use Heptacom\AdminOpenAuth\Component\OpenAuth\Atlassian;
 use Heptacom\AdminOpenAuth\Contract\TokenPairFactoryInterface;
-use Heptacom\AdminOpenAuth\OpenAuth\Atlassian;
 use Heptacom\AdminOpenAuth\Struct\TokenPairStruct;
 use Heptacom\AdminOpenAuth\Struct\UserStruct;
+use League\OAuth2\Client\Provider\AbstractProvider;
 use Mrjoops\OAuth2\Client\Provider\JiraResourceOwner;
 
 class JiraClient implements ClientInterface
@@ -21,25 +22,10 @@ class JiraClient implements ClientInterface
      */
     private $jiraClient;
 
-    /**
-     * @var bool
-     */
-    private $storeToken;
-
-    public function __construct(
-        TokenPairFactoryInterface $tokenPairFactory,
-        string $appId,
-        string $appSecret,
-        string $redirectUri,
-        bool $storeToken
-    ) {
+    public function __construct(TokenPairFactoryInterface $tokenPairFactory, array $options)
+    {
         $this->tokenPairFactory = $tokenPairFactory;
-        $this->jiraClient = new Atlassian([
-            'clientId' => $appId,
-            'clientSecret' => $appSecret,
-            'redirectUri' => $redirectUri,
-        ], $storeToken);
-        $this->storeToken = $storeToken;
+        $this->jiraClient = new Atlassian($options);
     }
 
     public function getLoginUrl(string $state): string
@@ -49,22 +35,13 @@ class JiraClient implements ClientInterface
 
     public function getUser(string $state, string $code): UserStruct
     {
-        $scope = 'read:jira-user';
-
-        if ($this->storeToken) {
-            $scope .= ' offline_access';
-        }
-
-        $token = $this->jiraClient->getAccessToken('authorization_code', [
-            'code' => $code,
-            'scope' => $scope,
-        ]);
+        $token = $this->jiraClient->getAccessToken('authorization_code', ['code' => $code]);
         /** @var JiraResourceOwner $user */
         $user = $this->jiraClient->getResourceOwner($token);
 
         return (new UserStruct())
             ->setPrimaryKey($user->getId())
-            ->setTokenPair($this->storeToken ? $this->tokenPairFactory->fromLeagueToken($token) : null)
+            ->setTokenPair($this->tokenPairFactory->fromLeagueToken($token))
             ->setDisplayName($user->getName())
             ->setPrimaryEmail($user->getEmail())
             ->setEmails([]);
@@ -75,5 +52,10 @@ class JiraClient implements ClientInterface
         return $this->tokenPairFactory->fromLeagueToken($this->jiraClient->getAccessToken('refresh_token', [
             'refresh_token' => $refreshToken,
         ]));
+    }
+
+    public function getInnerClient(): AbstractProvider
+    {
+        return $this->jiraClient;
     }
 }

@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Heptacom\AdminOpenAuth\OpenAuth;
+namespace Heptacom\AdminOpenAuth\Component\OpenAuth;
 
 use Heptacom\AdminOpenAuth\Contract\LoginInterface;
 use Heptacom\AdminOpenAuth\Database\LoginEntity;
@@ -14,7 +14,6 @@ use League\OAuth2\Server\RequestEvent;
 use Psr\Http\Message\ServerRequestInterface;
 use Shopware\Core\Framework\Api\OAuth\User\User;
 use Shopware\Core\Framework\Context;
-use Shopware\Core\Framework\Uuid\Uuid;
 
 class OneTimeTokenGrant extends PasswordGrant
 {

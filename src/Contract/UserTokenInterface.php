@@ -3,13 +3,12 @@
 namespace Heptacom\AdminOpenAuth\Contract;
 
 use Heptacom\AdminOpenAuth\Database\UserTokenEntity;
+use Heptacom\AdminOpenAuth\Struct\TokenPairStruct;
 use Shopware\Core\Framework\Context;
 
 interface UserTokenInterface
 {
-    public function setRefreshToken(string $userId, string $clientId, string $refreshToken, Context $context): string;
-
-    public function setAccessToken(string $userId, string $clientId, string $accessToken, Context $context): string;
+    public function setToken(string $userId, string $clientId, TokenPairStruct $token, Context $context): string;
 
     public function getToken(string $clientId, string $userId, Context $context): ?UserTokenEntity;
 }

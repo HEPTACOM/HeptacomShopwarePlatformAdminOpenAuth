@@ -24,8 +24,6 @@ services:
             - '../../Database/*Entity.php'
             - '../../Exception/*'
             - '../../Migration/*'
-            - '../../OpenAuth/*'
-            - '../../Provider/*Client.php'
             - '../../Resources/*'
 
     Heptacom\AdminOpenAuth\Database\ClientDefinition:
@@ -44,10 +42,10 @@ services:
         tags:
             - { name: shopware.entity.definition , entity: 'heptacom_admin_open_auth_user_token' }
 
-    Heptacom\AdminOpenAuth\OpenAuth\OneTimeTokenClientRepository:
+    Heptacom\AdminOpenAuth\Service\OpenAuth\OneTimeTokenClientRepository:
         decorates: Shopware\Core\Framework\Api\OAuth\ClientRepository
         arguments:
-            - '@Heptacom\AdminOpenAuth\OpenAuth\OneTimeTokenClientRepository.inner'
+            - '@Heptacom\AdminOpenAuth\Service\OpenAuth\OneTimeTokenClientRepository.inner'
     Heptacom\AdminOpenAuth\OpenAuth\OneTimeTokenScopeRepository:
         decorates: Shopware\Core\Framework\Api\OAuth\ScopeRepository
         arguments:
@@ -59,7 +57,7 @@ services:
             - '@Shopware\Core\Framework\Api\OAuth\UserRepository'
             - '@Shopware\Core\Framework\Api\OAuth\RefreshTokenRepository'
 
-    Heptacom\AdminOpenAuth\Service\ClientLoader:
+    Heptacom\AdminOpenAuth\Service\ProviderRepository:
         arguments:
             - !tagged_iterator heptacom_admin_open_auth.client_provider
     Heptacom\AdminOpenAuth\Service\UserResolver:

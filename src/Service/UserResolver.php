@@ -2,6 +2,7 @@
 
 namespace Heptacom\AdminOpenAuth\Service;
 
+use Heptacom\AdminOpenAuth\Contract\ClientFeatureCheckerInterface;
 use Heptacom\AdminOpenAuth\Contract\LoginInterface;
 use Heptacom\AdminOpenAuth\Contract\UserEmailInterface;
 use Heptacom\AdminOpenAuth\Contract\UserKeyInterface;
@@ -12,6 +13,7 @@ use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsAnyFilter;
+use Shopware\Core\Framework\DataAbstractionLayer\Search\IdSearchResult;
 use Shopware\Core\Framework\Util\Random;
 use Shopware\Core\System\User\Service\UserProvisioner;
 
@@ -47,13 +49,19 @@ class UserResolver implements UserResolverInterface
      */
     private $userToken;
 
+    /**
+     * @var ClientFeatureCheckerInterface
+     */
+    private $clientFeatureChecker;
+
     public function __construct(
         EntityRepositoryInterface $userRepository,
         UserProvisioner $userProvisioner,
         LoginInterface $login,
         UserEmailInterface $userEmail,
         UserKeyInterface $userKey,
-        UserTokenInterface $userToken
+        UserTokenInterface $userToken,
+        ClientFeatureCheckerInterface $clientFeatureChecker
     ) {
         $this->userRepository = $userRepository;
         $this->userProvisioner = $userProvisioner;
@@ -61,11 +69,12 @@ class UserResolver implements UserResolverInterface
         $this->userEmail = $userEmail;
         $this->userKey = $userKey;
         $this->userToken = $userToken;
+        $this->clientFeatureChecker = $clientFeatureChecker;
     }
 
     public function resolve(UserStruct $user, string $state, string $clientId, Context $context): void
     {
-        $userId = $this->findUserId($user, $clientId, $context);
+        $userId = $this->login->getUser($state, $context) ?? $this->findUserId($user, $clientId, $context);
 
         if ($userId === null) {
             $password = Random::getAlphanumericString(254);
@@ -83,13 +92,10 @@ class UserResolver implements UserResolverInterface
         string $clientId,
         Context $context
     ): void {
-        if ($tokenPair = $user->getTokenPair()) {
+        if ($this->clientFeatureChecker->canStoreUserTokens($clientId, $context)
+            && ($tokenPair = $user->getTokenPair()) !== null) {
             if (!empty($tokenPair->getRefreshToken())) {
-                $this->userToken->setRefreshToken($userId, $clientId, $tokenPair->getRefreshToken(), $context);
-            }
-
-            if (!empty($tokenPair->getAccessToken())) {
-                $this->userToken->setAccessToken($userId, $clientId, $tokenPair->getAccessToken(), $context);
+                $this->userToken->setToken($userId, $clientId, $tokenPair, $context);
             }
         }
 
@@ -119,6 +125,11 @@ class UserResolver implements UserResolverInterface
         $criteria = new Criteria();
         $criteria->addFilter(new EqualsAnyFilter('email', $emails));
 
-        return $this->userRepository->searchIds($criteria, $context)->firstId();
+        /** @var IdSearchResult $result */
+        $result = $context->disableCache(function (Context $cacheless) use ($criteria) {
+            return $this->userRepository->searchIds($criteria, $cacheless);
+        });
+
+        return $result->firstId();
     }
 }

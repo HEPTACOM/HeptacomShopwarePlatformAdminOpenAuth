@@ -1,0 +1,53 @@
+{
+    "heptacom-admin-open-auth-client": {
+        "module": {
+            "description": "Erlaubt die Anmeldung über OAuth Anbieter",
+            "name": "HEPTACOM Open Authentication Login",
+            "title": "OAuth Anmeldung"
+        },
+        "pages": {
+            "create": {
+                "actions": {
+                    "create": "Auswählen"
+                }
+            },
+            "edit": {
+                "title": "Anbieter bearbeiter",
+                "actions": {
+                    "cancel": "Abbrechen",
+                    "delete": "Löschen",
+                    "save": "Speichern"
+                },
+                "fields": {
+                    "name": "Name",
+                    "active": "Aktiv",
+                    "login": "Als Anmeldung verwenden",
+                    "connect": "Zum Verknüpfen verwenden",
+                    "storeUserToken": "Benutzerberechtigungsschlüssel speichern"
+                },
+                "modals": {
+                    "delete": {
+                        "cancel": "Abbrechen",
+                        "confirm": "Anbieter löschen",
+                        "explanation": "Dieser Vorgang ist unwiderruflich. Bei Löschung funktionieren keine Anmeldungen, Verknüpfungen oder Anfragen mehr zu diesem Anbieter",
+                        "title": "Anbieter löschen",
+                        "warning": "Sind Sie sich sicher, dass Sie diese Anbieterkonfiguration löschen wollen?"
+                    }
+                }
+            },
+            "listing": {
+                "actions": {
+                    "create": "Erstellen",
+                    "refresh": "Neuladen"
+                },
+                "columns": {
+                    "active": "Status",
+                    "createdAt": "Erstellt",
+                    "name": "Name",
+                    "provider": "Anbieter",
+                    "users": "Benutzer"
+                }
+            }
+        }
+    }
+}

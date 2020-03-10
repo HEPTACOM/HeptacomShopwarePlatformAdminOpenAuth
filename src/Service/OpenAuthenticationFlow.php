@@ -2,14 +2,17 @@
 
 namespace Heptacom\AdminOpenAuth\Service;
 
+use Heptacom\AdminOpenAuth\Contract\ClientFeatureCheckerInterface;
 use Heptacom\AdminOpenAuth\Contract\ClientLoaderInterface;
 use Heptacom\AdminOpenAuth\Contract\LoginInterface;
 use Heptacom\AdminOpenAuth\Contract\OpenAuthenticationFlowInterface;
 use Heptacom\AdminOpenAuth\Contract\UserResolverInterface;
 use Heptacom\AdminOpenAuth\Database\ClientEntity;
+use Heptacom\AdminOpenAuth\Exception\LoadClientException;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
+use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
 use Shopware\Core\Framework\Uuid\Uuid;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
@@ -41,24 +44,47 @@ class OpenAuthenticationFlow implements OpenAuthenticationFlowInterface
      */
     private $router;
 
+    /**
+     * @var ClientFeatureCheckerInterface
+     */
+    private $clientFeatureChecker;
+
     public function __construct(
         LoginInterface $login,
         ClientLoaderInterface $clientLoader,
         UserResolverInterface $userResolver,
         EntityRepositoryInterface $clientsRepository,
-        RouterInterface $router
+        RouterInterface $router,
+        ClientFeatureCheckerInterface $clientFeatureChecker
     ) {
         $this->login = $login;
         $this->clientLoader = $clientLoader;
         $this->userResolver = $userResolver;
         $this->clientsRepository = $clientsRepository;
         $this->router = $router;
+        $this->clientFeatureChecker = $clientFeatureChecker;
     }
 
     public function getRedirectUrl(string $clientId, Context $context): string
     {
+        if (!$this->clientFeatureChecker->canLogin($clientId, $context)) {
+            throw new LoadClientException('Client can not login', $clientId);
+        }
+
         $state = Uuid::randomHex();
-        $this->login->initiate($clientId, $state, $context);
+        $this->login->initiate($clientId, null, $state, $context);
+
+        return $this->clientLoader->load($clientId, $context)->getLoginUrl($state);
+    }
+
+    public function getRedirectUrlToConnect(string $clientId, string $userId, Context $context): string
+    {
+        if (!$this->clientFeatureChecker->canConnect($clientId, $context)) {
+            throw new LoadClientException('Client can not connect', $clientId);
+        }
+
+        $state = Uuid::randomHex();
+        $this->login->initiate($clientId, $userId, $state, $context);
 
         return $this->clientLoader->load($clientId, $context)->getLoginUrl($state);
     }
@@ -71,8 +97,14 @@ class OpenAuthenticationFlow implements OpenAuthenticationFlowInterface
 
     public function getLoginRoutes(Context $context): array
     {
+        $criteria = new Criteria();
+        $criteria->addFilter(
+            new EqualsFilter('active', true),
+            new EqualsFilter('login', true)
+        );
+
         return array_values($this->clientsRepository
-            ->search(new Criteria(), $context)
+            ->search($criteria, $context)
             ->getEntities()
             ->map(function (ClientEntity $client): array {
                 return [

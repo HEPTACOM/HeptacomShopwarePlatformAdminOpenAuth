@@ -2,8 +2,15 @@
 
 namespace Heptacom\AdminOpenAuth\Controller;
 
+use Heptacom\AdminOpenAuth\Contract\ClientLoaderInterface;
 use Heptacom\AdminOpenAuth\Contract\OpenAuthenticationFlowInterface;
+use Heptacom\AdminOpenAuth\Contract\ProviderRepositoryInterface;
+use Heptacom\AdminOpenAuth\Database\ClientDefinition;
+use Shopware\Core\Framework\Api\Context\AdminApiSource;
+use Shopware\Core\Framework\Api\Response\ResponseFactoryInterface;
 use Shopware\Core\Framework\Context;
+use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
+use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\Routing\Annotation\RouteScope;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -78,5 +85,60 @@ class AdministrationController extends AbstractController
     public function clientRoutes(Context $context): JsonResponse
     {
         return JsonResponse::create(['clients' => $this->flow->getLoginRoutes($context)]);
+    }
+
+    /**
+     * @Route(
+     *     methods={"GET"},
+     *     name="api.heptacom.admin_open_auth.remote_connect",
+     *     path="/api/v{version}/_admin/open-auth/{clientId}/connect"
+     * )
+     */
+    public function remoteConnect(string $clientId, Context $context): Response
+    {
+        /** @var AdminApiSource $adminApiSource */
+        $adminApiSource = $context->getSource();
+
+        return JsonResponse::create([
+            'target' => $this->flow->getRedirectUrlToConnect($clientId, $adminApiSource->getUserId(), $context),
+        ]);
+    }
+
+    /**
+     * @Route(
+     *     methods={"GET"},
+     *     name="api.heptacom.admin_open_auth.provider.list",
+     *     path="/api/v{version}/_action/heptacom_admin_open_auth_provider/list"
+     * )
+     */
+    public function providerList(ProviderRepositoryInterface $providerRepository): Response
+    {
+        return JsonResponse::create([
+            'data' => $providerRepository->getProviderKeys(),
+        ]);
+    }
+
+    /**
+     * @Route(
+     *     methods={"POST"},
+     *     name="api.heptacom.admin_open_auth.provider.factorize",
+     *     path="/api/v{version}/_action/heptacom_admin_open_auth_provider/factorize"
+     * )
+     */
+    public function createClient(
+        Request $request,
+        ResponseFactoryInterface $responseFactory,
+        ClientDefinition $definition,
+        EntityRepositoryInterface $clientsRepository,
+        ClientLoaderInterface $clientLoader,
+        Context $context
+    ): Response {
+        $providerKey = $request->get('provider_key');
+        $clientId = $clientLoader->create($providerKey, $context);
+        $criteria = new Criteria();
+        $criteria->setIds([$clientId]);
+        $entity = $clientsRepository->search($criteria, $context)->first();
+
+        return $responseFactory->createDetailResponse($criteria, $entity, $definition, $request, $context, false);
     }
 }

@@ -1,0 +1,17 @@
+{
+    "sw-profile-index": {
+        "titleHeptacomAdminOpenAuthCard": "OAuth",
+        "heptacomAdminOpenAuth": {
+            "userKeys": {
+                "columns": {
+                    "provider": "Provider",
+                    "createdAt": "Connected at"
+                },
+                "actions": {
+                    "connect": "Connect",
+                    "revoke": "Disconnect"
+                }
+            }
+        }
+    }
+}

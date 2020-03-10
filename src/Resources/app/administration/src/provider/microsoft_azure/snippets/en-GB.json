@@ -1,0 +1,15 @@
+{
+    "heptacomAdminOpenAuthClient": {
+        "providers": {
+            "microsoft_azure": "Microsoft Azure"
+        },
+        "providerFields": {
+            "microsoft_azure": {
+                "additionalScopes": "Application scopes",
+                "clientId": "Application identifier",
+                "clientSecret": "Application secret",
+                "redirectUri": "Redirect URL"
+            }
+        }
+    }
+}
