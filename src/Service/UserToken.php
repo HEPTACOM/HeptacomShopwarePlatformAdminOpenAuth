@@ -35,12 +35,17 @@ class UserToken implements UserTokenInterface
 
         if ($exists->getTotal() > 0) {
             $id = $exists->firstId();
-            $this->userTokensRepository->update([[
+            $payload = [
                 'id' => $id,
-                'refreshToken' => $token->getRefreshToken(),
                 'accessToken' => $token->getAccessToken(),
                 'expiresAt' => $token->getExpiresAt(),
-            ]], $context);
+            ];
+
+            if ($token->getRefreshToken() !== null) {
+                $payload['refreshToken'] = $token->getRefreshToken();
+            }
+
+            $this->userTokensRepository->update([$payload], $context);
 
             return $id;
         }
