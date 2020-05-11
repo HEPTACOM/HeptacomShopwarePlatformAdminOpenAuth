@@ -1,5 +1,6 @@
 # Open Authentication login for shopware platform administration
-#### Shopware plugin to allow multiple
+## This is part of HEPTACOM solutions for medium and large enterprise
+### Shopware plugin to allow external login provider in the administration
 
 ![Packagist Version](https://img.shields.io/packagist/v/heptacom/shopware-platform-admin-open-auth?style=flat-square)
 ![PHP from Packagist](https://img.shields.io/packagist/php-v/heptacom/shopware-platform-admin-open-auth?style=flat-square)
