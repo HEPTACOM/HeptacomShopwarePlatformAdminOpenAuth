@@ -4,6 +4,7 @@
 
 * Fix typo in administration template registration
 * Use make manage project
+* Change license from MIT to Apache 2.0
 
 ## 1.0.2
 
