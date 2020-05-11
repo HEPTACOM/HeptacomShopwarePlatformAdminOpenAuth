@@ -38,14 +38,6 @@
         "friendsofphp/php-cs-fixer": "^2.16",
         "kubawerlos/php-cs-fixer-custom-fixers": "^1.17"
     },
-    "scripts": {
-        "php-lint": [
-            "php-cs-fixer fix --allow-risky=yes --dry-run"
-        ],
-        "php-lint-fix": [
-            "php-cs-fixer fix --allow-risky=yes"
-        ]
-    },
     "extra": {
         "shopware-plugin-class": "Heptacom\\AdminOpenAuth\\HeptacomAdminOpenAuth",
         "label": {

@@ -3,6 +3,7 @@
 ## 1.0.3
 
 * Fix typo in administration template registration
+* Use make manage project
 
 ## 1.0.2
 

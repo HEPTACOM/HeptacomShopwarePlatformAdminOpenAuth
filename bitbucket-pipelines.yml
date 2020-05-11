@@ -21,5 +21,4 @@ pipelines:
                     name: Lint php
                     image: heptacom/shopware-5-pipeline:php72-latest
                     script:
-                        - composer install
-                        - composer run php-lint
+                        - make cs
