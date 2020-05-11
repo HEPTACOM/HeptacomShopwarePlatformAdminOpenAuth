@@ -6,8 +6,8 @@ $finder = PhpCsFixer\Finder::create()
 
 return PhpCsFixer\Config::create()
     ->registerCustomFixers(new PhpCsFixerCustomFixers\Fixers())
+    ->setCacheFile(__DIR__ . '/.build/.php_cs.cache')
     ->setRiskyAllowed(true)
-    ->setUsingCache(false)
     ->setRules([
         '@PSR2' => true,
         '@Symfony' => true,

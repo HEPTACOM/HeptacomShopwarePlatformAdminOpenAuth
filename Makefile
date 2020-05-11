@@ -6,14 +6,17 @@ clean:
 
 it: csfix
 
-cs: vendor
+cs: vendor .build
 	vendor/bin/php-cs-fixer fix --dry-run --config=.php_cs.php --diff --verbose
 
-csfix: vendor
+csfix: vendor .build
 	vendor/bin/php-cs-fixer fix --config=.php_cs.php --diff --verbose
 
 vendor: composer.json
 	composer validate
 	composer install
+
+.build:
+	mkdir .build
 
 composer.lock: vendor
