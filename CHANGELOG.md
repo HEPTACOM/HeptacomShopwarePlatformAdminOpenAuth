@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.3
+
+* Fix typo in administration template registration
+
 ## 1.0.2
 
 * Fix missing settings item in administration
