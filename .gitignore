@@ -7,3 +7,6 @@
 # Ignore package managers
 /vendor
 composer.lock
+
+# Ignore build
+/.build

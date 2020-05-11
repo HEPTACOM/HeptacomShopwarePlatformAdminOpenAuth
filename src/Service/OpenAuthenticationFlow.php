@@ -103,7 +103,7 @@ class OpenAuthenticationFlow implements OpenAuthenticationFlowInterface
             new EqualsFilter('login', true)
         );
 
-        return array_values($this->clientsRepository
+        return \array_values($this->clientsRepository
             ->search($criteria, $context)
             ->getEntities()
             ->map(function (ClientEntity $client): array {

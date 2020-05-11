@@ -13,6 +13,6 @@ class TokenPairFactory implements TokenPairFactoryInterface
         return (new TokenPairStruct())
             ->setAccessToken($token->getToken())
             ->setRefreshToken($token->getRefreshToken())
-            ->setExpiresAt($token->getExpires() ? date_create()->setTimestamp($token->getExpires()) : null);
+            ->setExpiresAt($token->getExpires() ? \date_create()->setTimestamp($token->getExpires()) : null);
     }
 }
