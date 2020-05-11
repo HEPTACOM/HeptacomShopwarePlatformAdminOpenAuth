@@ -52,7 +52,7 @@ class JiraConfigurationResolverFactory implements ProviderConfigurationResolverF
                 $scopes[] = 'offline_access';
             }
 
-            return array_unique(array_merge($scopes, [
+            return \array_unique(\array_merge($scopes, [
                 'read:me',
                 'read:jira-user',
             ]));

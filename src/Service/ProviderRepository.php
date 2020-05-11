@@ -18,7 +18,7 @@ class ProviderRepository implements ProviderRepositoryInterface
      */
     public function __construct(Traversable $providers)
     {
-        $this->providers = iterator_to_array($providers);
+        $this->providers = \iterator_to_array($providers);
     }
 
     public function getProviders(): Traversable
@@ -43,6 +43,6 @@ class ProviderRepository implements ProviderRepositoryInterface
             $keys[] = $provider->provides();
         }
 
-        return array_values(array_unique($keys));
+        return \array_values(\array_unique($keys));
     }
 }

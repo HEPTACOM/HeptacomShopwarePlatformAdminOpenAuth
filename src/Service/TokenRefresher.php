@@ -48,7 +48,7 @@ class TokenRefresher implements TokenRefresherInterface
 
         if ($token instanceof UserTokenEntity && !empty($token->getRefreshToken())) {
             if ($token->getExpiresAt() !== null) {
-                $now = date_create();
+                $now = \date_create();
                 $expirationDelta = $token->getExpiresAt()->getTimestamp() - $now->getTimestamp();
 
                 if ($expirationDelta > $secondsValid && $expirationDelta > 0) {

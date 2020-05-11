@@ -67,7 +67,7 @@ class Login implements LoginInterface
             $deletePayload = $logins->map(function (LoginEntity $login): array {
                 return ['id' => $login->getId()];
             });
-            $this->loginsRepository->delete(array_values($deletePayload), $context);
+            $this->loginsRepository->delete(\array_values($deletePayload), $context);
         }
 
         return $logins->first();

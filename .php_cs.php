@@ -31,6 +31,12 @@ return PhpCsFixer\Config::create()
         'no_superfluous_phpdoc_tags' => true,
         'php_unit_test_case_static_method_calls' => true,
         'declare_strict_types' => true,
+        'native_function_invocation' => [
+            'strict' => true,
+        ],
+        'native_constant_invocation' => [
+            'scope' => 'all',
+        ],
         PhpCsFixerCustomFixers\Fixer\NoUselessCommentFixer::name() => true,
         PhpCsFixerCustomFixers\Fixer\NoUnneededConcatenationFixer::name() => true,
         PhpCsFixerCustomFixers\Fixer\SingleSpaceAfterStatementFixer::name() => true,
