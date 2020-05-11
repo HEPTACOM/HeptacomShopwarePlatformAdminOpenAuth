@@ -3,6 +3,7 @@
 clean:
 	[[ ! -f composer.lock ]] || rm composer.lock
 	[[ ! -d vendor ]] || rm -rf vendor
+	[[ ! -d .build ]] || rm -rf .build
 
 it: csfix
 
