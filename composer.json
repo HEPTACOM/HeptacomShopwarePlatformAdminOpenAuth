@@ -1,6 +1,6 @@
 {
     "name": "heptacom/shopware-platform-admin-open-auth",
-    "license": "proprietary",
+    "license": "Apache-2.0",
     "description": "Shopware plugin to allow OAuth providers to provide admin logins",
     "type": "shopware-platform-plugin",
     "version": "1.0.2",
