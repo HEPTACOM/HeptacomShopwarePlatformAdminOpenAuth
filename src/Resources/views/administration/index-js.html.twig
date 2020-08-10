@@ -3,6 +3,10 @@
         text-align: center;
         margin-top: 20px;
     }
+    
+    .sw-button.sw-button--ghost:focus {
+        background-color: #e3f3ff;
+    }
 </style>
 <script{% if cspNonce is defined %} nonce="{{ cspNonce }}" {% endif %}>
     const clientRoutes = {{ url('administration.heptacom.admin_open_auth.routes')|json_encode|raw }};
