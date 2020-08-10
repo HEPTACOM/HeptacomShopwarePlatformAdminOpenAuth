@@ -5,6 +5,7 @@
 * Lizensierungsmodell von MIT zu Apache 2.0 geändert
 * Technischer Name vom Plugin angepasst um Community Store Regeln zu folgen
 * Pluginkompatibilität zu einer gravierenden Änderung in 6.2.3 behoben (Issue NEXT-9240)
+* Loginknöpfe sehen identisch zu anderen Knöpfen im Loginbereich aus, wenn diese fokussiert werden
 
 # 1.0.2
 
