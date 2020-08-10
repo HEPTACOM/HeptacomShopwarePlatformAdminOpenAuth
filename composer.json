@@ -52,6 +52,14 @@
         "description": {
             "de-DE": "Verbindet OAuth Anbieter zum Administrationslogin",
             "en-GB": "Connects oauth providers to admin login"
+        },
+        "manufacturerLink": {
+            "de-DE": "https://www.heptacom.de/",
+            "en-GB": "https://www.heptacom.de/"
+        },
+        "supportLink": {
+            "de-DE": "https://www.heptacom.de/kontakt/",
+            "en-GB": "https://www.heptacom.de/kontakt/"
         }
     }
 }
