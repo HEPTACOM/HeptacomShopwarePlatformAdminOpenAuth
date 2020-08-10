@@ -1,3 +1,3 @@
-{% set heptacomAdminOpenAuthParent %}{% include '@HeptacomAdminOpenAuth/administration/index-base.html.twig' %}{% endset %}
-{% set heptacomAdminOpenAuthScript %}{% include '@HeptacomAdminOpenAuth/administration/index-js.html.twig' %}{% endset %}
+{% set heptacomAdminOpenAuthParent %}{% include '@KskHeptacomAdminOpenAuth/administration/index-base.html.twig' %}{% endset %}
+{% set heptacomAdminOpenAuthScript %}{% include '@KskHeptacomAdminOpenAuth/administration/index-js.html.twig' %}{% endset %}
 {{ heptacomAdminOpenAuthParent|replace({'</body>': heptacomAdminOpenAuthScript})|raw }}

@@ -5,7 +5,7 @@ namespace Heptacom\AdminOpenAuth;
 use Shopware\Core\Framework\Plugin;
 use Shopware\Core\Framework\Plugin\Context\UninstallContext;
 
-class HeptacomAdminOpenAuth extends Plugin
+class KskHeptacomAdminOpenAuth extends Plugin
 {
     public function uninstall(UninstallContext $uninstallContext): void
     {

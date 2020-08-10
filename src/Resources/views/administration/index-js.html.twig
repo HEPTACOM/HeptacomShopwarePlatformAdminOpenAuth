@@ -4,7 +4,7 @@
         margin-top: 20px;
     }
 </style>
-<script>
+<script{% if cspNonce is defined %} nonce="{{ cspNonce }}" {% endif %}>
     const clientRoutes = {{ url('administration.heptacom.admin_open_auth.routes')|json_encode|raw }};
 
     const waitForLoginForm = function() {

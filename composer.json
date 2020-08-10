@@ -1,6 +1,6 @@
 {
     "name": "heptacom/shopware-platform-admin-open-auth",
-    "license": "Apache-2.0",
+    "license": "proprietary",
     "description": "Shopware plugin to allow OAuth providers to provide admin logins",
     "type": "shopware-platform-plugin",
     "version": "1.0.2",
@@ -32,14 +32,15 @@
         "league/oauth2-client": "~2.0",
         "thenetworg/oauth2-azure": "^1.4",
         "mrjoops/oauth2-jira": "^0.2.4",
-        "shopware/administration": ">= 6.1.3"
+        "shopware/administration": ">= 6.2 <6.4",
+        "shopware/core": ">= 6.2 <6.4"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.16",
         "kubawerlos/php-cs-fixer-custom-fixers": "^1.17"
     },
     "extra": {
-        "shopware-plugin-class": "Heptacom\\AdminOpenAuth\\HeptacomAdminOpenAuth",
+        "shopware-plugin-class": "Heptacom\\AdminOpenAuth\\KskHeptacomAdminOpenAuth",
         "label": {
             "de-DE": "OAuth Login für Administration",
             "en-GB": "OAuth login for administration"

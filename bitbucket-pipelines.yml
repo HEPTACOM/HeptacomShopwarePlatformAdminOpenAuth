@@ -20,5 +20,15 @@ pipelines:
             -   step:
                     name: Lint php
                     image: heptacom/shopware-5-pipeline:php72-latest
+                    caches:
+                        - composer
+                    artifacts:
+                        - vendor/**
+                        - composer.lock
                     script:
                         - make cs
+            -   step:
+                    name: Lint plugins store readiness
+                    image: heptacom/shopware-5-pipeline:php72-latest
+                    script:
+                        - make releasecheck
