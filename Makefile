@@ -31,7 +31,7 @@ vendor: composer.json
 	mkdir .build
 
 frosh-plugin-upload: .build
-	[[ -f .build/frosh-plugin-upload ]] || php -r 'copy("https://github.com/FriendsOfShopware/FroshPluginUploader/releases/download/0.2.2/frosh-plugin-upload.phar", ".build/frosh-plugin-upload");'
+	[[ -f .build/frosh-plugin-upload ]] || php -r 'copy("https://github.com/FriendsOfShopware/FroshPluginUploader/releases/download/0.3.2/frosh-plugin-upload.phar", ".build/frosh-plugin-upload");'
 	[[ -x .build/frosh-plugin-upload ]] || chmod +x .build/frosh-plugin-upload
 
 composer.lock: vendor
