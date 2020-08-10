@@ -1,8 +1,9 @@
-# 1.0.3
+# 2.0.0
 
 * Namen für korrekte Administrationsanpassung geändert
 * Make als Werkzeug für Automatisierte Vorgänge eingerichtet
 * Lizensierungsmodell von MIT zu Apache 2.0 geändert
+* Technischer Name vom Plugin angepasst um Community Store Regeln zu folgen
 
 # 1.0.2
 

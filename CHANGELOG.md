@@ -1,8 +1,9 @@
-# 1.0.3
+# 2.0.0
 
 * Fix typo in administration template registration
 * Use make manage project
 * Change license from MIT to Apache 2.0
+* Rename technical name of plugin to match store rules
 
 # 1.0.2
 

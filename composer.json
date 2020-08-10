@@ -39,7 +39,7 @@
         "kubawerlos/php-cs-fixer-custom-fixers": "^1.17"
     },
     "extra": {
-        "shopware-plugin-class": "Heptacom\\AdminOpenAuth\\HeptacomAdminOpenAuth",
+        "shopware-plugin-class": "Heptacom\\AdminOpenAuth\\KskHeptacomAdminOpenAuth",
         "label": {
             "de-DE": "OAuth Login für Administration",
             "en-GB": "OAuth login for administration"
