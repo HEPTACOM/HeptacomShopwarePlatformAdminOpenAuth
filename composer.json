@@ -20,6 +20,10 @@
         {
             "name": "Joshua Behrens",
             "role": "Developer"
+        },
+        {
+            "name": "Julian Krzefski",
+            "role": "Developer"
         }
     ],
     "autoload": {
