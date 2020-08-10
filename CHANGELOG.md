@@ -4,6 +4,7 @@
 * Use make manage project
 * Change license from MIT to Apache 2.0
 * Rename technical name of plugin to match store rules
+* Make plugin compatible to a breaking change in 6.2.3 behoben (Issue NEXT-9240)
 
 # 1.0.2
 

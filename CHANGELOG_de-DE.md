@@ -4,6 +4,7 @@
 * Make als Werkzeug für Automatisierte Vorgänge eingerichtet
 * Lizensierungsmodell von MIT zu Apache 2.0 geändert
 * Technischer Name vom Plugin angepasst um Community Store Regeln zu folgen
+* Pluginkompatibilität zu einer gravierenden Änderung in 6.2.3 behoben (Issue NEXT-9240)
 
 # 1.0.2
 
