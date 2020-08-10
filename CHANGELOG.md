@@ -1,22 +1,20 @@
-# Changelog
-
-## 1.0.3
+# 1.0.3
 
 * Fix typo in administration template registration
 * Use make manage project
 * Change license from MIT to Apache 2.0
 
-## 1.0.2
+# 1.0.2
 
 * Fix missing settings item in administration
 * Fix error on token refresh when no new refresh token is provided
 
-## 1.0.1
+# 1.0.1
 
 * Fix bug where migrations were deleted on uninstallation
 * Fix login bug as wrong DAL field keys were used 
 
-## 1.0.0
+# 1.0.0
 
 * Add flags to enable clients for logging in and connecting
 * Add connect button in administration user profile
