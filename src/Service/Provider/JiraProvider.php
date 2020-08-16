@@ -2,8 +2,8 @@
 
 namespace Heptacom\AdminOpenAuth\Service\Provider;
 
-use Heptacom\OpenAuth\Client\Contract\ClientContract;
 use Heptacom\AdminOpenAuth\Component\Provider\JiraClient;
+use Heptacom\OpenAuth\Client\Contract\ClientContract;
 use Heptacom\OpenAuth\Client\Contract\TokenPairFactoryContract;
 use Heptacom\OpenAuth\ClientProvider\Contract\ClientProviderContract;
 use Symfony\Component\OptionsResolver\Options;

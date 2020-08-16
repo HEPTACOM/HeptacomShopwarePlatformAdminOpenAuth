@@ -2,12 +2,12 @@
 
 namespace Heptacom\AdminOpenAuth\Service;
 
-use Heptacom\OpenAuth\Client\Contract\ClientContract;
 use Heptacom\AdminOpenAuth\Contract\ClientLoaderInterface;
 use Heptacom\AdminOpenAuth\Database\ClientCollection;
 use Heptacom\AdminOpenAuth\Database\ClientEntity;
 use Heptacom\AdminOpenAuth\Exception\LoadClientClientNotFoundException;
 use Heptacom\AdminOpenAuth\Exception\LoadClientException;
+use Heptacom\OpenAuth\Client\Contract\ClientContract;
 use Heptacom\OpenAuth\Client\Contract\ClientFactoryContract;
 use Heptacom\OpenAuth\Client\Exception\FactorizeClientException;
 use Heptacom\OpenAuth\ClientProvider\Contract\ClientProviderContract;
