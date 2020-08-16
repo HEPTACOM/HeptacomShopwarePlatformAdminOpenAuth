@@ -5,8 +5,8 @@ namespace Heptacom\AdminOpenAuth\Service\Provider;
 use Heptacom\AdminOpenAuth\Component\Contract\ClientInterface;
 use Heptacom\AdminOpenAuth\Component\Provider\MicrosoftAzureClient;
 use Heptacom\AdminOpenAuth\Contract\ProviderInterface;
-use Heptacom\AdminOpenAuth\Contract\TokenPairFactoryInterface;
 use Heptacom\AdminOpenAuth\Exception\ProvideClientInvalidConfigurationException;
+use Heptacom\OpenAuth\Client\Contract\TokenPairFactoryContract;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -16,7 +16,7 @@ use Throwable;
 class MicrosoftAzureProvider implements ProviderInterface
 {
     /**
-     * @var TokenPairFactoryInterface
+     * @var TokenPairFactoryContract
      */
     private $tokenPairFactory;
 
@@ -36,7 +36,7 @@ class MicrosoftAzureProvider implements ProviderInterface
     private $configurationResolverFactory;
 
     public function __construct(
-        TokenPairFactoryInterface $tokenPairFactory,
+        TokenPairFactoryContract $tokenPairFactory,
         EntityRepositoryInterface $clientsRepository,
         RouterInterface $router,
         MicrosoftAzureConfigurationResolverFactory $configurationResolverFactory

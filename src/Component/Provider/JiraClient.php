@@ -4,7 +4,7 @@ namespace Heptacom\AdminOpenAuth\Component\Provider;
 
 use Heptacom\AdminOpenAuth\Component\Contract\ClientInterface;
 use Heptacom\AdminOpenAuth\Component\OpenAuth\Atlassian;
-use Heptacom\AdminOpenAuth\Contract\TokenPairFactoryInterface;
+use Heptacom\OpenAuth\Client\Contract\TokenPairFactoryContract;
 use Heptacom\OpenAuth\Struct\TokenPairStruct;
 use Heptacom\OpenAuth\Struct\UserStruct;
 use League\OAuth2\Client\Provider\AbstractProvider;
@@ -13,7 +13,7 @@ use Mrjoops\OAuth2\Client\Provider\JiraResourceOwner;
 class JiraClient implements ClientInterface
 {
     /**
-     * @var TokenPairFactoryInterface
+     * @var TokenPairFactoryContract
      */
     private $tokenPairFactory;
 
@@ -22,7 +22,7 @@ class JiraClient implements ClientInterface
      */
     private $jiraClient;
 
-    public function __construct(TokenPairFactoryInterface $tokenPairFactory, array $options)
+    public function __construct(TokenPairFactoryContract $tokenPairFactory, array $options)
     {
         $this->tokenPairFactory = $tokenPairFactory;
         $this->jiraClient = new Atlassian($options);

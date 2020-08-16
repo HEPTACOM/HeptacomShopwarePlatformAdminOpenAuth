@@ -1,0 +1,2 @@
+services:
+    Heptacom\OpenAuth\Client\Contract\TokenPairFactoryContract: ~
