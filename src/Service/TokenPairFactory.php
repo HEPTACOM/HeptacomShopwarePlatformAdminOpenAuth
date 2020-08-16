@@ -3,7 +3,7 @@
 namespace Heptacom\AdminOpenAuth\Service;
 
 use Heptacom\AdminOpenAuth\Contract\TokenPairFactoryInterface;
-use Heptacom\AdminOpenAuth\Struct\TokenPairStruct;
+use Heptacom\OpenAuth\Struct\TokenPairStruct;
 use League\OAuth2\Client\Token\AccessTokenInterface;
 
 class TokenPairFactory implements TokenPairFactoryInterface

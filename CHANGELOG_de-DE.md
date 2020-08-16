@@ -1,3 +1,4 @@
+* TokenPairStruct in den Heptacom\OpenAuth\Struct Namensraum überführt und Shopware-Abhängigkeit entfernt
 * UserStruct in den Heptacom\OpenAuth\Struct Namensraum überführt und Shopware-Abhängigkeit entfernt
 
 # 2.0.0

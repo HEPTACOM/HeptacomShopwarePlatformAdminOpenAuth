@@ -8,7 +8,7 @@ use Heptacom\AdminOpenAuth\Contract\TokenRefresherInterface;
 use Heptacom\AdminOpenAuth\Contract\UserTokenInterface;
 use Heptacom\AdminOpenAuth\Database\UserTokenEntity;
 use Heptacom\AdminOpenAuth\Exception\LoadClientException;
-use Heptacom\AdminOpenAuth\Struct\TokenPairStruct;
+use Heptacom\OpenAuth\Struct\TokenPairStruct;
 use Shopware\Core\Framework\Context;
 
 class TokenRefresher implements TokenRefresherInterface

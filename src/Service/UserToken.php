@@ -5,7 +5,7 @@ namespace Heptacom\AdminOpenAuth\Service;
 use Heptacom\AdminOpenAuth\Contract\UserTokenInterface;
 use Heptacom\AdminOpenAuth\Database\UserTokenCollection;
 use Heptacom\AdminOpenAuth\Database\UserTokenEntity;
-use Heptacom\AdminOpenAuth\Struct\TokenPairStruct;
+use Heptacom\OpenAuth\Struct\TokenPairStruct;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;

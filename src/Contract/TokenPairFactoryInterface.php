@@ -2,7 +2,7 @@
 
 namespace Heptacom\AdminOpenAuth\Contract;
 
-use Heptacom\AdminOpenAuth\Struct\TokenPairStruct;
+use Heptacom\OpenAuth\Struct\TokenPairStruct;
 use League\OAuth2\Client\Token\AccessTokenInterface;
 
 interface TokenPairFactoryInterface

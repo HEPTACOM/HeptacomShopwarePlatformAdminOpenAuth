@@ -1,3 +1,4 @@
+* Move TokenPairStruct into Heptacom\OpenAuth\Struct namespace and removed Shopware dependency
 * Move UserStruct into Heptacom\OpenAuth\Struct namespace and removed Shopware dependency
 
 # 2.0.0

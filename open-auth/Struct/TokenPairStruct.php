@@ -1,11 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace Heptacom\AdminOpenAuth\Struct;
+namespace Heptacom\OpenAuth\Struct;
 
 use DateTimeInterface;
-use Shopware\Core\Framework\Struct\Struct;
 
-class TokenPairStruct extends Struct
+class TokenPairStruct
 {
     /**
      * @var string|null
@@ -21,6 +20,8 @@ class TokenPairStruct extends Struct
      * @var DateTimeInterface|null
      */
     protected $expiresAt;
+
+    protected $passthrough = [];
 
     public function getAccessToken(): ?string
     {
@@ -54,6 +55,25 @@ class TokenPairStruct extends Struct
     public function setExpiresAt(?DateTimeInterface $expiresAt): self
     {
         $this->expiresAt = $expiresAt;
+
+        return $this;
+    }
+
+    public function getPassthrough(): array
+    {
+        return $this->passthrough;
+    }
+
+    public function addPassthrough(string $key, $value): self
+    {
+        $this->passthrough[$key] = $value;
+
+        return $this;
+    }
+
+    public function setPassthrough(array $passthrough): self
+    {
+        $this->passthrough = $passthrough;
 
         return $this;
     }

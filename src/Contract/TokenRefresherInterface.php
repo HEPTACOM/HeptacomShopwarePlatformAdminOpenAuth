@@ -2,7 +2,7 @@
 
 namespace Heptacom\AdminOpenAuth\Contract;
 
-use Heptacom\AdminOpenAuth\Struct\TokenPairStruct;
+use Heptacom\OpenAuth\Struct\TokenPairStruct;
 use Shopware\Core\Framework\Context;
 
 interface TokenRefresherInterface

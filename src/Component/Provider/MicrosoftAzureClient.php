@@ -4,7 +4,7 @@ namespace Heptacom\AdminOpenAuth\Component\Provider;
 
 use Heptacom\AdminOpenAuth\Component\Contract\ClientInterface;
 use Heptacom\AdminOpenAuth\Contract\TokenPairFactoryInterface;
-use Heptacom\AdminOpenAuth\Struct\TokenPairStruct;
+use Heptacom\OpenAuth\Struct\TokenPairStruct;
 use Heptacom\OpenAuth\Struct\UserStruct;
 use League\OAuth2\Client\Provider\AbstractProvider;
 use TheNetworg\OAuth2\Client\Provider\Azure;
