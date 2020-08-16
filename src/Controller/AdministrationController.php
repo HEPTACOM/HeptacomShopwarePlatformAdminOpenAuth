@@ -5,13 +5,18 @@ namespace Heptacom\AdminOpenAuth\Controller;
 use Heptacom\AdminOpenAuth\Contract\ClientLoaderInterface;
 use Heptacom\AdminOpenAuth\Contract\OpenAuthenticationFlowInterface;
 use Heptacom\AdminOpenAuth\Database\ClientDefinition;
+use Heptacom\AdminOpenAuth\Database\ClientEntity;
+use Heptacom\OpenAuth\Behaviour\RedirectBehaviour;
 use Heptacom\OpenAuth\ClientProvider\Contract\ClientProviderRepositoryContract;
+use Heptacom\OpenAuth\Route\Contract\RedirectReceiveRouteContract;
+use Nyholm\Psr7\Factory\Psr17Factory;
 use Shopware\Core\Framework\Api\Context\AdminApiSource;
 use Shopware\Core\Framework\Api\Response\ResponseFactoryInterface;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\Routing\Annotation\RouteScope;
+use Symfony\Bridge\PsrHttpMessage\Factory\PsrHttpFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -30,9 +35,24 @@ class AdministrationController extends AbstractController
      */
     private $flow;
 
-    public function __construct(OpenAuthenticationFlowInterface $flow)
-    {
+    /**
+     * @var EntityRepositoryInterface
+     */
+    private $clientsRepository;
+
+    /**
+     * @var RedirectReceiveRouteContract
+     */
+    private $redirectReceiveRoute;
+
+    public function __construct(
+        OpenAuthenticationFlowInterface $flow,
+        EntityRepositoryInterface $clientsRepository,
+        RedirectReceiveRouteContract $redirectReceiveRoute
+    ) {
         $this->flow = $flow;
+        $this->clientsRepository = $clientsRepository;
+        $this->redirectReceiveRoute = $redirectReceiveRoute;
     }
 
     /**
@@ -45,13 +65,29 @@ class AdministrationController extends AbstractController
      */
     public function login(string $clientId, Request $request, Context $context): Response
     {
-        $state = $request->query->get('state');
-        $code = $request->query->get('code');
-        $this->flow->upsertUser($clientId, $state, $code, $context);
+        $psr17Factory = new Psr17Factory();
+        $psrHttpFactory = new PsrHttpFactory($psr17Factory, $psr17Factory, $psr17Factory, $psr17Factory);
+        /** @var ClientEntity|null $client */
+        $client = $this->clientsRepository->search(new Criteria([$clientId]), $context)->first();
+
+        if (!$client instanceof ClientEntity) {
+            // TODO handle exceptions
+        }
+
+        $user = $this->redirectReceiveRoute
+            ->onReceiveRequest(
+                $psrHttpFactory->createRequest($request),
+                $client->getProvider(),
+                $client->getConfig(),
+                (new RedirectBehaviour())->setExpectState(true)
+            );
+        $requestState = (string) $user->getPassthrough()['requestState'];
+
+        $this->flow->upsertUser($user, $clientId, $requestState, $context);
 
         $adminRoute = $this->generateUrl(
             'administration.index',
-            ['state' => $state],
+            ['state' => $requestState],
             UrlGeneratorInterface::ABSOLUTE_URL
         );
 

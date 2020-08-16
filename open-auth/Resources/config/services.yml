@@ -8,3 +8,8 @@ services:
     Heptacom\OpenAuth\ClientProvider\Contract\ClientProviderRepositoryContract:
         arguments:
             - !tagged_iterator heptacom_open_auth.client_provider
+
+    Heptacom\OpenAuth\Route\Contract\RedirectReceiveRouteContract:
+        arguments:
+            - '@Heptacom\OpenAuth\Client\Contract\ClientFactoryContract'
+            - '@event_dispatcher'
