@@ -1,10 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace Heptacom\AdminOpenAuth\Struct;
+namespace Heptacom\OpenAuth\Struct;
 
-use Shopware\Core\Framework\Struct\Struct;
-
-class UserStruct extends Struct
+class UserStruct
 {
     /**
      * @var string
@@ -30,6 +28,8 @@ class UserStruct extends Struct
      * @var TokenPairStruct|null
      */
     protected $tokenPair;
+
+    protected $passthrough = [];
 
     public function getPrimaryEmail(): string
     {
@@ -87,6 +87,25 @@ class UserStruct extends Struct
     public function setTokenPair(?TokenPairStruct $tokenPair): self
     {
         $this->tokenPair = $tokenPair;
+
+        return $this;
+    }
+
+    public function getPassthrough(): array
+    {
+        return $this->passthrough;
+    }
+
+    public function addPassthrough(string $key, $value): self
+    {
+        $this->passthrough[$key] = $value;
+
+        return $this;
+    }
+
+    public function setPassthrough(array $passthrough): self
+    {
+        $this->passthrough = $passthrough;
 
         return $this;
     }

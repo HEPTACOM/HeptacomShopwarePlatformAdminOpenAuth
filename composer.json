@@ -28,7 +28,8 @@
     ],
     "autoload": {
         "psr-4": {
-            "Heptacom\\AdminOpenAuth\\": "src/"
+            "Heptacom\\AdminOpenAuth\\": "src/",
+            "Heptacom\\OpenAuth\\": "open-auth/"
         }
     },
     "require": {

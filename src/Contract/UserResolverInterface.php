@@ -2,7 +2,7 @@
 
 namespace Heptacom\AdminOpenAuth\Contract;
 
-use Heptacom\AdminOpenAuth\Struct\UserStruct;
+use Heptacom\OpenAuth\Struct\UserStruct;
 use Shopware\Core\Framework\Context;
 
 interface UserResolverInterface

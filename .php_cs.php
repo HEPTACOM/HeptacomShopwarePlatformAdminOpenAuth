@@ -1,6 +1,7 @@
 <?php declare(strict_types=1);
 
 $finder = PhpCsFixer\Finder::create()
+    ->in(__DIR__ . DIRECTORY_SEPARATOR . 'open-auth')
     ->in(__DIR__ . DIRECTORY_SEPARATOR . 'src')
 ;
 
