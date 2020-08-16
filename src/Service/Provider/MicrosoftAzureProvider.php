@@ -2,49 +2,22 @@
 
 namespace Heptacom\AdminOpenAuth\Service\Provider;
 
-use Heptacom\AdminOpenAuth\Component\Contract\ClientInterface;
 use Heptacom\AdminOpenAuth\Component\Provider\MicrosoftAzureClient;
-use Heptacom\AdminOpenAuth\Contract\ProviderInterface;
-use Heptacom\AdminOpenAuth\Exception\ProvideClientInvalidConfigurationException;
+use Heptacom\OpenAuth\Client\Contract\ClientContract;
 use Heptacom\OpenAuth\Client\Contract\TokenPairFactoryContract;
-use Shopware\Core\Framework\Context;
-use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Routing\RouterInterface;
-use Throwable;
+use Heptacom\OpenAuth\ClientProvider\Contract\ClientProviderContract;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class MicrosoftAzureProvider implements ProviderInterface
+class MicrosoftAzureProvider extends ClientProviderContract
 {
     /**
      * @var TokenPairFactoryContract
      */
     private $tokenPairFactory;
 
-    /**
-     * @var EntityRepositoryInterface
-     */
-    private $clientsRepository;
-
-    /**
-     * @var RouterInterface
-     */
-    private $router;
-
-    /**
-     * @var MicrosoftAzureConfigurationResolverFactory
-     */
-    private $configurationResolverFactory;
-
-    public function __construct(
-        TokenPairFactoryContract $tokenPairFactory,
-        EntityRepositoryInterface $clientsRepository,
-        RouterInterface $router,
-        MicrosoftAzureConfigurationResolverFactory $configurationResolverFactory
-    ) {
+    public function __construct(TokenPairFactoryContract $tokenPairFactory)
+    {
         $this->tokenPairFactory = $tokenPairFactory;
-        $this->clientsRepository = $clientsRepository;
-        $this->router = $router;
-        $this->configurationResolverFactory = $configurationResolverFactory;
     }
 
     public function provides(): string
@@ -52,34 +25,29 @@ class MicrosoftAzureProvider implements ProviderInterface
         return 'microsoft_azure';
     }
 
-    public function initializeClientConfiguration(string $clientId, Context $context): void
+    public function getConfigurationTemplate(): OptionsResolver
     {
-        $this->clientsRepository->update([[
-            'id' => $clientId,
-            'config' => [
-                'clientId' => '',
-                'clientSecret' => '',
-                'redirectUri' => $this->router->generate('administration.heptacom.admin_open_auth.login', [
-                    'clientId' => $clientId,
-                ], UrlGeneratorInterface::ABSOLUTE_URL),
+        return parent::getConfigurationTemplate()
+            ->setDefined([
+                'clientId',
+                'clientSecret',
+                'redirectUri',
+                'scopes',
+            ])->setRequired([
+                'clientId',
+                'clientSecret',
+                'redirectUri',
+            ])->setDefaults([
                 'scopes' => [],
-            ],
-            'active' => false,
-            'login' => true,
-            'connect' => true,
-            'store_user_token' => true,
-            'provider' => 'microsoft_azure',
-        ]], $context);
+            ])
+            ->setAllowedTypes('clientId', 'string')
+            ->setAllowedTypes('clientSecret', 'string')
+            ->setAllowedTypes('redirectUri', 'string')
+            ->setAllowedTypes('scopes', 'array');
     }
 
     public function provideClient(array $resolvedConfig): ClientContract
     {
-        try {
-            $values = $this->configurationResolverFactory->getOptionResolver($clientId, $context)->resolve($config);
-        } catch (Throwable $e) {
-            throw new ProvideClientInvalidConfigurationException($clientId, self::class, $e->getMessage(), $e);
-        }
-
-        return new MicrosoftAzureClient($this->tokenPairFactory, $values);
+        return new MicrosoftAzureClient($this->tokenPairFactory, $resolvedConfig);
     }
 }

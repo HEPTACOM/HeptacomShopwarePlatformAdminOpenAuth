@@ -1,3 +1,6 @@
+* Extract ClientFactoryContract from ClientLoader
+* Move ClientProviderRepositoryInterface into Heptacom\OpenAuth\ClientProvider\Contract namespace and used Contract pattern
+* Move ClientProviderInterface into Heptacom\OpenAuth\ClientProvider\Contract namespace and used Contract pattern
 * Move ClientInterface into Heptacom\OpenAuth\Client\Contract namespace and used Contract pattern
 * Add RedirectBehaviour class to control redirect process
 * Move TokenPairFactory into Heptacom\OpenAuth\Struct namespace

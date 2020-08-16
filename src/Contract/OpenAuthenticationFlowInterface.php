@@ -3,6 +3,7 @@
 namespace Heptacom\AdminOpenAuth\Contract;
 
 use Heptacom\AdminOpenAuth\Exception\LoadClientException;
+use Heptacom\OpenAuth\Struct\UserStruct;
 use Shopware\Core\Framework\Context;
 
 interface OpenAuthenticationFlowInterface
@@ -20,7 +21,7 @@ interface OpenAuthenticationFlowInterface
     /**
      * @throws LoadClientException
      */
-    public function upsertUser(string $clientId, string $state, string $code, Context $context): void;
+    public function upsertUser(UserStruct $user, string $clientId, string $state, Context $context): void;
 
     public function getLoginRoutes(Context $context): array;
 }

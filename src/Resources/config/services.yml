@@ -13,9 +13,9 @@ services:
             Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface $userTokensRepository: '@heptacom_admin_open_auth_user_token.repository'
 
     _instanceof:
-        Heptacom\AdminOpenAuth\Contract\ProviderInterface:
+        Heptacom\OpenAuth\ClientProvider\Contract\ClientProviderContract:
             tags:
-                - 'heptacom_admin_open_auth.client_provider'
+                - 'heptacom_open_auth.client_provider'
         Symfony\Component\EventDispatcher\EventSubscriberInterface:
             tags:
                 - 'kernel.event_subscriber'
@@ -60,9 +60,6 @@ services:
             - '@Shopware\Core\Framework\Api\OAuth\UserRepository'
             - '@Shopware\Core\Framework\Api\OAuth\RefreshTokenRepository'
 
-    Heptacom\AdminOpenAuth\Service\ProviderRepository:
-        arguments:
-            - !tagged_iterator heptacom_admin_open_auth.client_provider
     Heptacom\AdminOpenAuth\Service\UserResolver:
         arguments:
             - '@user.repository'

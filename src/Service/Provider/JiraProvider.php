@@ -4,47 +4,21 @@ namespace Heptacom\AdminOpenAuth\Service\Provider;
 
 use Heptacom\OpenAuth\Client\Contract\ClientContract;
 use Heptacom\AdminOpenAuth\Component\Provider\JiraClient;
-use Heptacom\AdminOpenAuth\Contract\ProviderInterface;
-use Heptacom\AdminOpenAuth\Exception\ProvideClientInvalidConfigurationException;
 use Heptacom\OpenAuth\Client\Contract\TokenPairFactoryContract;
-use Shopware\Core\Framework\Context;
-use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Routing\RouterInterface;
-use Throwable;
+use Heptacom\OpenAuth\ClientProvider\Contract\ClientProviderContract;
+use Symfony\Component\OptionsResolver\Options;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class JiraProvider implements ProviderInterface
+class JiraProvider extends ClientProviderContract
 {
     /**
      * @var TokenPairFactoryContract
      */
     private $tokenPairFactory;
 
-    /**
-     * @var EntityRepositoryInterface
-     */
-    private $clientsRepository;
-
-    /**
-     * @var RouterInterface
-     */
-    private $router;
-
-    /**
-     * @var JiraConfigurationResolverFactory
-     */
-    private $configurationResolverFactory;
-
-    public function __construct(
-        TokenPairFactoryContract $tokenPairFactory,
-        EntityRepositoryInterface $clientsRepository,
-        RouterInterface $router,
-        JiraConfigurationResolverFactory $configurationResolverFactory
-    ) {
+    public function __construct(TokenPairFactoryContract $tokenPairFactory)
+    {
         $this->tokenPairFactory = $tokenPairFactory;
-        $this->clientsRepository = $clientsRepository;
-        $this->router = $router;
-        $this->configurationResolverFactory = $configurationResolverFactory;
     }
 
     public function provides(): string
@@ -52,34 +26,42 @@ class JiraProvider implements ProviderInterface
         return 'jira';
     }
 
-    public function initializeClientConfiguration(string $clientId, Context $context): void
+    public function getConfigurationTemplate(): OptionsResolver
     {
-        $this->clientsRepository->update([[
-            'id' => $clientId,
-            'config' => [
-                'clientId' => '',
-                'clientSecret' => '',
-                'redirectUri' => $this->router->generate('administration.heptacom.admin_open_auth.login', [
-                    'clientId' => $clientId,
-                ], UrlGeneratorInterface::ABSOLUTE_URL),
+        return parent::getConfigurationTemplate()
+            ->setDefined([
+                'clientId',
+                'clientSecret',
+                'redirectUri',
+                'scopes',
+            ])->setRequired([
+                'clientId',
+                'clientSecret',
+                'redirectUri',
+            ])->setDefaults([
                 'scopes' => [],
-            ],
-            'active' => false,
-            'login' => true,
-            'connect' => true,
-            'store_user_token' => true,
-            'provider' => 'jira',
-        ]], $context);
+            ])->setAllowedTypes('clientId', 'string')
+            ->setAllowedTypes('clientSecret', 'string')
+            ->setAllowedTypes('redirectUri', 'string')
+            ->setAllowedTypes('scopes', 'array')
+            ->addNormalizer('scopes', static function (Options $options, $value) {
+                $scopes = (array) $value;
+
+                /*
+                if ($this->clientFeatureChecker->canStoreUserTokens($clientId, $context)) {
+                    $scopes[] = 'offline_access';
+                }
+                */
+
+                return \array_unique(\array_merge($scopes, [
+                    'read:me',
+                    'read:jira-user',
+                ]));
+            });
     }
 
-    public function provideClient(string $clientId, array $config, Context $context): ClientInterface
-    {
-        try {
-            $values = $this->configurationResolverFactory->getOptionResolver($clientId, $context)->resolve($config);
-        } catch (Throwable $e) {
-            throw new ProvideClientInvalidConfigurationException($clientId, self::class, $e->getMessage(), $e);
-        }
-
     public function provideClient(array $resolvedConfig): ClientContract
+    {
+        return new JiraClient($this->tokenPairFactory, $resolvedConfig);
     }
 }

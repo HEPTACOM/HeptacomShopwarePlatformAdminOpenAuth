@@ -4,8 +4,8 @@ namespace Heptacom\AdminOpenAuth\Controller;
 
 use Heptacom\AdminOpenAuth\Contract\ClientLoaderInterface;
 use Heptacom\AdminOpenAuth\Contract\OpenAuthenticationFlowInterface;
-use Heptacom\AdminOpenAuth\Contract\ProviderRepositoryInterface;
 use Heptacom\AdminOpenAuth\Database\ClientDefinition;
+use Heptacom\OpenAuth\ClientProvider\Contract\ClientProviderRepositoryContract;
 use Shopware\Core\Framework\Api\Context\AdminApiSource;
 use Shopware\Core\Framework\Api\Response\ResponseFactoryInterface;
 use Shopware\Core\Framework\Context;
@@ -111,7 +111,7 @@ class AdministrationController extends AbstractController
      *     path="/api/v{version}/_action/heptacom_admin_open_auth_provider/list"
      * )
      */
-    public function providerList(ProviderRepositoryInterface $providerRepository): Response
+    public function providerList(ClientProviderRepositoryContract $providerRepository): Response
     {
         return JsonResponse::create([
             'data' => $providerRepository->getProviderKeys(),

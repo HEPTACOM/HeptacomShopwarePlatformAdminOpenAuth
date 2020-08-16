@@ -1,3 +1,6 @@
+* ClientFactoryContract aus ClientLoader extrahiert
+* ClientProviderRepositoryInterface in den Heptacom\OpenAuth\ClientProvider\Contract Namensraum als Contract überführt
+* ClientProviderInterface in den Heptacom\OpenAuth\ClientProvider\Contract Namensraum als Contract überführt
 * ClientInterface in den Heptacom\OpenAuth\Client\Contract Namensraum als Contract überführt
 * RedirectBehaviour-Klasse zur Steuerung von Weiterleitungsprozessen hinzugefügt
 * TokenPairFactory in den Heptacom\OpenAuth\Struct Namensraum überführt

@@ -4,21 +4,25 @@ namespace Heptacom\AdminOpenAuth\Service;
 
 use Heptacom\OpenAuth\Client\Contract\ClientContract;
 use Heptacom\AdminOpenAuth\Contract\ClientLoaderInterface;
-use Heptacom\AdminOpenAuth\Contract\ProviderRepositoryInterface;
 use Heptacom\AdminOpenAuth\Database\ClientCollection;
+use Heptacom\AdminOpenAuth\Database\ClientEntity;
 use Heptacom\AdminOpenAuth\Exception\LoadClientClientNotFoundException;
 use Heptacom\AdminOpenAuth\Exception\LoadClientException;
-use Heptacom\AdminOpenAuth\Exception\LoadClientMatchingProviderNotFoundException;
-use Heptacom\AdminOpenAuth\Exception\ProvideClientException;
+use Heptacom\OpenAuth\Client\Contract\ClientFactoryContract;
+use Heptacom\OpenAuth\Client\Exception\FactorizeClientException;
+use Heptacom\OpenAuth\ClientProvider\Contract\ClientProviderContract;
+use Heptacom\OpenAuth\ClientProvider\Contract\ClientProviderRepositoryContract;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\Uuid\Uuid;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\RouterInterface;
 
 class ClientLoader implements ClientLoaderInterface
 {
     /**
-     * @var ProviderRepositoryInterface
+     * @var ClientProviderRepositoryContract
      */
     private $providers;
 
@@ -27,10 +31,26 @@ class ClientLoader implements ClientLoaderInterface
      */
     private $clientsRepository;
 
-    public function __construct(ProviderRepositoryInterface $providers, EntityRepositoryInterface $clientsRepository)
-    {
+    /**
+     * @var RouterInterface
+     */
+    private $router;
+
+    /**
+     * @var ClientFactoryContract
+     */
+    private $clientFactory;
+
+    public function __construct(
+        ClientProviderRepositoryContract $providers,
+        EntityRepositoryInterface $clientsRepository,
+        RouterInterface $router,
+        ClientFactoryContract $clientFactory
+    ) {
         $this->providers = $providers;
         $this->clientsRepository = $clientsRepository;
+        $this->router = $router;
+        $this->clientFactory = $clientFactory;
     }
 
     public function load(string $clientId, Context $context): ClientContract
@@ -40,40 +60,45 @@ class ClientLoader implements ClientLoaderInterface
 
         /** @var ClientCollection $searchResult */
         $searchResult = $this->clientsRepository->search($criteria, $context)->getEntities();
+        $client = $searchResult->first();
 
-        if ($searchResult->count() === 0) {
+        if (!$client instanceof ClientEntity) {
             throw new LoadClientClientNotFoundException($clientId);
         }
 
-        foreach ($this->providers->getMatchingProviders($searchResult->first()->getProvider()) as $provider) {
-            try {
-                return $provider->provideClient($clientId, $searchResult->first()->getConfig() ?? [], $context);
-            } catch (ProvideClientException $e) {
-                throw new LoadClientException($e->getMessage(), $clientId, $e);
-            }
+        try {
+            return $this->clientFactory->create($client->getProvider() ?? '', $client->getConfig() ?? []);
+        } catch (FactorizeClientException $exception) {
+            throw new LoadClientException($exception->getMessage(), $clientId, $exception);
         }
-
-        throw new LoadClientMatchingProviderNotFoundException($clientId);
     }
 
     public function create(string $providerKey, Context $context): string
     {
         $id = Uuid::randomHex();
+        $config = [];
+        $clientProvider = $this->providers->getMatchingProvider($providerKey);
+
+        if ($clientProvider instanceof ClientProviderContract) {
+            $config = $clientProvider->getConfigurationTemplate()->resolve([]);
+        }
+
+        // TODO remove from configuration
+        $config['redirectUri'] = $this->router->generate('administration.heptacom.admin_open_auth.login', [
+            'clientId' => $id,
+        ], UrlGeneratorInterface::ABSOLUTE_URL);
 
         $this->clientsRepository->create([[
             'id' => $id,
             'name' => $providerKey,
             'provider' => $providerKey,
             'active' => false,
-            'login' => false,
-            'connect' => false,
-            'storeUserToken' => false,
-            'config' => [],
+            'config' => $config,
+            // TODO remove provider key check into service decorator or interface
+            'login' => $providerKey === 'jira' || $providerKey === 'microsoft_azure',
+            'connect' => $providerKey === 'jira' || $providerKey === 'microsoft_azure',
+            'storeUserToken' => $providerKey === 'jira' || $providerKey === 'microsoft_azure',
         ]], $context);
-
-        foreach ($this->providers->getMatchingProviders($providerKey) as $provider) {
-            $provider->initializeClientConfiguration($id, $context);
-        }
 
         return $id;
     }
