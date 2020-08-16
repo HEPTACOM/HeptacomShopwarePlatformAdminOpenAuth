@@ -1,3 +1,4 @@
+* Move ClientInterface into Heptacom\OpenAuth\Client\Contract namespace and used Contract pattern
 * Add RedirectBehaviour class to control redirect process
 * Move TokenPairFactory into Heptacom\OpenAuth\Struct namespace
 * Move TokenPairStruct into Heptacom\OpenAuth\Struct namespace and removed Shopware dependency

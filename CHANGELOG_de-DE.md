@@ -1,3 +1,4 @@
+* ClientInterface in den Heptacom\OpenAuth\Client\Contract Namensraum als Contract überführt
 * RedirectBehaviour-Klasse zur Steuerung von Weiterleitungsprozessen hinzugefügt
 * TokenPairFactory in den Heptacom\OpenAuth\Struct Namensraum überführt
 * TokenPairStruct in den Heptacom\OpenAuth\Struct Namensraum überführt und Shopware-Abhängigkeit entfernt

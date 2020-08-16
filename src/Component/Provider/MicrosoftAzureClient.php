@@ -2,14 +2,14 @@
 
 namespace Heptacom\AdminOpenAuth\Component\Provider;
 
-use Heptacom\AdminOpenAuth\Component\Contract\ClientInterface;
+use Heptacom\OpenAuth\Behaviour\RedirectBehaviour;
+use Heptacom\OpenAuth\Client\Contract\ClientContract;
 use Heptacom\OpenAuth\Client\Contract\TokenPairFactoryContract;
-use Heptacom\OpenAuth\Struct\TokenPairStruct;
 use Heptacom\OpenAuth\Struct\UserStruct;
 use League\OAuth2\Client\Provider\AbstractProvider;
 use TheNetworg\OAuth2\Client\Provider\Azure;
 
-class MicrosoftAzureClient implements ClientInterface
+class MicrosoftAzureClient extends ClientContract
 {
     /**
      * @var TokenPairFactoryContract
@@ -23,18 +23,14 @@ class MicrosoftAzureClient implements ClientInterface
 
     public function __construct(TokenPairFactoryContract $tokenPairFactory, array $options)
     {
+        parent::__construct($tokenPairFactory);
         $this->tokenPairFactory = $tokenPairFactory;
         $this->azureClient = new Azure($options);
     }
 
-    public function getLoginUrl(string $state): string
+    public function getUser(string $state, string $code, RedirectBehaviour $behaviour): UserStruct
     {
-        return $this->azureClient->getAuthorizationUrl(['state' => $state]);
-    }
-
-    public function getUser(string $state, string $code): UserStruct
-    {
-        $token = $this->azureClient->getAccessToken('authorization_code', ['code' => $code]);
+        $token = $this->azureClient->getAccessToken('authorization_code', [$behaviour->getCodeKey() => $code]);
         $user = $this->azureClient->get('me', $token);
 
         return (new UserStruct())
@@ -42,14 +38,8 @@ class MicrosoftAzureClient implements ClientInterface
             ->setTokenPair($this->tokenPairFactory->fromLeagueToken($token))
             ->setDisplayName($user['displayName'])
             ->setPrimaryEmail($user['mail'])
-            ->setEmails([]);
-    }
-
-    public function refreshToken(string $refreshToken): TokenPairStruct
-    {
-        return $this->tokenPairFactory->fromLeagueToken($this->azureClient->getAccessToken('refresh_token', [
-            'refresh_token' => $refreshToken,
-        ]));
+            ->setEmails([])
+            ->setPassthrough(['resourceOwner' => $user]);
     }
 
     public function getInnerClient(): AbstractProvider

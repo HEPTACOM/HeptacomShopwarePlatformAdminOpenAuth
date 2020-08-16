@@ -9,6 +9,7 @@ use Heptacom\AdminOpenAuth\Contract\OpenAuthenticationFlowInterface;
 use Heptacom\AdminOpenAuth\Contract\UserResolverInterface;
 use Heptacom\AdminOpenAuth\Database\ClientEntity;
 use Heptacom\AdminOpenAuth\Exception\LoadClientException;
+use Heptacom\OpenAuth\Behaviour\RedirectBehaviour;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
@@ -74,7 +75,8 @@ class OpenAuthenticationFlow implements OpenAuthenticationFlowInterface
         $state = Uuid::randomHex();
         $this->login->initiate($clientId, null, $state, $context);
 
-        return $this->clientLoader->load($clientId, $context)->getLoginUrl($state);
+        return $this->clientLoader->load($clientId, $context)
+            ->getLoginUrl($state, (new RedirectBehaviour())->setExpectState(true));
     }
 
     public function getRedirectUrlToConnect(string $clientId, string $userId, Context $context): string
@@ -86,7 +88,8 @@ class OpenAuthenticationFlow implements OpenAuthenticationFlowInterface
         $state = Uuid::randomHex();
         $this->login->initiate($clientId, $userId, $state, $context);
 
-        return $this->clientLoader->load($clientId, $context)->getLoginUrl($state);
+        return $this->clientLoader->load($clientId, $context)
+            ->getLoginUrl($state, (new RedirectBehaviour())->setExpectState(true));
     }
 
     public function upsertUser(string $clientId, string $state, string $code, Context $context): void

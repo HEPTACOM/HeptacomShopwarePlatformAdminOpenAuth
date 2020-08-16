@@ -2,15 +2,15 @@
 
 namespace Heptacom\AdminOpenAuth\Component\Provider;
 
-use Heptacom\AdminOpenAuth\Component\Contract\ClientInterface;
 use Heptacom\AdminOpenAuth\Component\OpenAuth\Atlassian;
+use Heptacom\OpenAuth\Behaviour\RedirectBehaviour;
+use Heptacom\OpenAuth\Client\Contract\ClientContract;
 use Heptacom\OpenAuth\Client\Contract\TokenPairFactoryContract;
-use Heptacom\OpenAuth\Struct\TokenPairStruct;
 use Heptacom\OpenAuth\Struct\UserStruct;
 use League\OAuth2\Client\Provider\AbstractProvider;
 use Mrjoops\OAuth2\Client\Provider\JiraResourceOwner;
 
-class JiraClient implements ClientInterface
+class JiraClient extends ClientContract
 {
     /**
      * @var TokenPairFactoryContract
@@ -24,18 +24,14 @@ class JiraClient implements ClientInterface
 
     public function __construct(TokenPairFactoryContract $tokenPairFactory, array $options)
     {
+        parent::__construct($tokenPairFactory);
         $this->tokenPairFactory = $tokenPairFactory;
         $this->jiraClient = new Atlassian($options);
     }
 
-    public function getLoginUrl(string $state): string
+    public function getUser(string $state, string $code, RedirectBehaviour $behaviour): UserStruct
     {
-        return $this->jiraClient->getAuthorizationUrl(['state' => $state]);
-    }
-
-    public function getUser(string $state, string $code): UserStruct
-    {
-        $token = $this->jiraClient->getAccessToken('authorization_code', ['code' => $code]);
+        $token = $this->jiraClient->getAccessToken('authorization_code', [$behaviour->getCodeKey() => $code]);
         /** @var JiraResourceOwner $user */
         $user = $this->jiraClient->getResourceOwner($token);
 
@@ -44,14 +40,8 @@ class JiraClient implements ClientInterface
             ->setTokenPair($this->tokenPairFactory->fromLeagueToken($token))
             ->setDisplayName($user->getName())
             ->setPrimaryEmail($user->getEmail())
-            ->setEmails([]);
-    }
-
-    public function refreshToken(string $refreshToken): TokenPairStruct
-    {
-        return $this->tokenPairFactory->fromLeagueToken($this->jiraClient->getAccessToken('refresh_token', [
-            'refresh_token' => $refreshToken,
-        ]));
+            ->setEmails([])
+            ->setPassthrough(['resourceOwner' => $user->toArray()]);
     }
 
     public function getInnerClient(): AbstractProvider

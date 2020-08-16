@@ -2,7 +2,7 @@
 
 namespace Heptacom\AdminOpenAuth\Service;
 
-use Heptacom\AdminOpenAuth\Component\Contract\ClientInterface;
+use Heptacom\OpenAuth\Client\Contract\ClientContract;
 use Heptacom\AdminOpenAuth\Contract\ClientLoaderInterface;
 use Heptacom\AdminOpenAuth\Contract\ProviderRepositoryInterface;
 use Heptacom\AdminOpenAuth\Database\ClientCollection;
@@ -33,7 +33,7 @@ class ClientLoader implements ClientLoaderInterface
         $this->clientsRepository = $clientsRepository;
     }
 
-    public function load(string $clientId, Context $context): ClientInterface
+    public function load(string $clientId, Context $context): ClientContract
     {
         $criteria = new Criteria();
         $criteria->setIds([$clientId]);

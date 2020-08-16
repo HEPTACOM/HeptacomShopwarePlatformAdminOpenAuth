@@ -2,7 +2,7 @@
 
 namespace Heptacom\AdminOpenAuth\Service\Provider;
 
-use Heptacom\AdminOpenAuth\Component\Contract\ClientInterface;
+use Heptacom\OpenAuth\Client\Contract\ClientContract;
 use Heptacom\AdminOpenAuth\Component\Provider\JiraClient;
 use Heptacom\AdminOpenAuth\Contract\ProviderInterface;
 use Heptacom\AdminOpenAuth\Exception\ProvideClientInvalidConfigurationException;
@@ -80,6 +80,6 @@ class JiraProvider implements ProviderInterface
             throw new ProvideClientInvalidConfigurationException($clientId, self::class, $e->getMessage(), $e);
         }
 
-        return new JiraClient($this->tokenPairFactory, $values);
+    public function provideClient(array $resolvedConfig): ClientContract
     }
 }
