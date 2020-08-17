@@ -5,8 +5,8 @@ namespace Heptacom\AdminOpenAuth\Component\Provider;
 use Heptacom\AdminOpenAuth\Component\OpenAuth\Atlassian;
 use Heptacom\OpenAuth\Behaviour\RedirectBehaviour;
 use Heptacom\OpenAuth\Client\Contract\ClientContract;
-use Heptacom\OpenAuth\Client\Contract\TokenPairFactoryContract;
 use Heptacom\OpenAuth\Struct\UserStruct;
+use Heptacom\OpenAuth\Token\Contract\TokenPairFactoryContract;
 use League\OAuth2\Client\Provider\AbstractProvider;
 use Mrjoops\OAuth2\Client\Provider\JiraResourceOwner;
 

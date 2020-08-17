@@ -5,6 +5,7 @@ namespace Heptacom\OpenAuth\Client\Contract;
 use Heptacom\OpenAuth\Behaviour\RedirectBehaviour;
 use Heptacom\OpenAuth\Struct\TokenPairStruct;
 use Heptacom\OpenAuth\Struct\UserStruct;
+use Heptacom\OpenAuth\Token\Contract\TokenPairFactoryContract;
 use League\OAuth2\Client\Provider\AbstractProvider;
 
 abstract class ClientContract

@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Heptacom\OpenAuth\Client\Contract;
+namespace Heptacom\OpenAuth\Token\Contract;
 
 use Heptacom\OpenAuth\Struct\TokenPairStruct;
 use League\OAuth2\Client\Token\AccessTokenInterface;

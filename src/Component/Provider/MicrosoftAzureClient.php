@@ -4,8 +4,8 @@ namespace Heptacom\AdminOpenAuth\Component\Provider;
 
 use Heptacom\OpenAuth\Behaviour\RedirectBehaviour;
 use Heptacom\OpenAuth\Client\Contract\ClientContract;
-use Heptacom\OpenAuth\Client\Contract\TokenPairFactoryContract;
 use Heptacom\OpenAuth\Struct\UserStruct;
+use Heptacom\OpenAuth\Token\Contract\TokenPairFactoryContract;
 use League\OAuth2\Client\Provider\AbstractProvider;
 use TheNetworg\OAuth2\Client\Provider\Azure;
 

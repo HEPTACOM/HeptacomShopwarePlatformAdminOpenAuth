@@ -4,8 +4,8 @@ namespace Heptacom\AdminOpenAuth\Service\Provider;
 
 use Heptacom\AdminOpenAuth\Component\Provider\MicrosoftAzureClient;
 use Heptacom\OpenAuth\Client\Contract\ClientContract;
-use Heptacom\OpenAuth\Client\Contract\TokenPairFactoryContract;
 use Heptacom\OpenAuth\ClientProvider\Contract\ClientProviderContract;
+use Heptacom\OpenAuth\Token\Contract\TokenPairFactoryContract;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class MicrosoftAzureProvider extends ClientProviderContract
