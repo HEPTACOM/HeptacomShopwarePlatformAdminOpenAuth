@@ -80,7 +80,7 @@ class ClientLoader implements ClientLoaderInterface
         $clientProvider = $this->providers->getMatchingProvider($providerKey);
 
         if ($clientProvider instanceof ClientProviderContract) {
-            $config = $clientProvider->getConfigurationTemplate()->resolve([]);
+            $config = $clientProvider->getConfigurationTemplate()->resolve($clientProvider->getInitialConfiguration());
         }
 
         // TODO remove from configuration

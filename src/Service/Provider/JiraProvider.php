@@ -60,6 +60,17 @@ class JiraProvider extends ClientProviderContract
             });
     }
 
+    public function getInitialConfiguration(): array
+    {
+        $result = parent::getInitialConfiguration();
+
+        $result['clientId'] = '';
+        $result['clientSecret'] = '';
+        $result['redirectUri'] = '';
+
+        return $result;
+    }
+
     public function provideClient(array $resolvedConfig): ClientContract
     {
         return new JiraClient($this->tokenPairFactory, $resolvedConfig);

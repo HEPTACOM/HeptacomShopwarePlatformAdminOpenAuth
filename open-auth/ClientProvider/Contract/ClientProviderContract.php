@@ -13,6 +13,11 @@ abstract class ClientProviderContract
         return new OptionsResolver();
     }
 
+    public function getInitialConfiguration(): array
+    {
+        return [];
+    }
+
     abstract public function provides(): string;
 
     /**
