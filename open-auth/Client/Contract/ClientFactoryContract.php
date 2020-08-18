@@ -30,7 +30,7 @@ class ClientFactoryContract
         }
 
         try {
-            $resolvedConfig = $clientProvider->getConfigurationTemplate()->resolve($$configuration);
+            $resolvedConfig = $clientProvider->getConfigurationTemplate()->resolve($configuration);
         } catch (\Throwable $e) {
             throw new FactorizeClientInvalidConfigurationException($providerKey, $configuration, $e);
         }
