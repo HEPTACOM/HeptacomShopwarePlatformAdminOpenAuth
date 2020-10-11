@@ -1,5 +1,4 @@
 import template from './heptacom-admin-open-auth-client-create-page.html.twig';
-import HeptacomAdminOpenAuthProviderApiService from "../../../../service/api/heptacom-admin-open-auth-provider.service";
 
 const { Component } = Shopware;
 

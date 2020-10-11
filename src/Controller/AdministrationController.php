@@ -24,6 +24,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\RouterInterface;
 
 /**
  * @RouteScope(scopes={"administration"})
@@ -45,14 +46,21 @@ class AdministrationController extends AbstractController
      */
     private $redirectReceiveRoute;
 
+    /**
+     * @var RouterInterface
+     */
+    private $router;
+
     public function __construct(
         OpenAuthenticationFlowInterface $flow,
         EntityRepositoryInterface $clientsRepository,
-        RedirectReceiveRouteContract $redirectReceiveRoute
+        RedirectReceiveRouteContract $redirectReceiveRoute,
+        RouterInterface $router
     ) {
         $this->flow = $flow;
         $this->clientsRepository = $clientsRepository;
         $this->redirectReceiveRoute = $redirectReceiveRoute;
+        $this->router = $router;
     }
 
     /**
@@ -137,6 +145,24 @@ class AdministrationController extends AbstractController
 
         return JsonResponse::create([
             'target' => $this->flow->getRedirectUrlToConnect($clientId, $adminApiSource->getUserId(), $context),
+        ]);
+    }
+
+    /**
+     * @Route(
+     *     methods={"POST"},
+     *     name="api.heptacom.admin_open_auth.provider.redirect-url",
+     *     path="/api/v{version}/_action/heptacom_admin_open_auth_provider/client-redirect-url"
+     * )
+     */
+    public function getRedirectUrl(Request $request): Response
+    {
+        $clientId = $request->get('client_id');
+
+        return JsonResponse::create([
+            'target' => $this->router->generate('administration.heptacom.admin_open_auth.login', [
+                'clientId' => $clientId,
+            ], UrlGeneratorInterface::ABSOLUTE_URL),
         ]);
     }
 

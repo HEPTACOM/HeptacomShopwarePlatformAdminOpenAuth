@@ -23,7 +23,8 @@
                     "active": "Aktiv",
                     "login": "Als Anmeldung verwenden",
                     "connect": "Zum Verknüpfen verwenden",
-                    "storeUserToken": "Benutzerberechtigungsschlüssel speichern"
+                    "storeUserToken": "Benutzerberechtigungsschlüssel speichern",
+                    "redirectUri": "Rücksende-URL"
                 },
                 "modals": {
                     "delete": {

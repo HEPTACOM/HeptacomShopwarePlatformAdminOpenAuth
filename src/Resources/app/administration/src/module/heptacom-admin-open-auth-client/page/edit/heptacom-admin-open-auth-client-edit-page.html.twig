@@ -78,6 +78,14 @@
                                     :label="$t('heptacom-admin-open-auth-client.pages.edit.fields.storeUserToken')"
                                     v-model="item.storeUserToken"
                                 ></sw-switch-field>
+                                <sw-text-field
+                                    v-if="redirectUri"
+                                    :copyable="true"
+                                    :copyableTooltip="true"
+                                    :label="$t('heptacom-admin-open-auth-client.pages.edit.fields.redirectUri')"
+                                    :value="redirectUri"
+                                    disabled
+                                ></sw-text-field>
                             </template>
                         </sw-card>
                     {% endblock %}

@@ -7,6 +7,7 @@ Component.register('heptacom-admin-open-auth-client-edit-page', {
 
     inject: [
         'repositoryFactory',
+        'HeptacomAdminOpenAuthProviderApiService',
     ],
 
     mixins: [
@@ -26,7 +27,8 @@ Component.register('heptacom-admin-open-auth-client-edit-page', {
             isLoading: true,
             isSaveSuccessful: false,
             item: null,
-            showDeleteModal: false
+            showDeleteModal: false,
+            redirectUri: null
         }
     },
 
@@ -60,6 +62,11 @@ Component.register('heptacom-admin-open-auth-client-edit-page', {
                 .get(this.clientId, Context.api)
                 .then(item => {
                     this.item = item;
+
+                    return this.HeptacomAdminOpenAuthProviderApiService.getRedirectUri(item.id);
+                })
+                .then(redirectUri => {
+                    this.redirectUri = redirectUri.target;
                 });
         },
 

@@ -23,7 +23,8 @@
                     "active": "Active",
                     "login": "Use as login",
                     "connect": "Use to connect",
-                    "storeUserToken": "Store user access keys"
+                    "storeUserToken": "Store user access keys",
+                    "redirectUri": "Redirect URL"
                 },
                 "modals": {
                     "delete": {
