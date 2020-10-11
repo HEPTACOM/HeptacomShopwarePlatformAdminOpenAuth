@@ -50,7 +50,7 @@ Component.register('heptacom-admin-open-auth-client-edit-page', {
         loadData() {
             this.isLoading = true;
 
-            this.loadClient().then(() => {
+            this.loadClient().finally(() => {
                 this.isLoading = false;
             });
         },
@@ -77,23 +77,27 @@ Component.register('heptacom-admin-open-auth-client-edit-page', {
         saveItem() {
             this.isLoading = true;
 
-            this.clientRepository.save(this.item, Context.api).then(() => {
-                this.isLoading = false;
-                this.isSaveSuccessful = true;
+            this.clientRepository
+                .save(this.item, Context.api)
+                .then(() => {
+                    this.isSaveSuccessful = true;
 
-                return this.loadData();
-            }).catch(exception => {
-                this.isLoading = false;
-                const clientName = this.client.name;
-                this.createNotificationError({
-                    title: this.$tc('global.notification.notificationSaveErrorTitle'),
-                    message: this.$tc(
-                        'global.notification.notificationSaveErrorMessage', 0, { entityName: clientName }
-                    )
+                    return this.loadData();
+                })
+                .catch(exception => {
+                    const clientName = this.client.name;
+                    this.createNotificationError({
+                        title: this.$tc('global.notification.notificationSaveErrorTitle'),
+                        message: this.$tc(
+                            'global.notification.notificationSaveErrorMessage', 0, { entityName: clientName }
+                        )
+                    });
+
+                    throw exception;
+                })
+                .finally(() => {
+                    this.isLoading = false;
                 });
-
-                throw exception;
-            });
         },
 
         onConfirmDelete() {
@@ -104,8 +108,8 @@ Component.register('heptacom-admin-open-auth-client-edit-page', {
                 .delete(this.item.id, Context.api)
                 .then(() => {
                     this.$router.push({ name: 'heptacom.admin.open.auth.client.settings' });
-                }).catch(exception => {
-                    this.isLoading = false;
+                })
+                .catch(exception => {
                     const clientName = this.client.name;
                     this.createNotificationError({
                         title: this.$tc('global.notification.notificationSaveErrorTitle'),
@@ -115,6 +119,9 @@ Component.register('heptacom-admin-open-auth-client-edit-page', {
                     });
 
                     throw exception;
+                })
+                .finally(() => {
+                    this.isLoading = false;
                 });
         }
     }
