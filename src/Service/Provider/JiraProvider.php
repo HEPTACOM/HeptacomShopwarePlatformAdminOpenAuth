@@ -11,6 +11,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class JiraProvider extends ClientProviderContract
 {
+    public const PROVIDER_NAME = 'jira';
+
     /**
      * @var TokenPairFactoryContract
      */
@@ -23,7 +25,7 @@ class JiraProvider extends ClientProviderContract
 
     public function provides(): string
     {
-        return 'jira';
+        return static::PROVIDER_NAME;
     }
 
     public function getConfigurationTemplate(): OptionsResolver

@@ -16,7 +16,6 @@ use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\Uuid\Uuid;
-use Symfony\Component\Routing\RouterInterface;
 
 class ClientLoader implements ClientLoaderInterface
 {
@@ -81,10 +80,6 @@ class ClientLoader implements ClientLoaderInterface
             'provider' => $providerKey,
             'active' => false,
             'config' => $config,
-            // TODO remove provider key check into service decorator or interface
-            'login' => $providerKey === 'jira' || $providerKey === 'microsoft_azure',
-            'connect' => $providerKey === 'jira' || $providerKey === 'microsoft_azure',
-            'storeUserToken' => $providerKey === 'jira' || $providerKey === 'microsoft_azure',
         ]], $context);
 
         return $id;

@@ -10,6 +10,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class MicrosoftAzureProvider extends ClientProviderContract
 {
+    public const PROVIDER_NAME = 'microsoft_azure';
+
     /**
      * @var TokenPairFactoryContract
      */
@@ -22,7 +24,7 @@ class MicrosoftAzureProvider extends ClientProviderContract
 
     public function provides(): string
     {
-        return 'microsoft_azure';
+        return static::PROVIDER_NAME;
     }
 
     public function getConfigurationTemplate(): OptionsResolver
