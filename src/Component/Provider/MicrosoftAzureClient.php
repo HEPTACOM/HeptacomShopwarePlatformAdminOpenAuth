@@ -62,7 +62,7 @@ class MicrosoftAzureClient extends ClientContract
             ->setPassthrough(['resourceOwner' => $user]);
     }
 
-    public function authorizeRequest(RequestInterface $request, TokenPairStruct $token)
+    public function authorizeRequest(RequestInterface $request, TokenPairStruct $token): RequestInterface
     {
         $result = $request;
 

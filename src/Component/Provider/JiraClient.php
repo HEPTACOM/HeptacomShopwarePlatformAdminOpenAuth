@@ -64,7 +64,7 @@ class JiraClient extends ClientContract
             ->setPassthrough(['resourceOwner' => $user->toArray()]);
     }
 
-    public function authorizeRequest(RequestInterface $request, TokenPairStruct $token)
+    public function authorizeRequest(RequestInterface $request, TokenPairStruct $token): RequestInterface
     {
         $result = $request;
 
