@@ -7,6 +7,7 @@ use Heptacom\OpenAuth\Client\Contract\ClientContract;
 use Heptacom\OpenAuth\Struct\TokenPairStruct;
 use Heptacom\OpenAuth\Struct\UserStruct;
 use Heptacom\OpenAuth\Token\Contract\TokenPairFactoryContract;
+use Psr\Http\Message\RequestInterface;
 use TheNetworg\OAuth2\Client\Provider\Azure;
 
 class MicrosoftAzureClient extends ClientContract
@@ -59,6 +60,17 @@ class MicrosoftAzureClient extends ClientContract
             ->setPrimaryEmail($user['mail'])
             ->setEmails([])
             ->setPassthrough(['resourceOwner' => $user]);
+    }
+
+    public function authorizeRequest(RequestInterface $request, TokenPairStruct $token)
+    {
+        $result = $request;
+
+        foreach ($this->getInnerClient()->getHeaders($token->getAccessToken()) as $headerKey => $headerValue) {
+            $result = $result->withAddedHeader($headerKey, $headerValue);
+        }
+
+        return $result;
     }
 
     public function getInnerClient(): Azure

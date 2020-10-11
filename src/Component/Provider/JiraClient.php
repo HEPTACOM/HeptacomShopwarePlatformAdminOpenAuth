@@ -9,6 +9,7 @@ use Heptacom\OpenAuth\Struct\TokenPairStruct;
 use Heptacom\OpenAuth\Struct\UserStruct;
 use Heptacom\OpenAuth\Token\Contract\TokenPairFactoryContract;
 use Mrjoops\OAuth2\Client\Provider\JiraResourceOwner;
+use Psr\Http\Message\RequestInterface;
 
 class JiraClient extends ClientContract
 {
@@ -61,6 +62,17 @@ class JiraClient extends ClientContract
             ->setPrimaryEmail($user->getEmail())
             ->setEmails([])
             ->setPassthrough(['resourceOwner' => $user->toArray()]);
+    }
+
+    public function authorizeRequest(RequestInterface $request, TokenPairStruct $token)
+    {
+        $result = $request;
+
+        foreach ($this->getInnerClient()->getHeaders($token->getAccessToken()) as $headerKey => $headerValue) {
+            $result = $result->withAddedHeader($headerKey, $headerValue);
+        }
+
+        return $result;
     }
 
     public function getInnerClient(): Atlassian
