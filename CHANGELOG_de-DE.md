@@ -1,3 +1,10 @@
+# 3.0.0
+
+* Doppelten Eintrag in der Einstellungsübersicht in der Administration entfernt
+* Fehler bei ZIP-Installation behoben, der externe Komponenten nicht korrekt geladen hat
+* Rücksende URL wird automatisch generiert um Domain-Umzüge zu vereinfachen
+* OpenAuth Codeverträge in eigenes Repository ausgelagert heptacom/open-auth
+* Methode zum ClientContract hinzugefügt zum Autorisieren von API Anfragen 
 * ClientFactoryContract aus ClientLoader extrahiert
 * ClientProviderRepositoryInterface in den Heptacom\OpenAuth\ClientProvider\Contract Namensraum als Contract überführt
 * ClientProviderInterface in den Heptacom\OpenAuth\ClientProvider\Contract Namensraum als Contract überführt

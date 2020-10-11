@@ -1,3 +1,10 @@
+# 3.0.0
+
+* Remove duplicate entry in the settings overview
+* Fix bug on ZIP-Installations where external dependencies were not loaded
+* RedirectURL is now generated automatically to simplify domain changes
+* Extract OpenAuth code contracts in new repository heptacom/open-auth
+* Add method in ClientContract to authorize API requests 
 * Extract ClientFactoryContract from ClientLoader
 * Move ClientProviderRepositoryInterface into Heptacom\OpenAuth\ClientProvider\Contract namespace and used Contract pattern
 * Move ClientProviderInterface into Heptacom\OpenAuth\ClientProvider\Contract namespace and used Contract pattern
