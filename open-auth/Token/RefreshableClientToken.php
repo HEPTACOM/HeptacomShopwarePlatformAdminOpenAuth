@@ -6,6 +6,7 @@ use Heptacom\OpenAuth\Client\Contract\ClientContract;
 use Heptacom\OpenAuth\Struct\TokenPairStruct;
 use Heptacom\OpenAuth\Token\Contract\RefreshableTokenContract;
 use Heptacom\OpenAuth\Token\Exception\NoRefreshTokenGivenException;
+use Psr\Http\Message\RequestInterface;
 
 class RefreshableClientToken extends RefreshableTokenContract
 {
@@ -32,6 +33,16 @@ class RefreshableClientToken extends RefreshableTokenContract
     }
 
     public function getFreshToken(bool $forceRefresh = false): TokenPairStruct
+    {
+        return $this->refreshCheck($forceRefresh);
+    }
+
+    public function authorizeRequest(RequestInterface $request): RequestInterface
+    {
+        return $this->client->authorizeRequest($request, $this->refreshCheck(false));
+    }
+
+    private function refreshCheck(bool $forceRefresh): TokenPairStruct
     {
         $now = time() - $this->secondsOff;
         $expiration = $this->base->getExpiresAt();
