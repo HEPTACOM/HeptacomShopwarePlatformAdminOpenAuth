@@ -3,11 +3,11 @@
 namespace Heptacom\AdminOpenAuth\Component\Provider;
 
 use Heptacom\AdminOpenAuth\Component\OpenAuth\Atlassian;
+use Heptacom\AdminOpenAuth\Service\TokenPairFactoryContract;
 use Heptacom\OpenAuth\Behaviour\RedirectBehaviour;
 use Heptacom\OpenAuth\Client\Contract\ClientContract;
 use Heptacom\OpenAuth\Struct\TokenPairStruct;
 use Heptacom\OpenAuth\Struct\UserStruct;
-use Heptacom\OpenAuth\Token\Contract\TokenPairFactoryContract;
 use Mrjoops\OAuth2\Client\Provider\JiraResourceOwner;
 use Psr\Http\Message\RequestInterface;
 

@@ -11,5 +11,3 @@ services:
         arguments:
             - '@Heptacom\OpenAuth\Client\Contract\ClientFactoryContract'
             - '@event_dispatcher'
-
-    Heptacom\OpenAuth\Token\Contract\TokenPairFactoryContract: ~

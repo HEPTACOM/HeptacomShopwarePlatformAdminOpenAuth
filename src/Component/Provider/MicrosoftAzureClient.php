@@ -2,11 +2,11 @@
 
 namespace Heptacom\AdminOpenAuth\Component\Provider;
 
+use Heptacom\AdminOpenAuth\Service\TokenPairFactoryContract;
 use Heptacom\OpenAuth\Behaviour\RedirectBehaviour;
 use Heptacom\OpenAuth\Client\Contract\ClientContract;
 use Heptacom\OpenAuth\Struct\TokenPairStruct;
 use Heptacom\OpenAuth\Struct\UserStruct;
-use Heptacom\OpenAuth\Token\Contract\TokenPairFactoryContract;
 use Psr\Http\Message\RequestInterface;
 use TheNetworg\OAuth2\Client\Provider\Azure;
 
