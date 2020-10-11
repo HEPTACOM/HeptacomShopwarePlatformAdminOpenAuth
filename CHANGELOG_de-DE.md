@@ -1,3 +1,5 @@
+* Fehler behoben, dass die extrahierte Ressourcen nicht geladen werden können bei Plugininstallation
+
 # 3.0.0
 
 * Doppelten Eintrag in der Einstellungsübersicht in der Administration entfernt

@@ -1,3 +1,5 @@
+* Fix bug that the extracted resources are not available on plugin installation
+
 # 3.0.0
 
 * Remove duplicate entry in the settings overview

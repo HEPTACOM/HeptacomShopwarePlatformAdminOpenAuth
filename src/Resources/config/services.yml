@@ -1,6 +1,3 @@
-imports:
-    - { resource: ../../../open-auth/Resources/config/services.yml }
-
 services:
     _defaults:
         autowire: true
