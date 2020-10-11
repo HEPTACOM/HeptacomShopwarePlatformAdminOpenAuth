@@ -4,9 +4,9 @@ namespace Heptacom\AdminOpenAuth\Component\Provider;
 
 use Heptacom\OpenAuth\Behaviour\RedirectBehaviour;
 use Heptacom\OpenAuth\Client\Contract\ClientContract;
+use Heptacom\OpenAuth\Struct\TokenPairStruct;
 use Heptacom\OpenAuth\Struct\UserStruct;
 use Heptacom\OpenAuth\Token\Contract\TokenPairFactoryContract;
-use League\OAuth2\Client\Provider\AbstractProvider;
 use TheNetworg\OAuth2\Client\Provider\Azure;
 
 class MicrosoftAzureClient extends ClientContract
@@ -23,15 +23,34 @@ class MicrosoftAzureClient extends ClientContract
 
     public function __construct(TokenPairFactoryContract $tokenPairFactory, array $options)
     {
-        parent::__construct($tokenPairFactory);
         $this->tokenPairFactory = $tokenPairFactory;
         $this->azureClient = new Azure($options);
     }
 
+    public function getLoginUrl(?string $state, RedirectBehaviour $behaviour): string
+    {
+        $behaviour = $behaviour ?? new RedirectBehaviour();
+        $state = $state ?? '';
+        $params = [];
+
+        if ($state !== '') {
+            $params[$behaviour->getStateKey()] = $state;
+        }
+
+        return $this->getInnerClient()->getAuthorizationUrl($params);
+    }
+
+    public function refreshToken(string $refreshToken): TokenPairStruct
+    {
+        return $this->tokenPairFactory->fromLeagueToken($this->getInnerClient()->getAccessToken('refresh_token', [
+            'refresh_token' => $refreshToken,
+        ]));
+    }
+
     public function getUser(string $state, string $code, RedirectBehaviour $behaviour): UserStruct
     {
-        $token = $this->azureClient->getAccessToken('authorization_code', [$behaviour->getCodeKey() => $code]);
-        $user = $this->azureClient->get('me', $token);
+        $token = $this->getInnerClient()->getAccessToken('authorization_code', [$behaviour->getCodeKey() => $code]);
+        $user = $this->getInnerClient()->get('me', $token);
 
         return (new UserStruct())
             ->setPrimaryKey($user['objectId'])
@@ -42,7 +61,7 @@ class MicrosoftAzureClient extends ClientContract
             ->setPassthrough(['resourceOwner' => $user]);
     }
 
-    public function getInnerClient(): AbstractProvider
+    public function getInnerClient(): Azure
     {
         return $this->azureClient;
     }

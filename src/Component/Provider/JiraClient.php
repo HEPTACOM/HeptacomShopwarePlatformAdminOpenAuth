@@ -5,9 +5,9 @@ namespace Heptacom\AdminOpenAuth\Component\Provider;
 use Heptacom\AdminOpenAuth\Component\OpenAuth\Atlassian;
 use Heptacom\OpenAuth\Behaviour\RedirectBehaviour;
 use Heptacom\OpenAuth\Client\Contract\ClientContract;
+use Heptacom\OpenAuth\Struct\TokenPairStruct;
 use Heptacom\OpenAuth\Struct\UserStruct;
 use Heptacom\OpenAuth\Token\Contract\TokenPairFactoryContract;
-use League\OAuth2\Client\Provider\AbstractProvider;
 use Mrjoops\OAuth2\Client\Provider\JiraResourceOwner;
 
 class JiraClient extends ClientContract
@@ -24,16 +24,35 @@ class JiraClient extends ClientContract
 
     public function __construct(TokenPairFactoryContract $tokenPairFactory, array $options)
     {
-        parent::__construct($tokenPairFactory);
         $this->tokenPairFactory = $tokenPairFactory;
         $this->jiraClient = new Atlassian($options);
     }
 
+    public function getLoginUrl(?string $state, RedirectBehaviour $behaviour): string
+    {
+        $behaviour = $behaviour ?? new RedirectBehaviour();
+        $state = $state ?? '';
+        $params = [];
+
+        if ($state !== '') {
+            $params[$behaviour->getStateKey()] = $state;
+        }
+
+        return $this->getInnerClient()->getAuthorizationUrl($params);
+    }
+
+    public function refreshToken(string $refreshToken): TokenPairStruct
+    {
+        return $this->tokenPairFactory->fromLeagueToken($this->getInnerClient()->getAccessToken('refresh_token', [
+            'refresh_token' => $refreshToken,
+        ]));
+    }
+
     public function getUser(string $state, string $code, RedirectBehaviour $behaviour): UserStruct
     {
-        $token = $this->jiraClient->getAccessToken('authorization_code', [$behaviour->getCodeKey() => $code]);
+        $token = $this->getInnerClient()->getAccessToken('authorization_code', [$behaviour->getCodeKey() => $code]);
         /** @var JiraResourceOwner $user */
-        $user = $this->jiraClient->getResourceOwner($token);
+        $user = $this->getInnerClient()->getResourceOwner($token);
 
         return (new UserStruct())
             ->setPrimaryKey($user->getId())
@@ -44,7 +63,7 @@ class JiraClient extends ClientContract
             ->setPassthrough(['resourceOwner' => $user->toArray()]);
     }
 
-    public function getInnerClient(): AbstractProvider
+    public function getInnerClient(): Atlassian
     {
         return $this->jiraClient;
     }
