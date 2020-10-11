@@ -11,9 +11,7 @@ releasecheck: frosh-plugin-upload
 	[[ ! -d .build/store-build/.git ]] || rm -rf .build/store-build/.git
 	cp -a .git/ .build/store-build/.git/
 	(cd .build/store-build && ../frosh-plugin-upload plugin:zip:dir .)
-	mv .build/store-build/store-build-*.zip .build/$(shell jq '.name | split("/") | join("-")' --raw-output composer.json).zip
-	rm -rf .build/store-build
-	.build/frosh-plugin-upload plugin:validate $(shell pwd)/.build/$(shell jq '.name | split("/") | join("-")' --raw-output composer.json).zip
+	.build/frosh-plugin-upload plugin:validate $(shell pwd)/.build/store-build/*.zip
 
 it: csfix
 
