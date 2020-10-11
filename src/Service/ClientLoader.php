@@ -16,7 +16,6 @@ use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\Uuid\Uuid;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 class ClientLoader implements ClientLoaderInterface
@@ -32,11 +31,6 @@ class ClientLoader implements ClientLoaderInterface
     private $clientsRepository;
 
     /**
-     * @var RouterInterface
-     */
-    private $router;
-
-    /**
      * @var ClientFactoryContract
      */
     private $clientFactory;
@@ -44,12 +38,10 @@ class ClientLoader implements ClientLoaderInterface
     public function __construct(
         ClientProviderRepositoryContract $providers,
         EntityRepositoryInterface $clientsRepository,
-        RouterInterface $router,
         ClientFactoryContract $clientFactory
     ) {
         $this->providers = $providers;
         $this->clientsRepository = $clientsRepository;
-        $this->router = $router;
         $this->clientFactory = $clientFactory;
     }
 
@@ -82,11 +74,6 @@ class ClientLoader implements ClientLoaderInterface
         if ($clientProvider instanceof ClientProviderContract) {
             $config = $clientProvider->getConfigurationTemplate()->resolve($clientProvider->getInitialConfiguration());
         }
-
-        // TODO remove from configuration
-        $config['redirectUri'] = $this->router->generate('administration.heptacom.admin_open_auth.login', [
-            'clientId' => $id,
-        ], UrlGeneratorInterface::ABSOLUTE_URL);
 
         $this->clientsRepository->create([[
             'id' => $id,

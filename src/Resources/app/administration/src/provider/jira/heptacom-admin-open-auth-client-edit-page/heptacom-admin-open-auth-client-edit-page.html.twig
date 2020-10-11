@@ -5,13 +5,6 @@
         v-if="item && item.provider === 'jira'"
     >
         <sw-text-field
-            :copyable="true"
-            :copyableTooltip="true"
-            :label="$t('heptacomAdminOpenAuthClient.providerFields.jira.redirectUri')"
-            :value="item.config.redirectUri"
-            disabled
-        ></sw-text-field>
-        <sw-text-field
             :label="$t('heptacomAdminOpenAuthClient.providerFields.jira.clientId')"
             v-model="item.config.clientId"
         ></sw-text-field>

@@ -7,8 +7,7 @@
             "jira": {
                 "additionalScopes": "Application scopes",
                 "clientId": "Application identifier",
-                "clientSecret": "Application secret",
-                "redirectUri": "Redirect URL"
+                "clientSecret": "Application secret"
             }
         }
     }

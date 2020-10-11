@@ -32,17 +32,14 @@ class JiraProvider extends ClientProviderContract
             ->setDefined([
                 'clientId',
                 'clientSecret',
-                'redirectUri',
                 'scopes',
             ])->setRequired([
                 'clientId',
                 'clientSecret',
-                'redirectUri',
             ])->setDefaults([
                 'scopes' => [],
             ])->setAllowedTypes('clientId', 'string')
             ->setAllowedTypes('clientSecret', 'string')
-            ->setAllowedTypes('redirectUri', 'string')
             ->setAllowedTypes('scopes', 'array')
             ->addNormalizer('scopes', static function (Options $options, $value) {
                 $scopes = (array) $value;
@@ -66,7 +63,6 @@ class JiraProvider extends ClientProviderContract
 
         $result['clientId'] = '';
         $result['clientSecret'] = '';
-        $result['redirectUri'] = '';
 
         return $result;
     }

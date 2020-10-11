@@ -7,8 +7,7 @@
             "microsoft_azure": {
                 "additionalScopes": "Anwendungsberechtigungen",
                 "clientId": "Anwendungsschlüssel",
-                "clientSecret": "Anwendungsgehemnis",
-                "redirectUri": "Rücksende-URL"
+                "clientSecret": "Anwendungsgehemnis"
             }
         }
     }
