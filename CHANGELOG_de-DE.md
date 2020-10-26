@@ -1,3 +1,4 @@
+* Darstellung zum Verknüpfen von Benutzern zeigt nun Namen anstelle des Clienttypen an
 * Fehler behoben, dass nicht korrekt bereinigte Installationen mit Einstellung `redirectUri` nicht weiterarbeiten können
 
 # 3.0.1
