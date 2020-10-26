@@ -20,9 +20,7 @@
                                     <sw-container columns="1fr auto">
                                         {% block sw_profile_index_heptacom_admin_open_auth_card_clients_cards_item_provider %}
                                             <div>
-                                                {{ $te('heptacomAdminOpenAuthClient.providers.' + client.provider)
-                                                    ? $t('heptacomAdminOpenAuthClient.providers.' + client.provider)
-                                                    : client.provider }}
+                                                {{ client.name }}
                                             </div>
                                         {% endblock %}
 
