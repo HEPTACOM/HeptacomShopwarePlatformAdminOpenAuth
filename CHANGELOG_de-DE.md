@@ -1,3 +1,4 @@
+* API Verwendung verbessert bei Benutzerverknüpfung um zuverlässig HTTP Authentication Header zu schicken
 * Darstellung zum Verknüpfen von Benutzern zeigt nun Namen anstelle des Clienttypen an
 * Fehler behoben, dass nicht korrekt bereinigte Installationen mit Einstellung `redirectUri` nicht weiterarbeiten können
 
