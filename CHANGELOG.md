@@ -1,3 +1,4 @@
+* Fix bug in Microsoft Azure client when accounts in the Active Directory without Outlook mailing subscription assignment tried to login
 * Amend API usage on user connection to always provide an HTTP authentication header
 * Amend display of user connections as no longer client types but their names are used
 * Fix bug that uncleaned installations are not able to process the configuration `redirectUri`

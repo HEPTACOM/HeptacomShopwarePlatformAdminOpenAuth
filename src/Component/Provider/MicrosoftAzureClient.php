@@ -53,12 +53,23 @@ class MicrosoftAzureClient extends ClientContract
         $token = $this->getInnerClient()->getAccessToken('authorization_code', [$behaviour->getCodeKey() => $code]);
         $user = $this->getInnerClient()->get('me', $token);
 
+        $emails = [];
+
+        if (($email = \trim($user['mail'] ?? '')) !== '') {
+            $emails[] = $email;
+        }
+
+        // TODO break fallback behaviour in v5 and make it configurable
+        if (($email = \trim($user['userPrincipalName'] ?? '')) !== '') {
+            $emails[] = $email;
+        }
+
         return (new UserStruct())
             ->setPrimaryKey($user['objectId'])
             ->setTokenPair($this->tokenPairFactory->fromLeagueToken($token))
             ->setDisplayName($user['displayName'])
-            ->setPrimaryEmail($user['mail'])
-            ->setEmails([])
+            ->setPrimaryEmail(\array_pop($emails))
+            ->setEmails($emails)
             ->setPassthrough(['resourceOwner' => $user]);
     }
 
