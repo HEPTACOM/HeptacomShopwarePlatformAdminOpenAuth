@@ -34,15 +34,19 @@ class MicrosoftAzureProvider extends ClientProviderContract
                 'clientId',
                 'clientSecret',
                 'scopes',
+                // TODO remove in v5
+                'redirectUri',
             ])->setRequired([
                 'clientId',
                 'clientSecret',
             ])->setDefaults([
                 'scopes' => [],
+                'redirectUri' => null,
             ])
             ->setAllowedTypes('clientId', 'string')
             ->setAllowedTypes('clientSecret', 'string')
-            ->setAllowedTypes('scopes', 'array');
+            ->setAllowedTypes('scopes', 'array')
+            ->setDeprecated('redirectUri', 'Use route api.heptacom.admin_open_auth.provider.redirect-url instead to live generate redirectUri');
     }
 
     public function getInitialConfiguration(): array

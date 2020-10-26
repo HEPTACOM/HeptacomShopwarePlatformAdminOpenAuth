@@ -1,3 +1,5 @@
+* Fehler behoben, dass nicht korrekt bereinigte Installationen mit Einstellung `redirectUri` nicht weiterarbeiten können
+
 # 3.0.1
 
 * Fehler behoben, dass die extrahierte Ressourcen nicht geladen werden können bei Plugininstallation

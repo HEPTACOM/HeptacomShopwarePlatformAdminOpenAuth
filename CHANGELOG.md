@@ -1,3 +1,5 @@
+* Fix bug that uncleaned installations are not able to process the configuration `redirectUri`
+
 # 3.0.1
 
 * Fix bug that the extracted resources are not available on plugin installation
