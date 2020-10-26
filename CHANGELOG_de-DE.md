@@ -1,3 +1,5 @@
+# 3.0.2
+
 * Fehler im Microsoft Azure Client behoben, wenn Benutzer der Active Directory ohne Outlook Abonnement sich einloggen wollen
 * API Verwendung verbessert bei Benutzerverknüpfung um zuverlässig HTTP Authentication Header zu schicken
 * Darstellung zum Verknüpfen von Benutzern zeigt nun Namen anstelle des Clienttypen an
