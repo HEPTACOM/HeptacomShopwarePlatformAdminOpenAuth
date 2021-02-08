@@ -77,7 +77,7 @@ class OpenAuthenticationFlow implements OpenAuthenticationFlowInterface
         $this->login->initiate($clientId, null, $state, $context);
 
         return $this->clientLoader->load($clientId, $context)
-            ->getLoginUrl($state, (new RedirectBehaviour())->setExpectState(true));
+            ->getLoginUrl($state, $this->getRedirectBehaviour());
     }
 
     public function getRedirectUrlToConnect(string $clientId, string $userId, Context $context): string
@@ -90,7 +90,7 @@ class OpenAuthenticationFlow implements OpenAuthenticationFlowInterface
         $this->login->initiate($clientId, $userId, $state, $context);
 
         return $this->clientLoader->load($clientId, $context)
-            ->getLoginUrl($state, (new RedirectBehaviour())->setExpectState(true));
+            ->getLoginUrl($state, $this->getRedirectBehaviour());
     }
 
     public function upsertUser(UserStruct $user, string $clientId, string $state, Context $context): void
@@ -119,5 +119,10 @@ class OpenAuthenticationFlow implements OpenAuthenticationFlowInterface
                     ),
                 ];
             }));
+    }
+
+    private function getRedirectBehaviour(): RedirectBehaviour
+    {
+        return (new RedirectBehaviour())->setExpectState(true);
     }
 }
