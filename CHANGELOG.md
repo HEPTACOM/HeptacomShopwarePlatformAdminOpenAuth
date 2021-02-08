@@ -1,3 +1,5 @@
+* Fix bug in Microsoft Azure client when no redirect URI has been given within the redirection steps, Microsoft used the latest registered one to redirect the user. No login happened as a different login form has been presented
+
 # 3.0.2
 
 * Fix bug in Microsoft Azure client when accounts in the Active Directory without Outlook mailing subscription assignment tried to login

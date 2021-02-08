@@ -77,7 +77,7 @@ class OpenAuthenticationFlow implements OpenAuthenticationFlowInterface
         $this->login->initiate($clientId, null, $state, $context);
 
         return $this->clientLoader->load($clientId, $context)
-            ->getLoginUrl($state, $this->getRedirectBehaviour());
+            ->getLoginUrl($state, $this->getRedirectBehaviour($clientId));
     }
 
     public function getRedirectUrlToConnect(string $clientId, string $userId, Context $context): string
@@ -90,7 +90,7 @@ class OpenAuthenticationFlow implements OpenAuthenticationFlowInterface
         $this->login->initiate($clientId, $userId, $state, $context);
 
         return $this->clientLoader->load($clientId, $context)
-            ->getLoginUrl($state, $this->getRedirectBehaviour());
+            ->getLoginUrl($state, $this->getRedirectBehaviour($clientId));
     }
 
     public function upsertUser(UserStruct $user, string $clientId, string $state, Context $context): void
@@ -121,8 +121,12 @@ class OpenAuthenticationFlow implements OpenAuthenticationFlowInterface
             }));
     }
 
-    private function getRedirectBehaviour(): RedirectBehaviour
+    private function getRedirectBehaviour(string $clientId): RedirectBehaviour
     {
-        return (new RedirectBehaviour())->setExpectState(true);
+        return (new RedirectBehaviour())
+            ->setExpectState(true)
+            ->setRedirectUri($this->router->generate('administration.heptacom.admin_open_auth.login', [
+                'clientId' => $clientId,
+            ], UrlGeneratorInterface::ABSOLUTE_URL));
     }
 }

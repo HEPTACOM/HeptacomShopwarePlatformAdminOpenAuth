@@ -31,9 +31,12 @@ class JiraClient extends ClientContract
 
     public function getLoginUrl(?string $state, RedirectBehaviour $behaviour): string
     {
-        $behaviour = $behaviour ?? new RedirectBehaviour();
         $state = $state ?? '';
         $params = [];
+
+        if (\is_string($behaviour->getRedirectUri())) {
+            $params['redirect_uri'] = $behaviour->getRedirectUri();
+        }
 
         if ($state !== '') {
             $params[$behaviour->getStateKey()] = $state;
@@ -51,7 +54,13 @@ class JiraClient extends ClientContract
 
     public function getUser(string $state, string $code, RedirectBehaviour $behaviour): UserStruct
     {
-        $token = $this->getInnerClient()->getAccessToken('authorization_code', [$behaviour->getCodeKey() => $code]);
+        $options = [$behaviour->getCodeKey() => $code];
+
+        if (\is_string($behaviour->getRedirectUri())) {
+            $options['redirect_uri'] = $behaviour->getRedirectUri();
+        }
+
+        $token = $this->getInnerClient()->getAccessToken('authorization_code', $options);
         /** @var JiraResourceOwner $user */
         $user = $this->getInnerClient()->getResourceOwner($token);
 
