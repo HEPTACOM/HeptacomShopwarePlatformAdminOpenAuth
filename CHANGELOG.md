@@ -1,3 +1,8 @@
+# 4.0.0
+
+* Add Shopware 6.4 compatibility
+* Drop Shopware 6.2 and 6.3 support
+
 # 3.0.3
 
 * Fix bug in Microsoft Azure client when no redirect URI has been given within the redirection steps, Microsoft used the latest registered one to redirect the user. No login happened as a different login form has been presented

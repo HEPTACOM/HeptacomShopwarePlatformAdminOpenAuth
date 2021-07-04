@@ -1,3 +1,8 @@
+# 4.0.0
+
+* Kompatibilität für Shopware 6.4 hinzugefügt
+* Shopware 6.2 und 6.3 Unterstützung entfernt
+
 # 3.0.3
 
 * Fehler im Microsoft Azure Client behoben, wenn keine `redirectUri` in die Weiterleitungskette übergeben wurde, hat Microsoft die zuletzt angelegte Adresse verwendet. Der Benutzer wurde in eine andere Loginmaske geschickt und nicht eingeloggt
