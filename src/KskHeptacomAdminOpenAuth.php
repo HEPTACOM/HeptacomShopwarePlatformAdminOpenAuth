@@ -1,4 +1,5 @@
-<?php declare(strict_types=1);
+<?php
+declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth;
 
@@ -6,7 +7,6 @@ use Composer\Autoload\ClassLoader;
 use Heptacom\OpenAuth\SymfonyBundle;
 use Shopware\Core\Framework\Parameter\AdditionalBundleParameters;
 use Shopware\Core\Framework\Plugin;
-use Shopware\Core\Framework\Plugin\Context\UninstallContext;
 
 class KskHeptacomAdminOpenAuth extends Plugin
 {
@@ -17,7 +17,7 @@ class KskHeptacomAdminOpenAuth extends Plugin
         $autoloader = \dirname(__DIR__) . '/vendor/autoload.php';
 
         if (\is_file($autoloader) && !self::$dependencyClassLoader instanceof ClassLoader) {
-            self::$dependencyClassLoader = require($autoloader);
+            self::$dependencyClassLoader = require $autoloader;
 
             if (self::$dependencyClassLoader instanceof ClassLoader) {
                 \spl_autoload_unregister([self::$dependencyClassLoader, 'loadClass']);
