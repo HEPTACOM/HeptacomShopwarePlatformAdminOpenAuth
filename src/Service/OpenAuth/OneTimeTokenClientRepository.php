@@ -17,16 +17,18 @@ class OneTimeTokenClientRepository implements ClientRepositoryInterface
         $this->decorated = $decorated;
     }
 
-    public function getClientEntity(
-        $clientIdentifier,
-        $grantType = null,
-        $clientSecret = null,
-        $mustValidateSecret = true
-    ) {
-        if ($grantType === 'heptacom_admin_open_auth_one_time_token' && $clientIdentifier === 'administration') {
+    public function getClientEntity($clientIdentifier)
+    {
+        if ($clientIdentifier === 'administration') {
             return new ApiClient('administration', true);
         }
 
-        return $this->decorated->getClientEntity($clientIdentifier, $grantType, $clientSecret, $mustValidateSecret);
+        return $this->decorated->getClientEntity($clientIdentifier);
+    }
+
+    public function validateClient($clientIdentifier, $clientSecret, $grantType)
+    {
+        return $grantType === 'heptacom_admin_open_auth_one_time_token' ||
+            $this->decorated->validateClient($clientIdentifier, $clientSecret, $grantType);
     }
 }

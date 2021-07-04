@@ -13,7 +13,6 @@ use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsAnyFilter;
-use Shopware\Core\Framework\DataAbstractionLayer\Search\IdSearchResult;
 use Shopware\Core\Framework\Util\Random;
 use Shopware\Core\System\User\Service\UserProvisioner;
 
@@ -125,11 +124,6 @@ class UserResolver implements UserResolverInterface
         $criteria = new Criteria();
         $criteria->addFilter(new EqualsAnyFilter('email', $emails));
 
-        /** @var IdSearchResult $result */
-        $result = $context->disableCache(function (Context $cacheless) use ($criteria) {
-            return $this->userRepository->searchIds($criteria, $cacheless);
-        });
-
-        return $result->firstId();
+        return $this->userRepository->searchIds($criteria, $context)->firstId();
     }
 }

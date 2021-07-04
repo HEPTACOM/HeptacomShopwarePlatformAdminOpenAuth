@@ -54,7 +54,7 @@ Component.register('heptacom-admin-open-auth-client-listing-page', {
 
         clientCriteria() {
             const result = new Criteria();
-            const params = this.getListingParams();
+            const params = this.getMainListingParams();
 
             result.addAssociation('userKeys');
             result.setLimit(params.limit);

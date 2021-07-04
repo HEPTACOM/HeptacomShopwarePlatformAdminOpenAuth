@@ -18,7 +18,6 @@ class KskHeptacomAdminOpenAuth extends Plugin
     public function uninstall(UninstallContext $uninstallContext): void
     {
         parent::uninstall($uninstallContext);
-        $uninstallContext->enableKeepMigrations();
     }
 
     public function getAdditionalBundles(AdditionalBundleParameters $parameters): array

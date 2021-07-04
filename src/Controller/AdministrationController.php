@@ -137,7 +137,7 @@ class AdministrationController extends AbstractController
      * @Route(
      *     methods={"GET"},
      *     name="api.heptacom.admin_open_auth.remote_connect",
-     *     path="/api/v{version}/_admin/open-auth/{clientId}/connect"
+     *     path="/api/_admin/open-auth/{clientId}/connect"
      * )
      */
     public function remoteConnect(string $clientId, Context $context): Response
@@ -154,7 +154,7 @@ class AdministrationController extends AbstractController
      * @Route(
      *     methods={"POST"},
      *     name="api.heptacom.admin_open_auth.provider.redirect-url",
-     *     path="/api/v{version}/_action/heptacom_admin_open_auth_provider/client-redirect-url"
+     *     path="/api/_action/heptacom_admin_open_auth_provider/client-redirect-url"
      * )
      */
     public function getRedirectUrl(Request $request): Response
@@ -170,7 +170,7 @@ class AdministrationController extends AbstractController
      * @Route(
      *     methods={"GET"},
      *     name="api.heptacom.admin_open_auth.provider.list",
-     *     path="/api/v{version}/_action/heptacom_admin_open_auth_provider/list"
+     *     path="/api/_action/heptacom_admin_open_auth_provider/list"
      * )
      */
     public function providerList(ClientProviderRepositoryContract $providerRepository): Response
@@ -184,7 +184,7 @@ class AdministrationController extends AbstractController
      * @Route(
      *     methods={"POST"},
      *     name="api.heptacom.admin_open_auth.provider.factorize",
-     *     path="/api/v{version}/_action/heptacom_admin_open_auth_provider/factorize"
+     *     path="/api/_action/heptacom_admin_open_auth_provider/factorize"
      * )
      */
     public function createClient(
