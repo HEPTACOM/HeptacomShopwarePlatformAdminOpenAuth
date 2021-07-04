@@ -11,40 +11,19 @@ class UserTokenEntity extends Entity
 {
     use EntityIdTrait;
 
-    /**
-     * @var string|null
-     */
-    protected $userId;
+    protected ?string $userId = null;
 
-    /**
-     * @var string|null
-     */
-    protected $clientId;
+    protected ?string $clientId = null;
 
-    /**
-     * @var string|null
-     */
-    protected $refreshToken;
+    protected ?string $refreshToken = null;
 
-    /**
-     * @var string|null
-     */
-    protected $accessToken;
+    protected ?string $accessToken = null;
 
-    /**
-     * @var DateTimeInterface|null
-     */
-    protected $expiresAt;
+    protected ?DateTimeInterface $expiresAt = null;
 
-    /**
-     * @var ClientEntity|null
-     */
-    protected $client;
+    protected ?ClientEntity $client = null;
 
-    /**
-     * @var UserEntity|null
-     */
-    protected $user;
+    protected ?UserEntity $user = null;
 
     public function getUserId(): string
     {

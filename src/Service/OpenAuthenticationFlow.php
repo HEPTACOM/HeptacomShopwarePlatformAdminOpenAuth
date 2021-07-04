@@ -21,35 +21,17 @@ use Symfony\Component\Routing\RouterInterface;
 
 class OpenAuthenticationFlow implements OpenAuthenticationFlowInterface
 {
-    /**
-     * @var LoginInterface
-     */
-    private $login;
+    private LoginInterface $login;
 
-    /**
-     * @var ClientLoaderInterface
-     */
-    private $clientLoader;
+    private ClientLoaderInterface $clientLoader;
 
-    /**
-     * @var UserResolverInterface
-     */
-    private $userResolver;
+    private UserResolverInterface $userResolver;
 
-    /**
-     * @var EntityRepositoryInterface
-     */
-    private $clientsRepository;
+    private EntityRepositoryInterface $clientsRepository;
 
-    /**
-     * @var RouterInterface
-     */
-    private $router;
+    private RouterInterface $router;
 
-    /**
-     * @var ClientFeatureCheckerInterface
-     */
-    private $clientFeatureChecker;
+    private ClientFeatureCheckerInterface $clientFeatureChecker;
 
     public function __construct(
         LoginInterface $login,

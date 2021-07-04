@@ -7,10 +7,7 @@ use League\OAuth2\Server\Repositories\ScopeRepositoryInterface;
 
 class OneTimeTokenScopeRepository implements ScopeRepositoryInterface
 {
-    /**
-     * @var ScopeRepositoryInterface
-     */
-    private $decorated;
+    private ScopeRepositoryInterface $decorated;
 
     public function __construct(ScopeRepositoryInterface $decorated)
     {

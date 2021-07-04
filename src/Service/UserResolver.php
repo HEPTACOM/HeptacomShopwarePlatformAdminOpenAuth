@@ -18,40 +18,19 @@ use Shopware\Core\System\User\Service\UserProvisioner;
 
 class UserResolver implements UserResolverInterface
 {
-    /**
-     * @var EntityRepositoryInterface
-     */
-    private $userRepository;
+    private EntityRepositoryInterface $userRepository;
 
-    /**
-     * @var UserProvisioner
-     */
-    private $userProvisioner;
+    private UserProvisioner $userProvisioner;
 
-    /**
-     * @var LoginInterface
-     */
-    private $login;
+    private LoginInterface $login;
 
-    /**
-     * @var UserEmailInterface
-     */
-    private $userEmail;
+    private UserEmailInterface $userEmail;
 
-    /**
-     * @var UserKeyInterface
-     */
-    private $userKey;
+    private UserKeyInterface $userKey;
 
-    /**
-     * @var UserTokenInterface
-     */
-    private $userToken;
+    private UserTokenInterface $userToken;
 
-    /**
-     * @var ClientFeatureCheckerInterface
-     */
-    private $clientFeatureChecker;
+    private ClientFeatureCheckerInterface $clientFeatureChecker;
 
     public function __construct(
         EntityRepositoryInterface $userRepository,

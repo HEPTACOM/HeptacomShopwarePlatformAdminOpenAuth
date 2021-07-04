@@ -10,30 +10,15 @@ class LoginEntity extends Entity
 {
     use EntityIdTrait;
 
-    /**
-     * @var string|null
-     */
-    protected $clientId;
+    protected ?string $clientId = null;
 
-    /**
-     * @var string|null
-     */
-    protected $state;
+    protected ?string $state = null;
 
-    /**
-     * @var string|null
-     */
-    protected $userId;
+    protected ?string $userId = null;
 
-    /**
-     * @var ClientEntity|null
-     */
-    protected $client;
+    protected ?ClientEntity $client = null;
 
-    /**
-     * @var UserEntity|null
-     */
-    protected $user;
+    protected ?UserEntity $user = null;
 
     public function getClientId(): ?string
     {

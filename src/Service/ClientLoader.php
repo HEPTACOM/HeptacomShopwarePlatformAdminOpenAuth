@@ -19,20 +19,11 @@ use Shopware\Core\Framework\Uuid\Uuid;
 
 class ClientLoader implements ClientLoaderInterface
 {
-    /**
-     * @var ClientProviderRepositoryContract
-     */
-    private $providers;
+    private ClientProviderRepositoryContract $providers;
 
-    /**
-     * @var EntityRepositoryInterface
-     */
-    private $clientsRepository;
+    private EntityRepositoryInterface $clientsRepository;
 
-    /**
-     * @var ClientFactoryContract
-     */
-    private $clientFactory;
+    private ClientFactoryContract $clientFactory;
 
     public function __construct(
         ClientProviderRepositoryContract $providers,

@@ -31,25 +31,13 @@ use Symfony\Component\Routing\RouterInterface;
  */
 class AdministrationController extends AbstractController
 {
-    /**
-     * @var OpenAuthenticationFlowInterface
-     */
-    private $flow;
+    private OpenAuthenticationFlowInterface $flow;
 
-    /**
-     * @var EntityRepositoryInterface
-     */
-    private $clientsRepository;
+    private EntityRepositoryInterface $clientsRepository;
 
-    /**
-     * @var RedirectReceiveRouteContract
-     */
-    private $redirectReceiveRoute;
+    private RedirectReceiveRouteContract $redirectReceiveRoute;
 
-    /**
-     * @var RouterInterface
-     */
-    private $router;
+    private RouterInterface $router;
 
     public function __construct(
         OpenAuthenticationFlowInterface $flow,

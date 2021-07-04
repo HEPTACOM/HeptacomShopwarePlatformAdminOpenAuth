@@ -13,10 +13,7 @@ use Shopware\Core\Framework\Uuid\Uuid;
 
 class Login implements LoginInterface
 {
-    /**
-     * @var EntityRepositoryInterface
-     */
-    private $loginsRepository;
+    private EntityRepositoryInterface $loginsRepository;
 
     public function __construct(EntityRepositoryInterface $loginsRepository)
     {

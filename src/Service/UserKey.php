@@ -13,10 +13,7 @@ use Shopware\Core\System\User\UserCollection;
 
 class UserKey implements UserKeyInterface
 {
-    /**
-     * @var EntityRepositoryInterface
-     */
-    private $userKeysRepository;
+    private EntityRepositoryInterface $userKeysRepository;
 
     public function __construct(EntityRepositoryInterface $userKeysRepository)
     {

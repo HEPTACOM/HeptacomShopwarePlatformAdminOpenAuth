@@ -9,60 +9,27 @@ class ClientEntity extends Entity
 {
     use EntityIdTrait;
 
-    /**
-     * @var string|null
-     */
-    protected $name;
+    protected ?string $name = null;
 
-    /**
-     * @var string|null
-     */
-    protected $provider;
+    protected ?string $provider = null;
 
-    /**
-     * @var bool|null
-     */
-    protected $active;
+    protected ?bool $active = null;
 
-    /**
-     * @var bool|null
-     */
-    protected $login;
+    protected ?bool $login = null;
 
-    /**
-     * @var bool|null
-     */
-    protected $connect;
+    protected ?bool $connect = null;
 
-    /**
-     * @var bool|null
-     */
-    protected $storeUserToken;
+    protected ?bool $storeUserToken = null;
 
-    /**
-     * @var array|null
-     */
-    protected $config;
+    protected ?array $config = null;
 
-    /**
-     * @var LoginCollection|null
-     */
-    protected $logins;
+    protected ?LoginCollection $logins = null;
 
-    /**
-     * @var UserEmailCollection|null
-     */
-    protected $userEmails;
+    protected ?UserEmailCollection $userEmails = null;
 
-    /**
-     * @var UserKeyCollection|null
-     */
-    protected $userKeys;
+    protected ?UserKeyCollection $userKeys = null;
 
-    /**
-     * @var UserTokenCollection|null
-     */
-    protected $userTokens;
+    protected ?UserTokenCollection $userTokens = null;
 
     public function getName(): ?string
     {

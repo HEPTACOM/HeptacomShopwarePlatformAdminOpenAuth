@@ -13,15 +13,9 @@ use Psr\Http\Message\RequestInterface;
 
 class JiraClient extends ClientContract
 {
-    /**
-     * @var TokenPairFactoryContract
-     */
-    private $tokenPairFactory;
+    private TokenPairFactoryContract $tokenPairFactory;
 
-    /**
-     * @var Atlassian
-     */
-    private $jiraClient;
+    private Atlassian $jiraClient;
 
     public function __construct(TokenPairFactoryContract $tokenPairFactory, array $options)
     {

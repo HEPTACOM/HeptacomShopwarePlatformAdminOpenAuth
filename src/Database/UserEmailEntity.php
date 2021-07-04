@@ -10,30 +10,15 @@ class UserEmailEntity extends Entity
 {
     use EntityIdTrait;
 
-    /**
-     * @var string|null
-     */
-    protected $userId;
+    protected ?string $userId = null;
 
-    /**
-     * @var string|null
-     */
-    protected $clientId;
+    protected ?string $clientId = null;
 
-    /**
-     * @var string|null
-     */
-    protected $email;
+    protected ?string $email = null;
 
-    /**
-     * @var ClientEntity|null
-     */
-    protected $client;
+    protected ?ClientEntity $client = null;
 
-    /**
-     * @var UserEntity|null
-     */
-    protected $user;
+    protected ?UserEntity $user = null;
 
     public function getUserId(): string
     {

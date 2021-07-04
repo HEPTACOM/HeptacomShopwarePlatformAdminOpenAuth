@@ -14,10 +14,7 @@ use Shopware\Core\System\User\UserCollection;
 
 class UserEmail implements UserEmailInterface
 {
-    /**
-     * @var EntityRepositoryInterface
-     */
-    private $userEmailsRepository;
+    private EntityRepositoryInterface $userEmailsRepository;
 
     public function __construct(EntityRepositoryInterface $userEmailsRepository)
     {

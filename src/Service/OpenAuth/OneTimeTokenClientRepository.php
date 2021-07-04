@@ -7,10 +7,7 @@ use Shopware\Core\Framework\Api\OAuth\Client\ApiClient;
 
 class OneTimeTokenClientRepository implements ClientRepositoryInterface
 {
-    /**
-     * @var ClientRepositoryInterface
-     */
-    private $decorated;
+    private ClientRepositoryInterface $decorated;
 
     public function __construct(ClientRepositoryInterface $decorated)
     {

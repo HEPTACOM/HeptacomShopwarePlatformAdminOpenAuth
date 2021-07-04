@@ -13,10 +13,7 @@ class JiraProvider extends ClientProviderContract
 {
     public const PROVIDER_NAME = 'jira';
 
-    /**
-     * @var TokenPairFactoryContract
-     */
-    private $tokenPairFactory;
+    private TokenPairFactoryContract $tokenPairFactory;
 
     public function __construct(TokenPairFactoryContract $tokenPairFactory)
     {

@@ -7,10 +7,7 @@ use Throwable;
 
 class LoadClientException extends Exception
 {
-    /**
-     * @var string
-     */
-    protected $clientId;
+    protected string $clientId;
 
     public function __construct(string $message, string $clientId, ?Throwable $previous = null)
     {

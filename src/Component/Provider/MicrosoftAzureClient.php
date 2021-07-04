@@ -12,15 +12,9 @@ use TheNetworg\OAuth2\Client\Provider\Azure;
 
 class MicrosoftAzureClient extends ClientContract
 {
-    /**
-     * @var TokenPairFactoryContract
-     */
-    private $tokenPairFactory;
+    private TokenPairFactoryContract $tokenPairFactory;
 
-    /**
-     * @var Azure
-     */
-    private $azureClient;
+    private Azure $azureClient;
 
     public function __construct(TokenPairFactoryContract $tokenPairFactory, array $options)
     {

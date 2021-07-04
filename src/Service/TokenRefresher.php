@@ -13,20 +13,11 @@ use Shopware\Core\Framework\Context;
 
 class TokenRefresher implements TokenRefresherInterface
 {
-    /**
-     * @var UserTokenInterface
-     */
-    private $userToken;
+    private UserTokenInterface $userToken;
 
-    /**
-     * @var ClientLoaderInterface
-     */
-    private $clientLoader;
+    private ClientLoaderInterface $clientLoader;
 
-    /**
-     * @var ClientFeatureCheckerInterface
-     */
-    private $clientFeatureChecker;
+    private ClientFeatureCheckerInterface $clientFeatureChecker;
 
     public function __construct(
         UserTokenInterface $userToken,

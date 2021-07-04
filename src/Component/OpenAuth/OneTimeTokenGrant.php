@@ -17,10 +17,7 @@ use Shopware\Core\Framework\Context;
 
 class OneTimeTokenGrant extends PasswordGrant
 {
-    /**
-     * @var LoginInterface
-     */
-    private $login;
+    private LoginInterface $login;
 
     public function __construct(
         UserRepositoryInterface $userRepository,

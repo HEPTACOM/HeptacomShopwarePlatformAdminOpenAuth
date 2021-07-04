@@ -10,10 +10,7 @@ use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
 
 class ClientFeatureChecker implements ClientFeatureCheckerInterface
 {
-    /**
-     * @var EntityRepositoryInterface
-     */
-    private $clientsRepository;
+    private EntityRepositoryInterface $clientsRepository;
 
     public function __construct(EntityRepositoryInterface $clientsRepository)
     {

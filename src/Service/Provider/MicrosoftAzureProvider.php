@@ -12,10 +12,7 @@ class MicrosoftAzureProvider extends ClientProviderContract
 {
     public const PROVIDER_NAME = 'microsoft_azure';
 
-    /**
-     * @var TokenPairFactoryContract
-     */
-    private $tokenPairFactory;
+    private TokenPairFactoryContract $tokenPairFactory;
 
     public function __construct(TokenPairFactoryContract $tokenPairFactory)
     {

@@ -14,10 +14,7 @@ use Shopware\Core\Framework\Uuid\Uuid;
 
 class UserToken implements UserTokenInterface
 {
-    /**
-     * @var EntityRepositoryInterface
-     */
-    private $userTokensRepository;
+    private EntityRepositoryInterface $userTokensRepository;
 
     public function __construct(EntityRepositoryInterface $userTokensRepository)
     {

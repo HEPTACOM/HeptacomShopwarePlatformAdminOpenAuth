@@ -10,15 +10,7 @@ use Shopware\Core\Framework\Plugin\Context\UninstallContext;
 
 class KskHeptacomAdminOpenAuth extends Plugin
 {
-    /**
-     * @var ClassLoader|null
-     */
-    private static $dependencyClassLoader = null;
-
-    public function uninstall(UninstallContext $uninstallContext): void
-    {
-        parent::uninstall($uninstallContext);
-    }
+    private static ?ClassLoader $dependencyClassLoader = null;
 
     public function getAdditionalBundles(AdditionalBundleParameters $parameters): array
     {

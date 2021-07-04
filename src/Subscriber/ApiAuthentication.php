@@ -13,25 +13,13 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 class ApiAuthentication implements EventSubscriberInterface
 {
-    /**
-     * @var AuthorizationServer
-     */
-    private $authorizationServer;
+    private AuthorizationServer $authorizationServer;
 
-    /**
-     * @var UserRepositoryInterface
-     */
-    private $userRepository;
+    private UserRepositoryInterface $userRepository;
 
-    /**
-     * @var RefreshTokenRepositoryInterface
-     */
-    private $refreshTokenRepository;
+    private RefreshTokenRepositoryInterface $refreshTokenRepository;
 
-    /**
-     * @var LoginInterface
-     */
-    private $login;
+    private LoginInterface $login;
 
     public function __construct(
         AuthorizationServer $authorizationServer,

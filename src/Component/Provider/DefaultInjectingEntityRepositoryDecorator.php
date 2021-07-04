@@ -14,10 +14,7 @@ use Shopware\Core\Framework\DataAbstractionLayer\Write\CloneBehavior;
 
 abstract class DefaultInjectingEntityRepositoryDecorator implements EntityRepositoryInterface
 {
-    /**
-     * @var EntityRepositoryInterface
-     */
-    private $decorated;
+    private EntityRepositoryInterface $decorated;
 
     public function __construct(EntityRepositoryInterface $decorated)
     {

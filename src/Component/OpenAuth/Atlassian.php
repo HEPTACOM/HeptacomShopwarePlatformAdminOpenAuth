@@ -7,9 +7,9 @@ use Mrjoops\OAuth2\Client\Provider\Jira;
 class Atlassian extends Jira
 {
     /**
-     * @var array|string[]
+     * @var string[]
      */
-    protected $scopes;
+    protected array $scopes = [];
 
     public function getBaseAccessTokenUrl(array $params)
     {
