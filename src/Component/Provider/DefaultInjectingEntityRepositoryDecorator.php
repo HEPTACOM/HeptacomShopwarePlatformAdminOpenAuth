@@ -10,6 +10,7 @@ use Shopware\Core\Framework\DataAbstractionLayer\Search\AggregationResult\Aggreg
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\EntitySearchResult;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\IdSearchResult;
+use Shopware\Core\Framework\DataAbstractionLayer\Write\CloneBehavior;
 
 abstract class DefaultInjectingEntityRepositoryDecorator implements EntityRepositoryInterface
 {
@@ -38,9 +39,9 @@ abstract class DefaultInjectingEntityRepositoryDecorator implements EntityReposi
         return $this->decorated->searchIds($criteria, $context);
     }
 
-    public function clone(string $id, Context $context, ?string $newId = null): EntityWrittenContainerEvent
+    public function clone(string $id, Context $context, ?string $newId = null, ?CloneBehavior $behavior = null): EntityWrittenContainerEvent
     {
-        return $this->decorated->clone($id, $context, $newId);
+        return $this->decorated->clone($id, $context, $newId, $behavior);
     }
 
     public function search(Criteria $criteria, Context $context): EntitySearchResult
