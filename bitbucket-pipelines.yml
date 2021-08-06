@@ -29,6 +29,6 @@ pipelines:
                         - make cs
             -   step:
                     name: Lint plugins store readiness
-                    image: heptacom/shopware-5-pipeline:php72-latest
+                    image: heptacom/shopware-5-pipeline:php74-latest
                     script:
                         - make releasecheck
