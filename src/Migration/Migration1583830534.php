@@ -40,7 +40,7 @@ CREATE TABLE `heptacom_admin_open_auth_login` (
 
 SET FOREIGN_KEY_CHECKS = 1;
 SQL;
-        $connection->executeQuery($sql);
+        $connection->executeStatement($sql);
     }
 
     public function updateDestructive(Connection $connection): void

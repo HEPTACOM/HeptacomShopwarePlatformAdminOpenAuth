@@ -19,6 +19,6 @@ class Migration1582942221 extends MigrationStep
 
     public function updateDestructive(Connection $connection): void
     {
-        $connection->executeQuery('ALTER TABLE `heptacom_admin_open_auth_login` DROP COLUMN `password`');
+        $connection->executeStatement('ALTER TABLE `heptacom_admin_open_auth_login` DROP COLUMN `password`');
     }
 }

@@ -22,7 +22,7 @@ ALTER TABLE
     ADD COLUMN `login` BOOLEAN NOT NULL DEFAULT TRUE AFTER `active`,
     ADD COLUMN `connect` BOOLEAN NOT NULL DEFAULT TRUE AFTER `login`;
 SQL;
-        $connection->executeQuery($sql);
+        $connection->executeStatement($sql);
     }
 
     public function updateDestructive(Connection $connection): void

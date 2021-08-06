@@ -20,7 +20,7 @@ ALTER TABLE
     `heptacom_admin_open_auth_user_token`
 ADD COLUMN `expires_at` DATETIME(3) NULL AFTER `refresh_token`;
 SQL;
-        $connection->executeQuery($sql);
+        $connection->executeStatement($sql);
     }
 
     public function updateDestructive(Connection $connection): void
