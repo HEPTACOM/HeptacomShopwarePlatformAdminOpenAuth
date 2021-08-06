@@ -20,7 +20,7 @@ ALTER TABLE
     `heptacom_admin_open_auth_client`
     ADD COLUMN `store_user_token` BOOLEAN NOT NULL DEFAULT TRUE AFTER `connect`;
 SQL;
-        $connection->executeQuery($sql);
+        $connection->executeStatement($sql);
     }
 
     public function updateDestructive(Connection $connection): void

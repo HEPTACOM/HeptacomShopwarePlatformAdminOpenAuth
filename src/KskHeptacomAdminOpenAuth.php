@@ -30,4 +30,20 @@ class KskHeptacomAdminOpenAuth extends Plugin
 
         return $result;
     }
+
+    public function uninstall(UninstallContext $uninstallContext): void
+    {
+        parent::uninstall($uninstallContext);
+
+        /** @var Connection $connection */
+        $connection = $this->container->get(Connection::class);
+
+        if (!$uninstallContext->keepUserData()) {
+            $connection->getSchemaManager()->dropTable('heptacom_admin_open_auth_user_email');
+            $connection->getSchemaManager()->dropTable('heptacom_admin_open_auth_user_key');
+            $connection->getSchemaManager()->dropTable('heptacom_admin_open_auth_user_token');
+            $connection->getSchemaManager()->dropTable('heptacom_admin_open_auth_login');
+            $connection->getSchemaManager()->dropTable('heptacom_admin_open_auth_client');
+        }
+    }
 }

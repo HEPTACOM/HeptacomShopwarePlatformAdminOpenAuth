@@ -27,7 +27,7 @@ SET
 WHERE
     `provider` = 'jira';
 SQL;
-        $connection->executeQuery($sql);
+        $connection->executeStatement($sql);
     }
 
     public function updateDestructive(Connection $connection): void

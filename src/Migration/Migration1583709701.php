@@ -30,7 +30,7 @@ SET
 WHERE
     `provider` = 'microsoft_azure';
 SQL;
-        $connection->executeQuery($sql);
+        $connection->executeStatement($sql);
     }
 
     public function updateDestructive(Connection $connection): void

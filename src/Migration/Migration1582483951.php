@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS `heptacom_admin_open_auth_user_email` (
     DEFAULT CHARSET = utf8mb4
     COLLATE = utf8mb4_unicode_ci;
 SQL;
-        $connection->executeQuery($sql);
+        $connection->executeStatement($sql);
     }
 
     public function updateDestructive(Connection $connection): void
