@@ -19,7 +19,7 @@ pipelines:
         '**':
             -   step:
                     name: Lint php
-                    image: heptacom/shopware-5-pipeline:php72-latest
+                    image: heptacom/shopware-5-pipeline:php74-latest
                     caches:
                         - composer
                     artifacts:
