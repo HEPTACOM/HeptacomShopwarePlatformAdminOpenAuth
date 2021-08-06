@@ -1,3 +1,7 @@
+# 4.0.1
+
+* Fix Shopware 6.4 compatibility
+
 # 4.0.0
 
 * Add Shopware 6.4 compatibility
