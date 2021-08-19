@@ -4,9 +4,11 @@ declare(strict_types=1);
 namespace Heptacom\AdminOpenAuth;
 
 use Composer\Autoload\ClassLoader;
+use Doctrine\DBAL\Connection;
 use Heptacom\OpenAuth\SymfonyBundle;
 use Shopware\Core\Framework\Parameter\AdditionalBundleParameters;
 use Shopware\Core\Framework\Plugin;
+use Shopware\Core\Framework\Plugin\Context\UninstallContext;
 
 class KskHeptacomAdminOpenAuth extends Plugin
 {
