@@ -1,0 +1,22 @@
+{
+    "autoload": {
+        "psr-4": {
+            "Heptacom\\ShopwarePlatform\\DevOps\\PhpStan\\": "src/"
+        }
+    },
+    "require": {
+        "php": ">=7.4",
+        "phpstan/extension-installer": ">=1",
+        "phpstan/phpstan": ">=0.12.87",
+        "phpstan/phpstan-deprecation-rules": ">=0.12",
+        "phpstan/phpstan-strict-rules": ">=0.12"
+    },
+    "conflict": {
+        "nikic/php-parser": "4.7.0"
+    },
+    "config": {
+        "allow-plugins": {
+            "phpstan/extension-installer": true
+        }
+    }
+}

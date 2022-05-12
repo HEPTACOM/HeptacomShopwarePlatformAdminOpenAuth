@@ -1,0 +1,35 @@
+{
+    "name": "heptacom/shopware-platform-plugin-project",
+    "description": "HEPTACOM Shopware 6 Plugin",
+    "license": "proprietary",
+    "type": "shopware-platform-plugin",
+    "version": "0.1.0",
+    "keywords": [
+        "shopware",
+        "ecommerce"
+    ],
+    "authors": [
+        {
+            "name": "HEPTACOM GmbH",
+            "email": "info@heptacom.de",
+            "role": "Manufacturer"
+        }
+    ],
+    "require": {
+        "php": ">=7.4",
+        "shopware/core": ">=6.4.8 <6.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Heptacom\\ShopwarePlatform\\PluginName\\": "src/"
+        }
+    },
+    "extra": {
+        "label": {
+            "de-DE": "Plugin name",
+            "en-GB": "Plugin name"
+        },
+        "shopware-plugin-class": "Heptacom\\ShopwarePlatform\\PluginName\\HeptacomShopwarePlatformPluginName"
+    },
+    "website": "https://www.heptacom.de"
+}

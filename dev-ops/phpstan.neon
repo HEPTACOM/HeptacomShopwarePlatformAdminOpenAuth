@@ -1,0 +1,14 @@
+rules:
+	- Heptacom\ShopwarePlatform\DevOps\PhpStan\Rule\ContractsHaveDocumentationRule
+	- Heptacom\ShopwarePlatform\DevOps\PhpStan\Rule\ImplementationsMustBeFinalRule
+	- Heptacom\ShopwarePlatform\DevOps\PhpStan\Rule\InterfacesHaveDocumentationRule
+parameters:
+	level: 6
+	checkMissingIterableValueType: false
+	inferPrivatePropertyTypeFromConstructor: true
+	paths:
+		- ../dev-ops/bin/phpstan/src/
+		- ../src/
+	tmpDir: ../.build/phpstan/
+	scanDirectories:
+		- ../vendor/

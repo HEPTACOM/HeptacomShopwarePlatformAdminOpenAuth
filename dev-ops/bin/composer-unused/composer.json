@@ -1,0 +1,11 @@
+{
+    "require": {
+        "php": ">=7.4",
+        "icanhazstring/composer-unused": ">=0.7"
+    },
+    "config": {
+        "allow-plugins": {
+            "icanhazstring/composer-unused": true
+        }
+    }
+}

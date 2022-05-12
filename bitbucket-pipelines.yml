@@ -1,0 +1,164 @@
+image: heptacom/heptaconnect-pipeline:php74-latest
+
+definitions:
+    steps:
+        -   step: &default-step
+                caches:
+                    - composer
+                after-script:
+                    - cp -a .build test-results
+                    - find test-results -type f -name '*.xml' -exec sed -i .bak -e "s|`pwd`/||" {} +
+                    - 'test ${BITBUCKET_EXIT_CODE} -eq 0 || composer config --list'
+        -   step: &keyword-check
+                <<: *default-step
+                name: Keyword Gate
+                script:
+                    - 'test $(git --no-pager log --full-history "--grep=${GITHUB_GREP_DENY_PATTERN}" | wc -l) -eq 0'
+                    - 'test $(git --no-pager log --full-history -S "${GITHUB_GREP_DENY_PATTERN}" --pickaxe-all --pickaxe-regex --oneline | wc -l) -eq 0'
+                after-script:
+                    - 'test ${BITBUCKET_EXIT_CODE} -eq 0 || git --no-pager log --full-history "--grep=${GITHUB_GREP_DENY_PATTERN}"'
+                    - 'test ${BITBUCKET_EXIT_CODE} -eq 0 || git --no-pager log --full-history -S "${GITHUB_GREP_DENY_PATTERN}" --pickaxe-all --pickaxe-regex --oneline'
+        -   step: &composer-high-install
+                <<: *default-step
+                name: Install (High dependencies)
+                artifacts:
+                    - .build/**
+                    - composer.lock
+                    - setup-vendor.sh
+                script:
+                    - make clean
+                    - GLOBAL_REPOSITORIES_DIR=`pwd`/.build/private-composer composer-repository
+                    - COMPOSER_EXTRA_ARGS=-vvv make -e vendor
+                    - make .build
+                    - mv vendor .build/vendor-high
+                    - echo 'mkdir -p vendor; rm -rf vendor; mv .build/vendor-high vendor' > setup-vendor.sh
+        -   step: &composer-low-install
+                <<: *default-step
+                name: Install (Low dependencies)
+                artifacts:
+                    - .build/**
+                    - composer.lock
+                    - setup-vendor.sh
+                script:
+                    - make clean
+                    - GLOBAL_REPOSITORIES_DIR=`pwd`/.build/private-composer composer-repository
+                    - composer update --prefer-lowest --prefer-stable
+                    - COMPOSER_EXTRA_ARGS=-vvv make -e vendor
+                    - make .build
+                    - mv vendor .build/vendor-low
+                    - echo 'mkdir -p vendor; rm -rf vendor; mv .build/vendor-low vendor' > setup-vendor.sh
+        -   step: &test-code-style-php
+                <<: *default-step
+                name: ECS (Code style)
+                script:
+                    - bash setup-vendor.sh
+                    - COMPOSER_EXTRA_ARGS=-vvv make -e cs-php
+        -   step: &test-code-style-phpstan
+                <<: *default-step
+                name: PHPStan (Static code analysis)
+                script:
+                    - bash setup-vendor.sh
+                    - COMPOSER_EXTRA_ARGS=-vvv make -e cs-phpstan
+        -   step: &test-code-style-psalm
+                <<: *default-step
+                name: Psalm (Static code analysis)
+                script:
+                    - bash setup-vendor.sh
+                    - COMPOSER_EXTRA_ARGS=-vvv make -e cs-psalm
+        -   step: &test-code-style-phpmd
+                <<: *default-step
+                name: PHP Mess Detector (Static code analysis)
+                script:
+                    - bash setup-vendor.sh
+                    - COMPOSER_EXTRA_ARGS=-vvv make -e cs-phpmd
+        -   step: &test-code-style-soft-require
+                <<: *default-step
+                name: Composer soft requirements (Requirement analysis)
+                script:
+                    - bash setup-vendor.sh
+                    - COMPOSER_EXTRA_ARGS=-vvv make -e cs-soft-require
+        -   step: &test-code-style-composer-unused
+                <<: *default-step
+                name: Composer unused (Requirement analysis)
+                script:
+                    - bash setup-vendor.sh
+                    - COMPOSER_EXTRA_ARGS=-vvv make -e cs-composer-unused
+        -   step: &test-code-style-composer-normalize
+                <<: *default-step
+                name: composer.json (Code style)
+                script:
+                    - bash setup-vendor.sh
+                    - COMPOSER_EXTRA_ARGS=-vvv make -e cs-composer-normalize
+        -   step: &test-code-style-json
+                <<: *default-step
+                name: '*.json (Code style)'
+                script:
+                    - bash setup-vendor.sh
+                    - COMPOSER_EXTRA_ARGS=-vvv make -e cs-json
+
+pipelines:
+    branches:
+        master:
+            -   step: *keyword-check
+            -   step: *composer-high-install
+            -   parallel:
+                    -   step: *test-code-style-composer-normalize
+                    -   step: *test-code-style-composer-unused
+                    -   step: *test-code-style-json
+                    -   step: *test-code-style-php
+            -   step: *composer-low-install
+            -   parallel:
+                    -   step: *test-code-style-composer-normalize
+                    -   step: *test-code-style-composer-unused
+                    -   step: *test-code-style-json
+                    -   step: *test-code-style-php
+        '*.*.x':
+            -   step: *keyword-check
+
+    tags:
+        '*':
+            -   step: *keyword-check
+
+    default:
+        -   step: *composer-high-install
+        -   parallel:
+                -   step: *test-code-style-composer-normalize
+                -   step: *test-code-style-composer-unused
+                -   step: *test-code-style-json
+                -   step: *test-code-style-php
+                -   step: *test-code-style-soft-require
+        -   step: *composer-low-install
+        -   parallel:
+                -   step: *test-code-style-composer-normalize
+                -   step: *test-code-style-composer-unused
+                -   step: *test-code-style-json
+                -   step: *test-code-style-php
+                -   step: *test-code-style-soft-require
+
+    custom:
+# BEGIN-INIT-PLUGIN
+        init-plugin:
+            -   variables:
+                    - name: Description
+            -   step:
+                    name: Setup
+                    script:
+                        - php dev-ops/init-plugin.php "${BITBUCKET_REPO_SLUG}" "${Description}"
+                        - rm dev-ops/init-plugin.php
+                        - git add -A
+                        - git commit -m "init-plugin pipeline"
+                        - git tag -am "Initial release" 0.1.0
+                        - git push
+                        - git push origin 0.1.0
+# END-INIT-PLUGIN
+        deep-check:
+            -   step: *composer-high-install
+            -   parallel:
+                    -   step: *test-code-style-phpmd
+                    -   step: *test-code-style-phpstan
+                    -   step: *test-code-style-psalm
+            -   step: *composer-low-install
+            -   parallel:
+                    -   step: *test-code-style-phpmd
+                    -   step: *test-code-style-phpstan
+                    -   step: *test-code-style-psalm

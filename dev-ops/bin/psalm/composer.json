@@ -1,0 +1,10 @@
+{
+    "require": {
+        "php": ">=7.4",
+        "dq5studios/psalm-junit": ">=2",
+        "vimeo/psalm": ">=4.9"
+    },
+    "conflict": {
+        "nikic/php-parser": "4.7.0"
+    }
+}

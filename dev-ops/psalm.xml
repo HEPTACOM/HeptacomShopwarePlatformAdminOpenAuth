@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<psalm
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="https://getpsalm.org/schema/config"
+    xsi:schemaLocation="https://getpsalm.org/schema/config bin/psalm/vendor/vimeo/psalm/config.xsd"
+    cacheDirectory="../.build/psalm"
+    errorLevel="1"
+>
+    <issueHandlers>
+        <LessSpecificReturnType errorLevel="info" />
+        <PropertyNotSetInConstructor errorLevel="info">
+            <errorLevel type="suppress">
+                <referencedProperty name="HeptacomShopwarePlatformPluginName::$container"/>
+            </errorLevel>
+        </PropertyNotSetInConstructor>
+    </issueHandlers>
+
+    <plugins>
+        <pluginClass class="DQ5Studios\PsalmJunit\Plugin">
+            <always/>
+            <showInfo>false</showInfo>
+            <filepath>../.build/psalm.junit.xml</filepath>
+        </pluginClass>
+    </plugins>
+
+    <projectFiles>
+        <directory name="../src/" />
+        <ignoreFiles>
+            <directory name="../vendor/" />
+        </ignoreFiles>
+    </projectFiles>
+</psalm>

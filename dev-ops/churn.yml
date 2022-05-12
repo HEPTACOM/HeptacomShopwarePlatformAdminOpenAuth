@@ -1,0 +1,10 @@
+filesToShow: 20
+minScoreToShow: 0.05
+maxScoreThreshold: 0.9
+parallelJobs: 4
+fileExtensions:
+    - php
+directoriesToScan:
+    - ../src
+vcs: git
+cachePath: ../.build/churn.cache
