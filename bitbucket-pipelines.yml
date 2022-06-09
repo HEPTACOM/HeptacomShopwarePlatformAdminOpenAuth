@@ -98,7 +98,7 @@ definitions:
 
 pipelines:
     branches:
-        master:
+        main:
             -   step: *keyword-check
             -   step: *composer-high-install
             -   parallel:
