@@ -103,6 +103,16 @@ definitions:
                 script:
                     - bash setup-vendor.sh
                     - COMPOSER_EXTRA_ARGS=-vvv make -e cs-json
+        -   step: &test-build-administration
+                <<: *default-step
+                artifacts:
+                    - 'src'
+                name: Check administration is built
+                script:
+                    - COMPOSER_EXTRA_ARGS=-vvv make -e build-administration
+                    - 'test $(git add -A -n | wc -l) -eq 0'
+                after-script:
+                    - 'test ${BITBUCKET_EXIT_CODE} -eq 0 || echo "The administration seems not to be built"'
 
 pipelines:
     branches:
@@ -114,6 +124,7 @@ pipelines:
                     -   step: *test-code-style-composer-unused
                     -   step: *test-code-style-json
                     -   step: *test-code-style-php
+                    -   step: *test-build-administration
             -   step: *composer-low-install
             -   parallel:
                     -   step: *test-code-style-composer-normalize
@@ -123,11 +134,13 @@ pipelines:
         '*.*.x':
             -   step: *tag-check
             -   step: *keyword-check
+            -   step: *test-build-administration
 
     tags:
         '*':
             -   step: *tag-check
             -   step: *keyword-check
+            -   step: *test-build-administration
 
     default:
         -   step: *composer-high-install
@@ -137,6 +150,7 @@ pipelines:
                 -   step: *test-code-style-json
                 -   step: *test-code-style-php
                 -   step: *test-code-style-soft-require
+                -   step: *test-build-administration
         -   step: *composer-low-install
         -   parallel:
                 -   step: *test-code-style-composer-normalize
