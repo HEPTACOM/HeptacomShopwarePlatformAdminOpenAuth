@@ -27,6 +27,7 @@ all: clean it ## Cleans up and runs typical tests and style analysis
 
 .PHONY: clean
 clean: ## Cleans up all ignored files and directories
+	[[ ! -d dev-ops/bin/shopware/vendor ]] || rm -f dev-ops/bin/shopware/vendor
 	[[ ! -f composer.lock ]] || rm composer.lock
 	[[ ! -d vendor ]] || rm -rf vendor
 	[[ ! -d .build ]] || rm -rf .build
@@ -38,6 +39,10 @@ clean: ## Cleans up all ignored files and directories
 	[[ ! -d dev-ops/bin/phpstan/vendor ]] || rm -rf dev-ops/bin/phpstan/vendor
 	[[ ! -d dev-ops/bin/psalm/vendor ]] || rm -rf dev-ops/bin/psalm/vendor
 	[[ ! -d dev-ops/bin/php-churn/vendor ]] || rm -rf dev-ops/bin/php-churn/vendor
+
+.PHONY: build-administration
+build-administration: vendor ## Builds any administration js, when administration is used
+	[[ ! -d vendor/shopware/administration ]] || dev-ops/bin/shopware/bin/build-administration
 
 .PHONY: it
 it: cs-fix cs ## Fix code style
