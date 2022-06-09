@@ -10,4 +10,7 @@
 /composer.lock
 
 /.build
-/.idea
+/.idea/*.iml
+/.idea/misc.xml
+/.idea/modules.xml
+/.idea/php.xml
