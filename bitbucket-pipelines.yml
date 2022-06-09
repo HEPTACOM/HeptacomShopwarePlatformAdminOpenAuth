@@ -18,6 +18,14 @@ definitions:
                 after-script:
                     - 'test ${BITBUCKET_EXIT_CODE} -eq 0 || git --no-pager log --full-history "--grep=${GITHUB_GREP_DENY_PATTERN}"'
                     - 'test ${BITBUCKET_EXIT_CODE} -eq 0 || git --no-pager log --full-history -S "${GITHUB_GREP_DENY_PATTERN}" --pickaxe-all --pickaxe-regex --oneline'
+        -   step: &tag-check
+                <<: *default-step
+                name: Tag Gate
+                script:
+                    - '[[ "${BITBUCKET_TAG}" == *"$(jq -r composer.json .version)" ]]'
+                after-script:
+                    - 'test ${BITBUCKET_EXIT_CODE} -eq 0 || echo "Bitbucket tag: ${BITBUCKET_TAG}"'
+                    - 'test ${BITBUCKET_EXIT_CODE} -eq 0 || (echo "composer.json version: " && jq -r composer.json .version)'
         -   step: &composer-high-install
                 <<: *default-step
                 name: Install (High dependencies)
@@ -113,10 +121,12 @@ pipelines:
                     -   step: *test-code-style-json
                     -   step: *test-code-style-php
         '*.*.x':
+            -   step: *tag-check
             -   step: *keyword-check
 
     tags:
         '*':
+            -   step: *tag-check
             -   step: *keyword-check
 
     default:
