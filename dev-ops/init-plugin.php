@@ -28,6 +28,7 @@ $topicName = \trim(\str_replace(['Heptacom', 'Shopware', 'Platform'], '', $name)
 $technicalName = \str_replace(' ', '', $name);
 $topic = \str_replace(['Heptacom', 'Shopware', 'Platform'], '', $technicalName);
 $packagistName = 'heptacom/shopware-platform' . \strtolower(\preg_replace('/([A-Z])/', '-$1', $topic));
+$shopwareBundleName = 'heptacom-shopware-platform' . \strtolower(\preg_replace('/([A-Z])/', '-$1', $topic));
 
 replaceInFiles(
     [
@@ -57,10 +58,15 @@ replaceInFiles(
         __DIR__ . '/psalm.xml',
         __DIR__ . '/../src/HeptacomShopwarePlatformPluginName.php',
         __DIR__ . '/../composer.json',
+        __DIR__ . '/bin/shopware/var/plugins.json',
     ],
     [
         'HeptacomShopwarePlatformPluginName' => 'HeptacomShopwarePlatform' . $topic,
     ]
+);
+replaceInFiles(
+    [__DIR__ . '/bin/shopware/var/plugins.json'],
+    ['heptacom-shopware-platform-plugin-name' => $shopwareBundleName]
 );
 replaceInFiles(
     [__DIR__ . '/../composer.json'],
