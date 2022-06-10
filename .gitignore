@@ -8,6 +8,7 @@
 /dev-ops/bin/psalm/vendor/
 /dev-ops/bin/php-churn/vendor/
 /dev-ops/bin/shopware/vendor/
+/setup-vendor.sh
 /composer.lock
 
 /.build

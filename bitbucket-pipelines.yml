@@ -106,13 +106,15 @@ definitions:
         -   step: &test-build-administration
                 <<: *default-step
                 artifacts:
-                    - 'src'
+                    - '**'
                 name: Check administration is built
                 script:
+                    - bash setup-vendor.sh
                     - COMPOSER_EXTRA_ARGS=-vvv make -e build-administration
                     - 'test $(git add -A -n | wc -l) -eq 0'
                 after-script:
                     - 'test ${BITBUCKET_EXIT_CODE} -eq 0 || echo "The administration seems not to be built"'
+                    - 'test ${BITBUCKET_EXIT_CODE} -eq 0 || git add -A -n'
 
 pipelines:
     branches:
