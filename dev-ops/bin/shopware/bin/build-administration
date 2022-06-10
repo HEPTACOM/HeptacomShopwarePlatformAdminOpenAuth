@@ -9,7 +9,7 @@ export DISABLE_ADMIN_COMPILATION_TYPECHECK=1
 export SHOPWARE_ADMIN_BUILD_ONLY_EXTENSIONS=1
 export ADMIN_ROOT="${ADMIN_ROOT:-"${PROJECT_ROOT}/vendor/shopware/administration"}"
 
-if [[ ! -d "$PROJECT_ROOT/vendor" ]]; then
+if [[ ! -h "$PROJECT_ROOT/vendor" ]]; then
     ln -s "$PROJECT_ROOT/../../../vendor" "$PROJECT_ROOT/vendor" || exit
 fi
 
