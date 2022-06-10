@@ -105,8 +105,6 @@ definitions:
                     - COMPOSER_EXTRA_ARGS=-vvv make -e cs-json
         -   step: &test-build-administration
                 <<: *default-step
-                artifacts:
-                    - '**'
                 name: Check administration is built
                 script:
                     - bash setup-vendor.sh
