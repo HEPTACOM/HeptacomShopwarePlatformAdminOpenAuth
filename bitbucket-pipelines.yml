@@ -113,8 +113,14 @@ definitions:
                     - COMPOSER_EXTRA_ARGS=-vvv make -e build-administration
                     - 'test $(git add -A -n | wc -l) -eq 0'
                 after-script:
-                    - 'test ${BITBUCKET_EXIT_CODE} -eq 0 || echo "The administration seems not to be built"'
-                    - 'test ${BITBUCKET_EXIT_CODE} -eq 0 || git add -A -n'
+                    - |
+                        if [[ ${BITBUCKET_EXIT_CODE} -ne 0 ]]; then
+                            echo "The administration seems not to be built"
+                            git add -A
+                            git commit -m "Compile administration"
+                            echo "Changes are pushed, new pipeline will run"
+                            git push
+                        fi
 
 pipelines:
     branches:
