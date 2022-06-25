@@ -2,7 +2,11 @@
     "symbol-whitelist" : [
         "null", "true", "false",
         "static", "self", "parent",
-        "array", "string", "int", "float", "bool", "iterable", "callable", "void", "object"
+        "array", "string", "int", "float", "bool", "iterable", "callable", "void", "object",
+        "// ignore symbols from shopware direct dependencies",
+        "Doctrine\\DBAL\\Connection",
+        "Symfony\\Contracts\\EventDispatcher\\EventDispatcherInterface",
+        "Symfony\\Component\\HttpFoundation\\Request"
     ],
     "php-core-extensions" : [
         "Core",
