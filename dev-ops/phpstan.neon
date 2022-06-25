@@ -2,6 +2,7 @@ rules:
 	- Heptacom\ShopwarePlatform\DevOps\PhpStan\Rule\ContractsHaveDocumentationRule
 	- Heptacom\ShopwarePlatform\DevOps\PhpStan\Rule\ImplementationsMustBeFinalRule
 	- Heptacom\ShopwarePlatform\DevOps\PhpStan\Rule\InterfacesHaveDocumentationRule
+	- Shopware\Core\DevOps\StaticAnalyze\PHPStan\Rules\Deprecation\DeprecatedMethodsThrowDeprecationRule
 parameters:
 	level: 6
 	checkMissingIterableValueType: false
