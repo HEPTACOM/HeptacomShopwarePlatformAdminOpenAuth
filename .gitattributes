@@ -1,5 +1,6 @@
 /dev-ops                            export-ignore
+/.bitbucket-pipelines.yml           export-ignore
 /.gitignore                         export-ignore
 /.gitattributes                     export-ignore
-/.bitbucket-pipelines.yml           export-ignore
+/.idea                              export-ignore
 /Makefile                           export-ignore
