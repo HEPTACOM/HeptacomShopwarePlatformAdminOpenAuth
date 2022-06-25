@@ -140,12 +140,14 @@ pipelines:
         '*.*.x':
             -   step: *tag-check
             -   step: *keyword-check
+            -   step: *composer-low-install
             -   step: *test-build-administration
 
     tags:
         '*':
             -   step: *tag-check
             -   step: *keyword-check
+            -   step: *composer-low-install
             -   step: *test-build-administration
 
     default:
