@@ -48,10 +48,10 @@ build-administration: vendor ## Builds any administration js, when administratio
 it: cs-fix cs ## Fix code style
 
 .PHONY: cs
-cs: cs-php cs-phpstan cs-psalm cs-phpmd cs-soft-require cs-composer-unused cs-composer-normalize cs-json cs-phpchurn ## Run every code style check target
+cs: cs-ecs cs-phpstan cs-psalm cs-phpmd cs-soft-require cs-composer-unused cs-composer-normalize cs-json cs-phpchurn ## Run every code style check target
 
-.PHONY: cs-php
-cs-php: vendor .build $(EASY_CODING_STANDARD_FILE) ## Run easy-coding-standard for code style analysis
+.PHONY: cs-ecs
+cs-ecs: vendor .build $(EASY_CODING_STANDARD_FILE) ## Run easy-coding-standard for code style analysis
 	$(PHP) $(EASY_CODING_STANDARD_FILE) check --config=dev-ops/ecs.php
 
 .PHONY: cs-phpstan
@@ -94,14 +94,14 @@ $(JSON_FILES):
 	$(JQ) . "$@"
 
 .PHONY: cs-fix ## Run all code style fixer that change files
-cs-fix: cs-fix-composer-normalize cs-fix-php
+cs-fix: cs-fix-composer-normalize cs-fix-ecs
 
 .PHONY: cs-fix-composer-normalize
 cs-fix-composer-normalize: vendor $(COMPOSER_NORMALIZE_FILE) ## Run composer-normalize for automatic composer.json style fixes
 	$(PHP) $(COMPOSER_NORMALIZE_FILE) --diff composer.json
 
-.PHONY: cs-fix-php
-cs-fix-php: vendor .build $(EASY_CODING_STANDARD_FILE) ## Run easy-coding-standard for automatic code style fixes
+.PHONY: cs-fix-ecs
+cs-fix-ecs: vendor .build $(EASY_CODING_STANDARD_FILE) ## Run easy-coding-standard for automatic code style fixes
 	$(PHP) $(EASY_CODING_STANDARD_FILE) check --config=dev-ops/ecs.php --fix
 
 $(PHPSTAN_FILE): ## Install phpstan executable

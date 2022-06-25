@@ -60,7 +60,7 @@ definitions:
                 name: ECS (Code style)
                 script:
                     - bash setup-vendor.sh
-                    - COMPOSER_EXTRA_ARGS=-vvv make -e cs-php
+                    - COMPOSER_EXTRA_ARGS=-vvv make -e cs-ecs
         -   step: &test-code-style-phpstan
                 <<: *default-step
                 name: PHPStan (Static code analysis)
