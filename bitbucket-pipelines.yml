@@ -62,19 +62,19 @@ definitions:
                     - bash setup-vendor.sh
                     - COMPOSER_EXTRA_ARGS=-vvv make -e cs-fix-composer-normalize
                     - |
-                        if [[ $(git add -A -n | wc -l) -eq 0 ]]; then
+                        if [[ $(git add -A -n | wc -l) -ne 0 ]]; then
                             git add -A
                             git commit -m "$ make cs-fix-composer-normalize"
                         fi
                     - COMPOSER_EXTRA_ARGS=-vvv make -e cs-fix-ecs
                     - |
-                        if [[ $(git add -A -n | wc -l) -eq 0 ]]; then
+                        if [[ $(git add -A -n | wc -l) -ne 0 ]]; then
                             git add -A
                             git commit -m "$ make cs-fix-ecs"
                         fi
                     - COMPOSER_EXTRA_ARGS=-vvv make -e build-administration
                     - |
-                        if [[ $(git add -A -n | wc -l) -eq 0 ]]; then
+                        if [[ $(git add -A -n | wc -l) -ne 0 ]]; then
                             git add -A
                             git commit -m "$ make build-administration"
                         fi
