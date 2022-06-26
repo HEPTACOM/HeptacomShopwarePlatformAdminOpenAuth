@@ -179,11 +179,12 @@ pipelines:
 # BEGIN-INIT-PLUGIN
         init-plugin:
             -   variables:
+                    - name: Label
                     - name: Description
             -   step:
                     name: Setup
                     script:
-                        - php dev-ops/init-plugin.php "${BITBUCKET_REPO_SLUG}" "${Description}"
+                        - php dev-ops/init-plugin.php "${BITBUCKET_REPO_SLUG}" "${Label}" "${Description}"
                         - rm dev-ops/init-plugin.php
                         - git add -A
                         - git commit -m "init-plugin pipeline"

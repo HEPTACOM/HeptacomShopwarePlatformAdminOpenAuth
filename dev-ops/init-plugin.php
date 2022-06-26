@@ -21,7 +21,18 @@ function removeSection(array $files) {
 $args = $argv;
 
 $description = \array_pop($args);
+$label = \array_pop($args);
 $repositoryName = \array_pop($args);
+
+if (empty($description)) {
+    echo "You provided an empty description";
+    exit(1);
+}
+
+if (empty($label)) {
+    echo "You provided an empty label";
+    exit(1);
+}
 
 $name = \implode(' ', \array_map('ucfirst', \array_map('strtolower', \explode('-', $repositoryName))));
 $topicName = \trim(\str_replace(['Heptacom', 'Shopware', 'Platform'], '', $name));
@@ -74,7 +85,10 @@ replaceInFiles(
 );
 replaceInFiles(
     [__DIR__ . '/../composer.json'],
-    ['HEPTACOM Shopware 6 Plugin' => \trim(\json_encode($description), '"')]
+    [
+        'HEPTACOM Shopware 6 Plugin' => \trim(\json_encode($description), '"'),
+        'Plugin name' => \trim(\json_encode($label), '"'),
+    ]
 );
 replaceInFiles(
     [__DIR__ . '/../README.md'],
