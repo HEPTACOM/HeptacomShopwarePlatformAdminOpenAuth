@@ -1,4 +1,4 @@
-image: heptacom/heptaconnect-pipeline:php74-latest
+image: heptacom/shopware-6-plugin-pipeline:php74-node14-latest
 
 definitions:
     steps:
@@ -35,7 +35,6 @@ definitions:
                     - setup-vendor.sh
                 script:
                     - make clean
-                    - GLOBAL_REPOSITORIES_DIR=`pwd`/.build/private-composer composer-repository
                     - COMPOSER_EXTRA_ARGS=-vvv make -e vendor
                     - make .build
                     - mv vendor .build/vendor-high
@@ -49,7 +48,6 @@ definitions:
                     - setup-vendor.sh
                 script:
                     - make clean
-                    - GLOBAL_REPOSITORIES_DIR=`pwd`/.build/private-composer composer-repository
                     - composer update --prefer-lowest --prefer-stable
                     - COMPOSER_EXTRA_ARGS=-vvv make -e vendor
                     - make .build
