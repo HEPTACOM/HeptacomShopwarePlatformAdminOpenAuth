@@ -18,6 +18,16 @@ function removeSection(array $files) {
     }
 }
 
+function caseWord(string $word): string {
+    $word = \strtolower($word);
+
+    if (\in_array($word, ['cms'])) {
+        return \strtoupper($word);
+    }
+
+    return \ucfirst($word);
+}
+
 $args = $argv;
 
 $description = \array_pop($args);
@@ -34,7 +44,7 @@ if (empty($label)) {
     exit(1);
 }
 
-$name = \implode(' ', \array_map('ucfirst', \array_map('strtolower', \explode('-', $repositoryName))));
+$name = \implode(' ', \array_map('caseWord', \explode('-', $repositoryName)));
 $topicName = \trim(\str_replace(['Heptacom', 'Shopware', 'Platform'], '', $name));
 $technicalName = \str_replace(' ', '', $name);
 $topic = \str_replace(['Heptacom', 'Shopware', 'Platform'], '', $technicalName);
