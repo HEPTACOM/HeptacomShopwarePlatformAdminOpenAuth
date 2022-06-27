@@ -1,7 +1,7 @@
 {
     "name": "heptacom/shopware-platform-admin-open-auth",
-    "license": "Apache-2.0",
     "description": "Shopware plugin to allow OAuth providers to provide admin logins",
+    "license": "Apache-2.0",
     "type": "shopware-platform-plugin",
     "version": "4.0.2",
     "keywords": [
@@ -26,39 +26,43 @@
             "role": "Developer"
         }
     ],
+    "require": {
+        "php": ">=7.4",
+        "heptacom/open-auth": ">=1.3",
+        "league/oauth2-client": "~2.0",
+        "mrjoops/oauth2-jira": "^0.2.4",
+        "shopware/administration": "^6.4",
+        "shopware/core": "^6.4",
+        "symfony/options-resolver": ">=3",
+        "thenetworg/oauth2-azure": "^1.4"
+    },
+    "require-dev": {
+        "shopware/administration": "^6.4.12"
+    },
     "autoload": {
         "psr-4": {
             "Heptacom\\AdminOpenAuth\\": "src/"
         }
     },
-    "require": {
-        "php": ">=7.4",
-        "heptacom/open-auth": ">=1.3",
-        "league/oauth2-client": "~2.0",
-        "thenetworg/oauth2-azure": "^1.4",
-        "mrjoops/oauth2-jira": "^0.2.4",
-        "symfony/options-resolver": ">=3",
-        "shopware/administration": "^6.4",
-        "shopware/core": "^6.4"
-    },
-    "require-dev": {
-        "friendsofphp/php-cs-fixer": "^2.16",
-        "kubawerlos/php-cs-fixer-custom-fixers": "^1.17"
+    "config": {
+        "allow-plugins": {
+            "composer/package-versions-deprecated": true
+        }
     },
     "extra": {
-        "shopware-plugin-class": "Heptacom\\AdminOpenAuth\\KskHeptacomAdminOpenAuth",
-        "label": {
-            "de-DE": "OAuth Login für Administration",
-            "en-GB": "OAuth login for administration"
-        },
         "description": {
             "de-DE": "Verbindet OAuth Anbieter zum Administrationslogin",
             "en-GB": "Connects oauth providers to admin login"
+        },
+        "label": {
+            "de-DE": "OAuth Login für Administration",
+            "en-GB": "OAuth login for administration"
         },
         "manufacturerLink": {
             "de-DE": "https://www.heptacom.de/",
             "en-GB": "https://www.heptacom.de/"
         },
+        "shopware-plugin-class": "Heptacom\\AdminOpenAuth\\KskHeptacomAdminOpenAuth",
         "supportLink": {
             "de-DE": "https://www.heptacom.de/kontakt/",
             "en-GB": "https://www.heptacom.de/kontakt/"

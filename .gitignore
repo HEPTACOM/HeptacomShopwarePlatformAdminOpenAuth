@@ -5,8 +5,17 @@
 /.idea
 
 # Ignore package managers
-/vendor
-composer.lock
+/vendor/
+/setup-vendor.sh
+/composer.lock
 
-# Ignore build
+# Ignore tools
+/dev-ops/bin/composer-normalize
+/dev-ops/bin/composer-require-checker
+/dev-ops/bin/composer-unused/vendor/
+/dev-ops/bin/easy-coding-standard/vendor/
+/dev-ops/bin/frosh-plugin-upload
+/dev-ops/bin/shopware/vendor
+
+# Ignore build folder
 /.build
