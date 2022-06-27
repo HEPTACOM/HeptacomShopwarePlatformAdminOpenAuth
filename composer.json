@@ -31,8 +31,7 @@
         "heptacom/open-auth": ">=1.3",
         "league/oauth2-client": "~2.0",
         "mrjoops/oauth2-jira": "^0.2.4",
-        "shopware/administration": "^6.4",
-        "shopware/core": "^6.4",
+        "shopware/core": "^6.4.12",
         "symfony/options-resolver": ">=3",
         "thenetworg/oauth2-azure": "^1.4"
     },
