@@ -36,7 +36,7 @@
         "mrjoops/oauth2-jira": "^0.2.4",
         "nyholm/psr7": "^1.4",
         "psr/http-message": "*",
-        "shopware/core": "^6.4.12",
+        "shopware/core": "^6.4.11",
         "symfony/event-dispatcher": ">=5.4 <6",
         "symfony/framework-bundle": ">=5.4 <6",
         "symfony/http-foundation": ">=5.4 <6",
@@ -47,7 +47,7 @@
         "thenetworg/oauth2-azure": "^1.4"
     },
     "require-dev": {
-        "shopware/administration": "^6.4.12"
+        "shopware/administration": "^6.4.11"
     },
     "autoload": {
         "psr-4": {
