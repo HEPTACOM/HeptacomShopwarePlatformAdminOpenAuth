@@ -1,3 +1,4 @@
+* Fix display issues for checkbox icons placed in tables that are used outside of this plugin's scope
 * Fix Shopware 6.4.11 compatibility
 * Drop Shopware 6.4.0 to 6.4.10 support
 
