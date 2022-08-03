@@ -1,3 +1,4 @@
+* Add flag to client configurations to disable users role elevation to admin
 * Fix Shopware 6.4.11 compatibility
 * Drop Shopware 6.4.0 to 6.4.10 support
 
