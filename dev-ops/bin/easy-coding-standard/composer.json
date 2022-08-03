@@ -1,0 +1,15 @@
+{
+    "require": {
+        "php": "^7.4",
+        "kubawerlos/php-cs-fixer-custom-fixers": "^2.5",
+        "symplify/easy-coding-standard": "~8.3.48"
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        },
+        "platform": {
+            "php": "7.4.3"
+        }
+    }
+}

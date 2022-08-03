@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\Service;
@@ -12,7 +13,7 @@ class TokenPairFactoryContract
     {
         $expires = null;
 
-        if (!\is_null($token->getExpires())) {
+        if ($token->getExpires() !== null) {
             $expires = \date_create()
                 ->setTimestamp($token->getExpires())
                 ->setTimezone(new \DateTimeZone('UTC'));

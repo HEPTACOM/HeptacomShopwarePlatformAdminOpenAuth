@@ -1,3 +1,6 @@
+* Fix Shopware 6.4.11 compatibility
+* Drop Shopware 6.4.0 to 6.4.10 support
+
 # 4.0.2
 
 * Fix Shopware 6.4.3 compatibility

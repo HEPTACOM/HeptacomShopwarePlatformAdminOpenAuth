@@ -1,3 +1,6 @@
+* Fehler mit Shopware 6.4.11 Kompatibilität behoben
+* Shopware 6.4.0 bis 6.4.10 Unterstützung entfernt
+
 # 4.0.2
 
 * Fehler mit Shopware 6.4.3 Kompatibilität behoben
