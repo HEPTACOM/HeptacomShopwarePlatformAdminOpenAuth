@@ -86,6 +86,10 @@
                                     :value="redirectUri"
                                     disabled
                                 ></sw-text-field>
+                                <sw-switch-field
+                                    :label="$t('heptacom-admin-open-auth-client.pages.edit.fields.userBecomeAdmin')"
+                                    v-model="item.userBecomeAdmin"
+                                ></sw-switch-field>
                             </template>
                         </sw-card>
                     {% endblock %}
