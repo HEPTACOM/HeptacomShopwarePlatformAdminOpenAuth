@@ -1,3 +1,7 @@
+# Unreleased
+
+* Add OpenID Connect provider
+
 # 4.0.2
 
 * Fix Shopware 6.4.3 compatibility

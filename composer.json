@@ -39,7 +39,11 @@
         "mrjoops/oauth2-jira": "^0.2.4",
         "symfony/options-resolver": ">=3",
         "shopware/administration": "^6.4",
-        "shopware/core": "^6.4"
+        "shopware/core": "^6.4",
+        "phpseclib/phpseclib" : "~2.0 || ^3.0",
+        "ext-json": "*",
+        "ext-curl": "*",
+        "paragonie/random_compat": ">=2"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.16",

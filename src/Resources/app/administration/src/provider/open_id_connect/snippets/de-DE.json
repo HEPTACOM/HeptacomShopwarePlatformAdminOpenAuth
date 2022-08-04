@@ -1,0 +1,18 @@
+{
+    "heptacomAdminOpenAuthClient": {
+        "providers": {
+            "open_id_connect": "OpenID Connect"
+        },
+        "providerFields": {
+            "open_id_connect": {
+                "provider_url": "Anbieter-URL",
+                "authorization_endpoint": "Autorisierungs-Endpunkt",
+                "token_endpoint": "Token-Endpunkt",
+                "userinfo_endpoint": "Benutzer-Info-Endpunkt",
+                "client_id": "Anwendungsschlüssel",
+                "client_secret": "Anwendungsgehemnis",
+                "additionalScopes": "Anwendungsberechtigungen"
+            }
+        }
+    }
+}
