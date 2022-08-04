@@ -23,7 +23,15 @@ ADD COLUMN `user_become_admin` BOOLEAN NOT NULL DEFAULT TRUE AFTER `store_user_t
 SQL;
         $connection->executeStatement($alterTable);
 
-        $connection->transactional(static fn (Connection $connection) => $connection->update('heptacom_admin_open_auth_client', ['user_become_admin' => true]));
+        try {
+            $connection->transactional(
+                static fn (Connection $connection) => $connection->executeStatement('UPDATE `heptacom_admin_open_auth_client` SET `user_become_admin` = TRUE')
+            );
+        } catch (\Throwable $throwable) {
+            $connection->executeStatement('ALTER TABLE `heptacom_admin_open_auth_client` DROP COLUMN `user_become_admin`');
+
+            throw new \RuntimeException('Migration failed ' . self::class, 1659509400, $throwable);
+        }
     }
 
     public function updateDestructive(Connection $connection): void
