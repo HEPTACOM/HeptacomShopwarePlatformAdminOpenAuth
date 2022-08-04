@@ -1,5 +1,6 @@
 * Fix Shopware 6.4.11 compatibility
 * Drop Shopware 6.4.0 to 6.4.10 support
+* Resolve issues with other plugins, also extending `@Administration/administration/index.html.twig`
 
 # 4.0.2
 
