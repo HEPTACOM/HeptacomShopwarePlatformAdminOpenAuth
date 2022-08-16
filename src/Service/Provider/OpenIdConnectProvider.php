@@ -3,10 +3,14 @@ declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\Service\Provider;
 
+use Heptacom\AdminOpenAuth\Component\OpenIdConnect\OpenIdConnectConfiguration;
+use Heptacom\AdminOpenAuth\Component\OpenIdConnect\OpenIdConnectException;
+use Heptacom\AdminOpenAuth\Component\OpenIdConnect\OpenIdConnectService;
 use Heptacom\AdminOpenAuth\Component\Provider\OpenIdConnectClient;
 use Heptacom\AdminOpenAuth\Service\TokenPairFactoryContract;
 use Heptacom\OpenAuth\Client\Contract\ClientContract;
 use Heptacom\OpenAuth\ClientProvider\Contract\ClientProviderContract;
+use Psr\Http\Client\ClientInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class OpenIdConnectProvider extends ClientProviderContract
@@ -15,9 +19,12 @@ class OpenIdConnectProvider extends ClientProviderContract
 
     private TokenPairFactoryContract $tokenPairFactory;
 
-    public function __construct(TokenPairFactoryContract $tokenPairFactory)
+    private ClientInterface $oidcHttpClient;
+
+    public function __construct(TokenPairFactoryContract $tokenPairFactory, ClientInterface $oidcHttpClient)
     {
         $this->tokenPairFactory = $tokenPairFactory;
+        $this->oidcHttpClient = $oidcHttpClient;
     }
 
     public function provides(): string
@@ -29,7 +36,7 @@ class OpenIdConnectProvider extends ClientProviderContract
     {
         return parent::getConfigurationTemplate()
             ->setDefined([
-                'provider_url',
+                'issuer',
                 'authorization_endpoint',
                 'token_endpoint',
                 'userinfo_endpoint',
@@ -39,7 +46,7 @@ class OpenIdConnectProvider extends ClientProviderContract
                 // TODO remove in v5
                 'redirectUri',
             ])->setRequired([
-                'provider_url',
+                'issuer',
                 'authorization_endpoint',
                 'token_endpoint',
                 'userinfo_endpoint',
@@ -49,7 +56,7 @@ class OpenIdConnectProvider extends ClientProviderContract
                 'scopes' => [],
                 'redirectUri' => null,
             ])
-            ->setAllowedTypes('provider_url', 'string')
+            ->setAllowedTypes('issuer', 'string')
             ->setAllowedTypes('authorization_endpoint', 'string')
             ->setAllowedTypes('token_endpoint', 'string')
             ->setAllowedTypes('userinfo_endpoint', 'string')
@@ -63,7 +70,7 @@ class OpenIdConnectProvider extends ClientProviderContract
     {
         $result = parent::getInitialConfiguration();
 
-        $result['provider_url'] = '';
+        $result['issuer'] = '';
         $result['authorization_endpoint'] = '';
         $result['token_endpoint'] = '';
         $result['userinfo_endpoint'] = '';
@@ -75,6 +82,17 @@ class OpenIdConnectProvider extends ClientProviderContract
 
     public function provideClient(array $resolvedConfig): ClientContract
     {
-        return new OpenIdConnectClient($this->tokenPairFactory, $resolvedConfig);
+        $config = new OpenIdConnectConfiguration();
+        $config->assign($resolvedConfig);
+
+        $service = new OpenIdConnectService($this->oidcHttpClient, $config);
+
+        try {
+            $service->discoverWellKnown();
+        } catch (OpenIdConnectException $e) {
+            // nth
+        }
+
+        return new OpenIdConnectClient($this->tokenPairFactory, $service);
     }
 }

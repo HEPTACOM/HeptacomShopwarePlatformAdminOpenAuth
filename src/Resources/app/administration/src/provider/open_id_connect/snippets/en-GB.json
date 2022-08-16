@@ -5,7 +5,7 @@
         },
         "providerFields": {
             "open_id_connect": {
-                "provider_url": "Provider url",
+                "issuer": "Issuer url",
                 "authorization_endpoint": "Authorization endpoint",
                 "token_endpoint": "Token endpoint",
                 "userinfo_endpoint": "User info endpoint",

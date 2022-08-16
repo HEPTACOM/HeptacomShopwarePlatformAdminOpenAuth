@@ -8,6 +8,7 @@ services:
             Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface $userEmailsRepository: '@heptacom_admin_open_auth_user_email.repository'
             Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface $userKeysRepository: '@heptacom_admin_open_auth_user_key.repository'
             Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface $userTokensRepository: '@heptacom_admin_open_auth_user_token.repository'
+            Psr\Http\Client\ClientInterface $oidcHttpClient: '@heptacom.admin_open_auth.oidc.http_client'
 
     _instanceof:
         Heptacom\OpenAuth\ClientProvider\Contract\ClientProviderContract:
@@ -25,6 +26,19 @@ services:
             - '../../Exception/*'
             - '../../Migration/*'
             - '../../Resources/*'
+
+    heptacom.admin_open_auth.oidc.http_client:
+        class: 'GuzzleHttp\Client'
+        arguments:
+            - protocols: [https]
+              verify: true
+              timeout: 15
+              headers:
+                  Accept: application/json
+
+    Heptacom\AdminOpenAuth\Component\OpenIdConnect\OpenIdConnectService:
+        arguments:
+            - '@heptacom.admin_open_auth.http_client'
 
     Heptacom\AdminOpenAuth\Database\ClientDefinition:
         tags:

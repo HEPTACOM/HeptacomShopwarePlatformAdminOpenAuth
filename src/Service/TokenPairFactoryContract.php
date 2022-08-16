@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\Service;
 
+use Heptacom\AdminOpenAuth\Component\OpenIdConnect\OpenIdConnectToken;
 use Heptacom\OpenAuth\Struct\TokenPairStruct;
 use League\OAuth2\Client\Token\AccessTokenInterface;
 
@@ -23,5 +24,21 @@ class TokenPairFactoryContract
             ->setRefreshToken($token->getRefreshToken())
             ->setExpiresAt($expires)
             ->setPassthrough($token->getValues());
+    }
+
+    public function fromOpenIdConnectToken(OpenIdConnectToken $token): TokenPairStruct
+    {
+        $expires = null;
+
+        if ($token->getExpiresIn() !== null) {
+            $expires = \date_create()
+                ->setTimestamp(time() + $token->getExpiresIn())
+                ->setTimezone(new \DateTimeZone('UTC'));
+        }
+
+        return (new TokenPairStruct())
+            ->setAccessToken($token->getAccessToken())
+            ->setRefreshToken($token->getRefreshToken())
+            ->setExpiresAt($expires);
     }
 }

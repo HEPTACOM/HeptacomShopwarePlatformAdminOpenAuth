@@ -2,13 +2,13 @@
     {% parent %}
 
     <sw-card
-        v-if="item && item.provider === 'microsoft_azure'"
+        v-if="item && item.provider === 'open_id_connect'"
     >
         <sw-url-field
             :omitUrlHash="true"
             :omitUrlSearch="true"
-            :label="$t('heptacomAdminOpenAuthClient.providerFields.open_id_connect.provider_url')"
-            v-model="item.config.provider_url"
+            :label="$t('heptacomAdminOpenAuthClient.providerFields.open_id_connect.issuer')"
+            v-model="item.config.issuer"
         ></sw-url-field>
         <sw-url-field
             :omitUrlHash="true"

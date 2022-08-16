@@ -43,7 +43,8 @@
         "phpseclib/phpseclib" : "~2.0 || ^3.0",
         "ext-json": "*",
         "ext-curl": "*",
-        "paragonie/random_compat": ">=2"
+        "paragonie/random_compat": ">=2",
+        "guzzlehttp/guzzle": "^7.4"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.16",

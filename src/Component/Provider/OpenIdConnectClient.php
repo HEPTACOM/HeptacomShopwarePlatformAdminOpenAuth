@@ -3,25 +3,25 @@ declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\Component\Provider;
 
+use Heptacom\AdminOpenAuth\Component\OpenIdConnect\OpenIdConnectConfiguration;
+use Heptacom\AdminOpenAuth\Component\OpenIdConnect\OpenIdConnectService;
 use Heptacom\AdminOpenAuth\Service\TokenPairFactoryContract;
 use Heptacom\OpenAuth\Behaviour\RedirectBehaviour;
 use Heptacom\OpenAuth\Client\Contract\ClientContract;
 use Heptacom\OpenAuth\Struct\TokenPairStruct;
 use Heptacom\OpenAuth\Struct\UserStruct;
 use Psr\Http\Message\RequestInterface;
-use Jumbojett\OpenIDConnectClient as JumbojettOpenIdConnectClient;
 
 class OpenIdConnectClient extends ClientContract
 {
     private TokenPairFactoryContract $tokenPairFactory;
 
-    private JumbojettOpenIdConnectClient $openIdConnectClient;
+    private OpenIdConnectService $openIdConnectService;
 
-    public function __construct(TokenPairFactoryContract $tokenPairFactory, array $options)
+    public function __construct(TokenPairFactoryContract $tokenPairFactory, OpenIdConnectService $openIdConnectService)
     {
         $this->tokenPairFactory = $tokenPairFactory;
-        $this->openIdConnectClient = new JumbojettOpenIdConnectClient($options['provider_url'], $options['client_id'], $options['client_secret']);
-        $this->openIdConnectClient->providerConfigParam($options);
+        $this->openIdConnectService = $openIdConnectService;
     }
 
     public function getLoginUrl(?string $state, RedirectBehaviour $behaviour): string
@@ -37,12 +37,12 @@ class OpenIdConnectClient extends ClientContract
             $params[$behaviour->getStateKey()] = $state;
         }
 
-        return $this->getInnerClient()->('authorization_endpoint');
+        return $this->getInnerClient()->getAuthorizationUrl($params);
     }
 
     public function refreshToken(string $refreshToken): TokenPairStruct
     {
-        return $this->tokenPairFactory->fromLeagueToken($this->getInnerClient()->getAccessToken('refresh_token', [
+        return $this->tokenPairFactory->fromOpenIdConnectToken($this->getInnerClient()->getAccessToken('refresh_token', [
             'refresh_token' => $refreshToken,
         ]));
     }
@@ -56,41 +56,29 @@ class OpenIdConnectClient extends ClientContract
         }
 
         $token = $this->getInnerClient()->getAccessToken('authorization_code', $options);
-        $user = $this->getInnerClient()->get('me', $token);
+        $user = $this->getInnerClient()->getUserInfo($token);
 
-        $emails = [];
-
-        if (($email = \trim($user['mail'] ?? '')) !== '') {
-            $emails[] = $email;
-        }
-
-        // TODO break fallback behaviour in v5 and make it configurable
-        if (($email = \trim($user['userPrincipalName'] ?? '')) !== '') {
-            $emails[] = $email;
+        $name = sprintf('%s %s', $user->getName() ?? '', $user->getFamilyName() ?? '');
+        if (empty(trim($name))) {
+            $name = $user->getNickname() ?? $user->getEmail();
         }
 
         return (new UserStruct())
-            ->setPrimaryKey($user['objectId'])
-            ->setTokenPair($this->tokenPairFactory->fromLeagueToken($token))
-            ->setDisplayName($user['displayName'])
-            ->setPrimaryEmail(\array_pop($emails))
-            ->setEmails($emails)
-            ->setPassthrough(['resourceOwner' => $user]);
+            ->setPrimaryKey($user->getSub())
+            ->setTokenPair($this->tokenPairFactory->fromOpenIdConnectToken($token))
+            ->setDisplayName($name)
+            ->setPrimaryEmail($user->getEmail())
+            ->setEmails([$user->getEmail()])
+            ->addPassthrough('picture', $user->getPicture());
     }
 
     public function authorizeRequest(RequestInterface $request, TokenPairStruct $token): RequestInterface
     {
-        $result = $request;
-
-        foreach ($this->getInnerClient()->getHeaders($token->getAccessToken()) as $headerKey => $headerValue) {
-            $result = $result->withAddedHeader($headerKey, $headerValue);
-        }
-
-        return $result;
+        return $request->withAddedHeader('Authorization', 'Bearer ' . $token->getAccessToken());
     }
 
-    public function getInnerClient(): JumbojettOpenIdConnectClient
+    public function getInnerClient(): OpenIdConnectService
     {
-        return $this->openIdConnectClient;
+        return $this->openIdConnectService;
     }
 }
