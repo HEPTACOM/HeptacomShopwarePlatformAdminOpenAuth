@@ -8,18 +8,27 @@ use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Uri;
 use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Client\ClientInterface;
+use Symfony\Component\Cache\Adapter\AdapterInterface;
 
+/**
+ * @todo implement jwt signature check (see JWKS)
+ * @todo implement signed/encrypted UserInfo support
+ */
 class OpenIdConnectService
 {
+    private const WELL_KNOWN_CACHE_TTL = 900;
 
     private ClientInterface $httpClient;
 
     private OpenIdConnectConfiguration $config;
 
-    public function __construct(ClientInterface $httpClient, OpenIdConnectConfiguration $config)
+    private AdapterInterface $cache;
+
+    public function __construct(ClientInterface $httpClient, OpenIdConnectConfiguration $config, AdapterInterface $cache)
     {
         $this->httpClient = $httpClient;
         $this->config = $config;
+        $this->cache = $cache;
     }
 
     public function getAuthorizationUrl(array $params = []): string
@@ -69,26 +78,21 @@ class OpenIdConnectService
 
         try {
             $uri = new Uri((string)$this->config->getTokenEndpoint());
-
-            $request = $this->prepareRequest(
-                new Request(
-                    'POST',
-                    $uri,
-                    [
-                        'Content-Type' => 'application/x-www-form-urlencoded'
-                    ],
-                    http_build_query(
-                        array_merge([
-                            'grant_type' => $grantType,
-                            'client_id' => $this->config->getClientId(),
-                            'client_secret' => $this->config->getClientSecret(),
-                        ], $options),
-                        '',
-                        '&',
-                        PHP_QUERY_RFC3986
-                    )
-                )
+            $headers = [
+                'Content-Type' => 'application/x-www-form-urlencoded',
+            ];
+            $body = http_build_query(
+                array_merge([
+                    'grant_type' => $grantType,
+                    'client_id' => $this->config->getClientId(),
+                    'client_secret' => $this->config->getClientSecret(),
+                ], $options),
+                '',
+                '&',
+                PHP_QUERY_RFC3986
             );
+
+            $request = $this->prepareRequest(new Request('POST', $uri, $headers, $body));
             $response = $this->httpClient->sendRequest($request);
 
             $json = json_decode((string)$response->getBody(), true);
@@ -108,33 +112,45 @@ class OpenIdConnectService
             return true;
         }
 
-        $issuer = $this->config->getIssuer();
-        if (!$issuer) {
-            return false;
-        }
+        $openIdConnectDiscoveryDocument = $this->config->getDiscoveryDocumentUrl();
+        if (empty($openIdConnectDiscoveryDocument)) {
+            $issuer = $this->config->getIssuer();
 
-        try {
-            $uri = new Uri($this->config->getIssuer().'/.well-known/openid-configuration');
-            $request = $this->prepareRequest(new Request('GET', $uri));
-            $response = $this->httpClient->sendRequest($request);
-
-            if (
-                $response->getStatusCode() < 200 || $response->getStatusCode() >= 300 ||
-                $response->getHeaderLine('Content-Type') !== 'application/json'
-            ) {
-                throw new OpenIdConnectException('Could not load openid-configuration from issuer '.$uri);
+            if (empty($issuer)) {
+                return false;
+            } else {
+                $openIdConnectDiscoveryDocument = $this->config->getIssuer().'/.well-known/openid-configuration';
             }
-
-            $json = json_decode((string)$response->getBody(), true);
-
-            $this->config->assign($json);
-            $this->config->setWellKnownDiscovered(true);
-        } catch (ClientExceptionInterface $e) {
-            // @todo log
-            return false;
         }
 
-        // @todo cache
+        $cache_key = sprintf(
+            'heptacom-admin-open-auth_well-known_%s',
+            md5($openIdConnectDiscoveryDocument),
+        );
+        $cachedWellKnown = $this->cache->getItem($cache_key);
+
+        if (!$cachedWellKnown->isHit()) {
+            try {
+                $uri = new Uri($openIdConnectDiscoveryDocument);
+
+                $request = $this->prepareRequest(new Request('GET', $uri));
+                $response = $this->httpClient->sendRequest($request);
+
+                if ($response->getHeaderLine('Content-Type') !== 'application/json') {
+                    throw new OpenIdConnectException('Could not load openid-configuration from issuer '.$uri);
+                }
+
+                $cachedWellKnown->set(json_decode((string)$response->getBody(), true));
+                $cachedWellKnown->expiresAfter(self::WELL_KNOWN_CACHE_TTL);
+                $this->cache->save($cachedWellKnown);
+            } catch (ClientExceptionInterface $e) {
+                // @todo log
+                return false;
+            }
+        }
+
+        $this->config->assign($cachedWellKnown->get());
+        $this->config->setWellKnownDiscovered(true);
 
         return true;
     }

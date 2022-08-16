@@ -5,7 +5,9 @@
         },
         "providerFields": {
             "open_id_connect": {
-                "issuer": "Anbieter-URL",
+                "discovery_document_url": "OpenID Connect Konfiguration",
+                "discovery_document_url-help": "Sofern angegeben, wird die weitere Konfiguration automatisch geladen.",
+                "discovery_document_url-placeholder": "https://accounts.google.com/.well-known/openid-configuration",
                 "authorization_endpoint": "Autorisierungs-Endpunkt",
                 "token_endpoint": "Token-Endpunkt",
                 "userinfo_endpoint": "Benutzer-Info-Endpunkt",

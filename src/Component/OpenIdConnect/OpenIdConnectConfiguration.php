@@ -9,7 +9,8 @@ use Shopware\Core\Framework\Struct\Struct;
 
 class OpenIdConnectConfiguration extends Struct
 {
-    private bool $wellKnownDiscovered = false;
+    protected bool $wellKnownDiscovered = false;
+    protected string $discovery_document_url = '';
 
     protected ?string $issuer = null;
     protected ?string $authorization_endpoint = null;
@@ -37,6 +38,16 @@ class OpenIdConnectConfiguration extends Struct
     public function setWellKnownDiscovered(bool $wellKnownDiscovered): void
     {
         $this->wellKnownDiscovered = $wellKnownDiscovered;
+    }
+
+    public function getDiscoveryDocumentUrl(): string
+    {
+        return $this->discovery_document_url;
+    }
+
+    public function setDiscoveryDocumentUrl(string $discovery_document_url): void
+    {
+        $this->discovery_document_url = $discovery_document_url;
     }
 
     public function getIssuer(): ?string

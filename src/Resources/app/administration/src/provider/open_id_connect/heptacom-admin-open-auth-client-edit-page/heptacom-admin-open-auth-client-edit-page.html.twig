@@ -7,32 +7,39 @@
         <sw-url-field
             :omitUrlHash="true"
             :omitUrlSearch="true"
-            :label="$t('heptacomAdminOpenAuthClient.providerFields.open_id_connect.issuer')"
-            v-model="item.config.issuer"
+            :label="$t('heptacomAdminOpenAuthClient.providerFields.open_id_connect.discovery_document_url')"
+            :help-text="$t('heptacomAdminOpenAuthClient.providerFields.open_id_connect.discovery_document_url-help')"
+            :placeholder="$t('heptacomAdminOpenAuthClient.providerFields.open_id_connect.discovery_document_url-placeholder')"
+            v-model="item.config.discovery_document_url"
         ></sw-url-field>
         <sw-url-field
             :omitUrlHash="true"
             :omitUrlSearch="true"
+            :disabled="!!item.config.discovery_document_url"
             :label="$t('heptacomAdminOpenAuthClient.providerFields.open_id_connect.authorization_endpoint')"
             v-model="item.config.authorization_endpoint"
         ></sw-url-field>
         <sw-url-field
             :omitUrlHash="true"
             :omitUrlSearch="true"
+            :disabled="!!item.config.discovery_document_url"
             :label="$t('heptacomAdminOpenAuthClient.providerFields.open_id_connect.token_endpoint')"
             v-model="item.config.token_endpoint"
         ></sw-url-field>
         <sw-url-field
             :omitUrlHash="true"
             :omitUrlSearch="true"
+            :disabled="!!item.config.discovery_document_url"
             :label="$t('heptacomAdminOpenAuthClient.providerFields.open_id_connect.userinfo_endpoint')"
             v-model="item.config.userinfo_endpoint"
         ></sw-url-field>
         <sw-text-field
+            :required="true"
             :label="$t('heptacomAdminOpenAuthClient.providerFields.open_id_connect.client_id')"
             v-model="item.config.client_id"
         ></sw-text-field>
         <sw-password-field
+            :required="true"
             :label="$t('heptacomAdminOpenAuthClient.providerFields.open_id_connect.client_secret')"
             v-model="item.config.client_secret"
         ></sw-password-field>

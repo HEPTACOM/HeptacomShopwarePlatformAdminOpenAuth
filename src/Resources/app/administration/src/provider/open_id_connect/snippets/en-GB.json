@@ -5,7 +5,9 @@
         },
         "providerFields": {
             "open_id_connect": {
-                "issuer": "Issuer url",
+                "discovery_document_url": "OpenID Connect metadata document",
+                "discovery_document_url-help": "If given, the configuration will be discovered automatically.",
+                "discovery_document_url-placeholder": "https://accounts.google.com/.well-known/openid-configuration",
                 "authorization_endpoint": "Authorization endpoint",
                 "token_endpoint": "Token endpoint",
                 "userinfo_endpoint": "User info endpoint",

@@ -1,5 +1,6 @@
 <?php
-declare(strict_types=1);
+
+declare(strict_types = 1);
 
 namespace Heptacom\AdminOpenAuth\Service\Provider;
 
@@ -11,20 +12,28 @@ use Heptacom\AdminOpenAuth\Service\TokenPairFactoryContract;
 use Heptacom\OpenAuth\Client\Contract\ClientContract;
 use Heptacom\OpenAuth\ClientProvider\Contract\ClientProviderContract;
 use Psr\Http\Client\ClientInterface;
+use Symfony\Component\Cache\Adapter\AdapterInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class OpenIdConnectProvider extends ClientProviderContract
 {
+
     public const PROVIDER_NAME = 'open_id_connect';
 
     private TokenPairFactoryContract $tokenPairFactory;
 
     private ClientInterface $oidcHttpClient;
 
-    public function __construct(TokenPairFactoryContract $tokenPairFactory, ClientInterface $oidcHttpClient)
-    {
+    private AdapterInterface $cache;
+
+    public function __construct(
+        TokenPairFactoryContract $tokenPairFactory,
+        ClientInterface $oidcHttpClient,
+        AdapterInterface $cache
+    ) {
         $this->tokenPairFactory = $tokenPairFactory;
         $this->oidcHttpClient = $oidcHttpClient;
+        $this->cache = $cache;
     }
 
     public function provides(): string
@@ -36,7 +45,7 @@ class OpenIdConnectProvider extends ClientProviderContract
     {
         return parent::getConfigurationTemplate()
             ->setDefined([
-                'issuer',
+                'discovery_document_url',
                 'authorization_endpoint',
                 'token_endpoint',
                 'userinfo_endpoint',
@@ -46,7 +55,7 @@ class OpenIdConnectProvider extends ClientProviderContract
                 // TODO remove in v5
                 'redirectUri',
             ])->setRequired([
-                'issuer',
+                'discovery_document_url',
                 'authorization_endpoint',
                 'token_endpoint',
                 'userinfo_endpoint',
@@ -56,21 +65,24 @@ class OpenIdConnectProvider extends ClientProviderContract
                 'scopes' => [],
                 'redirectUri' => null,
             ])
-            ->setAllowedTypes('issuer', 'string')
+            ->setAllowedTypes('discovery_document_url', 'string')
             ->setAllowedTypes('authorization_endpoint', 'string')
             ->setAllowedTypes('token_endpoint', 'string')
             ->setAllowedTypes('userinfo_endpoint', 'string')
             ->setAllowedTypes('client_id', 'string')
             ->setAllowedTypes('client_secret', 'string')
             ->setAllowedTypes('scopes', 'array')
-            ->setDeprecated('redirectUri', 'Use route api.heptacom.admin_open_auth.provider.redirect-url instead to live generate redirectUri');
+            ->setDeprecated(
+                'redirectUri',
+                'Use route api.heptacom.admin_open_auth.provider.redirect-url instead to live generate redirectUri'
+            );
     }
 
     public function getInitialConfiguration(): array
     {
         $result = parent::getInitialConfiguration();
 
-        $result['issuer'] = '';
+        $result['discovery_document_url'] = '';
         $result['authorization_endpoint'] = '';
         $result['token_endpoint'] = '';
         $result['userinfo_endpoint'] = '';
@@ -85,7 +97,7 @@ class OpenIdConnectProvider extends ClientProviderContract
         $config = new OpenIdConnectConfiguration();
         $config->assign($resolvedConfig);
 
-        $service = new OpenIdConnectService($this->oidcHttpClient, $config);
+        $service = new OpenIdConnectService($this->oidcHttpClient, $config, $this->cache);
 
         try {
             $service->discoverWellKnown();

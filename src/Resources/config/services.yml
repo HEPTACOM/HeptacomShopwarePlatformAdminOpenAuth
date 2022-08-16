@@ -33,6 +33,7 @@ services:
             - protocols: [https]
               verify: true
               timeout: 15
+              http_errors: true
               headers:
                   Accept: application/json
 
