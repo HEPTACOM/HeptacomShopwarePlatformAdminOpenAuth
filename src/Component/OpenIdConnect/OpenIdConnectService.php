@@ -20,15 +20,23 @@ class OpenIdConnectService
 
     private ClientInterface $httpClient;
 
-    private OpenIdConnectConfiguration $config;
-
     private AdapterInterface $cache;
 
-    public function __construct(ClientInterface $httpClient, OpenIdConnectConfiguration $config, AdapterInterface $cache)
+    private OpenIdConnectConfiguration $config;
+
+    public function __construct(ClientInterface $oidcHttpClient, AdapterInterface $cache)
     {
-        $this->httpClient = $httpClient;
-        $this->config = $config;
+        $this->httpClient = $oidcHttpClient;
         $this->cache = $cache;
+        $this->config = new OpenIdConnectConfiguration();
+    }
+
+    public function createWithConfig(OpenIdConnectConfiguration $config): self
+    {
+        $service = new self($this->httpClient, $this->cache);
+        $service->setConfig($config);
+
+        return $service;
     }
 
     public function getAuthorizationUrl(array $params = []): string

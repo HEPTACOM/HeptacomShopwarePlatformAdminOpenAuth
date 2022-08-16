@@ -10,7 +10,7 @@ use Shopware\Core\Framework\Struct\Struct;
 class OpenIdConnectConfiguration extends Struct
 {
     protected bool $wellKnownDiscovered = false;
-    protected string $discovery_document_url = '';
+    protected string $discoveryDocumentUrl = '';
 
     protected ?string $issuer = null;
     protected ?string $authorization_endpoint = null;
@@ -24,8 +24,8 @@ class OpenIdConnectConfiguration extends Struct
     protected ?array $response_types_supported = null;
     protected ?array $claims_supported = null;
 
-    protected string $client_id = '';
-    protected string $client_secret = '';
+    protected string $clientId = '';
+    protected string $clientSecret = '';
     protected array $requestedScopes = ['openid'];
     protected string $responseType = 'code';
     protected string $redirectUri = '';
@@ -42,12 +42,12 @@ class OpenIdConnectConfiguration extends Struct
 
     public function getDiscoveryDocumentUrl(): string
     {
-        return $this->discovery_document_url;
+        return $this->discoveryDocumentUrl;
     }
 
-    public function setDiscoveryDocumentUrl(string $discovery_document_url): void
+    public function setDiscoveryDocumentUrl(string $discoveryDocumentUrl): void
     {
-        $this->discovery_document_url = $discovery_document_url;
+        $this->discoveryDocumentUrl = $discoveryDocumentUrl;
     }
 
     public function getIssuer(): ?string
@@ -163,22 +163,22 @@ class OpenIdConnectConfiguration extends Struct
 
     public function getClientId(): string
     {
-        return $this->client_id;
+        return $this->clientId;
     }
 
-    public function setClientId(string $client_id): void
+    public function setClientId(string $clientId): void
     {
-        $this->client_id = $client_id;
+        $this->clientId = $clientId;
     }
 
     public function getClientSecret(): string
     {
-        return $this->client_secret;
+        return $this->clientSecret;
     }
 
-    public function setClientSecret(string $client_secret): void
+    public function setClientSecret(string $clientSecret): void
     {
-        $this->client_secret = $client_secret;
+        $this->clientSecret = $clientSecret;
     }
 
     public function getRequestedScopes(): array

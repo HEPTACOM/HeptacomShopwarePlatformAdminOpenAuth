@@ -3,7 +3,10 @@ declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\Service\Provider;
 
-use Heptacom\AdminOpenAuth\Component\Provider\MicrosoftAzureClient;
+use Heptacom\AdminOpenAuth\Component\OpenIdConnect\OpenIdConnectConfiguration;
+use Heptacom\AdminOpenAuth\Component\OpenIdConnect\OpenIdConnectException;
+use Heptacom\AdminOpenAuth\Component\OpenIdConnect\OpenIdConnectService;
+use Heptacom\AdminOpenAuth\Component\Provider\OpenIdConnectClient;
 use Heptacom\AdminOpenAuth\Service\TokenPairFactoryContract;
 use Heptacom\OpenAuth\Client\Contract\ClientContract;
 use Heptacom\OpenAuth\ClientProvider\Contract\ClientProviderContract;
@@ -15,9 +18,14 @@ class MicrosoftAzureProvider extends ClientProviderContract
 
     private TokenPairFactoryContract $tokenPairFactory;
 
-    public function __construct(TokenPairFactoryContract $tokenPairFactory)
-    {
+    private OpenIdConnectService $openIdConnectService;
+
+    public function __construct(
+        TokenPairFactoryContract $tokenPairFactory,
+        OpenIdConnectService $openIdConnectService
+    ) {
         $this->tokenPairFactory = $tokenPairFactory;
+        $this->openIdConnectService = $openIdConnectService;
     }
 
     public function provides(): string
@@ -29,18 +37,21 @@ class MicrosoftAzureProvider extends ClientProviderContract
     {
         return parent::getConfigurationTemplate()
             ->setDefined([
+                'tenantId',
                 'clientId',
                 'clientSecret',
                 'scopes',
                 // TODO remove in v5
                 'redirectUri',
             ])->setRequired([
+                'tenantId',
                 'clientId',
                 'clientSecret',
             ])->setDefaults([
                 'scopes' => [],
                 'redirectUri' => null,
             ])
+            ->setAllowedTypes('tenantId', 'string')
             ->setAllowedTypes('clientId', 'string')
             ->setAllowedTypes('clientSecret', 'string')
             ->setAllowedTypes('scopes', 'array')
@@ -51,6 +62,7 @@ class MicrosoftAzureProvider extends ClientProviderContract
     {
         $result = parent::getInitialConfiguration();
 
+        $result['tenantId'] = '';
         $result['clientId'] = '';
         $result['clientSecret'] = '';
 
@@ -59,6 +71,18 @@ class MicrosoftAzureProvider extends ClientProviderContract
 
     public function provideClient(array $resolvedConfig): ClientContract
     {
-        return new MicrosoftAzureClient($this->tokenPairFactory, $resolvedConfig);
+        $config = new OpenIdConnectConfiguration();
+        $config->assign($resolvedConfig);
+        $config->setDiscoveryDocumentUrl('https://login.microsoftonline.com/' . $resolvedConfig['tenantId'] . '/v2.0/.well-known/openid-configuration');
+
+        $service = $this->openIdConnectService->createWithConfig($config);
+
+        try {
+            $service->discoverWellKnown();
+        } catch (OpenIdConnectException $e) {
+            // nth
+        }
+
+        return new OpenIdConnectClient($this->tokenPairFactory, $service);
     }
 }

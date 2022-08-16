@@ -5,9 +5,10 @@
         },
         "providerFields": {
             "microsoft_azure": {
-                "additionalScopes": "Anwendungsberechtigungen",
-                "clientId": "Anwendungsschlüssel",
-                "clientSecret": "Anwendungsgehemnis"
+                "additional_scopes": "Anwendungsberechtigungen",
+                "tenant_id": "Verzeichnis-ID",
+                "client_id": "Anwendungsschlüssel",
+                "client_secret": "Anwendungsgehemnis"
             }
         }
     }

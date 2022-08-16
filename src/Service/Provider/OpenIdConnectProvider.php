@@ -22,18 +22,14 @@ class OpenIdConnectProvider extends ClientProviderContract
 
     private TokenPairFactoryContract $tokenPairFactory;
 
-    private ClientInterface $oidcHttpClient;
-
-    private AdapterInterface $cache;
+    private OpenIdConnectService $openIdConnectService;
 
     public function __construct(
         TokenPairFactoryContract $tokenPairFactory,
-        ClientInterface $oidcHttpClient,
-        AdapterInterface $cache
+        OpenIdConnectService $openIdConnectService
     ) {
         $this->tokenPairFactory = $tokenPairFactory;
-        $this->oidcHttpClient = $oidcHttpClient;
-        $this->cache = $cache;
+        $this->openIdConnectService = $openIdConnectService;
     }
 
     public function provides(): string
@@ -45,32 +41,32 @@ class OpenIdConnectProvider extends ClientProviderContract
     {
         return parent::getConfigurationTemplate()
             ->setDefined([
-                'discovery_document_url',
+                'discoveryDocumentUrl',
                 'authorization_endpoint',
                 'token_endpoint',
                 'userinfo_endpoint',
-                'client_id',
-                'client_secret',
+                'clientId',
+                'clientSecret',
                 'scopes',
                 // TODO remove in v5
                 'redirectUri',
             ])->setRequired([
-                'discovery_document_url',
+                'discoveryDocumentUrl',
                 'authorization_endpoint',
                 'token_endpoint',
                 'userinfo_endpoint',
-                'client_id',
-                'client_secret',
+                'clientId',
+                'clientSecret',
             ])->setDefaults([
                 'scopes' => [],
                 'redirectUri' => null,
             ])
-            ->setAllowedTypes('discovery_document_url', 'string')
+            ->setAllowedTypes('discoveryDocumentUrl', 'string')
             ->setAllowedTypes('authorization_endpoint', 'string')
             ->setAllowedTypes('token_endpoint', 'string')
             ->setAllowedTypes('userinfo_endpoint', 'string')
-            ->setAllowedTypes('client_id', 'string')
-            ->setAllowedTypes('client_secret', 'string')
+            ->setAllowedTypes('clientId', 'string')
+            ->setAllowedTypes('clientSecret', 'string')
             ->setAllowedTypes('scopes', 'array')
             ->setDeprecated(
                 'redirectUri',
@@ -82,12 +78,12 @@ class OpenIdConnectProvider extends ClientProviderContract
     {
         $result = parent::getInitialConfiguration();
 
-        $result['discovery_document_url'] = '';
+        $result['discoveryDocumentUrl'] = '';
         $result['authorization_endpoint'] = '';
         $result['token_endpoint'] = '';
         $result['userinfo_endpoint'] = '';
-        $result['client_id'] = '';
-        $result['client_secret'] = '';
+        $result['clientId'] = '';
+        $result['clientSecret'] = '';
 
         return $result;
     }
@@ -97,7 +93,7 @@ class OpenIdConnectProvider extends ClientProviderContract
         $config = new OpenIdConnectConfiguration();
         $config->assign($resolvedConfig);
 
-        $service = new OpenIdConnectService($this->oidcHttpClient, $config, $this->cache);
+        $service = $this->openIdConnectService->createWithConfig($config);
 
         try {
             $service->discoverWellKnown();
