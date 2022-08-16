@@ -5,19 +5,19 @@
         v-if="item && item.provider === 'microsoft_azure'"
     >
         <sw-text-field
-            :label="$t('heptacomAdminOpenAuthClient.providerFields.microsoft_azure.tenant_id')"
-            v-model="item.config.tenant_id"
+            :label="$t('heptacomAdminOpenAuthClient.providerFields.microsoft_azure.tenantId')"
+            v-model="item.config.tenantId"
         ></sw-text-field>
         <sw-text-field
-            :label="$t('heptacomAdminOpenAuthClient.providerFields.microsoft_azure.client_id')"
-            v-model="item.config.client_id"
+            :label="$t('heptacomAdminOpenAuthClient.providerFields.microsoft_azure.clientId')"
+            v-model="item.config.clientId"
         ></sw-text-field>
         <sw-password-field
-            :label="$t('heptacomAdminOpenAuthClient.providerFields.microsoft_azure.client_secret')"
-            v-model="item.config.client_secret"
+            :label="$t('heptacomAdminOpenAuthClient.providerFields.microsoft_azure.clientSecret')"
+            v-model="item.config.clientSecret"
         ></sw-password-field>
         <heptacom-admin-open-auth-scope-field
-            :label="$t('heptacomAdminOpenAuthClient.providerFields.microsoft_azure.additional_scopes')"
+            :label="$t('heptacomAdminOpenAuthClient.providerFields.microsoft_azure.additionalScopes')"
             v-model="item.config.scopes"
         ></heptacom-admin-open-auth-scope-field>
     </sw-card>
