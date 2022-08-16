@@ -1,7 +1,8 @@
 # Unreleased
 
 * Add OpenID Connect provider
-* Refactor Azure client to use integrated OpenID Connect client, instead of the `thenetworg/oauth2-azure` library
+* Refactor Microsoft Azure provider to use integrated OpenID Connect provider, instead of the `thenetworg/oauth2-azure` library
+* Add Google Cloud provider
 
 # 4.0.2
 

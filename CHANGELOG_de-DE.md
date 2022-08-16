@@ -1,7 +1,8 @@
 # Unreleased
 
 * OpenID Connect Provider hinzugefügt
-* Azure Client überarbeitet, sodass dieser nun an Stelle der `thenetworg/oauth2-azure`-Bibliothek den integrierten OpenID Connect Client nutzt
+* Microsoft Azure Provider überarbeitet, sodass dieser nun an Stelle der `thenetworg/oauth2-azure`-Bibliothek den integrierten OpenID Connect Provider nutzt
+* Google Cloud Provider hinzugefügt
 
 # 4.0.2
 
