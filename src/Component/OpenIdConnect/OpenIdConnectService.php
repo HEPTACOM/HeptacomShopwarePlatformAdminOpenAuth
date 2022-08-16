@@ -4,10 +4,13 @@ declare(strict_types = 1);
 
 namespace Heptacom\AdminOpenAuth\Component\OpenIdConnect;
 
+use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Uri;
 use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Cache\Adapter\AdapterInterface;
 
 /**
@@ -42,7 +45,7 @@ class OpenIdConnectService
     public function getAuthorizationUrl(array $params = []): string
     {
         $defaultParams = [
-            'scope' => implode(',', $this->config->getRequestedScopes()),
+            'scope' => implode(' ', $this->config->getScopes()),
             'response_type' => $this->config->getResponseType(),
             'client_id' => $this->config->getClientId(),
             'redirect_uri' => $this->config->getRedirectUri(),
@@ -103,6 +106,8 @@ class OpenIdConnectService
             $request = $this->prepareRequest(new Request('POST', $uri, $headers, $body));
             $response = $this->httpClient->sendRequest($request);
 
+            $this->verifyRequestSuccess($request, $response);
+
             $json = json_decode((string)$response->getBody(), true);
             $tokenResponse = new OpenIdConnectToken();
             $tokenResponse->assign($json);
@@ -130,12 +135,11 @@ class OpenIdConnectService
                 $openIdConnectDiscoveryDocument = $this->config->getIssuer().'/.well-known/openid-configuration';
             }
         }
-
-        $cache_key = sprintf(
+        $cacheKey = sprintf(
             'heptacom-admin-open-auth_well-known_%s',
             md5($openIdConnectDiscoveryDocument),
         );
-        $cachedWellKnown = $this->cache->getItem($cache_key);
+        $cachedWellKnown = $this->cache->getItem($cacheKey);
 
         if (!$cachedWellKnown->isHit()) {
             try {
@@ -144,9 +148,7 @@ class OpenIdConnectService
                 $request = $this->prepareRequest(new Request('GET', $uri));
                 $response = $this->httpClient->sendRequest($request);
 
-                if ($response->getHeaderLine('Content-Type') !== 'application/json') {
-                    throw new OpenIdConnectException('Could not load openid-configuration from issuer '.$uri);
-                }
+                $this->verifyRequestSuccess($request, $response);
 
                 $cachedWellKnown->set(json_decode((string)$response->getBody(), true));
                 $cachedWellKnown->expiresAfter(self::WELL_KNOWN_CACHE_TTL);
@@ -170,6 +172,17 @@ class OpenIdConnectService
         }
 
         return $request;
+    }
+
+    public function verifyRequestSuccess(RequestInterface $request, ResponseInterface $response): void
+    {
+        if ($response->getStatusCode() < 200 || $response->getStatusCode() > 299) {
+            throw new RequestException('Request resulted in a non-successful status code: ' . $response->getStatusCode(), $request, $response);
+        }
+
+        if (substr($response->getHeaderLine('Content-Type'), 0, 16) !== 'application/json') {
+            throw new RequestException('Expected content type to be of type application/json, received ' . $response->getHeaderLine('Content-Type'), $request, $response);
+        }
     }
 
     public function getConfig(): OpenIdConnectConfiguration

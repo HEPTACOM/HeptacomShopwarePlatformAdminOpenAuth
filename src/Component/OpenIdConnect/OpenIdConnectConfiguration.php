@@ -26,7 +26,7 @@ class OpenIdConnectConfiguration extends Struct
 
     protected string $clientId = '';
     protected string $clientSecret = '';
-    protected array $requestedScopes = ['openid'];
+    protected array $scopes = ['openid'];
     protected string $responseType = 'code';
     protected string $redirectUri = '';
 
@@ -181,18 +181,18 @@ class OpenIdConnectConfiguration extends Struct
         $this->clientSecret = $clientSecret;
     }
 
-    public function getRequestedScopes(): array
+    public function getScopes(): array
     {
-        if (array_search('openid', $this->requestedScopes) === false) {
-            $this->requestedScopes[] = 'openid';
+        if (array_search('openid', $this->scopes) === false) {
+            $this->scopes[] = 'openid';
         }
 
-        return $this->requestedScopes;
+        return $this->scopes;
     }
 
-    public function setRequestedScopes(array $requestedScopes): void
+    public function setScopes(array $scopes): void
     {
-        $this->requestedScopes = $requestedScopes;
+        $this->scopes = $scopes;
     }
 
     public function getResponseType(): string

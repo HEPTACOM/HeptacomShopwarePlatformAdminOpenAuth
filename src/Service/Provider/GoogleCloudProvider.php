@@ -71,6 +71,10 @@ class GoogleCloudProvider extends ClientProviderContract
         $config->assign($resolvedConfig);
         $config->setDiscoveryDocumentUrl('https://accounts.google.com/.well-known/openid-configuration');
 
+        $scopes = $config->getScopes();
+        array_push($scopes, 'email', 'profile');
+        $config->setScopes(array_unique($scopes));
+
         $service = $this->openIdConnectService->createWithConfig($config);
 
         try {
