@@ -11,6 +11,7 @@ use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Cache\Adapter\AdapterInterface;
 
 /**
@@ -19,24 +20,31 @@ use Symfony\Component\Cache\Adapter\AdapterInterface;
  */
 class OpenIdConnectService
 {
+
     private const WELL_KNOWN_CACHE_TTL = 900;
 
     private ClientInterface $httpClient;
+
+    private LoggerInterface $logger;
 
     private AdapterInterface $cache;
 
     private OpenIdConnectConfiguration $config;
 
-    public function __construct(ClientInterface $oidcHttpClient, AdapterInterface $cache)
-    {
+    public function __construct(
+        ClientInterface $oidcHttpClient,
+        LoggerInterface $logger,
+        AdapterInterface $cache
+    ) {
         $this->httpClient = $oidcHttpClient;
+        $this->logger = $logger;
         $this->cache = $cache;
         $this->config = new OpenIdConnectConfiguration();
     }
 
     public function createWithConfig(OpenIdConnectConfiguration $config): self
     {
-        $service = new self($this->httpClient, $this->cache);
+        $service = clone $this;
         $service->setConfig($config);
 
         return $service;
@@ -67,14 +75,17 @@ class OpenIdConnectService
             $request = $this->prepareRequest(new Request('GET', $uri), $token);
             $response = $this->httpClient->sendRequest($request);
 
+            $this->verifyRequestSuccess($request, $response);
+
             $json = json_decode((string)$response->getBody(), true);
             $user = new OpenIdConnectUser();
             $user->assign($json);
 
             return $user;
         } catch (ClientExceptionInterface $e) {
-            // @todo handle
-            throw new OpenIdConnectException('Could not retrieve user info.');
+            $message = sprintf('Could not retrieve user info: %s', $e->getMessage());
+            $this->logger->error($message, $e->getTrace());
+            throw new OpenIdConnectException($message);
         }
     }
 
@@ -82,9 +93,9 @@ class OpenIdConnectService
     {
         $supportedGrantTypes = $this->config->getGrantTypesSupported();
         if ($supportedGrantTypes !== null && !in_array($grantType, $supportedGrantTypes)) {
-            throw new OpenIdConnectException(
-                sprintf('%s is a not supported grant type for this identity provider', $grantType)
-            );
+            $message = sprintf('%s is a not supported grant type for this identity provider', $grantType);
+            $this->logger->critical($message);
+            throw new OpenIdConnectException($message);
         }
 
         try {
@@ -114,8 +125,9 @@ class OpenIdConnectService
 
             return $tokenResponse;
         } catch (ClientExceptionInterface $e) {
-            // @todo handle
-            throw new OpenIdConnectException('Could not retrieve access token.');
+            $message = sprintf('Could not retrieve access token: %s', $e->getMessage());
+            $this->logger->error($message, $e->getTrace());
+            throw new OpenIdConnectException($message);
         }
     }
 
@@ -154,7 +166,13 @@ class OpenIdConnectService
                 $cachedWellKnown->expiresAfter(self::WELL_KNOWN_CACHE_TTL);
                 $this->cache->save($cachedWellKnown);
             } catch (ClientExceptionInterface $e) {
-                // @todo log
+                $message = sprintf(
+                    'Could not discover OpenID Connect metadata from %s. %s',
+                    $openIdConnectDiscoveryDocument,
+                    $e->getMessage()
+                );
+                $this->logger->warning($message, $e->getTrace());
+
                 return false;
             }
         }
@@ -177,11 +195,19 @@ class OpenIdConnectService
     public function verifyRequestSuccess(RequestInterface $request, ResponseInterface $response): void
     {
         if ($response->getStatusCode() < 200 || $response->getStatusCode() > 299) {
-            throw new RequestException('Request resulted in a non-successful status code: ' . $response->getStatusCode(), $request, $response);
+            throw new RequestException(
+                'Request resulted in a non-successful status code: '.$response->getStatusCode(),
+                $request,
+                $response
+            );
         }
 
         if (substr($response->getHeaderLine('Content-Type'), 0, 16) !== 'application/json') {
-            throw new RequestException('Expected content type to be of type application/json, received ' . $response->getHeaderLine('Content-Type'), $request, $response);
+            throw new RequestException(
+                'Expected content type to be of type application/json, received '.$response->getHeaderLine(
+                    'Content-Type'
+                ), $request, $response
+            );
         }
     }
 
