@@ -5,7 +5,7 @@
 * Add Google Cloud provider
 * Refactor Microsoft Azure provider to use integrated OpenID Connect provider, instead of the `thenetworg/oauth2-azure` library
 
-## Removed
+## Deprecated
 * Microsoft Azure provider now requires another configuration parameter `tenantId`. After upgrade this parameter needs to be set. Otherwise, users might not be able to log in using Azure. The default setting after the upgrade will be `organizations`, but it might not be supported in all use-cases.
 
 # 4.0.2
