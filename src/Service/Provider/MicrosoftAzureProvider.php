@@ -76,6 +76,9 @@ class MicrosoftAzureProvider extends ClientProviderContract
         $config->assign($resolvedConfig);
         $config->setDiscoveryDocumentUrl('https://login.microsoftonline.com/' . $resolvedConfig['tenantId'] . '/v2.0/.well-known/openid-configuration');
 
+        /** @deprecated tag:v5.1.0 verifyIssuer is only to allow users migrating to OpenID Connect and update the tenantId afterwards */
+        $config->setVerifyIssuer(false);
+
         $service = $this->openIdConnectService->createWithConfig($config);
 
         try {

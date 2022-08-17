@@ -6,7 +6,7 @@
 * Microsoft Azure Provider überarbeitet, sodass dieser nun an Stelle der `thenetworg/oauth2-azure`-Bibliothek den integrierten OpenID Connect Provider nutzt
 
 ## Deprecated
-* Microsoft Azure provider erfordert nun einen weiteren Konfigurations-Parameter `tenantId`. Nach dem Update muss dieser gesetzt werden. Andernfalls sind User ggf. nicht in der Lage, sich mithilfe von Microsoft Azure anzumelden. Der Standard-Wert nach dem Update ist `organizations`. Dieser funktioniert jedoch nicht in allen Umgebungen.
+* Microsoft Azure provider erfordert nun einen weiteren Konfigurations-Parameter `tenantId`. Nach dem Update muss dieser gesetzt werden. Andernfalls sind User ggf. nicht in der Lage, sich mithilfe von Microsoft Azure anzumelden. Der Standard-Wert nach dem Update ist `organizations`. Dieser funktioniert jedoch nicht in allen Umgebungen. **Vor dem Update auf v5.0 muss die `tenantId` auf die des korrekten Azure Verzeichnisses gesetzt werden !**
 
 ## Removed
 * Shopware 6.4.0 bis 6.4.10 Unterstützung entfernt

@@ -16,6 +16,7 @@ use Jose\Component\Signature\Algorithm\PS384;
 use Jose\Component\Signature\Algorithm\PS512;
 use Jose\Component\Signature\Algorithm\RS256;
 use Jose\Component\Signature\Algorithm\RS512;
+use Jose\Component\Signature\JWS;
 use Jose\Component\Signature\JWSVerifier;
 use Jose\Component\Signature\Serializer\CompactSerializer;
 use Jose\Component\Signature\Serializer\JWSSerializerManager;
@@ -69,6 +70,20 @@ class OpenIdConnectTokenVerifier
      */
     public function verify(OpenIdConnectConfiguration $config, string $idToken): bool
     {
+        try {
+            $token = $this->serializerManager->unserialize($idToken);
+            $payload = @json_decode($token->getPayload(), true) ?? [];
+        } catch (\InvalidArgumentException $e) {
+            throw new OpenIdConnectException('Unable to decode id_token: ' . $e->getMessage(), $e);
+        }
+
+        return $this->verifySignature($config, $token)
+            && (!$config->isVerifyIssuer() || $this->verifyIssuer($config, $payload))
+            && $this->verifyAudience($config, $payload)
+            && $this->verifyValidityTime($payload);
+    }
+
+    protected function verifySignature(OpenIdConnectConfiguration $config, JWS $token): bool {
         // try to load jks
         $keys = $this->loadKeys($config);
 
@@ -79,9 +94,7 @@ class OpenIdConnectTokenVerifier
 
         // load JWT access token
         try {
-            $jws = $this->serializerManager->unserialize($idToken);
-
-            if ($jws->countSignatures() === 0) {
+            if ($token->countSignatures() === 0) {
                 $message = 'Deserialized JWT token does not contain any signatures. This should not be able to happen!';
                 $this->logger->critical($message);
 
@@ -96,7 +109,7 @@ class OpenIdConnectTokenVerifier
          * @var int       $signatureIndex
          * @var Signature $signature
          */
-        foreach ($jws->getSignatures() as $signatureIndex => $signature) {
+        foreach ($token->getSignatures() as $signatureIndex => $signature) {
             $algorithm = array_merge($signature->getProtectedHeader(), $signature->getHeader())['alg'] ?? null;
 
             if (!$algorithm) {
@@ -109,7 +122,7 @@ class OpenIdConnectTokenVerifier
                 continue;
             }
 
-            if (!$this->verifier->verifyWithKeySet($jws, $keys, $signatureIndex)) {
+            if (!$this->verifier->verifyWithKeySet($token, $keys, $signatureIndex)) {
                 return false;
             }
         }
@@ -117,6 +130,41 @@ class OpenIdConnectTokenVerifier
         $this->logger->debug('JWT signature successfully verified.');
 
         return true;
+    }
+
+    protected function verifyIssuer(OpenIdConnectConfiguration $config, array $payload): bool
+    {
+        $issuer = $payload['iss'] ?? null;
+
+        return !$config->getIssuer() || $issuer === $config->getIssuer();
+    }
+
+    protected function verifyAudience(OpenIdConnectConfiguration $config, array $payload): bool
+    {
+        $audiences = $payload['aud'] ?? [];
+        if (!is_array($audiences)) {
+            $audiences = [$audiences];
+        }
+
+        $audiences[] = $payload['azp'] ?? null;
+
+        foreach ($audiences as $audience) {
+            if ($audience === $config->getClientId()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    protected function verifyValidityTime(array $payload): bool
+    {
+        $currentTime = time();
+
+        $issuedAt = $payload['iat'] ?? ($currentTime + 1);
+        $expiresAt = $payload['exp'] ?? 0;
+
+        return $issuedAt <= $currentTime && $expiresAt > $currentTime;
     }
 
     protected function loadKeys(OpenIdConnectConfiguration $config): ?JWKSet
