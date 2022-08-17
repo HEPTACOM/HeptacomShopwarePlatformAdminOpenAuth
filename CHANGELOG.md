@@ -3,6 +3,7 @@
 ## Added
 * Add OpenID Connect provider
 * Add Google Cloud provider
+* Add Keycloak provider
 * Refactor Microsoft Azure provider to use integrated OpenID Connect provider, instead of the `thenetworg/oauth2-azure` library
 
 ## Deprecated
