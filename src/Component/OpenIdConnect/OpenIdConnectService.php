@@ -4,18 +4,14 @@ declare(strict_types = 1);
 
 namespace Heptacom\AdminOpenAuth\Component\OpenIdConnect;
 
-use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Uri;
 use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Client\ClientInterface;
-use Psr\Http\Message\RequestInterface;
-use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Cache\Adapter\AdapterInterface;
 
 /**
- * @todo implement jwt signature check (see JWKS)
  * @todo implement signed/encrypted UserInfo support
  */
 class OpenIdConnectService
@@ -23,22 +19,26 @@ class OpenIdConnectService
 
     private const WELL_KNOWN_CACHE_TTL = 900;
 
-    private ClientInterface $httpClient;
+    private ClientInterface $oidcHttpClient;
 
     private LoggerInterface $logger;
 
     private AdapterInterface $cache;
+
+    private OpenIdConnectTokenVerifier $tokenVerifier;
 
     private OpenIdConnectConfiguration $config;
 
     public function __construct(
         ClientInterface $oidcHttpClient,
         LoggerInterface $logger,
-        AdapterInterface $cache
+        AdapterInterface $cache,
+        OpenIdConnectTokenVerifier $tokenVerifier
     ) {
-        $this->httpClient = $oidcHttpClient;
+        $this->oidcHttpClient = $oidcHttpClient;
         $this->logger = $logger;
         $this->cache = $cache;
+        $this->tokenVerifier = $tokenVerifier;
         $this->config = new OpenIdConnectConfiguration();
     }
 
@@ -54,7 +54,7 @@ class OpenIdConnectService
     {
         $defaultParams = [
             'scope' => implode(' ', $this->config->getScopes()),
-            'response_type' => $this->config->getResponseType(),
+            'response_type' => $this->config->getResponseTypeAuthorizationEndpoint(),
             'client_id' => $this->config->getClientId(),
             'redirect_uri' => $this->config->getRedirectUri(),
         ];
@@ -72,10 +72,10 @@ class OpenIdConnectService
     {
         try {
             $uri = new Uri((string)$this->config->getUserinfoEndpoint());
-            $request = $this->prepareRequest(new Request('GET', $uri), $token);
-            $response = $this->httpClient->sendRequest($request);
+            $request = OpenIdConnectRequestHelper::prepareRequest(new Request('GET', $uri), $token);
+            $response = $this->oidcHttpClient->sendRequest($request);
 
-            $this->verifyRequestSuccess($request, $response);
+            OpenIdConnectRequestHelper::verifyRequestSuccess($request, $response);
 
             $json = json_decode((string)$response->getBody(), true);
             $user = new OpenIdConnectUser();
@@ -106,6 +106,7 @@ class OpenIdConnectService
             $body = http_build_query(
                 array_merge([
                     'grant_type' => $grantType,
+                    'response_type' => $this->config->getResponseTypeTokenEndpoint(),
                     'client_id' => $this->config->getClientId(),
                     'client_secret' => $this->config->getClientSecret(),
                 ], $options),
@@ -114,12 +115,20 @@ class OpenIdConnectService
                 PHP_QUERY_RFC3986
             );
 
-            $request = $this->prepareRequest(new Request('POST', $uri, $headers, $body));
-            $response = $this->httpClient->sendRequest($request);
+            $request = OpenIdConnectRequestHelper::prepareRequest(new Request('POST', $uri, $headers, $body));
+            $response = $this->oidcHttpClient->sendRequest($request);
 
-            $this->verifyRequestSuccess($request, $response);
+            OpenIdConnectRequestHelper::verifyRequestSuccess($request, $response);
 
             $json = json_decode((string)$response->getBody(), true);
+
+            $idToken = $json['id_token'] ?? null;
+            if ($idToken) {
+                if (!$this->tokenVerifier->verify($this->config, $idToken)) {
+                    throw new OpenIdConnectException('Verification of id_token failed.');
+                }
+            }
+
             $tokenResponse = new OpenIdConnectToken();
             $tokenResponse->assign($json);
 
@@ -157,10 +166,10 @@ class OpenIdConnectService
             try {
                 $uri = new Uri($openIdConnectDiscoveryDocument);
 
-                $request = $this->prepareRequest(new Request('GET', $uri));
-                $response = $this->httpClient->sendRequest($request);
+                $request = OpenIdConnectRequestHelper::prepareRequest(new Request('GET', $uri));
+                $response = $this->oidcHttpClient->sendRequest($request);
 
-                $this->verifyRequestSuccess($request, $response);
+                OpenIdConnectRequestHelper::verifyRequestSuccess($request, $response);
 
                 $cachedWellKnown->set(json_decode((string)$response->getBody(), true));
                 $cachedWellKnown->expiresAfter(self::WELL_KNOWN_CACHE_TTL);
@@ -181,34 +190,6 @@ class OpenIdConnectService
         $this->config->setWellKnownDiscovered(true);
 
         return true;
-    }
-
-    protected function prepareRequest(Request $request, ?OpenIdConnectToken $token = null): Request
-    {
-        if ($token !== null) {
-            $request = $request->withAddedHeader('Authorization', $token->getTokenType().' '.$token->getAccessToken());
-        }
-
-        return $request;
-    }
-
-    public function verifyRequestSuccess(RequestInterface $request, ResponseInterface $response): void
-    {
-        if ($response->getStatusCode() < 200 || $response->getStatusCode() > 299) {
-            throw new RequestException(
-                'Request resulted in a non-successful status code: '.$response->getStatusCode(),
-                $request,
-                $response
-            );
-        }
-
-        if (substr($response->getHeaderLine('Content-Type'), 0, 16) !== 'application/json') {
-            throw new RequestException(
-                'Expected content type to be of type application/json, received '.$response->getHeaderLine(
-                    'Content-Type'
-                ), $request, $response
-            );
-        }
     }
 
     public function getConfig(): OpenIdConnectConfiguration

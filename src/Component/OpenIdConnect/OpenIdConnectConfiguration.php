@@ -27,7 +27,8 @@ class OpenIdConnectConfiguration extends Struct
     protected string $clientId = '';
     protected string $clientSecret = '';
     protected array $scopes = ['openid'];
-    protected string $responseType = 'code';
+    protected array $responseTypeAuthorizationEndpoint = ['code'];
+    protected array $responseTypeTokenEndpoint = ['id_token token', 'token'];
     protected string $redirectUri = '';
 
     public function isWellKnownDiscovered(): bool
@@ -195,20 +196,38 @@ class OpenIdConnectConfiguration extends Struct
         $this->scopes = $scopes;
     }
 
-    public function getResponseType(): string
+    public function getResponseTypeAuthorizationEndpoint(): string
     {
-        $supported = $this->getResponseTypesSupported() ?? [$this->responseType];
+        $supported = $this->getResponseTypesSupported() ?? $this->responseTypeAuthorizationEndpoint;
+        $matches = array_intersect($supported, $this->responseTypeAuthorizationEndpoint);
 
-        if (array_search($this->responseType, $supported) === false) {
-            $this->responseType = $supported[array_key_first($supported)];
+        if (count($matches) < 1) {
+            throw new OpenIdConnectException('No supported response type available for authorizationEndpoint requests.');
         }
 
-        return $this->responseType;
+        return $matches[array_key_first($matches)];
     }
 
-    public function setResponseType(string $responseType): void
+    public function setResponseTypeAuthorizationEndpoint(array $responseTypeAuthorizationEndpoint): void
     {
-        $this->responseType = $responseType;
+        $this->responseTypeAuthorizationEndpoint = $responseTypeAuthorizationEndpoint;
+    }
+
+    public function getResponseTypeTokenEndpoint(): string
+    {
+        $supported = $this->getResponseTypesSupported() ?? $this->responseTypeTokenEndpoint;
+        $matches = array_intersect($supported, $this->responseTypeTokenEndpoint);
+
+        if (count($matches) < 1) {
+            throw new OpenIdConnectException('No supported response type available for tokenEndpoint requests.');
+        }
+
+        return $matches[array_key_first($matches)];
+    }
+
+    public function setResponseTypeTokenEndpoint(array $responseTypeTokenEndpoint): void
+    {
+        $this->responseTypeTokenEndpoint = $responseTypeTokenEndpoint;
     }
 
     public function getRedirectUri(): string
