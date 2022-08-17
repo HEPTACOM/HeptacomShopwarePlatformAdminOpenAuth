@@ -83,7 +83,8 @@ class OpenIdConnectTokenVerifier
             && $this->verifyValidityTime($payload);
     }
 
-    protected function verifySignature(OpenIdConnectConfiguration $config, JWS $token): bool {
+    protected function verifySignature(OpenIdConnectConfiguration $config, JWS $token): bool
+    {
         // try to load jks
         $keys = $this->loadKeys($config);
 
@@ -142,7 +143,7 @@ class OpenIdConnectTokenVerifier
     protected function verifyAudience(OpenIdConnectConfiguration $config, array $payload): bool
     {
         $audiences = $payload['aud'] ?? [];
-        if (!is_array($audiences)) {
+        if (!\is_array($audiences)) {
             $audiences = [$audiences];
         }
 
