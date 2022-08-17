@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\Component\OpenIdConnect;
 
@@ -16,7 +16,6 @@ use Symfony\Component\Cache\Adapter\AdapterInterface;
  */
 class OpenIdConnectService
 {
-
     private const WELL_KNOWN_CACHE_TTL = 900;
 
     private ClientInterface $oidcHttpClient;
@@ -60,24 +59,24 @@ class OpenIdConnectService
         ];
         $queryParams = array_merge($defaultParams, $params);
 
-        return $this->getConfig()->getAuthorizationEndpoint().'?'.http_build_query(
-                $queryParams,
-                '',
-                '&',
-                PHP_QUERY_RFC3986
-            );
+        return $this->getConfig()->getAuthorizationEndpoint() . '?' . http_build_query(
+            $queryParams,
+            '',
+            '&',
+            \PHP_QUERY_RFC3986
+        );
     }
 
     public function getUserInfo(OpenIdConnectToken $token): OpenIdConnectUser
     {
         try {
-            $uri = new Uri((string)$this->config->getUserinfoEndpoint());
+            $uri = new Uri((string) $this->config->getUserinfoEndpoint());
             $request = OpenIdConnectRequestHelper::prepareRequest(new Request('GET', $uri), $token);
             $response = $this->oidcHttpClient->sendRequest($request);
 
             OpenIdConnectRequestHelper::verifyRequestSuccess($request, $response);
 
-            $json = json_decode((string)$response->getBody(), true);
+            $json = json_decode((string) $response->getBody(), true);
             $user = new OpenIdConnectUser();
             $user->assign($json);
 
@@ -85,6 +84,7 @@ class OpenIdConnectService
         } catch (ClientExceptionInterface $e) {
             $message = sprintf('Could not retrieve user info: %s', $e->getMessage());
             $this->logger->error($message, $e->getTrace());
+
             throw new OpenIdConnectException($message);
         }
     }
@@ -92,14 +92,15 @@ class OpenIdConnectService
     public function getAccessToken(string $grantType, array $options = []): OpenIdConnectToken
     {
         $supportedGrantTypes = $this->config->getGrantTypesSupported();
-        if ($supportedGrantTypes !== null && !in_array($grantType, $supportedGrantTypes)) {
+        if ($supportedGrantTypes !== null && !\in_array($grantType, $supportedGrantTypes, true)) {
             $message = sprintf('%s is a not supported grant type for this identity provider', $grantType);
             $this->logger->critical($message);
+
             throw new OpenIdConnectException($message);
         }
 
         try {
-            $uri = new Uri((string)$this->config->getTokenEndpoint());
+            $uri = new Uri((string) $this->config->getTokenEndpoint());
             $headers = [
                 'Content-Type' => 'application/x-www-form-urlencoded',
             ];
@@ -112,7 +113,7 @@ class OpenIdConnectService
                 ], $options),
                 '',
                 '&',
-                PHP_QUERY_RFC3986
+                \PHP_QUERY_RFC3986
             );
 
             $request = OpenIdConnectRequestHelper::prepareRequest(new Request('POST', $uri, $headers, $body));
@@ -120,7 +121,7 @@ class OpenIdConnectService
 
             OpenIdConnectRequestHelper::verifyRequestSuccess($request, $response);
 
-            $json = json_decode((string)$response->getBody(), true);
+            $json = json_decode((string) $response->getBody(), true);
 
             $idToken = $json['id_token'] ?? null;
             if ($idToken) {
@@ -136,6 +137,7 @@ class OpenIdConnectService
         } catch (ClientExceptionInterface $e) {
             $message = sprintf('Could not retrieve access token: %s', $e->getMessage());
             $this->logger->error($message, $e->getTrace());
+
             throw new OpenIdConnectException($message);
         }
     }
@@ -152,9 +154,8 @@ class OpenIdConnectService
 
             if (empty($issuer)) {
                 return false;
-            } else {
-                $openIdConnectDiscoveryDocument = $this->config->getIssuer().'/.well-known/openid-configuration';
             }
+            $openIdConnectDiscoveryDocument = $this->config->getIssuer() . '/.well-known/openid-configuration';
         }
         $cacheKey = sprintf(
             'heptacom-admin-open-auth_well-known_%s',
@@ -171,7 +172,7 @@ class OpenIdConnectService
 
                 OpenIdConnectRequestHelper::verifyRequestSuccess($request, $response);
 
-                $cachedWellKnown->set(json_decode((string)$response->getBody(), true));
+                $cachedWellKnown->set(json_decode((string) $response->getBody(), true));
                 $cachedWellKnown->expiresAfter(self::WELL_KNOWN_CACHE_TTL);
                 $this->cache->save($cachedWellKnown);
             } catch (ClientExceptionInterface $e) {

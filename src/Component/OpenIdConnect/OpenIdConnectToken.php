@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types = 1);
-
+declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\Component\OpenIdConnect;
 
@@ -10,9 +9,13 @@ use Shopware\Core\Framework\Struct\Struct;
 class OpenIdConnectToken extends Struct
 {
     protected ?string $access_token = null;
+
     protected ?int $expires_in = null;
+
     protected ?int $refresh_expires_in = null;
+
     protected ?string $refresh_token = null;
+
     protected ?string $token_type = '';
 
     public function getAccessToken(): ?string

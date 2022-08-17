@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\Component\OpenIdConnect;
 
@@ -14,7 +14,7 @@ class OpenIdConnectRequestHelper
     public static function prepareRequest(RequestInterface $request, ?OpenIdConnectToken $token = null): RequestInterface
     {
         if ($token !== null) {
-            $request = $request->withAddedHeader('Authorization', $token->getTokenType().' '.$token->getAccessToken());
+            $request = $request->withAddedHeader('Authorization', $token->getTokenType() . ' ' . $token->getAccessToken());
         }
 
         return $request;
@@ -27,7 +27,7 @@ class OpenIdConnectRequestHelper
     {
         if ($response->getStatusCode() < 200 || $response->getStatusCode() > 299) {
             throw new RequestException(
-                'Request resulted in a non-successful status code: '.$response->getStatusCode(),
+                'Request resulted in a non-successful status code: ' . $response->getStatusCode(),
                 $request,
                 $response
             );
@@ -35,9 +35,11 @@ class OpenIdConnectRequestHelper
 
         if (substr($response->getHeaderLine('Content-Type'), 0, 16) !== 'application/json') {
             throw new RequestException(
-                'Expected content type to be of type application/json, received '.$response->getHeaderLine(
+                'Expected content type to be of type application/json, received ' . $response->getHeaderLine(
                     'Content-Type'
-                ), $request, $response
+                ),
+                $request,
+                $response
             );
         }
     }

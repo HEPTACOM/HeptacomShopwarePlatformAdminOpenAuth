@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types = 1);
-
+declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\Component\OpenIdConnect;
 
@@ -10,25 +9,41 @@ use Shopware\Core\Framework\Struct\Struct;
 class OpenIdConnectConfiguration extends Struct
 {
     protected bool $wellKnownDiscovered = false;
+
     protected string $discoveryDocumentUrl = '';
 
     protected ?string $issuer = null;
+
     protected ?string $authorization_endpoint = null;
+
     protected ?string $token_endpoint = null;
+
     protected ?array $token_endpoint_auth_methods_supported = null;
+
     protected ?array $token_endpoint_auth_signing_alg_values_supported = null;
+
     protected ?array $grant_types_supported = null;
+
     protected ?string $userinfo_endpoint = null;
+
     protected ?string $jwks_uri = null;
+
     protected ?array $scopes_supported = null;
+
     protected ?array $response_types_supported = null;
+
     protected ?array $claims_supported = null;
 
     protected string $clientId = '';
+
     protected string $clientSecret = '';
+
     protected array $scopes = ['openid'];
+
     protected array $responseTypeAuthorizationEndpoint = ['code'];
+
     protected array $responseTypeTokenEndpoint = ['id_token token', 'token'];
+
     protected string $redirectUri = '';
 
     public function isWellKnownDiscovered(): bool
@@ -184,7 +199,7 @@ class OpenIdConnectConfiguration extends Struct
 
     public function getScopes(): array
     {
-        if (array_search('openid', $this->scopes) === false) {
+        if (array_search('openid', $this->scopes, true) === false) {
             $this->scopes[] = 'openid';
         }
 
@@ -201,7 +216,7 @@ class OpenIdConnectConfiguration extends Struct
         $supported = $this->getResponseTypesSupported() ?? $this->responseTypeAuthorizationEndpoint;
         $matches = array_intersect($supported, $this->responseTypeAuthorizationEndpoint);
 
-        if (count($matches) < 1) {
+        if (\count($matches) < 1) {
             throw new OpenIdConnectException('No supported response type available for authorizationEndpoint requests.');
         }
 
@@ -218,7 +233,7 @@ class OpenIdConnectConfiguration extends Struct
         $supported = $this->getResponseTypesSupported() ?? $this->responseTypeTokenEndpoint;
         $matches = array_intersect($supported, $this->responseTypeTokenEndpoint);
 
-        if (count($matches) < 1) {
+        if (\count($matches) < 1) {
             throw new OpenIdConnectException('No supported response type available for tokenEndpoint requests.');
         }
 

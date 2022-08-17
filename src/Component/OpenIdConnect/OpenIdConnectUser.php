@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types = 1);
-
+declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\Component\OpenIdConnect;
 
@@ -10,24 +9,43 @@ use Shopware\Core\Framework\Struct\Struct;
 class OpenIdConnectUser extends Struct
 {
     protected string $sub = '';
+
     protected ?string $name = null;
+
     protected ?string $given_name = null;
+
     protected ?string $family_name = null;
+
     protected ?string $middle_name = null;
+
     protected ?string $nickname = null;
+
     protected ?string $preferred_username = null;
+
     protected ?string $profile = null;
+
     protected ?string $picture = null;
+
     protected ?string $website = null;
+
     protected ?string $email = null;
+
     protected ?bool $email_verified = null;
+
     protected ?string $gender = null;
+
     protected ?string $birthdate = null;
+
     protected ?string $zoneinfo = null;
+
     protected ?string $locale = null;
+
     protected ?string $phone_number = null;
+
     protected ?bool $phone_number_verified = null;
+
     protected ?array $address = null;
+
     protected ?int $updated_at = null;
 
     public function getSub(): string

@@ -1,13 +1,11 @@
 <?php
 
-declare(strict_types = 1);
-
+declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\Component\OpenIdConnect;
 
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Uri;
-use InvalidArgumentException;
 use Jose\Component\Core\AlgorithmManager;
 use Jose\Component\Core\JWKSet;
 use Jose\Component\Signature\Algorithm\ES256;
@@ -86,15 +84,16 @@ class OpenIdConnectTokenVerifier
             if ($jws->countSignatures() === 0) {
                 $message = 'Deserialized JWT token does not contain any signatures. This should not be able to happen!';
                 $this->logger->critical($message);
+
                 throw new \RuntimeException($message);
             }
-        } catch (InvalidArgumentException $e) {
+        } catch (\InvalidArgumentException $e) {
             throw new OpenIdConnectException('Unable to decode id_token: ' . $e->getMessage(), $e);
         }
 
         // try to verify all signatures
         /**
-         * @var int $signatureIndex
+         * @var int       $signatureIndex
          * @var Signature $signature
          */
         foreach ($jws->getSignatures() as $signatureIndex => $signature) {
@@ -106,6 +105,7 @@ class OpenIdConnectTokenVerifier
 
             if (!$this->verifier->getSignatureAlgorithmManager()->has($algorithm)) {
                 $this->logger->notice(sprintf('Could not verify JWT signature. Algorithm %s is not supported.', $algorithm));
+
                 continue;
             }
 
@@ -115,6 +115,7 @@ class OpenIdConnectTokenVerifier
         }
 
         $this->logger->debug('JWT signature successfully verified.');
+
         return true;
     }
 
@@ -141,17 +142,18 @@ class OpenIdConnectTokenVerifier
                 $response = $this->oidcHttpClient->sendRequest($request);
                 OpenIdConnectRequestHelper::verifyRequestSuccess($request, $response);
 
-                $cachedJwks->set((string)$response->getBody());
+                $cachedJwks->set((string) $response->getBody());
                 $cachedJwks->expiresAfter(self::CACHE_TTL);
                 $this->cache->save($cachedJwks);
             } catch (ClientExceptionInterface $e) {
                 throw new OpenIdConnectException(
-                    'Retrieving JWK-Set for token signature verification failed: '.$e->getMessage()
+                    'Retrieving JWK-Set for token signature verification failed: ' . $e->getMessage()
                 );
             }
         }
 
         $keys = JWKSet::createFromJson($cachedJwks->get());
+
         return $keys->count() === 0 ? null : $keys;
     }
 }

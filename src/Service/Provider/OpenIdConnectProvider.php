@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\Service\Provider;
 
@@ -11,13 +11,10 @@ use Heptacom\AdminOpenAuth\Component\Provider\OpenIdConnectClient;
 use Heptacom\AdminOpenAuth\Service\TokenPairFactoryContract;
 use Heptacom\OpenAuth\Client\Contract\ClientContract;
 use Heptacom\OpenAuth\ClientProvider\Contract\ClientProviderContract;
-use Psr\Http\Client\ClientInterface;
-use Symfony\Component\Cache\Adapter\AdapterInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class OpenIdConnectProvider extends ClientProviderContract
 {
-
     public const PROVIDER_NAME = 'open_id_connect';
 
     private TokenPairFactoryContract $tokenPairFactory;
