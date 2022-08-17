@@ -3,64 +3,66 @@
         text-align: center;
         margin-top: 20px;
     }
-    
+
     .sw-button.sw-button--ghost:focus {
         background-color: #e3f3ff;
     }
 </style>
 <script{% if cspNonce is defined %} nonce="{{ cspNonce }}" {% endif %}>
-    const clientRoutes = {{ url('administration.heptacom.admin_open_auth.routes')|json_encode|raw }};
+    window.addEventListener('load', function() {
+        const clientRoutes = {{ url('administration.heptacom.admin_open_auth.routes')|json_encode|raw }};
 
-    const waitForLoginForm = function() {
-        if (!document.querySelector('.sw-login')) {
-            setTimeout(waitForLoginForm, 200);
-            return;
-        }
+        const waitForLoginForm = function () {
+            if (!document.querySelector('.sw-login')) {
+                setTimeout(waitForLoginForm, 200);
+                return;
+            }
 
-        fetch(clientRoutes)
-            .then(function (response) {
-                return response.json();
-            })
-            .then(function (data) {
-                const container = document.querySelector('.sw-login__content');
-                data.clients.forEach(function (item) {
-                    const link = document.createElement('a');
-                    link.classList.add(
-                        'sw-button',
-                        'sw-button--block',
-                        'sw-button--ghost',
-                        'heptacom-admin-open-auth--button'
-                    );
-                    link.href = item.url;
-                    link.innerHTML = item.name;
-                    container.appendChild(link);
+            fetch(clientRoutes)
+                .then(function (response) {
+                    return response.json();
+                })
+                .then(function (data) {
+                    const container = document.querySelector('.sw-login__content');
+                    data.clients.forEach(function (item) {
+                        const link = document.createElement('a');
+                        link.classList.add(
+                            'sw-button',
+                            'sw-button--block',
+                            'sw-button--ghost',
+                            'heptacom-admin-open-auth--button'
+                        );
+                        link.href = item.url;
+                        link.innerHTML = item.name;
+                        container.appendChild(link);
+                    });
                 });
+        };
+        waitForLoginForm();
+
+        const match = window.location.search ? window.location.search.match(/[?&]state=([^&]+?)(&|$)/) : null;
+
+        if (match && match.length > 2) {
+            const loginService = Shopware.Service().get('loginService');
+            const httpClient = Shopware.Service().get('userService').client;
+            const token = match[1];
+
+            httpClient.post('/oauth/token', {
+                grant_type: 'heptacom_admin_open_auth_one_time_token',
+                client_id: 'administration',
+                scopes: 'write',
+                one_time_token: token
+            }, {
+                baseURL: Shopware.Context.api.apiPath
+            }).then((response) => {
+                loginService.setBearerAuthentication({
+                    access: response.data.access_token,
+                    refresh: response.data.refresh_token,
+                    expiry: response.data.expires_in
+                });
+
+                window.location = window.location.origin + window.location.pathname;
             });
-    };
-    waitForLoginForm();
-
-    const match = window.location.search ? window.location.search.match(/[?&]state=([^&]+?)(&|$)/) : null;
-
-    if (match && match.length > 2) {
-        const loginService = Shopware.Service().get('loginService');
-        const httpClient = Shopware.Service().get('userService').client;
-        const token = match[1];
-
-        httpClient.post('/oauth/token', {
-            grant_type: 'heptacom_admin_open_auth_one_time_token',
-            client_id: 'administration',
-            scopes: 'write',
-            one_time_token: token
-        }, {
-            baseURL: Shopware.Context.api.apiPath
-        }).then((response) => {
-            loginService.setBearerAuthentication({
-                access: response.data.access_token,
-                refresh: response.data.refresh_token,
-                expiry: response.data.expires_in
-            });
-
-            window.location = window.location.origin + window.location.pathname;
-        });
-    }
+        }
+    });
 </script>
