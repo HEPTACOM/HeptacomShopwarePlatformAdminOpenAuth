@@ -6,7 +6,7 @@
 * Microsoft Azure Provider überarbeitet, sodass dieser nun an Stelle der `thenetworg/oauth2-azure`-Bibliothek den integrierten OpenID Connect Provider nutzt
 
 ## Removed
-* Microsoft Azure provider erfordert nun einen weiteren Konfigurations-Parameter `tenantId`. Nach dem Update muss dieser gesetzt werden. Andernfalls sind User ggf. nicht in der Lage, sich mithilfe von Microsoft Azure anzumelden. Der Standard-Wert nach dem Update ist `common`. Dieser funktioniert jedoch nicht in allen Umgebungen.
+* Microsoft Azure provider erfordert nun einen weiteren Konfigurations-Parameter `tenantId`. Nach dem Update muss dieser gesetzt werden. Andernfalls sind User ggf. nicht in der Lage, sich mithilfe von Microsoft Azure anzumelden. Der Standard-Wert nach dem Update ist `organizations`. Dieser funktioniert jedoch nicht in allen Umgebungen.
 
 # 4.0.2
 
