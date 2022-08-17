@@ -24,6 +24,10 @@
         {
             "name": "Julian Krzefski",
             "role": "Developer"
+        },
+        {
+            "name": "Silvio Kennecke",
+            "role": "Developer"
         }
     ],
     "require": {
