@@ -1,14 +1,18 @@
 # Unreleased
 
 ## Added
-* Fix Shopware 6.4.11 compatibility
-* Drop Shopware 6.4.0 to 6.4.10 support
 * Add OpenID Connect provider
 * Add Google Cloud provider
 * Refactor Microsoft Azure provider to use integrated OpenID Connect provider, instead of the `thenetworg/oauth2-azure` library
 
 ## Deprecated
 * Microsoft Azure provider now requires another configuration parameter `tenantId`. After upgrade this parameter needs to be set. Otherwise, users might not be able to log in using Azure. The default setting after the upgrade will be `organizations`, but it might not be supported in all use-cases.
+
+## Removed
+* Drop Shopware 6.4.0 to 6.4.10 support
+
+## Fixed
+* Fix Shopware 6.4.11 compatibility
 
 # 4.0.2
 
