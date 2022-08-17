@@ -1,6 +1,8 @@
 # Unreleased
 
 ## Added
+* Fix Shopware 6.4.11 compatibility
+* Drop Shopware 6.4.0 to 6.4.10 support
 * Add OpenID Connect provider
 * Add Google Cloud provider
 * Refactor Microsoft Azure provider to use integrated OpenID Connect provider, instead of the `thenetworg/oauth2-azure` library

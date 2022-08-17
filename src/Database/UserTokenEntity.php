@@ -1,9 +1,9 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\Database;
 
-use DateTimeInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Entity;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityIdTrait;
 use Shopware\Core\System\User\UserEntity;
@@ -20,7 +20,7 @@ class UserTokenEntity extends Entity
 
     protected ?string $accessToken = null;
 
-    protected ?DateTimeInterface $expiresAt = null;
+    protected ?\DateTimeInterface $expiresAt = null;
 
     protected ?ClientEntity $client = null;
 
@@ -74,12 +74,12 @@ class UserTokenEntity extends Entity
         return $this;
     }
 
-    public function getExpiresAt(): ?DateTimeInterface
+    public function getExpiresAt(): ?\DateTimeInterface
     {
         return $this->expiresAt;
     }
 
-    public function setExpiresAt(?DateTimeInterface $expiresAt): self
+    public function setExpiresAt(?\DateTimeInterface $expiresAt): self
     {
         $this->expiresAt = $expiresAt;
 
