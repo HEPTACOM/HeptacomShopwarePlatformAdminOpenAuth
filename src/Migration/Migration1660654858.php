@@ -16,7 +16,7 @@ class Migration1660654858 extends MigrationStep
     public function update(Connection $connection): void
     {
         $connection->executeStatement(<<<SQL
-UPDATE `heptacom_admin_open_auth_client` SET `config` = JSON_INSERT(`config`, '$.tenant_id', 'common') WHERE `provider` = 'microsoft_azure';
+UPDATE `heptacom_admin_open_auth_client` SET `config` = JSON_INSERT(`config`, '$.tenantId', 'common') WHERE `provider` = 'microsoft_azure';
 SQL);
     }
 

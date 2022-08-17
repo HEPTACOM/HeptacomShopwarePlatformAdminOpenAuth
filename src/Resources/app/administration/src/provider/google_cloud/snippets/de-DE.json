@@ -5,10 +5,9 @@
         },
         "providerFields": {
             "google_cloud": {
-                "additional_scopes": "Anwendungsberechtigungen",
-                "tenant_id": "Verzeichnis-ID",
-                "client_id": "Anwendungsschlüssel",
-                "client_secret": "Anwendungsgehemnis"
+                "additionalScopes": "Anwendungsberechtigungen",
+                "clientId": "Anwendungsschlüssel",
+                "clientSecret": "Anwendungsgehemnis"
             }
         }
     }

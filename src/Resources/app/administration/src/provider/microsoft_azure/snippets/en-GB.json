@@ -5,10 +5,10 @@
         },
         "providerFields": {
             "microsoft_azure": {
-                "additional_scopes": "Application scopes",
-                "tenant_id": "Tenant identifier",
-                "client_id": "Application identifier",
-                "client_secret": "Application secret"
+                "additionalScopes": "Application scopes",
+                "tenantId": "Tenant identifier",
+                "clientId": "Application identifier",
+                "clientSecret": "Application secret"
             }
         }
     }

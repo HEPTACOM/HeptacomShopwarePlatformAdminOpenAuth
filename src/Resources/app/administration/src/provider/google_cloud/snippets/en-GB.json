@@ -5,9 +5,9 @@
         },
         "providerFields": {
             "google_cloud": {
-                "additional_scopes": "Application scopes",
-                "client_id": "Application identifier",
-                "client_secret": "Application secret"
+                "additionalScopes": "Application scopes",
+                "clientId": "Application identifier",
+                "clientSecret": "Application secret"
             }
         }
     }
