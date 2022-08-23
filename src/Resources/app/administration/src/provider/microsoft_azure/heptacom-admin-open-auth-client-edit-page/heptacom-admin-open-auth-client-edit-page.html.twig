@@ -1,0 +1,31 @@
+{% block heptacom_admin_open_auth_client_edit_page_content_base_settings %}
+    <sw-card
+        v-if="item && item.provider === 'microsoft_azure'"
+        :title="$tc('heptacomAdminOpenAuthClient.providerFields.microsoft_azure.deprecatedTitle')"
+    >
+        {{ $tc('heptacomAdminOpenAuthClient.providerFields.microsoft_azure.deprecatedDescription') }}
+    </sw-card>
+
+    {% parent %}
+{% endblock %}
+
+{% block heptacom_admin_open_auth_client_edit_page_content_provider_settings %}
+    {% parent %}
+
+    <sw-card
+        v-if="item && item.provider === 'microsoft_azure'"
+    >
+        <sw-text-field
+            :label="$t('heptacomAdminOpenAuthClient.providerFields.microsoft_azure.clientId')"
+            v-model="item.config.clientId"
+        ></sw-text-field>
+        <sw-password-field
+            :label="$t('heptacomAdminOpenAuthClient.providerFields.microsoft_azure.clientSecret')"
+            v-model="item.config.clientSecret"
+        ></sw-password-field>
+        <heptacom-admin-open-auth-scope-field
+            :label="$t('heptacomAdminOpenAuthClient.providerFields.microsoft_azure.additionalScopes')"
+            v-model="item.config.scopes"
+        ></heptacom-admin-open-auth-scope-field>
+    </sw-card>
+{% endblock %}

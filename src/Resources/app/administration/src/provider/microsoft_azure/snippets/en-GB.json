@@ -1,0 +1,16 @@
+{
+    "heptacomAdminOpenAuthClient": {
+        "providers": {
+            "microsoft_azure": "Microsoft Azure"
+        },
+        "providerFields": {
+            "microsoft_azure": {
+                "deprecatedTitle": "This provider is deprecated!",
+                "deprecatedDescription": "The Microsoft Azure provider is deprecated and will be removed in one of the upcoming versions. Please migrate to the Microsoft Azure OIDC provider.",
+                "additionalScopes": "Application scopes",
+                "clientId": "Application identifier",
+                "clientSecret": "Application secret"
+            }
+        }
+    }
+}

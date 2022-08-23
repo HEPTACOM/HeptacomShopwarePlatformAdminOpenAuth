@@ -4,10 +4,10 @@
 * Add OpenID Connect provider
 * Add Google Cloud provider
 * Add Keycloak provider
-* Refactor Microsoft Azure provider to use integrated OpenID Connect provider, instead of the `thenetworg/oauth2-azure` library
+* Add Microsoft Azure OIDC provider, using the OpenID Connect provider instead of the external `thenetworg/azure-oauth2` library
 
 ## Deprecated
-* Microsoft Azure provider now requires another configuration parameter `tenantId`. After upgrade this parameter needs to be set. Otherwise, users might not be able to log in using Azure. The default setting after the upgrade will be `organizations`, but it might not be supported in all use-cases. **The `tenantId` must be set to the actual Azure tenantId before upgrading to v5.0 !**
+* Microsoft Azure will be replaced by the Microsoft Azure OIDC provider in version 5.0.
 
 ## Removed
 * Drop Shopware 6.4.0 to 6.4.10 support
