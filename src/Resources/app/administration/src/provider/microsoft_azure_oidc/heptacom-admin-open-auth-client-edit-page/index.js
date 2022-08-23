@@ -7,7 +7,7 @@ Component.override('heptacom-admin-open-auth-client-edit-page', {
 
     watch: {
         item(newValue) {
-            if (newValue && newValue.provider === 'microsoft_azure') {
+            if (newValue && newValue.provider === 'microsoft_azure_oidc') {
                 if (!newValue.config.scopes) {
                     newValue.config.scopes = [];
                 }

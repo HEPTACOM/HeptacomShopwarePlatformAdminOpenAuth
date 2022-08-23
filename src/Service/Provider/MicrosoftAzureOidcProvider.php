@@ -13,9 +13,9 @@ use Heptacom\OpenAuth\Client\Contract\ClientContract;
 use Heptacom\OpenAuth\ClientProvider\Contract\ClientProviderContract;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class MicrosoftAzureProvider extends ClientProviderContract
+class MicrosoftAzureOidcProvider extends ClientProviderContract
 {
-    public const PROVIDER_NAME = 'microsoft_azure';
+    public const PROVIDER_NAME = 'microsoft_azure_oidc';
 
     private TokenPairFactoryContract $tokenPairFactory;
 
@@ -75,9 +75,6 @@ class MicrosoftAzureProvider extends ClientProviderContract
         $config = new OpenIdConnectConfiguration();
         $config->assign($resolvedConfig);
         $config->setDiscoveryDocumentUrl('https://login.microsoftonline.com/' . $resolvedConfig['tenantId'] . '/v2.0/.well-known/openid-configuration');
-
-        /* @deprecated tag:v5.1.0 verifyIssuer is only to allow users migrating to OpenID Connect and update the tenantId afterwards */
-        $config->setVerifyIssuer(false);
 
         $service = $this->openIdConnectService->createWithConfig($config);
 

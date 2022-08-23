@@ -78,7 +78,7 @@ class OpenIdConnectTokenVerifier
         }
 
         return $this->verifySignature($config, $token)
-            && (!$config->isVerifyIssuer() || $this->verifyIssuer($config, $payload))
+            && $this->verifyIssuer($config, $payload)
             && $this->verifyAudience($config, $payload)
             && $this->verifyValidityTime($payload);
     }

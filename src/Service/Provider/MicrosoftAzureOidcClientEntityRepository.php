@@ -8,7 +8,7 @@ use Heptacom\AdminOpenAuth\Component\Provider\DefaultInjectingEntityRepositoryDe
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 
-class MicrosoftAzureClientEntityRepository extends DefaultInjectingEntityRepositoryDecorator
+class MicrosoftAzureOidcClientEntityRepository extends DefaultInjectingEntityRepositoryDecorator
 {
     protected function injectDefaults(array $payload, Context $context): array
     {
@@ -19,7 +19,7 @@ class MicrosoftAzureClientEntityRepository extends DefaultInjectingEntityReposit
         }
 
         foreach ($payload as &$item) {
-            if (($item['provider'] ?? '') !== MicrosoftAzureProvider::PROVIDER_NAME) {
+            if (($item['provider'] ?? '') !== MicrosoftAzureOidcProvider::PROVIDER_NAME) {
                 continue;
             }
 

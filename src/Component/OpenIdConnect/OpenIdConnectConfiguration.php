@@ -46,11 +46,6 @@ class OpenIdConnectConfiguration extends Struct
 
     protected string $redirectUri = '';
 
-    /**
-     * @deprecated tag:v5.1.0 only to allow users migrating microsoft_azure to OpenID Connect and update the tenantId afterwards
-     */
-    protected bool $verifyIssuer = true;
-
     public function isWellKnownDiscovered(): bool
     {
         return $this->wellKnownDiscovered;
@@ -258,21 +253,5 @@ class OpenIdConnectConfiguration extends Struct
     public function setRedirectUri(string $redirectUri): void
     {
         $this->redirectUri = $redirectUri;
-    }
-
-    /**
-     * @deprecated tag:v5.1.0
-     */
-    public function isVerifyIssuer(): bool
-    {
-        return $this->verifyIssuer;
-    }
-
-    /**
-     * @deprecated tag:v5.1.0
-     */
-    public function setVerifyIssuer(bool $verifyIssuer): void
-    {
-        $this->verifyIssuer = $verifyIssuer;
     }
 }

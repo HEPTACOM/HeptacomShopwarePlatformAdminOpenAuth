@@ -1,10 +1,10 @@
 {
     "heptacomAdminOpenAuthClient": {
         "providers": {
-            "microsoft_azure": "Microsoft Azure"
+            "microsoft_azure_oidc": "Microsoft Azure"
         },
         "providerFields": {
-            "microsoft_azure": {
+            "microsoft_azure_oidc": {
                 "additionalScopes": "Anwendungsberechtigungen",
                 "tenantId": "Verzeichnis-ID",
                 "clientId": "Anwendungsschlüssel",
