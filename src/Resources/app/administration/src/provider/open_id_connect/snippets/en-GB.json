@@ -13,7 +13,7 @@
                 "userinfo_endpoint": "User info endpoint",
                 "clientId": "Application identifier",
                 "clientSecret": "Application secret",
-                "additional_scopes": "Application scopes"
+                "additionalScopes": "Application scopes"
             }
         }
     }

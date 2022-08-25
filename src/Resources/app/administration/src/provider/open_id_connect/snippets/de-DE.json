@@ -13,7 +13,7 @@
                 "userinfo_endpoint": "Benutzer-Info-Endpunkt",
                 "clientId": "Anwendungsschlüssel",
                 "clientSecret": "Anwendungsgehemnis",
-                "additional_scopes": "Anwendungsberechtigungen"
+                "additionalScopes": "Anwendungsberechtigungen"
             }
         }
     }
