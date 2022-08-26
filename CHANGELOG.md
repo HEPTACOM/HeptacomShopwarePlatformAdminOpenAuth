@@ -1,6 +1,7 @@
 # Unreleased
 
 ## Added
+* Add flag to client configurations to disable users role elevation to admin
 * Add OpenID Connect provider
 * Add Google Cloud provider
 * Add Keycloak provider

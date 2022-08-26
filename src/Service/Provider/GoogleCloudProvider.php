@@ -77,12 +77,7 @@ class GoogleCloudProvider extends ClientProviderContract
         $config->setScopes(array_unique($scopes));
 
         $service = $this->openIdConnectService->createWithConfig($config);
-
-        try {
-            $service->discoverWellKnown();
-        } catch (OpenIdConnectException $e) {
-            // nth
-        }
+        $service->discoverWellKnown();
 
         return new OpenIdConnectClient($this->tokenPairFactory, $service);
     }
