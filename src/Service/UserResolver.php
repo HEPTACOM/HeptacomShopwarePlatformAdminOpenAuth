@@ -91,7 +91,7 @@ class UserResolver implements UserResolverInterface
 
         $this->login->setCredentials($state, $userId, $context);
 
-        if ($isNew && !$this->clientFeatureChecker->canElevateUsersToAdmin($clientId, $context)) {
+        if ($isNew && !$this->clientFeatureChecker->canUsersBecomeAdmin($clientId, $context)) {
             $this->userRepository->update([[
                 'id' => $userId,
                 'admin' => false,

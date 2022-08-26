@@ -14,5 +14,5 @@ interface ClientFeatureCheckerInterface
 
     public function canStoreUserTokens(string $clientId, Context $context): bool;
 
-    public function canElevateUsersToAdmin(string $clientId, Context $context): bool;
+    public function canUsersBecomeAdmin(string $clientId, Context $context): bool;
 }

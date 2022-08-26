@@ -52,7 +52,7 @@ class ClientFeatureChecker implements ClientFeatureCheckerInterface
         return $this->clientsRepository->searchIds($criteria, $context)->firstId() !== null;
     }
 
-    public function canElevateUsersToAdmin(string $clientId, Context $context): bool
+    public function canUsersBecomeAdmin(string $clientId, Context $context): bool
     {
         $criteria = new Criteria();
         $criteria->setIds([$clientId]);
