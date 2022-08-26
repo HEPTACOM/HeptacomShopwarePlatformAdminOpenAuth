@@ -1,6 +1,7 @@
 import './app/components/heptacom-admin-open-auth-scope-field';
 import './extension/sw-profile-index';
 import './module/heptacom-admin-open-auth-client';
+import './provider/cidaas/heptacom-admin-open-auth-client-edit-page';
 import './provider/google_cloud/heptacom-admin-open-auth-client-edit-page';
 import './provider/jira/heptacom-admin-open-auth-client-edit-page';
 import './provider/keycloak/heptacom-admin-open-auth-client-edit-page';

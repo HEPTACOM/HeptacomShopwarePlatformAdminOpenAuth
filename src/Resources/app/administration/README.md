@@ -7,14 +7,18 @@ Most of them also are registered trademarks.
 Therefore, the usage is only permitted when corresponding trademark/branding guidelines are fulfilled.
 You can find an archived link to these guidelines below. 
 
-### Google
-
-* [https://developers.google.com/identity/branding-guidelines](https://web.archive.org/web/20220826095610/https://developers.google.com/identity/branding-guidelines)
-
 ### Atlassian Jira
 
 * [https://atlassian.design/foundations/logos](https://web.archive.org/web/20220826095450/https://atlassian.design/foundations/logos/)
 * [https://atlassian.design/license](https://web.archive.org/web/20220826095427/https://atlassian.design/license/)
+
+### cidaas
+
+* [https://www.cidaas.com/branding/](https://web.archive.org/web/20220826173916/https://www.cidaas.com/branding/)
+
+### Google
+
+* [https://developers.google.com/identity/branding-guidelines](https://web.archive.org/web/20220826095610/https://developers.google.com/identity/branding-guidelines)
 
 ### Keycloak
 
