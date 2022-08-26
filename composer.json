@@ -10,7 +10,8 @@
         "shopware-platform",
         "administration",
         "oauth",
-        "open-authentication"
+        "open-authentication",
+        "openid-connect"
     ],
     "authors": [
         {
