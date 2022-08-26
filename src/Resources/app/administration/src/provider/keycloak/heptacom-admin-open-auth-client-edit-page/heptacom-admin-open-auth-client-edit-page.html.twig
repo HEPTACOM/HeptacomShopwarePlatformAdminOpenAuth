@@ -6,7 +6,7 @@
     >
         <sw-textarea-field
             :label="$t('heptacomAdminOpenAuthClient.providerFields.keycloak.keycloakOidcJson')"
-            :placeholder="$t('heptacomAdminOpenAuthClient.providerFields.keycloak.keycloakOidcJson-placeholder')"
+            :placeholder="jsonPlaceholder"
             v-model="item.config.keycloakOidcJson"
         ></sw-textarea-field>
         <heptacom-admin-open-auth-scope-field
