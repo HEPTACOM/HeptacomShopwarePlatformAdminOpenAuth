@@ -13,7 +13,7 @@ You can find an archived link to these guidelines below.
 
 ### Atlassian Jira
 
-* [https://atlassian.design/foundations/logos](/web/20220826095450/https://atlassian.design/foundations/logos/)
+* [https://atlassian.design/foundations/logos](https://web.archive.org/web/20220826095450/https://atlassian.design/foundations/logos/)
 * [https://atlassian.design/license](https://web.archive.org/web/20220826095427/https://atlassian.design/license/)
 
 ### Keycloak
@@ -23,7 +23,7 @@ You can find an archived link to these guidelines below.
 
 ### Microsoft Azure
 
-* [https://docs.microsoft.com/azure/active-directory/develop/howto-add-branding-in-azure-ad-apps](/web/20220826095537/https://docs.microsoft.com/en-us/azure/active-directory/develop/howto-add-branding-in-azure-ad-apps)
+* [https://docs.microsoft.com/azure/active-directory/develop/howto-add-branding-in-azure-ad-apps](https://web.archive.org/web/20220826095537/https://docs.microsoft.com/en-us/azure/active-directory/develop/howto-add-branding-in-azure-ad-apps)
 
 ### OpenID Connect
 
