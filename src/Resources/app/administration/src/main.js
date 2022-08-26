@@ -6,6 +6,7 @@ import './provider/jira/heptacom-admin-open-auth-client-edit-page';
 import './provider/keycloak/heptacom-admin-open-auth-client-edit-page';
 import './provider/microsoft_azure/heptacom-admin-open-auth-client-edit-page';
 import './provider/microsoft_azure_oidc/heptacom-admin-open-auth-client-edit-page';
+import './provider/okta/heptacom-admin-open-auth-client-edit-page';
 import './provider/open_id_connect/heptacom-admin-open-auth-client-edit-page';
 import './init/services.init';
 import globalSnippets from './snippets';

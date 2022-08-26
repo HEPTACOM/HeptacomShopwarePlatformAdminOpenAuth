@@ -1,0 +1,20 @@
+{
+    "heptacomAdminOpenAuthClient": {
+        "providers": {
+            "okta": {
+                "label": "Okta",
+                "logoFile": "okta_logo.png",
+                "helpUrl": "https://help.okta.com/en-us/Content/Topics/Apps/Apps_App_Integration_Wizard_OIDC.htm"
+            }
+        },
+        "providerFields": {
+            "okta": {
+                "additionalScopes": "Anwendungsberechtigungen",
+                "organizationName": "Okta Organisations-Name",
+                "organizationName-help": "Ist die URL, unter der Sie sich bei Okta einloggen bspw. \"meine-firma.okta.com\", ist Ihr Okta Organisations-Name \"meine-firma\".",
+                "clientId": "Client-ID",
+                "clientSecret": "Clientschlüssel"
+            }
+        }
+    }
+}

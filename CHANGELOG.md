@@ -5,6 +5,7 @@
 * Add OpenID Connect provider
 * Add Google Cloud provider
 * Add Keycloak provider
+* Add Okta provider
 * Add Microsoft Azure OIDC provider, using the OpenID Connect provider instead of the external `thenetworg/azure-oauth2` library
 * Add help link to `heptacom-admin-open-auth-client-edit-page`
 
