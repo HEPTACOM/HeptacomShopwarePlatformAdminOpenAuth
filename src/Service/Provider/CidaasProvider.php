@@ -78,6 +78,7 @@ class CidaasProvider extends ClientProviderContract
         $config->assign($resolvedConfig);
         $config->setDiscoveryDocumentUrl( sprintf('%s://%s/.well-known/openid-configuration', $organizationUrl->getScheme(), $organizationUrl->getHost()));
 
+        // todo: check if required
         $scopes = $config->getScopes();
         array_push($scopes, 'email', 'profile');
         $config->setScopes(array_unique($scopes));
