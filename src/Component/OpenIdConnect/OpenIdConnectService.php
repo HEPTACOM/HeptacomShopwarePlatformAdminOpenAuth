@@ -12,7 +12,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\Cache\Adapter\AdapterInterface;
 
 /**
- * @todo implement signed/encrypted UserInfo support
+ * @notice signed/encrypted UserInfo is currently not supported
  */
 class OpenIdConnectService
 {
