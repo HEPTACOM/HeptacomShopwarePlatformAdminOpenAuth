@@ -1,6 +1,20 @@
+# Unreleased
+
+## Added
 * Add flag to client configurations to disable users role elevation to admin
-* Fix Shopware 6.4.11 compatibility
+* Add OpenID Connect provider
+* Add Google Cloud provider
+* Add Keycloak provider
+* Add Microsoft Azure OIDC provider, using the OpenID Connect provider instead of the external `thenetworg/azure-oauth2` library
+
+## Deprecated
+* Microsoft Azure will be replaced by the Microsoft Azure OIDC provider in version 5.0.
+
+## Removed
 * Drop Shopware 6.4.0 to 6.4.10 support
+
+## Fixed
+* Fix Shopware 6.4.11 compatibility
 * Resolve issues with other plugins, also extending `@Administration/administration/index.html.twig`
 
 # 4.0.2

@@ -1,0 +1,15 @@
+{
+    "heptacomAdminOpenAuthClient": {
+        "providers": {
+            "microsoft_azure_oidc": "Microsoft Azure"
+        },
+        "providerFields": {
+            "microsoft_azure_oidc": {
+                "additionalScopes": "Application scopes",
+                "tenantId": "Tenant identifier",
+                "clientId": "Application identifier",
+                "clientSecret": "Application secret"
+            }
+        }
+    }
+}

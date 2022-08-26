@@ -4,24 +4,28 @@ declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\Service\Provider;
 
-use Heptacom\AdminOpenAuth\Component\Provider\MicrosoftAzureClient;
+use Heptacom\AdminOpenAuth\Component\OpenIdConnect\OpenIdConnectConfiguration;
+use Heptacom\AdminOpenAuth\Component\OpenIdConnect\OpenIdConnectService;
+use Heptacom\AdminOpenAuth\Component\Provider\OpenIdConnectClient;
 use Heptacom\AdminOpenAuth\Service\TokenPairFactoryContract;
 use Heptacom\OpenAuth\Client\Contract\ClientContract;
 use Heptacom\OpenAuth\ClientProvider\Contract\ClientProviderContract;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * @deprecated tag:v5.0.0 will be replaced by microsoft_azure_oidc provider
- */
-class MicrosoftAzureProvider extends ClientProviderContract
+class GoogleCloudProvider extends ClientProviderContract
 {
-    public const PROVIDER_NAME = 'microsoft_azure';
+    public const PROVIDER_NAME = 'google_cloud';
 
     private TokenPairFactoryContract $tokenPairFactory;
 
-    public function __construct(TokenPairFactoryContract $tokenPairFactory)
-    {
+    private OpenIdConnectService $openIdConnectService;
+
+    public function __construct(
+        TokenPairFactoryContract $tokenPairFactory,
+        OpenIdConnectService $openIdConnectService
+    ) {
         $this->tokenPairFactory = $tokenPairFactory;
+        $this->openIdConnectService = $openIdConnectService;
     }
 
     public function provides(): string
@@ -63,6 +67,17 @@ class MicrosoftAzureProvider extends ClientProviderContract
 
     public function provideClient(array $resolvedConfig): ClientContract
     {
-        return new MicrosoftAzureClient($this->tokenPairFactory, $resolvedConfig);
+        $config = new OpenIdConnectConfiguration();
+        $config->assign($resolvedConfig);
+        $config->setDiscoveryDocumentUrl('https://accounts.google.com/.well-known/openid-configuration');
+
+        $scopes = $config->getScopes();
+        array_push($scopes, 'email', 'profile');
+        $config->setScopes(array_unique($scopes));
+
+        $service = $this->openIdConnectService->createWithConfig($config);
+        $service->discoverWellKnown();
+
+        return new OpenIdConnectClient($this->tokenPairFactory, $service);
     }
 }

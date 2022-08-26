@@ -1,7 +1,21 @@
+# Unreleased
+
+## Hinzugefügt
 * Konfiguration zum Deaktivieren der Administrationszuweisung an Clienteinstellungen hinzugefügt
-* Fehler mit Shopware 6.4.11 Kompatibilität behoben
+* OpenID Connect Provider hinzugefügt
+* Google Cloud Provider hinzugefügt
+* Keycloak Provider hinzugefügt
+* Microsoft Azure OIDC Provider hinzugefügt, welcher anstelle der `thenetworg/azure-oauth2` Bibliothek, den OpenID Connect Provider verwendet
+
+## Abgekündigt
+* Der Microsoft Azure Provider wird in Version 5.0 durch den Microsoft Azure OIDC Provider vollständig ersetzt.
+
+## Entfernt
 * Shopware 6.4.0 bis 6.4.10 Unterstützung entfernt
 * Fehler behoben, der Probleme mit anderen Plugins, die `@Administration/administration/index.html.twig` extenden, verursacht hat
+
+## Behoben
+* Fehler mit Shopware 6.4.11 Kompatibilität behoben
 
 # 4.0.2
 

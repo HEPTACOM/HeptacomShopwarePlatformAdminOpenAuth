@@ -48,6 +48,9 @@ Component.register('heptacom-admin-open-auth-client-create-page', {
                     }))
                     .sort((a, b) =>
                         a.label.localeCompare(b.label)
+                    )
+                    .filter((provider) =>
+                        provider.key !== 'microsoft_azure'
                     );
                     this.isLoading = false;
                 });

@@ -1,0 +1,14 @@
+{
+    "heptacomAdminOpenAuthClient": {
+        "providers": {
+            "google_cloud": "Google Cloud"
+        },
+        "providerFields": {
+            "google_cloud": {
+                "additionalScopes": "Anwendungsberechtigungen",
+                "clientId": "Anwendungsschlüssel",
+                "clientSecret": "Anwendungsgehemnis"
+            }
+        }
+    }
+}

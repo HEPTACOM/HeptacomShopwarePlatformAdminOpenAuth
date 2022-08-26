@@ -1,0 +1,13 @@
+{
+    "heptacomAdminOpenAuthClient": {
+        "providers": {
+            "keycloak": "Keycoak"
+        },
+        "providerFields": {
+            "keycloak": {
+                "additionalScopes": "Anwendungsberechtigungen",
+                "keycloakOidcJson": "Keycloak OIDC JSON"
+            }
+        }
+    }
+}

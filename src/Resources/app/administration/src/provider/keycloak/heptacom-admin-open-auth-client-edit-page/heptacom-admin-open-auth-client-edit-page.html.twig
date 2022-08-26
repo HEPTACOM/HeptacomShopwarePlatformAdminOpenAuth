@@ -1,0 +1,17 @@
+{% block heptacom_admin_open_auth_client_edit_page_content_provider_settings %}
+    {% parent %}
+
+    <sw-card
+        v-if="item && item.provider === 'keycloak'"
+    >
+        <sw-textarea-field
+            :label="$t('heptacomAdminOpenAuthClient.providerFields.keycloak.keycloakOidcJson')"
+            :placeholder="jsonPlaceholder"
+            v-model="item.config.keycloakOidcJson"
+        ></sw-textarea-field>
+        <heptacom-admin-open-auth-scope-field
+            :label="$t('heptacomAdminOpenAuthClient.providerFields.keycloak.additionalScopes')"
+            v-model="item.config.scopes"
+        ></heptacom-admin-open-auth-scope-field>
+    </sw-card>
+{% endblock %}

@@ -1,0 +1,20 @@
+{
+    "heptacomAdminOpenAuthClient": {
+        "providers": {
+            "open_id_connect": "OpenID Connect"
+        },
+        "providerFields": {
+            "open_id_connect": {
+                "discoveryDocumentUrl": "OpenID Connect Konfiguration",
+                "discoveryDocumentUrl-help": "Sofern angegeben, wird die weitere Konfiguration automatisch geladen.",
+                "discoveryDocumentUrl-placeholder": "https://accounts.google.com/.well-known/openid-configuration",
+                "authorization_endpoint": "Autorisierungs-Endpunkt",
+                "token_endpoint": "Token-Endpunkt",
+                "userinfo_endpoint": "Benutzer-Info-Endpunkt",
+                "clientId": "Anwendungsschlüssel",
+                "clientSecret": "Anwendungsgehemnis",
+                "additionalScopes": "Anwendungsberechtigungen"
+            }
+        }
+    }
+}
