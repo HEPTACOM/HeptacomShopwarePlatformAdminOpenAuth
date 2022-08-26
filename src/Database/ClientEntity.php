@@ -23,6 +23,8 @@ class ClientEntity extends Entity
 
     protected ?bool $storeUserToken = null;
 
+    protected ?bool $userBecomeAdmin = null;
+
     protected ?array $config = null;
 
     protected ?LoginCollection $logins = null;
@@ -101,6 +103,18 @@ class ClientEntity extends Entity
     public function setStoreUserToken(?bool $storeUserToken): self
     {
         $this->storeUserToken = $storeUserToken;
+
+        return $this;
+    }
+
+    public function getUserBecomeAdmin(): ?bool
+    {
+        return $this->userBecomeAdmin;
+    }
+
+    public function setUserBecomeAdmin(?bool $userBecomeAdmin): self
+    {
+        $this->userBecomeAdmin = $userBecomeAdmin;
 
         return $this;
     }

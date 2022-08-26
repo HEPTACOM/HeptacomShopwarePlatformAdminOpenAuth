@@ -1,6 +1,7 @@
 # Unreleased
 
 ## Added
+* Konfiguration zum Deaktivieren der Administrationszuweisung an Clienteinstellungen hinzugefügt
 * OpenID Connect Provider hinzugefügt
 * Google Cloud Provider hinzugefügt
 * Keycloak Provider hinzugefügt
