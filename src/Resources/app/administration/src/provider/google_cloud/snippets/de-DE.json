@@ -1,7 +1,10 @@
 {
     "heptacomAdminOpenAuthClient": {
         "providers": {
-            "google_cloud": "Google Cloud"
+            "google_cloud": {
+                "label": "Google Cloud",
+                "logoFile": "google_logo.svg"
+            }
         },
         "providerFields": {
             "google_cloud": {

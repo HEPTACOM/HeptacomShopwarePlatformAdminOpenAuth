@@ -1,7 +1,10 @@
 {
     "heptacomAdminOpenAuthClient": {
         "providers": {
-            "open_id_connect": "OpenID Connect"
+            "open_id_connect": {
+                "label": "OpenID Connect",
+                "logoFile": "openid_logo.svg"
+            }
         },
         "providerFields": {
             "open_id_connect": {

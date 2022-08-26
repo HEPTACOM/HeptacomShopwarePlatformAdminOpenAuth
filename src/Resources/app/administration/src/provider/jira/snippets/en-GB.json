@@ -1,7 +1,10 @@
 {
     "heptacomAdminOpenAuthClient": {
         "providers": {
-            "jira": "Atlassian Jira"
+            "jira": {
+                "label": "Atlassian Jira",
+                "logoFile": "jira_logo.svg"
+            }
         },
         "providerFields": {
             "jira": {
