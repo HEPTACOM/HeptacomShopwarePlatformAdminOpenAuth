@@ -10,8 +10,7 @@
         "providerFields": {
             "okta": {
                 "additionalScopes": "Application scopes",
-                "organizationName": "Okta organization name",
-                "organizationName-help": "Assume the login URL for your Okta workspace is \"my-company.okta.com\", then your Okta organization name is \"my-company\".",
+                "organizationUrl": "Okta organization URL",
                 "clientId": "Client ID",
                 "clientSecret": "Client secret"
             }

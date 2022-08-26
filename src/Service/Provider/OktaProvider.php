@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\Service\Provider;
 
+use GuzzleHttp\Psr7\Uri;
 use Heptacom\AdminOpenAuth\Component\OpenIdConnect\OpenIdConnectConfiguration;
 use Heptacom\AdminOpenAuth\Component\OpenIdConnect\OpenIdConnectService;
 use Heptacom\AdminOpenAuth\Component\Provider\OpenIdConnectClient;
@@ -37,21 +38,21 @@ class OktaProvider extends ClientProviderContract
     {
         return parent::getConfigurationTemplate()
             ->setDefined([
-                'organizationName',
+                'organizationUrl',
                 'clientId',
                 'clientSecret',
                 'scopes',
                 // TODO remove in v5
                 'redirectUri',
             ])->setRequired([
-                'organizationName',
+                'organizationUrl',
                 'clientId',
                 'clientSecret',
             ])->setDefaults([
                 'scopes' => [],
                 'redirectUri' => null,
             ])
-            ->setAllowedTypes('organizationName', 'string')
+            ->setAllowedTypes('organizationUrl', 'string')
             ->setAllowedTypes('clientId', 'string')
             ->setAllowedTypes('clientSecret', 'string')
             ->setAllowedTypes('scopes', 'array')
@@ -62,7 +63,7 @@ class OktaProvider extends ClientProviderContract
     {
         $result = parent::getInitialConfiguration();
 
-        $result['organizationName'] = '';
+        $result['organizationUrl'] = '';
         $result['clientId'] = '';
         $result['clientSecret'] = '';
 
@@ -71,9 +72,11 @@ class OktaProvider extends ClientProviderContract
 
     public function provideClient(array $resolvedConfig): ClientContract
     {
+        $organizationUrl = new Uri($resolvedConfig['organizationUrl']);
+
         $config = new OpenIdConnectConfiguration();
         $config->assign($resolvedConfig);
-        $config->setDiscoveryDocumentUrl('https://' . $resolvedConfig['organizationName'] . '.okta.com/.well-known/openid-configuration');
+        $config->setDiscoveryDocumentUrl( sprintf('%s://%s/.well-known/openid-configuration', $organizationUrl->getScheme(), $organizationUrl->getHost()));
 
         $scopes = $config->getScopes();
         array_push($scopes, 'email', 'profile');

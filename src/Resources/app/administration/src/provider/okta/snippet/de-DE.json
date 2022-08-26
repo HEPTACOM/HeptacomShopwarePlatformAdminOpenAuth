@@ -10,8 +10,7 @@
         "providerFields": {
             "okta": {
                 "additionalScopes": "Anwendungsberechtigungen",
-                "organizationName": "Okta Organisations-Name",
-                "organizationName-help": "Ist die URL, unter der Sie sich bei Okta einloggen bspw. \"meine-firma.okta.com\", ist Ihr Okta Organisations-Name \"meine-firma\".",
+                "organizationUrl": "Okta Organisations-URL",
                 "clientId": "Client-ID",
                 "clientSecret": "Clientschlüssel"
             }
