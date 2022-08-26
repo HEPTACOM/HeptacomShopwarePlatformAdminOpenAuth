@@ -20,6 +20,7 @@
 ## Fixed
 * Fix Shopware 6.4.11 compatibility
 * Resolve issues with other plugins, also extending `@Administration/administration/index.html.twig`
+* Fix issue that users connected with this plugin cannot be deleted
 
 # 4.0.2
 

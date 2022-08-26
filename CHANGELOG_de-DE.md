@@ -16,10 +16,11 @@
 
 ## Entfernt
 * Shopware 6.4.0 bis 6.4.10 Unterstützung entfernt
-* Fehler behoben, der Probleme mit anderen Plugins, die `@Administration/administration/index.html.twig` extenden, verursacht hat
 
 ## Behoben
 * Fehler mit Shopware 6.4.11 Kompatibilität behoben
+* Fehler behoben, der Probleme mit anderen Plugins, die `@Administration/administration/index.html.twig` extenden, verursacht hat
+* Fehler behoben, der das Löschen von Benutzern verhindert, die sich über SSO eingeloggt haben.
 
 # 4.0.2
 
