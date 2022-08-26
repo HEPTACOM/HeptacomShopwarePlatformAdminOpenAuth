@@ -10,8 +10,7 @@
         "providerFields": {
             "keycloak": {
                 "additionalScopes": "Application scopes",
-                "keycloakOidcJson": "Keycloak OIDC JSON",
-                "keycloakOidcJson-placeholder": "{\n\t\"realm\": \"master\",\n\t\"auth-server-url\": \"https://keycloak.my-company.com/auth/\",\n\t\"ssl-required\": \"external\",\n\t\"resource\": \"my-client\",\n\t\"credentials\": {\n\t\t\"secret\": \"abcdefghijgklmnopqrstuvwxyz\"\n\t},\n\t\"confidential-port\": 0\n}"
+                "keycloakOidcJson": "Keycloak OIDC JSON"
             }
         }
     }

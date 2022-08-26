@@ -10,7 +10,7 @@
         "providerFields": {
             "microsoft_azure": {
                 "deprecatedTitle": "Dieser Provider wird nicht mehr unterstützt!",
-                "deprecatedDescription": "Der Microsoft Azure Provider wird nicht mehr unterstützt und in einer der kommenden Versionen gelöscht. Bitte verwenden Sie stattdessen den neuen Microsoft Azure OIDC Provider.",
+                "deprecatedDescription": "Der Microsoft Azure Legacy Provider wird nicht mehr unterstützt und in einer der kommenden Versionen gelöscht. Bitte verwenden Sie stattdessen den neuen Microsoft Azure Provider.",
                 "additionalScopes": "Anwendungsberechtigungen",
                 "clientId": "Anwendungsschlüssel",
                 "clientSecret": "Anwendungsgehemnis"
