@@ -5,16 +5,21 @@
         v-if="item && item.provider === 'cidaas'"
     >
         <sw-url-field
+            required
             :omitUrlHash="true"
             :omitUrlSearch="true"
             :label="$t('heptacomAdminOpenAuthClient.providerFields.cidaas.organizationUrl')"
+            {# todo: verify sample url #}
+            placeholder="https://my-company.cidaas.com"
             v-model="item.config.organizationUrl"
         ></sw-url-field>
         <sw-text-field
+            required
             :label="$t('heptacomAdminOpenAuthClient.providerFields.cidaas.clientId')"
             v-model="item.config.clientId"
         ></sw-text-field>
         <sw-password-field
+            required
             :label="$t('heptacomAdminOpenAuthClient.providerFields.cidaas.clientSecret')"
             v-model="item.config.clientSecret"
         ></sw-password-field>

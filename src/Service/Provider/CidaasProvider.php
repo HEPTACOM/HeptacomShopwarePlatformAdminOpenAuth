@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\Service\Provider;
 
+use GuzzleHttp\Psr7\Uri;
 use Heptacom\AdminOpenAuth\Component\OpenIdConnect\OpenIdConnectConfiguration;
 use Heptacom\AdminOpenAuth\Component\OpenIdConnect\OpenIdConnectService;
 use Heptacom\AdminOpenAuth\Component\Provider\OpenIdConnectClient;
@@ -71,9 +72,11 @@ class CidaasProvider extends ClientProviderContract
 
     public function provideClient(array $resolvedConfig): ClientContract
     {
+        $organizationUrl = new Uri($resolvedConfig['organizationUrl']);
+
         $config = new OpenIdConnectConfiguration();
         $config->assign($resolvedConfig);
-        $config->setDiscoveryDocumentUrl($resolvedConfig['organizationUrl'] . '/.well-known/openid-configuration');
+        $config->setDiscoveryDocumentUrl( sprintf('%s://%s/.well-known/openid-configuration', $organizationUrl->getScheme(), $organizationUrl->getHost()));
 
         $scopes = $config->getScopes();
         array_push($scopes, 'email', 'profile');
