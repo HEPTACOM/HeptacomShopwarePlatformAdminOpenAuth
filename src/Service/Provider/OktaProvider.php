@@ -76,7 +76,13 @@ class OktaProvider extends ClientProviderContract
 
         $config = new OpenIdConnectConfiguration();
         $config->assign($resolvedConfig);
-        $config->setDiscoveryDocumentUrl( sprintf('%s://%s/.well-known/openid-configuration', $organizationUrl->getScheme(), $organizationUrl->getHost()));
+        $config->setDiscoveryDocumentUrl(
+            sprintf(
+                '%s://%s/.well-known/openid-configuration',
+                $organizationUrl->getScheme(),
+                $organizationUrl->getHost()
+            )
+        );
 
         $scopes = $config->getScopes();
         array_push($scopes, 'email', 'profile');
