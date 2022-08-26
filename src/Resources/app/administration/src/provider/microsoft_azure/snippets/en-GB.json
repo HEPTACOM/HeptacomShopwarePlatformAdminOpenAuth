@@ -2,7 +2,7 @@
     "heptacomAdminOpenAuthClient": {
         "providers": {
             "microsoft_azure": {
-                "label": "Microsoft Azure",
+                "label": "Microsoft Azure Legacy",
                 "logoFile": "microsoft_logo.svg"
             }
         },
