@@ -1,7 +1,10 @@
 {
     "heptacomAdminOpenAuthClient": {
         "providers": {
-            "microsoft_azure_oidc": "Microsoft Azure"
+            "microsoft_azure_oidc": {
+                "label": "Microsoft Azure",
+                "logoFile": "microsoft_logo.svg"
+            }
         },
         "providerFields": {
             "microsoft_azure_oidc": {

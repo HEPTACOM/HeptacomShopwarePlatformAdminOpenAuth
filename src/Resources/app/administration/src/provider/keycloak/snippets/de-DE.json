@@ -1,7 +1,10 @@
 {
     "heptacomAdminOpenAuthClient": {
         "providers": {
-            "keycloak": "Keycoak"
+            "keycloak": {
+                "label": "Keycoak",
+                "logoFile": "keycloak_logo.svg"
+            }
         },
         "providerFields": {
             "keycloak": {

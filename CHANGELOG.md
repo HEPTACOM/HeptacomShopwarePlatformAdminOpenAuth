@@ -7,6 +7,9 @@
 * Add Keycloak provider
 * Add Microsoft Azure OIDC provider, using the OpenID Connect provider instead of the external `thenetworg/azure-oauth2` library
 
+## Changed
+* Changed create provider page to get a better overview of the existing providers
+
 ## Deprecated
 * Microsoft Azure will be replaced by the Microsoft Azure OIDC provider in version 5.0.
 
