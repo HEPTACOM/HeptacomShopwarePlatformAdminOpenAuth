@@ -1,23 +1,24 @@
 # Unreleased
 
-## Added
+## Hinzugefügt
+* Konfiguration zum Deaktivieren der Administrationszuweisung an Clienteinstellungen hinzugefügt
 * OpenID Connect Provider hinzugefügt
 * Google Cloud Provider hinzugefügt
 * Keycloak Provider hinzugefügt
 * Microsoft Azure OIDC Provider hinzugefügt, welcher anstelle der `thenetworg/azure-oauth2` Bibliothek, den OpenID Connect Provider verwendet
 * Hilfe-Link zu `heptacom-admin-open-auth-client-edit-page` hinzugefügt
 
-## Changed
+## Geändert
 * Provider hinzufügen Seite überarbeitet, um eine bessere Übersicht über die verfügbaren Provider zu bekommen
 
-## Deprecated
+## Abgekündigt
 * Der Microsoft Azure Provider wird in Version 5.0 durch den Microsoft Azure OIDC Provider vollständig ersetzt.
 
-## Removed
+## Entfernt
 * Shopware 6.4.0 bis 6.4.10 Unterstützung entfernt
 * Fehler behoben, der Probleme mit anderen Plugins, die `@Administration/administration/index.html.twig` extenden, verursacht hat
 
-## Fixed
+## Behoben
 * Fehler mit Shopware 6.4.11 Kompatibilität behoben
 
 # 4.0.2

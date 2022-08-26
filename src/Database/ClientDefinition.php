@@ -45,6 +45,7 @@ class ClientDefinition extends EntityDefinition
             (new BoolField('login', 'login'))->addFlags(new Required()),
             (new BoolField('connect', 'connect'))->addFlags(new Required()),
             (new BoolField('store_user_token', 'storeUserToken'))->addFlags(new Required()),
+            new BoolField('user_become_admin', 'userBecomeAdmin'),
             (new JsonField('config', 'config', [], []))->addFlags(new Required()),
             new CreatedAtField(),
             new UpdatedAtField(),

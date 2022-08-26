@@ -91,12 +91,7 @@ class OpenIdConnectProvider extends ClientProviderContract
         $config->assign($resolvedConfig);
 
         $service = $this->openIdConnectService->createWithConfig($config);
-
-        try {
-            $service->discoverWellKnown();
-        } catch (OpenIdConnectException $e) {
-            // nth
-        }
+        $service->discoverWellKnown();
 
         return new OpenIdConnectClient($this->tokenPairFactory, $service);
     }

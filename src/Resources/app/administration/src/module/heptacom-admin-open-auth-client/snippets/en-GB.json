@@ -25,6 +25,7 @@
                     "login": "Use as login",
                     "connect": "Use to connect",
                     "storeUserToken": "Store user access keys",
+                    "userBecomeAdmin": "Make user to admin on creation",
                     "redirectUri": "Redirect URL"
                 },
                 "modals": {

@@ -55,20 +55,23 @@ class UserResolver implements UserResolverInterface
     public function resolve(UserStruct $user, string $state, string $clientId, Context $context): void
     {
         $userId = $this->login->getUser($state, $context) ?? $this->findUserId($user, $clientId, $context);
+        $isNew = false;
 
         if ($userId === null) {
+            $isNew = true;
             $password = Random::getAlphanumericString(254);
             $this->userProvisioner->provision($user->getPrimaryEmail(), $password, ['email' => $user->getPrimaryEmail()]);
             $userId = $this->findUserId($user, $clientId, $context);
         }
 
-        $this->postUpdates($user, $userId, $state, $clientId, $context);
+        $this->postUpdates($user, $userId, $state, $isNew, $clientId, $context);
     }
 
     protected function postUpdates(
         UserStruct $user,
         string $userId,
         string $state,
+        bool $isNew,
         string $clientId,
         Context $context
     ): void {
@@ -87,6 +90,13 @@ class UserResolver implements UserResolverInterface
         }
 
         $this->login->setCredentials($state, $userId, $context);
+
+        if ($isNew && !$this->clientFeatureChecker->canUsersBecomeAdmin($clientId, $context)) {
+            $this->userRepository->update([[
+                'id' => $userId,
+                'admin' => false,
+            ]], $context);
+        }
     }
 
     protected function findUserId(UserStruct $user, string $clientId, Context $context): ?string

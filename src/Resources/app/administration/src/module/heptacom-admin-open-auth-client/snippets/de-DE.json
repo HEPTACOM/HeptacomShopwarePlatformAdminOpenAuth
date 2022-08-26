@@ -25,6 +25,7 @@
                     "login": "Als Anmeldung verwenden",
                     "connect": "Zum Verknüpfen verwenden",
                     "storeUserToken": "Benutzerberechtigungsschlüssel speichern",
+                    "userBecomeAdmin": "Benutzer als Administrator anlegen",
                     "redirectUri": "Rücksende-URL"
                 },
                 "modals": {
