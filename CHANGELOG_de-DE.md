@@ -6,6 +6,7 @@
 * Google Cloud Provider hinzugefügt
 * Keycloak Provider hinzugefügt
 * Microsoft Azure OIDC Provider hinzugefügt, welcher anstelle der `thenetworg/azure-oauth2` Bibliothek, den OpenID Connect Provider verwendet
+* Hilfe-Link zu `heptacom-admin-open-auth-client-edit-page` hinzugefügt
 
 ## Geändert
 * Provider hinzufügen Seite überarbeitet, um eine bessere Übersicht über die verfügbaren Provider zu bekommen

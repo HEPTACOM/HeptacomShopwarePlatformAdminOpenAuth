@@ -3,7 +3,8 @@
         "providers": {
             "open_id_connect": {
                 "label": "OpenID Connect",
-                "logoFile": "openid_logo.svg"
+                "logoFile": "openid_logo.svg",
+                "helpUrl": "https://openid.net/connect/faq/"
             }
         },
         "providerFields": {
@@ -14,8 +15,8 @@
                 "authorization_endpoint": "Autorisierungs-Endpunkt",
                 "token_endpoint": "Token-Endpunkt",
                 "userinfo_endpoint": "Benutzer-Info-Endpunkt",
-                "clientId": "Anwendungsschlüssel",
-                "clientSecret": "Anwendungsgehemnis",
+                "clientId": "Client-ID",
+                "clientSecret": "Clientschlüssel",
                 "additionalScopes": "Anwendungsberechtigungen"
             }
         }

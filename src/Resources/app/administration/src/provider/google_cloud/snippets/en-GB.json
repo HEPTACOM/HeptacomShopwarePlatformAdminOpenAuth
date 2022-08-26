@@ -3,14 +3,15 @@
         "providers": {
             "google_cloud": {
                 "label": "Google Cloud",
-                "logoFile": "google_logo.svg"
+                "logoFile": "google_logo.svg",
+                "helpUrl": "https://developers.google.com/identity/protocols/oauth2/openid-connect"
             }
         },
         "providerFields": {
             "google_cloud": {
                 "additionalScopes": "Application scopes",
-                "clientId": "Application identifier",
-                "clientSecret": "Application secret"
+                "clientId": "Client ID",
+                "clientSecret": "Client secret"
             }
         }
     }

@@ -3,7 +3,8 @@
         "providers": {
             "jira": {
                 "label": "Atlassian Jira",
-                "logoFile": "jira_logo.svg"
+                "logoFile": "jira_logo.svg",
+                "helpUrl": "https://developer.atlassian.com/cloud/jira/platform/oauth-2-3lo-apps/#enabling-oauth-2-0--3lo-"
             }
         },
         "providerFields": {

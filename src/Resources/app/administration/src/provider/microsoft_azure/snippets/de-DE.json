@@ -3,7 +3,8 @@
         "providers": {
             "microsoft_azure": {
                 "label": "Microsoft Azure Legacy",
-                "logoFile": "microsoft_logo.svg"
+                "logoFile": "microsoft_logo.svg",
+                "helpUrl": "https://docs.microsoft.com/de-de/azure/active-directory/develop/quickstart-register-app"
             }
         },
         "providerFields": {
