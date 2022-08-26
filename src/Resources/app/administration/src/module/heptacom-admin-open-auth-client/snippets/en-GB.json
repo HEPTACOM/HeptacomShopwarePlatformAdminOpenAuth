@@ -16,7 +16,8 @@
                 "actions": {
                     "cancel": "Cancel",
                     "delete": "Delete",
-                    "save": "Save"
+                    "save": "Save",
+                    "help": "Help"
                 },
                 "fields": {
                     "name": "Name",

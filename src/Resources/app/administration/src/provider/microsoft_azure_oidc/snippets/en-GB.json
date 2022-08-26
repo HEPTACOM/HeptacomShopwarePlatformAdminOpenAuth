@@ -3,7 +3,8 @@
         "providers": {
             "microsoft_azure_oidc": {
                 "label": "Microsoft Azure",
-                "logoFile": "microsoft_logo.svg"
+                "logoFile": "microsoft_logo.svg",
+                "helpUrl": "https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app"
             }
         },
         "providerFields": {
