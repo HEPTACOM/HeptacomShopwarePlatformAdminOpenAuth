@@ -78,10 +78,6 @@ class OneLoginProvider extends ClientProviderContract
         $config->assign($resolvedConfig);
         $config->setDiscoveryDocumentUrl( sprintf('%s://%s/oidc/2/.well-known/openid-configuration', $organizationUrl->getScheme(), $organizationUrl->getHost()));
 
-        /*$scopes = $config->getScopes();
-        array_push($scopes, 'email', 'profile');
-        $config->setScopes(array_unique($scopes));*/
-
         $service = $this->openIdConnectService->createWithConfig($config);
         $service->discoverWellKnown();
 
