@@ -76,7 +76,7 @@ class OneLoginProvider extends ClientProviderContract
 
         $config = new OpenIdConnectConfiguration();
         $config->assign($resolvedConfig);
-        $config->setDiscoveryDocumentUrl( sprintf('%s://%s/oidc/2/.well-known/openid-configuration', $organizationUrl->getScheme(), $organizationUrl->getHost()));
+        $config->setDiscoveryDocumentUrl(sprintf('%s://%s/oidc/2/.well-known/openid-configuration', $organizationUrl->getScheme(), $organizationUrl->getHost()));
 
         $service = $this->openIdConnectService->createWithConfig($config);
         $service->discoverWellKnown();
