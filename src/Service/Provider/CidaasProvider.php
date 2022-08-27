@@ -52,7 +52,7 @@ class CidaasProvider extends ClientProviderContract
                 'scopes' => [],
                 'redirectUri' => null,
             ])
-            ->setAllowedTypes('organizationName', 'string')
+            ->setAllowedTypes('organizationUrl', 'string')
             ->setAllowedTypes('clientId', 'string')
             ->setAllowedTypes('clientSecret', 'string')
             ->setAllowedTypes('scopes', 'array')
@@ -78,9 +78,8 @@ class CidaasProvider extends ClientProviderContract
         $config->assign($resolvedConfig);
         $config->setDiscoveryDocumentUrl( sprintf('%s://%s/.well-known/openid-configuration', $organizationUrl->getScheme(), $organizationUrl->getHost()));
 
-        // todo: check if required
         $scopes = $config->getScopes();
-        array_push($scopes, 'email', 'profile');
+        array_push($scopes, 'profile');
         $config->setScopes(array_unique($scopes));
 
         $service = $this->openIdConnectService->createWithConfig($config);
