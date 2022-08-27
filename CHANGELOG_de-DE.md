@@ -3,11 +3,12 @@
 ## Hinzugefügt
 * Konfiguration zum Deaktivieren der Administrationszuweisung an Clienteinstellungen hinzugefügt
 * OpenID Connect Provider hinzugefügt
+* Microsoft Azure OIDC Provider hinzugefügt, welcher anstelle der `thenetworg/azure-oauth2` Bibliothek, den OpenID Connect Provider verwendet
 * Google Cloud Provider hinzugefügt
 * Keycloak Provider hinzugefügt
 * OneLogin Provider hinzugefügt
 * Okta Provider hinzugefügt
-* Microsoft Azure OIDC Provider hinzugefügt, welcher anstelle der `thenetworg/azure-oauth2` Bibliothek, den OpenID Connect Provider verwendet
+* Cidaas Provider hinzugefügt
 * Hilfe-Link zu `heptacom-admin-open-auth-client-edit-page` hinzugefügt
 
 ## Geändert
