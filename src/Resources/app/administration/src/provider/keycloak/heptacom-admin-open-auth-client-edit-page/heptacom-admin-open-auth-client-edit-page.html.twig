@@ -5,6 +5,7 @@
         v-if="item && item.provider === 'keycloak'"
     >
         <sw-textarea-field
+            required
             :label="$t('heptacomAdminOpenAuthClient.providerFields.keycloak.keycloakOidcJson')"
             :placeholder="jsonPlaceholder"
             v-model="item.config.keycloakOidcJson"

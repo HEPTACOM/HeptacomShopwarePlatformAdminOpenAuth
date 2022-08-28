@@ -3,9 +3,12 @@
 ## Added
 * Add flag to client configurations to disable users role elevation to admin
 * Add OpenID Connect provider
+* Add Microsoft Azure OIDC provider, using the OpenID Connect provider instead of the external `thenetworg/azure-oauth2` library
 * Add Google Cloud provider
 * Add Keycloak provider
-* Add Microsoft Azure OIDC provider, using the OpenID Connect provider instead of the external `thenetworg/azure-oauth2` library
+* Add OneLogin provider
+* Add Okta provider
+* Add Cidaas provider
 * Add help link to `heptacom-admin-open-auth-client-edit-page`
 
 ## Changed

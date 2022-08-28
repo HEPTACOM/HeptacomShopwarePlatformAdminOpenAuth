@@ -1,7 +1,6 @@
 import './page/create';
 import './page/edit';
 import './page/listing';
-import snippets from './snippets';
 
 const { Module } = Shopware;
 
@@ -12,7 +11,6 @@ Module.register('heptacom-admin-open-auth-client', {
     description: 'heptacom-admin-open-auth-client.module.description',
     color: '#FFC2A2',
     icon: 'default-action-log-in',
-    snippets,
 
     routes: {
         create: {
