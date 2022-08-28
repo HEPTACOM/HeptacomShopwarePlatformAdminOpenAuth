@@ -16,7 +16,7 @@
     },
     "sw-verify-user-modal": {
         "heptacomAdminOpenAuth": {
-            "confirmWith": "Confirm identity with %clientName%"
+            "confirmWith": "Confirm identity with {clientName}"
         }
     }
 }
