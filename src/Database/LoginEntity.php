@@ -16,6 +16,8 @@ class LoginEntity extends Entity
 
     protected ?string $state = null;
 
+    protected array $payload = [];
+
     protected ?string $userId = null;
 
     protected ?ClientEntity $client = null;
@@ -42,6 +44,18 @@ class LoginEntity extends Entity
     public function setState(?string $state): self
     {
         $this->state = $state;
+
+        return $this;
+    }
+
+    public function getPayload(): array
+    {
+        return $this->payload;
+    }
+
+    public function setPayload(array $payload): self
+    {
+        $this->payload = $payload;
 
         return $this;
     }
