@@ -93,9 +93,7 @@ class AdministrationController extends AbstractController
                 $psrHttpFactory->createRequest($request),
                 $client->getProvider(),
                 $client->getConfig(),
-                (new RedirectBehaviour())
-                    ->setExpectState(true)
-                    ->setRedirectUri($this->generateRedirectUrl($clientId))
+                $this->getRedirectBehaviour($clientId)
             );
         $requestState = (string) $user->getPassthrough()['requestState'];
 
@@ -261,8 +259,6 @@ class AdministrationController extends AbstractController
     {
         return (new RedirectBehaviour())
             ->setExpectState(true)
-            ->setRedirectUri($this->router->generate('administration.heptacom.admin_open_auth.login', [
-                'clientId' => $clientId,
-            ], UrlGeneratorInterface::ABSOLUTE_URL));
+            ->setRedirectUri($this->generateRedirectUrl($clientId));
     }
 }
