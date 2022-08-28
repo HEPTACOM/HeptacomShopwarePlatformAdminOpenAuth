@@ -41,7 +41,6 @@ SQL;
         } catch (\Throwable $throwable) {
             $this->dropColumnAgain($connection, 1661561043, $throwable);
         }
-
     }
 
     public function updateDestructive(Connection $connection): void
