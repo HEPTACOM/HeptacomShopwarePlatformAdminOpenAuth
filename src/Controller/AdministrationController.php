@@ -97,6 +97,21 @@ class AdministrationController extends AbstractController
     /**
      * @Route(
      *     methods={"GET"},
+     *     name="administration.heptacom.admin_open_auth.confirm",
+     *     path="/admin/open-auth/confirm",
+     *     defaults={"auth_required" = false}
+     * )
+     */
+    public function confirm(Request $request): Response
+    {
+        return $this->render('@KskHeptacomAdminOpenAuth/administration/heptacom-admin-open-auth/page/confirm.html.twig', [
+            'cspNonce' => $request->attributes->get(PlatformRequest::ATTRIBUTE_CSP_NONCE),
+        ]);
+    }
+
+    /**
+     * @Route(
+     *     methods={"GET"},
      *     name="administration.heptacom.admin_open_auth.remote_login",
      *     path="/admin/open-auth/{clientId}/remote",
      *     defaults={"auth_required" = false}
