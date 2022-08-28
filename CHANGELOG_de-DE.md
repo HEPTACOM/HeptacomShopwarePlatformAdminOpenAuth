@@ -10,6 +10,7 @@
 * Okta Provider hinzugefügt
 * Cidaas Provider hinzugefügt
 * Hilfe-Link zu `heptacom-admin-open-auth-client-edit-page` hinzugefügt
+* Bestätigung mit OAuth Anbieter, wenn nach dem Loginpasswort gefragt wird in `sw-verify-user-modal` hinzugefügt
 
 ## Geändert
 * Provider hinzufügen Seite überarbeitet, um eine bessere Übersicht über die verfügbaren Provider zu bekommen

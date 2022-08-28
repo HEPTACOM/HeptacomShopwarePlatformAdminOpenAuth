@@ -1,5 +1,6 @@
 import './app/components/heptacom-admin-open-auth-scope-field';
 import './extension/sw-profile-index';
+import "./extension/sw-verify-user-modal";
 import './module/heptacom-admin-open-auth-client';
 import './provider/cidaas/heptacom-admin-open-auth-client-edit-page';
 import './provider/google_cloud/heptacom-admin-open-auth-client-edit-page';

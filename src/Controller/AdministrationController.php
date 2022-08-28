@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\Controller;
 
+use Heptacom\AdminOpenAuth\Contract\AuthorizationUrl\LoginUrlGeneratorInterface;
 use Heptacom\AdminOpenAuth\Contract\ClientLoaderInterface;
 use Heptacom\AdminOpenAuth\Contract\OpenAuthenticationFlowInterface;
+use Heptacom\AdminOpenAuth\Contract\StateFactory\ConfirmStateFactoryInterface;
 use Heptacom\AdminOpenAuth\Database\ClientDefinition;
 use Heptacom\AdminOpenAuth\Database\ClientEntity;
+use Heptacom\AdminOpenAuth\Service\StateResolver;
 use Heptacom\OpenAuth\Behaviour\RedirectBehaviour;
 use Heptacom\OpenAuth\ClientProvider\Contract\ClientProviderRepositoryContract;
 use Heptacom\OpenAuth\Route\Contract\RedirectReceiveRouteContract;
@@ -18,6 +21,7 @@ use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\Routing\Annotation\RouteScope;
+use Shopware\Core\PlatformRequest;
 use Symfony\Bridge\PsrHttpMessage\Factory\PsrHttpFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -39,18 +43,30 @@ class AdministrationController extends AbstractController
 
     private RedirectReceiveRouteContract $redirectReceiveRoute;
 
+    private ConfirmStateFactoryInterface $confirmStateFactory;
+
+    private LoginUrlGeneratorInterface $loginUrlGenerator;
+
     private RouterInterface $router;
+
+    private StateResolver $stateResolver;
 
     public function __construct(
         OpenAuthenticationFlowInterface $flow,
         EntityRepositoryInterface $clientsRepository,
         RedirectReceiveRouteContract $redirectReceiveRoute,
-        RouterInterface $router
+        ConfirmStateFactoryInterface $confirmStateFactory,
+        LoginUrlGeneratorInterface $confirmationUrlGenerator,
+        RouterInterface $router,
+        StateResolver $stateResolver
     ) {
         $this->flow = $flow;
         $this->clientsRepository = $clientsRepository;
         $this->redirectReceiveRoute = $redirectReceiveRoute;
+        $this->confirmStateFactory = $confirmStateFactory;
+        $this->loginUrlGenerator = $confirmationUrlGenerator;
         $this->router = $router;
+        $this->stateResolver = $stateResolver;
     }
 
     /**
@@ -85,13 +101,20 @@ class AdministrationController extends AbstractController
 
         $this->flow->upsertUser($user, $clientId, $requestState, $context);
 
-        $adminRoute = $this->generateUrl(
-            'administration.index',
+        $statePayload = $this->stateResolver->getPayload($requestState, $context);
+        $targetRoute = 'administration.index';
+
+        if ($statePayload['confirm'] ?? false) {
+            $targetRoute = 'administration.heptacom.admin_open_auth.confirm';
+        }
+
+        $targetUrl = $this->generateUrl(
+            $targetRoute,
             ['state' => $requestState],
             UrlGeneratorInterface::ABSOLUTE_URL
         );
 
-        return new RedirectResponse($adminRoute, Response::HTTP_TEMPORARY_REDIRECT);
+        return new RedirectResponse($targetUrl, Response::HTTP_TEMPORARY_REDIRECT);
     }
 
     /**
@@ -157,6 +180,24 @@ class AdministrationController extends AbstractController
 
     /**
      * @Route(
+     *     methods={"GET"},
+     *     name="api.heptacom.admin_open_auth.confirm",
+     *     path="/api/_admin/open-auth/{clientId}/confirm"
+     * )
+     */
+    public function confirmUrl(string $clientId, Context $context): Response
+    {
+        /** @var AdminApiSource $adminApiSource */
+        $adminApiSource = $context->getSource();
+        $state = $this->confirmStateFactory->create($clientId, $adminApiSource->getUserId(), $context);
+
+        return JsonResponse::create([
+            'target' => $this->loginUrlGenerator->generate($clientId, $state, $this->getRedirectBehaviour($clientId), $context),
+        ]);
+    }
+
+    /**
+     * @Route(
      *     methods={"POST"},
      *     name="api.heptacom.admin_open_auth.provider.redirect-url",
      *     path="/api/_action/heptacom_admin_open_auth_provider/client-redirect-url"
@@ -214,5 +255,14 @@ class AdministrationController extends AbstractController
         return $this->router->generate('administration.heptacom.admin_open_auth.login', [
             'clientId' => $clientId,
         ], UrlGeneratorInterface::ABSOLUTE_URL);
+    }
+
+    private function getRedirectBehaviour(string $clientId): RedirectBehaviour
+    {
+        return (new RedirectBehaviour())
+            ->setExpectState(true)
+            ->setRedirectUri($this->router->generate('administration.heptacom.admin_open_auth.login', [
+                'clientId' => $clientId,
+            ], UrlGeneratorInterface::ABSOLUTE_URL));
     }
 }
