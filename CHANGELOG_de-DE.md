@@ -3,9 +3,12 @@
 ## Hinzugefügt
 * Konfiguration zum Deaktivieren der Administrationszuweisung an Clienteinstellungen hinzugefügt
 * OpenID Connect Provider hinzugefügt
+* Microsoft Azure OIDC Provider hinzugefügt, welcher anstelle der `thenetworg/azure-oauth2` Bibliothek, den OpenID Connect Provider verwendet
 * Google Cloud Provider hinzugefügt
 * Keycloak Provider hinzugefügt
-* Microsoft Azure OIDC Provider hinzugefügt, welcher anstelle der `thenetworg/azure-oauth2` Bibliothek, den OpenID Connect Provider verwendet
+* OneLogin Provider hinzugefügt
+* Okta Provider hinzugefügt
+* Cidaas Provider hinzugefügt
 * Hilfe-Link zu `heptacom-admin-open-auth-client-edit-page` hinzugefügt
 
 ## Geändert
@@ -16,10 +19,11 @@
 
 ## Entfernt
 * Shopware 6.4.0 bis 6.4.10 Unterstützung entfernt
-* Fehler behoben, der Probleme mit anderen Plugins, die `@Administration/administration/index.html.twig` extenden, verursacht hat
 
 ## Behoben
 * Fehler mit Shopware 6.4.11 Kompatibilität behoben
+* Fehler behoben, der Probleme mit anderen Plugins, die `@Administration/administration/index.html.twig` extenden, verursacht hat
+* Fehler behoben, der das Löschen von Benutzern verhindert, die sich über SSO eingeloggt haben.
 
 # 4.0.2
 

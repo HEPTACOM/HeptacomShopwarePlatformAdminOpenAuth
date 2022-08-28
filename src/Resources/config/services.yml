@@ -52,6 +52,11 @@ services:
         tags:
             - { name: shopware.entity.definition , entity: 'heptacom_admin_open_auth_user_token' }
 
+    Heptacom\AdminOpenAuth\Service\Provider\CidaasClientEntityRepository:
+        decorates: heptacom_admin_open_auth_client.repository
+        arguments:
+            - '@Heptacom\AdminOpenAuth\Service\Provider\CidaasClientEntityRepository.inner'
+
     Heptacom\AdminOpenAuth\Service\Provider\GoogleCloudClientEntityRepository:
         decorates: heptacom_admin_open_auth_client.repository
         arguments:
@@ -81,6 +86,16 @@ services:
         decorates: heptacom_admin_open_auth_client.repository
         arguments:
             - '@Heptacom\AdminOpenAuth\Service\Provider\MicrosoftAzureOidcClientEntityRepository.inner'
+
+    Heptacom\AdminOpenAuth\Service\Provider\OktaClientEntityRepository:
+        decorates: heptacom_admin_open_auth_client.repository
+        arguments:
+            - '@Heptacom\AdminOpenAuth\Service\Provider\OktaClientEntityRepository.inner'
+
+    Heptacom\AdminOpenAuth\Service\Provider\OneLoginClientEntityRepository:
+        decorates: heptacom_admin_open_auth_client.repository
+        arguments:
+            - '@Heptacom\AdminOpenAuth\Service\Provider\OneLoginClientEntityRepository.inner'
 
     Heptacom\AdminOpenAuth\Service\Provider\OpenIdConnectClientEntityRepository:
         decorates: heptacom_admin_open_auth_client.repository

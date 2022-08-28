@@ -1,0 +1,19 @@
+{
+    "heptacomAdminOpenAuthClient": {
+        "providers": {
+            "onelogin": {
+                "label": "OneLogin",
+                "logoFile": "onelogin_logo.svg",
+                "helpUrl": "https://developers.onelogin.com/blog/how-to-use-openid-connect-authentication-with-dotnet-core#heading-menu"
+            }
+        },
+        "providerFields": {
+            "onelogin": {
+                "additionalScopes": "Application scopes",
+                "organizationUrl": "OneLogin organization URL",
+                "clientId": "Client ID",
+                "clientSecret": "Client secret"
+            }
+        }
+    }
+}
