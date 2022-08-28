@@ -1,0 +1,17 @@
+{
+    "heptacomAdminOpenAuthClient": {
+        "providers": {
+            "keycloak": {
+                "label": "Keycoak",
+                "logoFile": "keycloak_logo.svg",
+                "helpUrl": "https://blogs.sap.com/2021/08/23/keyclock-as-an-openid-connect-oidc-provider./"
+            }
+        },
+        "providerFields": {
+            "keycloak": {
+                "additionalScopes": "Application scopes",
+                "keycloakOidcJson": "Keycloak OIDC JSON"
+            }
+        }
+    }
+}

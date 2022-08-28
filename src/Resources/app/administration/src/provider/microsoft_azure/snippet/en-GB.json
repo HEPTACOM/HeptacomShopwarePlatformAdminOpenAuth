@@ -1,0 +1,20 @@
+{
+    "heptacomAdminOpenAuthClient": {
+        "providers": {
+            "microsoft_azure": {
+                "label": "Microsoft Azure Legacy",
+                "logoFile": "microsoft_logo.svg",
+                "helpUrl": "https://docs.microsoft.com/de-de/azure/active-directory/develop/quickstart-register-app"
+            }
+        },
+        "providerFields": {
+            "microsoft_azure": {
+                "deprecatedTitle": "This provider is deprecated!",
+                "deprecatedDescription": "The Microsoft Azure Legacy provider is deprecated and will be removed in one of the upcoming versions. Please migrate to the new Microsoft Azure provider.",
+                "additionalScopes": "Application scopes",
+                "clientId": "Application identifier",
+                "clientSecret": "Application secret"
+            }
+        }
+    }
+}

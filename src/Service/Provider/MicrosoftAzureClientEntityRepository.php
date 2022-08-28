@@ -8,6 +8,9 @@ use Heptacom\AdminOpenAuth\Component\Provider\DefaultInjectingEntityRepositoryDe
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 
+/**
+ * @deprecated tag:v5.0.0 will be replaced by microsoft_azure_oidc provider
+ */
 class MicrosoftAzureClientEntityRepository extends DefaultInjectingEntityRepositoryDecorator
 {
     protected function injectDefaults(array $payload, Context $context): array

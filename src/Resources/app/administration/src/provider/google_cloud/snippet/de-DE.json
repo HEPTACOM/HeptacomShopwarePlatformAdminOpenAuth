@@ -1,0 +1,18 @@
+{
+    "heptacomAdminOpenAuthClient": {
+        "providers": {
+            "google_cloud": {
+                "label": "Google Cloud",
+                "logoFile": "google_logo.svg",
+                "helpUrl": "https://developers.google.com/identity/protocols/oauth2/openid-connect"
+            }
+        },
+        "providerFields": {
+            "google_cloud": {
+                "additionalScopes": "Anwendungsberechtigungen",
+                "clientId": "Client-ID",
+                "clientSecret": "Clientschlüssel"
+            }
+        }
+    }
+}

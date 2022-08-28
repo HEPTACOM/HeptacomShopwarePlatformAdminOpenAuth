@@ -1,6 +1,30 @@
-* Fix display issues for checkbox icons placed in tables that are used outside of this plugin's scope
-* Fix Shopware 6.4.11 compatibility
+# Unreleased
+
+## Added
+* Add flag to client configurations to disable users role elevation to admin
+* Add OpenID Connect provider
+* Add Microsoft Azure OIDC provider, using the OpenID Connect provider instead of the external `thenetworg/azure-oauth2` library
+* Add Google Cloud provider
+* Add Keycloak provider
+* Add OneLogin provider
+* Add Okta provider
+* Add Cidaas provider
+* Add help link to `heptacom-admin-open-auth-client-edit-page`
+
+## Changed
+* Changed create provider page to get a better overview of the existing providers
+
+## Deprecated
+* Microsoft Azure will be replaced by the Microsoft Azure OIDC provider in version 5.0.
+
+## Removed
 * Drop Shopware 6.4.0 to 6.4.10 support
+
+## Fixed
+* Fix Shopware 6.4.11 compatibility
+* Resolve issues with other plugins, also extending `@Administration/administration/index.html.twig`
+* Fix issue that users connected with this plugin cannot be deleted
+* Fix display issues for checkbox icons placed in tables that are used outside of this plugin's scope
 
 # 4.0.2
 

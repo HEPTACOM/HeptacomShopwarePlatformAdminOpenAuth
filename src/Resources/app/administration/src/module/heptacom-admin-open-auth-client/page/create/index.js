@@ -1,3 +1,4 @@
+import './heptacom-admin-open-auth-client-create-page.scss';
 import template from './heptacom-admin-open-auth-client-create-page.html.twig';
 
 const { Component } = Shopware;
@@ -37,7 +38,8 @@ Component.register('heptacom-admin-open-auth-client-create-page', {
                 .then(items => {
                     this.items = items.data.map(key => ({
                         key,
-                        label: this.$t(`heptacomAdminOpenAuthClient.providers.${key}`),
+                        label: this.$t(`heptacomAdminOpenAuthClient.providers.${key}.label`),
+                        logoFile: this.$t(`heptacomAdminOpenAuthClient.providers.${key}.logoFile`),
                         actionLabel: this.$te(`.heptacomAdminOpenAuthClient.providersCreate.${key}`) ?
                             this.$t(`heptacomAdminOpenAuthClient.providersCreate.${key}`) :
                             this.$t('heptacom-admin-open-auth-client.pages.create.actions.create'),
@@ -48,6 +50,9 @@ Component.register('heptacom-admin-open-auth-client-create-page', {
                     }))
                     .sort((a, b) =>
                         a.label.localeCompare(b.label)
+                    )
+                    .filter((provider) =>
+                        provider.key !== 'microsoft_azure'
                     );
                     this.isLoading = false;
                 });

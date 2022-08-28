@@ -1,6 +1,30 @@
-* Fehlerbehebung durch Anzeigeproblemen von Checkboxen in Tabellen außerhalb vom Plugin
-* Fehler mit Shopware 6.4.11 Kompatibilität behoben
+# Unreleased
+
+## Hinzugefügt
+* Konfiguration zum Deaktivieren der Administrationszuweisung an Clienteinstellungen hinzugefügt
+* OpenID Connect Provider hinzugefügt
+* Microsoft Azure OIDC Provider hinzugefügt, welcher anstelle der `thenetworg/azure-oauth2` Bibliothek, den OpenID Connect Provider verwendet
+* Google Cloud Provider hinzugefügt
+* Keycloak Provider hinzugefügt
+* OneLogin Provider hinzugefügt
+* Okta Provider hinzugefügt
+* Cidaas Provider hinzugefügt
+* Hilfe-Link zu `heptacom-admin-open-auth-client-edit-page` hinzugefügt
+
+## Geändert
+* Provider hinzufügen Seite überarbeitet, um eine bessere Übersicht über die verfügbaren Provider zu bekommen
+
+## Abgekündigt
+* Der Microsoft Azure Provider wird in Version 5.0 durch den Microsoft Azure OIDC Provider vollständig ersetzt.
+
+## Entfernt
 * Shopware 6.4.0 bis 6.4.10 Unterstützung entfernt
+
+## Behoben
+* Fehler mit Shopware 6.4.11 Kompatibilität behoben
+* Fehler behoben, der Probleme mit anderen Plugins, die `@Administration/administration/index.html.twig` extenden, verursacht hat
+* Fehler behoben, der das Löschen von Benutzern verhindert, die sich über SSO eingeloggt haben.
+* Fehlerbehebung durch Anzeigeproblemen von Checkboxen in Tabellen außerhalb vom Plugin
 
 # 4.0.2
 
