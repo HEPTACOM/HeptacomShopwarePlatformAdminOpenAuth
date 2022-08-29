@@ -8,6 +8,7 @@ Component.register('heptacom-admin-open-auth-client-listing-page', {
     template,
 
     inject: [
+        'acl',
         'repositoryFactory',
     ],
 

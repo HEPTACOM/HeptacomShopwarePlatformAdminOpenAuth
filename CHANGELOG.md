@@ -11,6 +11,7 @@
 * Add Cidaas provider
 * Add help link to `heptacom-admin-open-auth-client-edit-page`
 * Add support verify using OAuth when asked for a password to verify in `sw-verify-user-modal`
+* Add ACL for OAuth admins
 
 ## Changed
 * Changed create provider page to get a better overview of the existing providers
