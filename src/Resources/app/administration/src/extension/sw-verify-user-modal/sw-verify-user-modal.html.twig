@@ -1,32 +1,8 @@
 {% block sw_settings_user_detail_content_confirm_password_modal_input__confirm_password %}
-    <sw-loader
-        v-if="heptacomAdminOpenAuthLoading"
-    ></sw-loader>
-    <template v-else>
-        <sw-loader
-            v-if="heptacomAdminOpenAuthWaitingForConfirmation"
-        ></sw-loader>
-        <sw-card-section
-            class="sw-verify-user-modal--heptacom-admin-open-auth-client-password-confirm"
-            divider="bottom"
-            v-if="heptacomAdminOpenAuthClients.length > 0"
-        >
-            <sw-button
-                v-for="client of heptacomAdminOpenAuthClients"
-                :key="client.id"
-                block
-                @click="startHeptacomAdminOpenAuthFlow(client)"
-            >
-                {{ $t('sw-verify-user-modal.heptacomAdminOpenAuth.confirmWith', {
-                    'clientName': client.name
-                }) }}
-                <sw-icon
-                    name="small-arrow-small-external"
-                    small
-                ></sw-icon>
-            </sw-button>
-        </sw-card-section>
-    </template>
+    <heptacom-admin-open-auth-user-confirm-login
+        ref="heptacomAdminOpenAuthUserConfirmLogin"
+        @confirm="heptacomAdminOpenAuthUserConfirm"
+    ></heptacom-admin-open-auth-user-confirm-login>
 
     {% parent %}
 {% endblock %}

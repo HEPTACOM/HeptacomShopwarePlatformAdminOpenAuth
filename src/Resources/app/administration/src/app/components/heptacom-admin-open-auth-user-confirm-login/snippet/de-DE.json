@@ -1,0 +1,5 @@
+{
+    "heptacom-admin-open-auth-user-confirm-login": {
+        "confirmWith": "Identität bestätigen mit {clientName}"
+    }
+}
