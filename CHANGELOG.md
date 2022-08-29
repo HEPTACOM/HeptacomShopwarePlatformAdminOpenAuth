@@ -1,6 +1,7 @@
 # 4.1.0
 
-## Added
+**Added**
+
 * Add flag to client configurations to disable users role elevation to admin
 * Add OpenID Connect provider
 * Add Microsoft Azure OIDC provider, using the OpenID Connect provider instead of the external `thenetworg/azure-oauth2` library
@@ -14,18 +15,22 @@
 * Add support verify using OAuth when asked for a password to verify in `sw-verify-user-modal` (generic password confirm component) and `sw-profile-index` (own profile), but not in `sw-users-permissions-user-listing` (admin user listing) as the deletion confirmation is not safely replaceable
 * Add ACL for OAuth admins
 
-## Changed
+**Changed**
+
 * Changed create provider page to get a better overview of the existing providers
 * Changed `\Heptacom\AdminOpenAuth\Service\OpenAuthenticationFlow::getLoginRoutes` to sort the clients by name
 * Changed `sw-profile-index` overwrite to allow changes for connected OAuth clients if users only have `user_change_me` permission
 
-## Deprecated
+**Deprecated**
+
 * Microsoft Azure will be replaced by the Microsoft Azure OIDC provider in version 5.0.
 
-## Removed
+**Removed**
+
 * Drop Shopware 6.4.0 to 6.4.10 support
 
-## Fixed
+**Fixed**
+
 * Fix Shopware 6.4.11 compatibility
 * Resolve issues with other plugins, also extending `@Administration/administration/index.html.twig`
 * Fix issue that users connected with this plugin cannot be deleted

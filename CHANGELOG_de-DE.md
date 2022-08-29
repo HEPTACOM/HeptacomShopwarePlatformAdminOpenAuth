@@ -1,6 +1,7 @@
 # 4.1.0
 
-## Hinzugefügt
+**Hinzugefügt**
+
 * Konfiguration zum Deaktivieren der Administrationszuweisung an Clienteinstellungen hinzugefügt
 * OpenID Connect Provider hinzugefügt
 * Microsoft Azure OIDC Provider hinzugefügt, welcher anstelle der `thenetworg/azure-oauth2` Bibliothek, den OpenID Connect Provider verwendet
@@ -14,18 +15,22 @@
 * Bestätigung mit OAuth Anbieter, wenn nach dem Loginpasswort gefragt wird in `sw-verify-user-modal` (generische Bestätigungskomponente) und in `sw-profile-index` (eigenes Benutzerprofil) hinzugefügt, jedoch nicht in `sw-users-permissions-user-listing` (Administrationsbenutzerliste), da ein Eingriff in die Löschbestätigung nicht sicher zu ersetzen ist
 * Berechtigung für OAuth Administratoren hinzugefügt
 
-## Geändert
+**Geändert**
+
 * Provider hinzufügen Seite überarbeitet, um eine bessere Übersicht über die verfügbaren Provider zu bekommen
 * `\Heptacom\AdminOpenAuth\Service\OpenAuthenticationFlow::getLoginRoutes` geändert, um die Clients nach Namen zu sortieren
 * `sw-profile-index`-Erweiterung geändert, damit Änderungen an den eigenen OAuth-Einstellungen auch möglich sind, wenn nur die `user_change_me` Berechtigung erteilt wurde
 
-## Abgekündigt
+**Abgekündigt**
+
 * Der Microsoft Azure Provider wird in Version 5.0 durch den Microsoft Azure OIDC Provider vollständig ersetzt.
 
-## Entfernt
+**Entfernt**
+
 * Shopware 6.4.0 bis 6.4.10 Unterstützung entfernt
 
-## Behoben
+**Behoben**
+
 * Fehler mit Shopware 6.4.11 Kompatibilität behoben
 * Fehler behoben, der Probleme mit anderen Plugins, die `@Administration/administration/index.html.twig` extenden, verursacht hat
 * Fehler behoben, der das Löschen von Benutzern verhindert, die sich über SSO eingeloggt haben.
