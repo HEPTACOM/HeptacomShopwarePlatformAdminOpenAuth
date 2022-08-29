@@ -1,4 +1,4 @@
-# Unreleased
+# 4.1.0
 
 ## Hinzugefügt
 * Konfiguration zum Deaktivieren der Administrationszuweisung an Clienteinstellungen hinzugefügt

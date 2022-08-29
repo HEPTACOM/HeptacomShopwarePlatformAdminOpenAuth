@@ -1,4 +1,4 @@
-# Unreleased
+# 4.1.0
 
 ## Added
 * Add flag to client configurations to disable users role elevation to admin
