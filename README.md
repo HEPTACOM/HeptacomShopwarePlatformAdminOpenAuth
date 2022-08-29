@@ -136,6 +136,7 @@ You can find an archived link to these guidelines below.
 ### OneLogin
 
 The One Identity logo is a registered trademark of One Identity, Inc.
+
 * [https://www.oneidentity.com/docs/one-identity-trademark-usage-guidelines-legal-142035.pdf](https://web.archive.org/web/20220826194021/https://www.oneidentity.com/docs/one-identity-trademark-usage-guidelines-legal-142035.pdf)
 
 ### OpenID Connect
