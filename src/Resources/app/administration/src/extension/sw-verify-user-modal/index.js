@@ -1,8 +1,7 @@
 import './sw-verify-user-modal.scss';
 import template from './sw-verify-user-modal.html.twig';
 
-const { Component, Context, Data } = Shopware;
-const { Criteria } = Data;
+const { Component, Context } = Shopware;
 const heptacomAdminOpenAuthConfirmState = 'HeptacomAdminOpenAuthConfirmState';
 
 Component.override('sw-verify-user-modal', {
@@ -11,7 +10,6 @@ Component.override('sw-verify-user-modal', {
     inject: [
         'loginService',
         'repositoryFactory',
-        'userService',
     ],
 
     data() {
@@ -35,29 +33,20 @@ Component.override('sw-verify-user-modal', {
 
     methods: {
         async createdComponent() {
-            const user = (await this.userService.getUser()).data;
-            this.loadHeptacomAdminOpenAuth(user.id);
+            this.loadHeptacomAdminOpenAuth();
 
             return this.$super('createdComponent');
         },
 
-        loadHeptacomAdminOpenAuth(userId) {
+        loadHeptacomAdminOpenAuth() {
             this.heptacomAdminOpenAuthLoading = true;
             this.heptacomAdminOpenAuthClients = [];
 
-            const criteria = new Criteria();
-            criteria.addFilter(Criteria.equals('active', true));
-            criteria.addFilter(Criteria.equals('login', true));
-            criteria.addFilter(Criteria.equals('userKeys.userId', userId));
-            criteria.getAssociation('userKeys').addFilter(Criteria.equals('userId', userId));
-
-            return this.heptacomAdminOpenAuthClientsRepository
-                .search(criteria, Context.api)
-                .then(result => {
-                    this.heptacomAdminOpenAuthClients = result;
-                }).finally(() => {
-                    this.heptacomAdminOpenAuthLoading = false;
-                });
+            this.getHeptacomAdminOpenAuthConnectedClients().then(result => {
+                this.heptacomAdminOpenAuthClients = result;
+            }).finally(() => {
+                this.heptacomAdminOpenAuthLoading = false;
+            });
         },
 
         startHeptacomAdminOpenAuthFlow(client) {
@@ -93,7 +82,7 @@ Component.override('sw-verify-user-modal', {
                             }
                         }
                     }, 1000);
-                })
+                });
         },
 
         onCloseConfirmPasswordModal() {
@@ -103,11 +92,21 @@ Component.override('sw-verify-user-modal', {
             return this.$super('onCloseConfirmPasswordModal');
         },
 
+        getHeptacomAdminOpenAuthConnectedClients() {
+            const headers = this.heptacomAdminOpenAuthClientsRepository.buildHeaders(Context.api);
+
+            return this.heptacomAdminOpenAuthHttpClient
+                .get(`/_action/open-auth/client/list`, { headers })
+                .then(response => {
+                    return response.data.filter(client => client.connected);
+                });
+        },
+
         getHeptacomAdminOpenAuthConfirmRedirectUrl(clientId) {
             const headers = this.heptacomAdminOpenAuthClientsRepository.buildHeaders(Context.api);
 
             return this.heptacomAdminOpenAuthHttpClient
-                .get(`/_admin/open-auth/${clientId}/confirm`, { headers })
+                .get(`/_action/open-auth/${clientId}/confirm`, { headers })
                 .then(response => {
                     return response.data.target;
                 });

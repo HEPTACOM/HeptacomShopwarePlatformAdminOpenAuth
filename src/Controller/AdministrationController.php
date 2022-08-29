@@ -16,12 +16,15 @@ use Heptacom\OpenAuth\ClientProvider\Contract\ClientProviderRepositoryContract;
 use Heptacom\OpenAuth\Route\Contract\RedirectReceiveRouteContract;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Shopware\Core\Framework\Api\Context\AdminApiSource;
+use Shopware\Core\Framework\Api\Context\SystemSource;
 use Shopware\Core\Framework\Api\Response\ResponseFactoryInterface;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
+use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
 use Shopware\Core\Framework\Routing\Annotation\RouteScope;
 use Shopware\Core\PlatformRequest;
+use Shopware\Core\System\SalesChannel\Context\BaseContextFactory;
 use Symfony\Bridge\PsrHttpMessage\Factory\PsrHttpFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -162,8 +165,38 @@ class AdministrationController extends AbstractController
     /**
      * @Route(
      *     methods={"GET"},
+     *     name="api.heptacom.admin_open_auth.client.list",
+     *     path="/api/_action/open-auth/client/list"
+     * )
+     */
+    public function clientList(Context $context): Response
+    {
+        /** @var AdminApiSource $adminApiSource */
+        $adminApiSource = $context->getSource();
+
+        $criteria = new Criteria();
+        $criteria->getAssociation('userKeys')
+            ->addFilter(
+                new EqualsFilter('userId', $adminApiSource->getUserId())
+            );
+
+        $clients = $this->flow->getAvailableClients($criteria, $context)
+            ->map(static fn (ClientEntity $client): array => [
+                'id' => $client->getId(),
+                'name' => $client->getName(),
+                'connected' => $client->getUserKeys()->count() > 0
+            ]);
+
+        return JsonResponse::create([
+            'data' => \array_values($clients)
+        ]);
+    }
+
+    /**
+     * @Route(
+     *     methods={"GET"},
      *     name="api.heptacom.admin_open_auth.remote_connect",
-     *     path="/api/_admin/open-auth/{clientId}/connect"
+     *     path="/api/_action/open-auth/{clientId}/connect"
      * )
      */
     public function remoteConnect(string $clientId, Context $context): Response
@@ -172,25 +205,54 @@ class AdministrationController extends AbstractController
         $adminApiSource = $context->getSource();
 
         return JsonResponse::create([
-            'target' => $this->flow->getRedirectUrlToConnect($clientId, $adminApiSource->getUserId(), $context),
+            'target' => $this->flow->getRedirectUrlToConnect(
+                $clientId,
+                $adminApiSource->getUserId(),
+                $this->getSystemContext($context)
+            ),
         ]);
     }
 
     /**
      * @Route(
      *     methods={"GET"},
+     *     name="api.heptacom.admin_open_auth.remote_disconnect",
+     *     path="/api/_action/open-auth/{clientId}/disconnect"
+     * )
+     */
+    public function remoteDisconnect(string $clientId, Context $context): Response
+    {
+        /** @var AdminApiSource $adminApiSource */
+        $adminApiSource = $context->getSource();
+
+        $this->flow->disconnectClient($clientId, $adminApiSource->getUserId(), $this->getSystemContext($context));
+
+        return JsonResponse::create([]);
+    }
+
+    /**
+     * @Route(
+     *     methods={"GET"},
      *     name="api.heptacom.admin_open_auth.confirm",
-     *     path="/api/_admin/open-auth/{clientId}/confirm"
+     *     path="/api/_action/open-auth/{clientId}/confirm"
      * )
      */
     public function confirmUrl(string $clientId, Context $context): Response
     {
         /** @var AdminApiSource $adminApiSource */
         $adminApiSource = $context->getSource();
-        $state = $this->confirmStateFactory->create($clientId, $adminApiSource->getUserId(), $context);
+
+        $systemContext = $this->getSystemContext($context);
+
+        $state = $this->confirmStateFactory->create($clientId, $adminApiSource->getUserId(), $systemContext);
 
         return JsonResponse::create([
-            'target' => $this->loginUrlGenerator->generate($clientId, $state, $this->getRedirectBehaviour($clientId), $context),
+            'target' => $this->loginUrlGenerator->generate(
+                $clientId,
+                $state,
+                $this->getRedirectBehaviour($clientId),
+                $systemContext
+            ),
         ]);
     }
 
@@ -260,5 +322,20 @@ class AdministrationController extends AbstractController
         return (new RedirectBehaviour())
             ->setExpectState(true)
             ->setRedirectUri($this->generateRedirectUrl($clientId));
+    }
+
+    private function getSystemContext(Context $context): Context
+    {
+        return new Context(
+            new SystemSource(),
+            $context->getRuleIds(),
+            $context->getCurrencyId(),
+            $context->getLanguageIdChain(),
+            $context->getVersionId(),
+            $context->getCurrencyFactor(),
+            $context->considerInheritance(),
+            $context->getTaxState(),
+            $context->getRounding()
+        );
     }
 }
