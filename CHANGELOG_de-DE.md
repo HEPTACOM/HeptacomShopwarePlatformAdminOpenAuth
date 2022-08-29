@@ -28,6 +28,7 @@
 * Fehler mit Shopware 6.4.11 Kompatibilität behoben
 * Fehler behoben, der Probleme mit anderen Plugins, die `@Administration/administration/index.html.twig` extenden, verursacht hat
 * Fehler behoben, der das Löschen von Benutzern verhindert, die sich über SSO eingeloggt haben.
+* Fehler behoben, der die Darstellung von Checkboxen in der Administration auch außerhalb von Bereichen dieses Plugins beeinflusst hat
 
 # 4.0.2
 
