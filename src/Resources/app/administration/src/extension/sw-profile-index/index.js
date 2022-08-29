@@ -1,7 +1,6 @@
 import template from './sw-profile-index.html.twig';
 
-const { Component, Context, Data } = Shopware;
-const { Criteria } = Data;
+const { Component, Context } = Shopware;
 
 Component.override('sw-profile-index', {
     template,
@@ -18,68 +17,50 @@ Component.override('sw-profile-index', {
             return this.repositoryFactory.create('heptacom_admin_open_auth_client')
         },
 
-        heptacomAdminOpenAuthUserEmailsRepository() {
-            return this.repositoryFactory.create('heptacom_admin_open_auth_user_email')
+        heptacomAdminOpenAuthHttpClient() {
+            return this.heptacomAdminOpenAuthClientsRepository.httpClient;
         },
-
-        heptacomAdminOpenAuthUserKeysRepository() {
-            return this.repositoryFactory.create('heptacom_admin_open_auth_user_key')
-        },
-
-        heptacomAdminOpenAuthUserTokensRepository() {
-            return this.repositoryFactory.create('heptacom_admin_open_auth_user_token')
-        }
     },
 
     methods: {
-        loadHeptacomAdminOpenAuth(userId) {
+        loadHeptacomAdminOpenAuth() {
             this.heptacomAdminOpenAuthLoading = true;
 
             this.heptacomAdminOpenAuthClients = [];
-            const criteria = new Criteria();
-            criteria.getAssociation('userKeys').addFilter(Criteria.equals('userId', userId));
-            criteria.getAssociation('userEmails').addFilter(Criteria.equals('userId', userId));
-            criteria.getAssociation('userTokens').addFilter(Criteria.equals('userId', userId));
 
-            return this.heptacomAdminOpenAuthClientsRepository
-                .search(criteria, Context.api)
-                .then(result => {
-                    this.heptacomAdminOpenAuthClients = result.filter(client =>
-                        (client.active && client.connect) || client.userKeys.length > 0
-                    );
+            const headers = this.heptacomAdminOpenAuthClientsRepository.buildHeaders(Context.api);
+
+            return this.heptacomAdminOpenAuthHttpClient
+                .get(`/_admin/open-auth/client/list`, { headers })
+                .then(response => {
+                    this.heptacomAdminOpenAuthClients = response.data.data;
                     this.heptacomAdminOpenAuthLoading = false;
                 });
-        },
-
-        revokeHeptacomAdminOpenAuthUserKey(item) {
-            return Promise.all([
-                    ...item.userKeys.map(key =>
-                        this.heptacomAdminOpenAuthUserKeysRepository.delete(key.id, Context.api),
-                    ),
-                    ...item.userEmails.map(email =>
-                        this.heptacomAdminOpenAuthUserEmailsRepository.delete(email.id, Context.api)
-                    ),
-                    ...item.userTokens.map(token =>
-                        this.heptacomAdminOpenAuthUserTokensRepository.delete(token.id, Context.api)
-                    )
-                ])
-                .then(() => this.loadHeptacomAdminOpenAuth(this.user.id));
         },
 
         redirectToLoginMask(clientId) {
             const headers = this.heptacomAdminOpenAuthClientsRepository.buildHeaders(Context.api);
 
-            this.heptacomAdminOpenAuthClientsRepository
-                .httpClient
-                .get(`/_admin/open-auth/${clientId}/connect`, { headers })
+            this.heptacomAdminOpenAuthHttpClient
+                .post(`/_action/open-auth/${clientId}/connect`, {}, { headers })
                 .then(response => {
                     window.location.href = response.data.target;
                 });
         },
 
+        revokeHeptacomAdminOpenAuthUserKey(clientId) {
+            const headers = this.heptacomAdminOpenAuthClientsRepository.buildHeaders(Context.api);
+
+            this.heptacomAdminOpenAuthHttpClient
+                .post(`/_action/open-auth/${clientId}/disconnect`, {}, { headers })
+                .then(response => {
+                    this.loadHeptacomAdminOpenAuth()
+                });
+        },
+
         getUserData() {
             return this.$super('getUserData').then(user => {
-                return this.loadHeptacomAdminOpenAuth(user.id).then(() => user);
+                return this.loadHeptacomAdminOpenAuth().then(() => user);
             })
         }
     }

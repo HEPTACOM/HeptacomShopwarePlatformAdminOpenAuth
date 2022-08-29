@@ -1,3 +1,4 @@
+import './acl';
 import './page/create';
 import './page/edit';
 import './page/listing';
@@ -17,19 +18,21 @@ Module.register('heptacom-admin-open-auth-client', {
             component: 'heptacom-admin-open-auth-client-create-page',
             path: 'create',
             meta: {
-                parentPath: 'heptacom.admin.open.auth.client.settings'
-            },
+                parentPath: 'heptacom.admin.open.auth.client.settings',
+                privilege: 'heptacom_admin_open_auth_client.creator'
+            }
         },
         edit: {
             component: 'heptacom-admin-open-auth-client-edit-page',
             path: 'edit/:id',
             meta: {
-                parentPath: 'heptacom.admin.open.auth.client.settings'
+                parentPath: 'heptacom.admin.open.auth.client.settings',
+                privilege: 'heptacom_admin_open_auth_client.editor'
             },
             props: {
                 default(route) {
                     return {
-                        clientId: route.params.id,
+                        clientId: route.params.id
                     };
                 }
             }
@@ -38,14 +41,16 @@ Module.register('heptacom-admin-open-auth-client', {
             component: 'heptacom-admin-open-auth-client-listing-page',
             path: 'settings',
             meta: {
-                parentPath: 'sw.settings.index'
+                parentPath: 'sw.settings.index',
+                privilege: 'heptacom_admin_open_auth_client.viewer'
             }
-        },
+        }
     },
 
     settingsItem: [{
         to: 'heptacom.admin.open.auth.client.settings',
         group: 'system',
         icon: 'default-action-log-in',
+        privilege: 'heptacom_admin_open_auth_client.viewer'
     }]
 });
