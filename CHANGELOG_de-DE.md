@@ -15,6 +15,7 @@
 
 ## Geändert
 * Provider hinzufügen Seite überarbeitet, um eine bessere Übersicht über die verfügbaren Provider zu bekommen
+* `sw-profile-index`-Erweiterung geändert, damit Änderungen an den eigenen OAuth-Einstellungen auch möglich sind, wenn nur die `user_change_me` Berechtigung erteilt wurde
 
 ## Abgekündigt
 * Der Microsoft Azure Provider wird in Version 5.0 durch den Microsoft Azure OIDC Provider vollständig ersetzt.

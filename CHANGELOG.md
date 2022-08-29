@@ -15,6 +15,7 @@
 
 ## Changed
 * Changed create provider page to get a better overview of the existing providers
+* Changed `sw-profile-index` overwrite to allow changes for connected OAuth clients if users only have `user_change_me` permission
 
 ## Deprecated
 * Microsoft Azure will be replaced by the Microsoft Azure OIDC provider in version 5.0.
