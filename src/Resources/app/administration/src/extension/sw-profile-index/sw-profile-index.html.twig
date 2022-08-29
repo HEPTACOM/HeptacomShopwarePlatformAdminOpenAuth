@@ -50,3 +50,12 @@
         </sw-card>
     {% endblock %}
 {% endblock %}
+
+{% block sw_profile_index_content_confirm_password_modal_input__confirm_password %}
+    <heptacom-admin-open-auth-user-confirm-login
+        ref="heptacomAdminOpenAuthUserConfirmLogin"
+        @confirm="heptacomAdminOpenAuthUserConfirm"
+    ></heptacom-admin-open-auth-user-confirm-login>
+
+    {% parent %}
+{% endblock %}

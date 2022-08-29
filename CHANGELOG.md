@@ -10,7 +10,8 @@
 * Add Okta provider
 * Add Cidaas provider
 * Add help link to `heptacom-admin-open-auth-client-edit-page`
-* Add support verify using OAuth when asked for a password to verify in `sw-verify-user-modal`
+* Add Vue user verification component `heptacom-admin-open-auth-user-confirm-login` to build own user confirmed actions
+* Add support verify using OAuth when asked for a password to verify in `sw-verify-user-modal` (generic password confirm component) and `sw-profile-index` (own profile), but not in `sw-users-permissions-user-listing` (admin user listing) as the deletion confirmation is not safely replaceable
 * Add ACL for OAuth admins
 
 ## Changed

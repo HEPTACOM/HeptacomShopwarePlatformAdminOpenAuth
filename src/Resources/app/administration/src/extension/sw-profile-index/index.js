@@ -62,6 +62,20 @@ Component.override('sw-profile-index', {
             return this.$super('getUserData').then(user => {
                 return this.loadHeptacomAdminOpenAuth().then(() => user);
             })
+        },
+
+        heptacomAdminOpenAuthUserConfirm(context) {
+            this.confirmPasswordModal = false;
+            this.isSaveSuccessful = false;
+            this.isLoading = true;
+
+            return this.saveUser(context.authToken.access);
+        },
+
+        onCloseConfirmPasswordModal() {
+            this.$refs.heptacomAdminOpenAuthUserConfirmLogin.abortAuthFlow();
+
+            return this.$super('onCloseConfirmPasswordModal');
         }
     }
 });

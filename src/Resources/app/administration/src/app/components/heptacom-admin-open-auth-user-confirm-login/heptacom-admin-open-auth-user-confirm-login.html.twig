@@ -1,0 +1,32 @@
+{% block heptacom_admin_open_auth_user_confirm %}
+    <div class="heptacom-admin-open-auth-user-confirm-login">
+        <sw-loader
+            v-if="loading"
+        ></sw-loader>
+        <template v-else>
+            <sw-loader
+                v-if="waitingForConfirmation"
+            ></sw-loader>
+            <sw-card-section
+                class="heptacom-admin-open-auth-user-confirm-login--clients"
+                divider="bottom"
+                v-if="clients.length > 0"
+            >
+                <sw-button
+                    v-for="client of clients"
+                    :key="client.id"
+                    block
+                    @click="startAuthFlow(client)"
+                >
+                    {{ $t('heptacom-admin-open-auth-user-confirm-login.confirmWith', {
+                        'clientName': client.name
+                    }) }}
+                    <sw-icon
+                        name="small-arrow-small-external"
+                        small
+                    ></sw-icon>
+                </sw-button>
+            </sw-card-section>
+        </template>
+    </div>
+{% endblock %}

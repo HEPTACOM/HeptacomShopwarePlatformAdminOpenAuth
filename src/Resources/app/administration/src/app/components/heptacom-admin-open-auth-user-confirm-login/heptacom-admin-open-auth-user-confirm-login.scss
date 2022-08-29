@@ -1,0 +1,18 @@
+.heptacom-admin-open-auth-user-confirm-login {
+    & &--clients.sw-card-section {
+        padding: 15px 0 30px;
+        margin-bottom: 30px;
+    }
+
+    .sw-button {
+        + .sw-button {
+            margin-top: 15px;
+        }
+
+        .sw-button__content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+    }
+}

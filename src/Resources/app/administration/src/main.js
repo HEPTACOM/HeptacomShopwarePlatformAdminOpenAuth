@@ -1,4 +1,5 @@
 import './app/components/heptacom-admin-open-auth-scope-field';
+import './app/components/heptacom-admin-open-auth-user-confirm-login';
 import './extension/sw-profile-index';
 import "./extension/sw-verify-user-modal";
 import './module/heptacom-admin-open-auth-client';
