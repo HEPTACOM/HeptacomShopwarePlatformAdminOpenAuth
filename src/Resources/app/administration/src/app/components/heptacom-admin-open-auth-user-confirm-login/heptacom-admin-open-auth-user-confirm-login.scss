@@ -4,9 +4,15 @@
         margin-bottom: 30px;
     }
 
-    .sw-button .sw-button__content {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
+    .sw-button {
+        + .sw-button {
+            margin-top: 15px;
+        }
+
+        .sw-button__content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
     }
 }
