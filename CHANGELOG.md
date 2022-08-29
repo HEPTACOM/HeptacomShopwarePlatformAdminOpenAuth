@@ -15,6 +15,7 @@
 
 ## Changed
 * Changed create provider page to get a better overview of the existing providers
+* Changed `\Heptacom\AdminOpenAuth\Service\OpenAuthenticationFlow::getLoginRoutes` to sort the clients by name
 * Changed `sw-profile-index` overwrite to allow changes for connected OAuth clients if users only have `user_change_me` permission
 
 ## Deprecated

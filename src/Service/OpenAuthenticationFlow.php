@@ -18,6 +18,7 @@ use Shopware\Core\Framework\DataAbstractionLayer\EntityCollection;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
+use Shopware\Core\Framework\DataAbstractionLayer\Search\Sorting\FieldSorting;
 use Shopware\Core\Framework\Uuid\Uuid;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
@@ -136,6 +137,7 @@ class OpenAuthenticationFlow implements OpenAuthenticationFlowInterface
             new EqualsFilter('active', true),
             new EqualsFilter('login', true)
         );
+        $criteria->addSorting(new FieldSorting('name', FieldSorting::ASCENDING));
 
         return $this->clientsRepository
             ->search($criteria, $context)
