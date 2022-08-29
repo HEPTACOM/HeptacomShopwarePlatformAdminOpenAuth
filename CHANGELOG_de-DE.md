@@ -10,6 +10,7 @@
 * Okta Provider hinzugefügt
 * Cidaas Provider hinzugefügt
 * Hilfe-Link zu `heptacom-admin-open-auth-client-edit-page` hinzugefügt
+* Vue Benutzerverifikationskomponente `heptacom-admin-open-auth-user-confirm-login` hinzugefügt zum einfachen Bauen eigener Bestätigungsdialoge
 * Bestätigung mit OAuth Anbieter, wenn nach dem Loginpasswort gefragt wird in `sw-verify-user-modal` (generische Bestätigungskomponente) und in `sw-profile-index` (eigenes Benutzerprofil) hinzugefügt, jedoch nicht in `sw-users-permissions-user-listing` (Administrationsbenutzerliste), da ein Eingriff in die Löschbestätigung nicht sicher zu ersetzen ist
 * Berechtigung für OAuth Administratoren hinzugefügt
 
