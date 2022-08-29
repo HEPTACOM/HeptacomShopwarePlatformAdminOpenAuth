@@ -96,7 +96,7 @@ Component.override('sw-verify-user-modal', {
             const headers = this.heptacomAdminOpenAuthClientsRepository.buildHeaders(Context.api);
 
             return this.heptacomAdminOpenAuthHttpClient
-                .get(`/_action/open-auth/client/list`, { headers })
+                .get(`/_admin/open-auth/client/list`, { headers })
                 .then(response => {
                     return response.data.filter(client => client.connected);
                 });
@@ -106,7 +106,7 @@ Component.override('sw-verify-user-modal', {
             const headers = this.heptacomAdminOpenAuthClientsRepository.buildHeaders(Context.api);
 
             return this.heptacomAdminOpenAuthHttpClient
-                .get(`/_action/open-auth/${clientId}/confirm`, { headers })
+                .get(`/_admin/open-auth/${clientId}/confirm`, { headers })
                 .then(response => {
                     return response.data.target;
                 });

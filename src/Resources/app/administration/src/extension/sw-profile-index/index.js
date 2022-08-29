@@ -31,7 +31,7 @@ Component.override('sw-profile-index', {
             const headers = this.heptacomAdminOpenAuthClientsRepository.buildHeaders(Context.api);
 
             return this.heptacomAdminOpenAuthHttpClient
-                .get(`/_action/open-auth/client/list`, { headers })
+                .get(`/_admin/open-auth/client/list`, { headers })
                 .then(response => {
                     this.heptacomAdminOpenAuthClients = response.data.data;
                     this.heptacomAdminOpenAuthLoading = false;
@@ -42,7 +42,7 @@ Component.override('sw-profile-index', {
             const headers = this.heptacomAdminOpenAuthClientsRepository.buildHeaders(Context.api);
 
             this.heptacomAdminOpenAuthHttpClient
-                .get(`/_action/open-auth/${clientId}/connect`, { headers })
+                .post(`/_action/open-auth/${clientId}/connect`, {}, { headers })
                 .then(response => {
                     window.location.href = response.data.target;
                 });
@@ -52,7 +52,7 @@ Component.override('sw-profile-index', {
             const headers = this.heptacomAdminOpenAuthClientsRepository.buildHeaders(Context.api);
 
             this.heptacomAdminOpenAuthHttpClient
-                .get(`/_action/open-auth/${clientId}/disconnect`, { headers })
+                .post(`/_action/open-auth/${clientId}/disconnect`, {}, { headers })
                 .then(response => {
                     this.loadHeptacomAdminOpenAuth()
                 });

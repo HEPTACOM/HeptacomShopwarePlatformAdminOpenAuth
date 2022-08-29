@@ -165,7 +165,7 @@ class AdministrationController extends AbstractController
      * @Route(
      *     methods={"GET"},
      *     name="api.heptacom.admin_open_auth.client.list",
-     *     path="/api/_action/open-auth/client/list"
+     *     path="/api/_admin/open-auth/client/list"
      * )
      */
     public function clientList(Context $context): Response
@@ -193,7 +193,7 @@ class AdministrationController extends AbstractController
 
     /**
      * @Route(
-     *     methods={"GET"},
+     *     methods={"POST"},
      *     name="api.heptacom.admin_open_auth.remote_connect",
      *     path="/api/_action/open-auth/{clientId}/connect",
      *     defaults={"_acl"={"user_change_me"}}
@@ -215,7 +215,7 @@ class AdministrationController extends AbstractController
 
     /**
      * @Route(
-     *     methods={"GET"},
+     *     methods={"POST"},
      *     name="api.heptacom.admin_open_auth.remote_disconnect",
      *     path="/api/_action/open-auth/{clientId}/disconnect",
      *     defaults={"_acl"={"user_change_me"}}
@@ -235,7 +235,7 @@ class AdministrationController extends AbstractController
      * @Route(
      *     methods={"GET"},
      *     name="api.heptacom.admin_open_auth.confirm",
-     *     path="/api/_action/open-auth/{clientId}/confirm"
+     *     path="/api/_admin/open-auth/{clientId}/confirm"
      * )
      */
     public function confirmUrl(string $clientId, Context $context): Response
