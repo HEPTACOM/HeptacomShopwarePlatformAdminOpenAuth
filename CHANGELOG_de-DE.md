@@ -13,6 +13,7 @@
 
 ## Geändert
 * Provider hinzufügen Seite überarbeitet, um eine bessere Übersicht über die verfügbaren Provider zu bekommen
+* `\Heptacom\AdminOpenAuth\Service\OpenAuthenticationFlow::getLoginRoutes` geändert, um die Clients nach Namen zu sortieren
 
 ## Abgekündigt
 * Der Microsoft Azure Provider wird in Version 5.0 durch den Microsoft Azure OIDC Provider vollständig ersetzt.
