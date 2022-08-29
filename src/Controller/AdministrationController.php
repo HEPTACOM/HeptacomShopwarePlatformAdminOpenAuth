@@ -24,7 +24,6 @@ use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
 use Shopware\Core\Framework\Routing\Annotation\RouteScope;
 use Shopware\Core\PlatformRequest;
-use Shopware\Core\System\SalesChannel\Context\BaseContextFactory;
 use Symfony\Bridge\PsrHttpMessage\Factory\PsrHttpFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -184,11 +183,11 @@ class AdministrationController extends AbstractController
             ->map(static fn (ClientEntity $client): array => [
                 'id' => $client->getId(),
                 'name' => $client->getName(),
-                'connected' => $client->getUserKeys()->count() > 0
+                'connected' => $client->getUserKeys()->count() > 0,
             ]);
 
         return JsonResponse::create([
-            'data' => \array_values($clients)
+            'data' => \array_values($clients),
         ]);
     }
 

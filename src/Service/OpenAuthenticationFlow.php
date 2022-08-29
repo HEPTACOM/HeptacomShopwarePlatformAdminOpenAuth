@@ -99,7 +99,8 @@ class OpenAuthenticationFlow implements OpenAuthenticationFlowInterface
         $this->userResolver->resolve($user, $state, $clientId, $context);
     }
 
-    public function disconnectClient(string $clientId, string $userId, Context $context): void {
+    public function disconnectClient(string $clientId, string $userId, Context $context): void
+    {
         $criteria = new Criteria();
         $criteria->addFilter(
             new EqualsFilter('clientId', $clientId),
@@ -114,15 +115,15 @@ class OpenAuthenticationFlow implements OpenAuthenticationFlowInterface
         ];
 
         /** @var EntityRepositoryInterface $repo */
-        foreach($repos as $repo) {
+        foreach ($repos as $repo) {
             $ids = $repo->searchIds($criteria, $context)->getIds();
 
-            if (count($ids) === 0) {
+            if (\count($ids) === 0) {
                 continue;
             }
 
             $repo->delete(
-                \array_map(static fn(string $id): array => ['id' => $id], $ids),
+                \array_map(static fn (string $id): array => ['id' => $id], $ids),
                 $context
             );
         }
