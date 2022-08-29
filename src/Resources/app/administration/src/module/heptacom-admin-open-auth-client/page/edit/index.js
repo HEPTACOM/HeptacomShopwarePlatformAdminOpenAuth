@@ -6,6 +6,7 @@ Component.register('heptacom-admin-open-auth-client-edit-page', {
     template,
 
     inject: [
+        'acl',
         'repositoryFactory',
         'HeptacomAdminOpenAuthProviderApiService',
     ],

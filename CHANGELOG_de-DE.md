@@ -10,10 +10,13 @@
 * Okta Provider hinzugefügt
 * Cidaas Provider hinzugefügt
 * Hilfe-Link zu `heptacom-admin-open-auth-client-edit-page` hinzugefügt
+* Bestätigung mit OAuth Anbieter, wenn nach dem Loginpasswort gefragt wird in `sw-verify-user-modal` hinzugefügt
+* Berechtigung für OAuth Administratoren hinzugefügt
 
 ## Geändert
 * Provider hinzufügen Seite überarbeitet, um eine bessere Übersicht über die verfügbaren Provider zu bekommen
 * `\Heptacom\AdminOpenAuth\Service\OpenAuthenticationFlow::getLoginRoutes` geändert, um die Clients nach Namen zu sortieren
+* `sw-profile-index`-Erweiterung geändert, damit Änderungen an den eigenen OAuth-Einstellungen auch möglich sind, wenn nur die `user_change_me` Berechtigung erteilt wurde
 
 ## Abgekündigt
 * Der Microsoft Azure Provider wird in Version 5.0 durch den Microsoft Azure OIDC Provider vollständig ersetzt.
