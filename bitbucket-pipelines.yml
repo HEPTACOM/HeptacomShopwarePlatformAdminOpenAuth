@@ -23,7 +23,7 @@ definitions:
                 name: Tag Gate
                 script:
                     - '[[ "${BITBUCKET_TAG}" == *"$(jq -r composer.json .version)" ]]'
-                    - 'grep -qe "## \[${BITBUCKET_TAG}\]" CHANGELOG.md'
+                    - 'grep -qe "# ${BITBUCKET_TAG}" CHANGELOG.md'
                 after-script:
                     - 'test ${BITBUCKET_EXIT_CODE} -eq 0 || echo "Bitbucket tag: ${BITBUCKET_TAG}"'
                     - 'test ${BITBUCKET_EXIT_CODE} -eq 0 || (echo "composer.json version: " && jq -r composer.json .version)'
