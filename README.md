@@ -15,6 +15,74 @@
 ![GitHub contributors](https://img.shields.io/github/contributors/heptacom/HeptacomShopwarePlatformAdminOpenAuth?style=flat-square)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/y/heptacom/HeptacomShopwarePlatformAdminOpenAuth?style=flat-square)
 
+This Shopware 6 plugin allows to add "Login with" functionality into the Shopware administration login page and password confirmation dialogs.
+
+
+## Supported providers
+
+### Atlassian Jira
+
+<img alt="Atlassian Jira" height="64" src="./src/Resources/app/administration/static/logo/jira_logo.svg"/>
+
+Use with Atlassian Jira.
+Read more [here](https://developer.atlassian.com/cloud/jira/platform/oauth-2-3lo-apps/#enabling-oauth-2-0--3lo-).
+
+
+### cidaas
+
+<img alt="cidaas" height="64" src="./src/Resources/app/administration/static/logo/cidaas_logo.svg"/>
+
+Use with cidaas IAM service.
+Read more [here](https://docs.cidaas.com/create-application/createapplication.html).
+
+
+### Google Cloud
+
+<img alt="Google Cloud" height="64" style="margin: 25px 0;" src="./src/Resources/app/administration/static/logo/google_logo.svg"/>
+
+Use with Google Identity service.
+Read more [here](https://developers.google.com/identity/protocols/oauth2/openid-connect).
+
+
+### Keycloak
+
+<img alt="Keycloak" height="64" src="./src/Resources/app/administration/static/logo/keycloak_logo.svg"/>
+
+Use your own identity service with [keycloack](https://www.keycloak.org/).
+Read more [here](https://blogs.sap.com/2021/08/23/keyclock-as-an-openid-connect-oidc-provider./).
+
+
+### Microsoft Azure
+
+<img alt="Microsoft Azure" height="64" style="margin: 12px 0;" src="./src/Resources/app/administration/static/logo/microsoft_logo.svg"/>
+
+Use with Microsoft Azure Active Directory.
+Read more [here](https://docs.microsoft.com/en-US/azure/active-directory/develop/quickstart-register-app).
+
+
+### Okta
+
+<img alt="Okta" height="64" src="./src/Resources/app/administration/static/logo/okta_logo.png"/>
+
+Use with Okta Workforce Identity.
+Read more [here](https://help.okta.com/en-us/Content/Topics/Apps/Apps_App_Integration_Wizard_OIDC.htm).
+
+
+### OneLogin
+
+<img alt="OneLogin" height="64" src="./src/Resources/app/administration/static/logo/onelogin_logo.svg"/>
+
+Use with onelogin Workforce Identity.
+Read more [here](https://developers.onelogin.com/blog/how-to-use-openid-connect-authentication-with-dotnet-core#heading-menu).
+
+
+### OpenID Connect
+
+<img alt="OpenID Connect" height="64" src="./src/Resources/app/administration/static/logo/openid_logo.svg"/>
+
+Try any OpenID Connect provider, that we did not explicitly prepare an optimized configuration for.
+
+
 ## Changes
 
 View the [CHANGELOG](./CHANGELOG.md) file attached to this project.
@@ -28,3 +96,49 @@ You may obtain a copy of the License at [http://www.apache.org/licenses/LICENSE-
 
 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and limitations under the License.
+
+## Trademarks and Logos
+
+All logos, available in this project are protected under copyright.
+Most of them also are registered trademarks.
+Therefore, the usage is only permitted when corresponding trademark/branding guidelines are fulfilled.
+You can find an archived link to these guidelines below.
+
+### Atlassian Jira
+
+* [https://atlassian.design/foundations/logos](https://web.archive.org/web/20220826095450/https://atlassian.design/foundations/logos/)
+* [https://atlassian.design/license](https://web.archive.org/web/20220826095427/https://atlassian.design/license/)
+
+### cidaas
+
+* [https://www.cidaas.com/branding/](https://web.archive.org/web/20220826173916/https://www.cidaas.com/branding/)
+
+### Google
+
+* [https://developers.google.com/identity/branding-guidelines](https://web.archive.org/web/20220826095610/https://developers.google.com/identity/branding-guidelines)
+* [https://about.google/brand-resource-center/brand-elements/](https://web.archive.org/web/20220407015455/https://about.google/brand-resource-center/brand-elements/)
+* [https://about.google/brand-resource-center/rules/](https://web.archive.org/web/20220318020455/https://about.google/brand-resource-center/rules/)
+* [https://about.google/brand-resource-center/brand-terms/](https://web.archive.org/web/20220403110312/https://about.google/brand-resource-center/brand-terms/)
+
+### Keycloak
+
+* [https://design.jboss.org/keycloak/index.htm](https://design.jboss.org/keycloak/index.htm)
+* [https://www.jboss.org/trademarks.html](https://web.archive.org/web/20220826095334/https://www.jboss.org/trademarks.html)
+
+### Microsoft Azure
+
+* [https://docs.microsoft.com/azure/active-directory/develop/howto-add-branding-in-azure-ad-apps](https://web.archive.org/web/20220826095537/https://docs.microsoft.com/en-us/azure/active-directory/develop/howto-add-branding-in-azure-ad-apps)
+
+### Okta
+
+* [https://www.okta.com/terms-of-use-for-okta-content/](https://web.archive.org/web/20220826163845/https://www.okta.com/terms-of-use-for-okta-content/)
+
+### OneLogin
+
+The One Identity logo is a registered trademark of One Identity, Inc.
+* [https://www.oneidentity.com/docs/one-identity-trademark-usage-guidelines-legal-142035.pdf](https://web.archive.org/web/20220826194021/https://www.oneidentity.com/docs/one-identity-trademark-usage-guidelines-legal-142035.pdf)
+
+### OpenID Connect
+
+* [https://openid.net/ipr/openid-logo-guidelines.pdf](https://web.archive.org/web/20220826095703/https://openid.net/ipr/openid-logo-guidelines.pdf)
+* [https://openid.net/wordpress-content/uploads/2017/06/OIDF-Policy-Trademark-Usage-Policy-Final-6-19-2017.pdf](https://web.archive.org/web/20220826100058/https://openid.net/wordpress-content/uploads/2017/06/OIDF-Policy-Trademark-Usage-Policy-Final-6-19-2017.pdf)
