@@ -13,5 +13,10 @@
                 }
             }
         }
+    },
+    "sw-verify-user-modal": {
+        "heptacomAdminOpenAuth": {
+            "confirmWith": "Identität bestätigen mit {clientName}"
+        }
     }
 }

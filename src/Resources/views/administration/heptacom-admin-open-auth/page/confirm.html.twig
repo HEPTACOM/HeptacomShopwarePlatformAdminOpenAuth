@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+        Authentication Confirmation - Shopware Administration (c) shopware AG
+    </title>
+
+    {% block administration_favicons %}
+        <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('static/img/favicon/apple-touch-icon.png', '@Administration') }}">
+        <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('static/img/favicon/favicon-16x16.png', '@Administration') }}">
+        <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('static/img/favicon/favicon-32x32.png', '@Administration') }}" id="dynamic-favicon">
+        <link rel="icon" type="image/png" sizes="192x192" href="{{ asset('static/img/favicon/android-chrome-192x192.png', '@Administration') }}">
+        <link rel="icon" type="image/png" sizes="256x256" href="{{ asset('static/img/favicon/android-chrome-256x256.png', '@Administration') }}">
+        <meta name="msapplication-TileImage" content="{{ asset('static/img/favicon/mstile-150x150.png', '@Administration') }}">
+        <meta name="msapplication-TileColor" content="#189eff">
+        <meta name="theme-color" content="#189eff">
+        <meta name="referrer" content="always">
+    {% endblock %}
+
+    <link rel="stylesheet" href="{{ asset('static/css/vendors-node.css', '@Administration') }}">
+    <link rel="stylesheet" href="{{ asset('static/css/app.css', '@Administration') }}">
+
+</head>
+<body>
+    <div class="sw-modal sw-modal--small">
+        <div class="sw-modal__dialog" style="min-height: auto;">
+            <div class="sw-modal__body" style="padding: 0">
+                <div class="sw-card-section sw-card-section--divider-bottom">
+                    <b>
+                        Confirmation received.
+                    </b>
+                    <br/>
+                    If this page is not closing itself, you can close it.
+                </div>
+                <div class="sw-card-section">
+                    <b>
+                        Bestätigung empfangen.
+                    </b>
+                    <br/>
+                    Wenn diese Seite sich nicht selbstständig schließt, kann diese nun manuell geschlossen werden.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script{% if cspNonce is defined %} nonce="{{ cspNonce }}" {% endif %}>
+        localStorage.setItem('HeptacomAdminOpenAuthConfirmState', JSON.stringify({
+            state: new URLSearchParams(window.location.search).get('state')
+        }));
+
+        setTimeout(function () {
+            window.close();
+        }, 5000);
+    </script>
+</body>
+</html>

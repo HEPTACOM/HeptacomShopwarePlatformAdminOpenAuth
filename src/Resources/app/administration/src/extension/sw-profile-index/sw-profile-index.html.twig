@@ -26,14 +26,14 @@
 
                                         {% block sw_profile_index_heptacom_admin_open_auth_card_clients_cards_item_action %}
                                             <sw-button
-                                                v-if="client.userKeys.length > 0"
-                                                @click="revokeHeptacomAdminOpenAuthUserKey(client)"
+                                                v-if="client.connected"
+                                                @click="revokeHeptacomAdminOpenAuthUserKey(client.id)"
                                                 icon="default-basic-x-line"
                                             >
                                                 {{ $t('sw-profile-index.heptacomAdminOpenAuth.userKeys.actions.revoke') }}
                                             </sw-button>
                                             <sw-button
-                                                v-else-if="client.active && client.connect"
+                                                v-else-if="!client.connected"
                                                 @click="redirectToLoginMask(client.id)"
                                                 icon="default-basic-x-line"
                                             >

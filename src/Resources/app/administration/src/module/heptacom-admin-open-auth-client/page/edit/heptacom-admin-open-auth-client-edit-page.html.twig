@@ -27,6 +27,7 @@
 
                 {% block heptacom_admin_open_auth_client_edit_page_search_bar_actions_delete %}
                     <sw-button
+                        v-if="acl.can('heptacom_admin_open_auth_client.deleter')"
                         :disabled="isLoading"
                         @click="showDeleteModal = true"
                         variant="danger"
@@ -86,6 +87,11 @@
                                 ></sw-switch-field>
                                 <sw-switch-field
                                     :disabled="!item.active"
+                                    :label="$t('heptacom-admin-open-auth-client.pages.edit.fields.userBecomeAdmin')"
+                                    v-model="item.userBecomeAdmin"
+                                ></sw-switch-field>
+                                <sw-switch-field
+                                    :disabled="!item.active"
                                     :label="$t('heptacom-admin-open-auth-client.pages.edit.fields.storeUserToken')"
                                     v-model="item.storeUserToken"
                                 ></sw-switch-field>
@@ -97,10 +103,6 @@
                                     :value="redirectUri"
                                     disabled
                                 ></sw-text-field>
-                                <sw-switch-field
-                                    :label="$t('heptacom-admin-open-auth-client.pages.edit.fields.userBecomeAdmin')"
-                                    v-model="item.userBecomeAdmin"
-                                ></sw-switch-field>
                             </template>
                         </sw-card>
                     {% endblock %}

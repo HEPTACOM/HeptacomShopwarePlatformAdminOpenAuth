@@ -14,9 +14,11 @@ use Heptacom\AdminOpenAuth\Exception\LoadClientException;
 use Heptacom\OpenAuth\Behaviour\RedirectBehaviour;
 use Heptacom\OpenAuth\Struct\UserStruct;
 use Shopware\Core\Framework\Context;
+use Shopware\Core\Framework\DataAbstractionLayer\EntityCollection;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
+use Shopware\Core\Framework\DataAbstractionLayer\Search\Sorting\FieldSorting;
 use Shopware\Core\Framework\Uuid\Uuid;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
@@ -31,6 +33,14 @@ class OpenAuthenticationFlow implements OpenAuthenticationFlowInterface
 
     private EntityRepositoryInterface $clientsRepository;
 
+    private EntityRepositoryInterface $loginsRepository;
+
+    private EntityRepositoryInterface $userEmailsRepository;
+
+    private EntityRepositoryInterface $userKeysRepository;
+
+    private EntityRepositoryInterface $userTokensRepository;
+
     private RouterInterface $router;
 
     private ClientFeatureCheckerInterface $clientFeatureChecker;
@@ -40,6 +50,10 @@ class OpenAuthenticationFlow implements OpenAuthenticationFlowInterface
         ClientLoaderInterface $clientLoader,
         UserResolverInterface $userResolver,
         EntityRepositoryInterface $clientsRepository,
+        EntityRepositoryInterface $loginsRepository,
+        EntityRepositoryInterface $userEmailsRepository,
+        EntityRepositoryInterface $userKeysRepository,
+        EntityRepositoryInterface $userTokensRepository,
         RouterInterface $router,
         ClientFeatureCheckerInterface $clientFeatureChecker
     ) {
@@ -47,6 +61,10 @@ class OpenAuthenticationFlow implements OpenAuthenticationFlowInterface
         $this->clientLoader = $clientLoader;
         $this->userResolver = $userResolver;
         $this->clientsRepository = $clientsRepository;
+        $this->loginsRepository = $loginsRepository;
+        $this->userEmailsRepository = $userEmailsRepository;
+        $this->userKeysRepository = $userKeysRepository;
+        $this->userTokensRepository = $userTokensRepository;
         $this->router = $router;
         $this->clientFeatureChecker = $clientFeatureChecker;
     }
@@ -82,17 +100,53 @@ class OpenAuthenticationFlow implements OpenAuthenticationFlowInterface
         $this->userResolver->resolve($user, $state, $clientId, $context);
     }
 
-    public function getLoginRoutes(Context $context): array
+    public function disconnectClient(string $clientId, string $userId, Context $context): void
     {
         $criteria = new Criteria();
+        $criteria->addFilter(
+            new EqualsFilter('clientId', $clientId),
+            new EqualsFilter('userId', $userId)
+        );
+
+        $repos = [
+            $this->loginsRepository,
+            $this->userEmailsRepository,
+            $this->userKeysRepository,
+            $this->userTokensRepository,
+        ];
+
+        /** @var EntityRepositoryInterface $repo */
+        foreach ($repos as $repo) {
+            $ids = $repo->searchIds($criteria, $context)->getIds();
+
+            if (\count($ids) === 0) {
+                continue;
+            }
+
+            $repo->delete(
+                \array_map(static fn (string $id): array => ['id' => $id], $ids),
+                $context
+            );
+        }
+    }
+
+    public function getAvailableClients(Criteria $criteria, Context $context): EntityCollection
+    {
+        $criteria = clone $criteria;
         $criteria->addFilter(
             new EqualsFilter('active', true),
             new EqualsFilter('login', true)
         );
+        $criteria->addSorting(new FieldSorting('name', FieldSorting::ASCENDING));
 
-        return \array_values($this->clientsRepository
+        return $this->clientsRepository
             ->search($criteria, $context)
-            ->getEntities()
+            ->getEntities();
+    }
+
+    public function getLoginRoutes(Context $context): array
+    {
+        return \array_values($this->getAvailableClients(new Criteria(), $context)
             ->map(function (ClientEntity $client): array {
                 return [
                     'name' => $client->getName(),
