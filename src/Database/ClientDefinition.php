@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\Database;
 
+use Heptacom\AdminOpenAuth\Database\Aggregate\ClientAclRoleDefinition;
+use Shopware\Core\Framework\Api\Acl\Role\AclRoleDefinition;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityDefinition;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\BoolField;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\CreatedAtField;
@@ -11,6 +13,7 @@ use Shopware\Core\Framework\DataAbstractionLayer\Field\Flag\PrimaryKey;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\Flag\Required;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\IdField;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\JsonField;
+use Shopware\Core\Framework\DataAbstractionLayer\Field\ManyToManyAssociationField;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\OneToManyAssociationField;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\StringField;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\UpdatedAtField;
@@ -54,6 +57,8 @@ class ClientDefinition extends EntityDefinition
             new OneToManyAssociationField('userEmails', UserEmailDefinition::class, 'client_id', 'id'),
             new OneToManyAssociationField('userKeys', UserKeyDefinition::class, 'client_id', 'id'),
             new OneToManyAssociationField('userTokens', UserTokenDefinition::class, 'client_id', 'id'),
+
+            new ManyToManyAssociationField('defaultAclRoles', AclRoleDefinition::class, ClientAclRoleDefinition::class, 'client_id', 'acl_role_id'),
         ]);
     }
 }

@@ -15,6 +15,7 @@ use Heptacom\OpenAuth\Behaviour\RedirectBehaviour;
 use Heptacom\OpenAuth\ClientProvider\Contract\ClientProviderRepositoryContract;
 use Heptacom\OpenAuth\Route\Contract\RedirectReceiveRouteContract;
 use Nyholm\Psr7\Factory\Psr17Factory;
+use Shopware\Core\Framework\Api\Acl\Role\AclRoleCollection;
 use Shopware\Core\Framework\Api\Context\AdminApiSource;
 use Shopware\Core\Framework\Api\Context\SystemSource;
 use Shopware\Core\Framework\Api\Response\ResponseFactoryInterface;
@@ -83,8 +84,11 @@ class AdministrationController extends AbstractController
     {
         $psr17Factory = new Psr17Factory();
         $psrHttpFactory = new PsrHttpFactory($psr17Factory, $psr17Factory, $psr17Factory, $psr17Factory);
+
+        $clientCriteria = new Criteria([$clientId]);
+        $clientCriteria->addAssociation('defaultAclRoles');
         /** @var ClientEntity|null $client */
-        $client = $this->clientsRepository->search(new Criteria([$clientId]), $context)->first();
+        $client = $this->clientsRepository->search($clientCriteria, $context)->first();
 
         if (!$client instanceof ClientEntity) {
             // TODO handle exceptions
@@ -98,6 +102,10 @@ class AdministrationController extends AbstractController
                 $this->getRedirectBehaviour($clientId)
             );
         $requestState = (string) $user->getPassthrough()['requestState'];
+
+        if (!$client->getUserBecomeAdmin()) {
+            $user->addPassthrough('swAclRoleIds', $client->getDefaultAclRoles()->getIds());
+        }
 
         $this->flow->upsertUser($user, $clientId, $requestState, $context);
 

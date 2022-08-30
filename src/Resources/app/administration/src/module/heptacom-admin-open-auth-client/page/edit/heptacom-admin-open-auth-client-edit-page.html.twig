@@ -90,6 +90,13 @@
                                     :label="$t('heptacom-admin-open-auth-client.pages.edit.fields.userBecomeAdmin')"
                                     v-model="item.userBecomeAdmin"
                                 ></sw-switch-field>
+                                <sw-entity-multi-select
+                                    v-if="!item.userBecomeAdmin"
+                                    :disabled="!item.active"
+                                    v-model="item.defaultAclRoles"
+                                    :label="$t('heptacom-admin-open-auth-client.pages.edit.fields.defaultAclRoles')"
+                                    entityName="acl_role"
+                                ></sw-entity-multi-select>
                                 <sw-switch-field
                                     :disabled="!item.active"
                                     :label="$t('heptacom-admin-open-auth-client.pages.edit.fields.storeUserToken')"

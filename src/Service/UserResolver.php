@@ -61,7 +61,18 @@ class UserResolver implements UserResolverInterface
             $isNew = true;
             $password = Random::getAlphanumericString(254);
             $this->userProvisioner->provision($user->getPrimaryEmail(), $password, ['email' => $user->getPrimaryEmail()]);
+
             $userId = $this->findUserId($user, $clientId, $context);
+
+            $roleIds = $user->getPassthrough()['swAclRoleIds'] ?? null;
+            if ($roleIds) {
+                $this->userRepository->update([
+                    [
+                        'id' => $userId,
+                        'aclRoles' => \array_map(static fn (string $roleId) => ['id' => $roleId], $roleIds),
+                    ]
+                ], $context);
+            }
         }
 
         $this->postUpdates($user, $userId, $state, $isNew, $clientId, $context);

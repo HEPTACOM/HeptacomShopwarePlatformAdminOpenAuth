@@ -33,6 +33,7 @@
                     "connect": "Use to connect",
                     "storeUserToken": "Store user access keys",
                     "userBecomeAdmin": "Make user to admin on creation",
+                    "defaultAclRoles": "Roles assigned to new users",
                     "redirectUri": "Redirect URL"
                 },
                 "modals": {
