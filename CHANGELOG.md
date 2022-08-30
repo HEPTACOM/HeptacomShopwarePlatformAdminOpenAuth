@@ -1,3 +1,7 @@
+# Unreleased
+
+* Changed `views/administration/heptacom-admin-open-auth/page/confirm.html.twig` to immediately close the window after local storage item was set
+
 # 4.1.0
 
 **Added**
