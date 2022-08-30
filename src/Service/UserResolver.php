@@ -70,7 +70,7 @@ class UserResolver implements UserResolverInterface
                     [
                         'id' => $userId,
                         'aclRoles' => \array_map(static fn (string $roleId) => ['id' => $roleId], $roleIds),
-                    ]
+                    ],
                 ], $context);
             }
         }
