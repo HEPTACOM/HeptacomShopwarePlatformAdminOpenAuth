@@ -58,17 +58,21 @@ class OpenIdConnectClient extends ClientContract
         $token = $this->getInnerClient()->getAccessToken('authorization_code', $options);
         $user = $this->getInnerClient()->getUserInfo($token);
 
-        $name = sprintf('%s %s', $user->getName() ?? '', $user->getFamilyName() ?? '');
+        $name = $user->getName() ?? sprintf('%s %s', $user->getGivenName() ?? '', $user->getFamilyName() ?? '');
         if (empty(trim($name))) {
-            $name = $user->getNickname() ?? $user->getEmail();
+            $name = $user->getNickname() ?? $user->getPreferredUsername() ?? $user->getEmail();
         }
 
         return (new UserStruct())
             ->setPrimaryKey($user->getSub())
             ->setTokenPair($this->tokenPairFactory->fromOpenIdConnectToken($token))
+            ->setFirstName($user->getGivenName() ?? '')
+            ->setLastName($user->getFamilyName() ?? '')
             ->setDisplayName($name)
             ->setPrimaryEmail($user->getEmail())
             ->setEmails([$user->getEmail()])
+            ->setLocale(str_replace('_', '-', $user->getLocale()) ?? null)
+            ->setTimezone($user->getZoneinfo() ?? null)
             ->addPassthrough('picture', $user->getPicture());
     }
 

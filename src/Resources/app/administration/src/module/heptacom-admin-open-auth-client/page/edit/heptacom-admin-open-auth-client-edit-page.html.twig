@@ -102,6 +102,11 @@
                                     :label="$t('heptacom-admin-open-auth-client.pages.edit.fields.storeUserToken')"
                                     v-model="item.storeUserToken"
                                 ></sw-switch-field>
+                                <sw-switch-field
+                                    :disabled="!item.active"
+                                    :label="$t('heptacom-admin-open-auth-client.pages.edit.fields.keepUserUpdated')"
+                                    v-model="item.keepUserUpdated"
+                                ></sw-switch-field>
                                 <sw-text-field
                                     v-if="redirectUri"
                                     :copyable="true"

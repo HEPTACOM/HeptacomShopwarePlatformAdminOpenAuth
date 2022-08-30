@@ -34,6 +34,7 @@
                     "storeUserToken": "Store user access keys",
                     "userBecomeAdmin": "Make user to admin on creation",
                     "defaultAclRoles": "Roles assigned to new users",
+                    "keepUserUpdated": "Automatically update user info",
                     "redirectUri": "Redirect URL"
                 },
                 "modals": {

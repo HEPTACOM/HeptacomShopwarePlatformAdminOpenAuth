@@ -16,12 +16,19 @@ use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsAnyFilter;
+use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
+use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\MultiFilter;
+use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\NotFilter;
+use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\PrefixFilter;
 use Shopware\Core\Framework\Util\Random;
+use Shopware\Core\System\Language\LanguageEntity;
 use Shopware\Core\System\User\Service\UserProvisioner;
 
 class UserResolver implements UserResolverInterface
 {
     private EntityRepositoryInterface $userRepository;
+
+    private EntityRepositoryInterface $languageRepository;
 
     private UserProvisioner $userProvisioner;
 
@@ -37,6 +44,7 @@ class UserResolver implements UserResolverInterface
 
     public function __construct(
         EntityRepositoryInterface $userRepository,
+        EntityRepositoryInterface $languageRepository,
         UserProvisioner $userProvisioner,
         LoginInterface $login,
         UserEmailInterface $userEmail,
@@ -45,6 +53,7 @@ class UserResolver implements UserResolverInterface
         ClientFeatureCheckerInterface $clientFeatureChecker
     ) {
         $this->userRepository = $userRepository;
+        $this->languageRepository = $languageRepository;
         $this->userProvisioner = $userProvisioner;
         $this->login = $login;
         $this->userEmail = $userEmail;
@@ -93,6 +102,8 @@ class UserResolver implements UserResolverInterface
 
         $this->login->setCredentials($state, $userId, $context);
 
+        $userChangeSet = $this->getUserInfoChangeSet($userId, $user, $isNew, $clientId, $context);
+
         if ($isNew) {
             /** @var UserStructExtension|null $userExtension */
             $userExtension = $user->getPassthrough()[UserStructExtension::class] ?? null;
@@ -101,16 +112,15 @@ class UserResolver implements UserResolverInterface
                 return;
             }
 
-            $userUpdate = [
-                'id' => $userId,
-                'admin' => $userExtension->isAdmin(),
-            ];
+            $userChangeSet['admin'] = $userExtension->isAdmin();
 
             if (!$userExtension->isAdmin()) {
-                $userUpdate['aclRoles'] = \array_map(static fn (string $roleId) => ['id' => $roleId], $userExtension->getAclRoleIds());
+                $userChangeSet['aclRoles'] = \array_map(static fn (string $roleId) => ['id' => $roleId], $userExtension->getAclRoleIds());
             }
+        }
 
-            $this->userRepository->update([$userUpdate], $context);
+        if (count($userChangeSet) > 1) {
+            $this->userRepository->update([$userChangeSet], $context);
         }
     }
 
@@ -131,5 +141,56 @@ class UserResolver implements UserResolverInterface
         $criteria->addFilter(new EqualsAnyFilter('email', $emails));
 
         return $this->userRepository->searchIds($criteria, $context)->firstId();
+    }
+
+    protected function findLocaleId(string $localeCode, Context $context): ?string
+    {
+        if (empty(trim($localeCode))) {
+            return null;
+        }
+
+        $filters = [
+            new EqualsFilter('locale.code', $localeCode),
+            new PrefixFilter('locale.code', $localeCode),
+        ];
+
+        foreach ($filters as $filter) {
+            $criteria = new Criteria();
+            $criteria->addFilter($filter);
+            $criteria->setLimit(1);
+
+            $language = $this->languageRepository->search($criteria, $context)->first();
+
+            if ($language instanceof LanguageEntity) {
+                return $language->getLocaleId();
+            }
+        }
+
+        return null;
+    }
+
+    protected function getUserInfoChangeSet(string $userId, UserStruct $user, bool $isNew, string $clientId, Context $context): array
+    {
+        $userChangeSet = [
+            'id' => $userId,
+        ];
+
+        if (!$isNew && !$this->clientFeatureChecker->canKeepUserUpdated($clientId, $context)) {
+            return $userChangeSet;
+        }
+
+        $userChangeSet['firstName'] = '';
+        $userChangeSet['lastName'] = $user->getDisplayName();
+
+        if (!empty($user->getFirstName()) && !empty($user->getLastName())) {
+            $userChangeSet['firstName'] = $user->getFirstName();
+            $userChangeSet['lastName'] = $user->getLastName();
+        }
+
+        $userChangeSet['email'] = $user->getPrimaryEmail();
+        $userChangeSet['timeZone'] = $user->getTimezone();
+        $userChangeSet['localeId'] = $this->findLocaleId($user->getLocale() ?? '', $context);
+
+        return \array_filter($userChangeSet, static fn ($value) => $value !== null);
     }
 }
