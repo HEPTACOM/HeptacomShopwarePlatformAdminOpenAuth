@@ -10,6 +10,7 @@ use Heptacom\AdminOpenAuth\Contract\UserEmailInterface;
 use Heptacom\AdminOpenAuth\Contract\UserKeyInterface;
 use Heptacom\AdminOpenAuth\Contract\UserResolverInterface;
 use Heptacom\AdminOpenAuth\Contract\UserTokenInterface;
+use Heptacom\AdminOpenAuth\OpenAuth\Struct\UserStructExtension;
 use Heptacom\OpenAuth\Struct\UserStruct;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
@@ -63,16 +64,6 @@ class UserResolver implements UserResolverInterface
             $this->userProvisioner->provision($user->getPrimaryEmail(), $password, ['email' => $user->getPrimaryEmail()]);
 
             $userId = $this->findUserId($user, $clientId, $context);
-
-            $roleIds = $user->getPassthrough()['swAclRoleIds'] ?? null;
-            if ($roleIds) {
-                $this->userRepository->update([
-                    [
-                        'id' => $userId,
-                        'aclRoles' => \array_map(static fn (string $roleId) => ['id' => $roleId], $roleIds),
-                    ]
-                ], $context);
-            }
         }
 
         $this->postUpdates($user, $userId, $state, $isNew, $clientId, $context);
@@ -102,11 +93,24 @@ class UserResolver implements UserResolverInterface
 
         $this->login->setCredentials($state, $userId, $context);
 
-        if ($isNew && !$this->clientFeatureChecker->canUsersBecomeAdmin($clientId, $context)) {
-            $this->userRepository->update([[
+        if ($isNew) {
+            /** @var UserStructExtension|null $userExtension */
+            $userExtension = $user->getPassthrough()[UserStructExtension::class] ?? null;
+
+            if (!$userExtension) {
+                return;
+            }
+
+            $userUpdate = [
                 'id' => $userId,
-                'admin' => false,
-            ]], $context);
+                'admin' => $userExtension->isAdmin(),
+            ];
+
+            if (!$userExtension->isAdmin()) {
+                $userUpdate['aclRoles'] = \array_map(static fn (string $roleId) => ['id' => $roleId], $userExtension->getAclRoleIds());
+            }
+
+            $this->userRepository->update([$userUpdate], $context);
         }
     }
 
