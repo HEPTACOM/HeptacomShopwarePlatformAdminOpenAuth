@@ -1,3 +1,7 @@
+# Unreleased
+
+* `views/administration/heptacom-admin-open-auth/page/confirm.html.twig` geändert, damit das Popup direkt nach Speicherung der Daten im LocaleStorage geschlossen wird.
+
 # 4.1.0
 
 **Hinzugefügt**
