@@ -17,6 +17,24 @@
 
 This Shopware 6 plugin allows to add "Login with" functionality into the Shopware administration login page and password confirmation dialogs.
 
+## Features
+
+* login to Shopware 6 administration using an external identity provider (IDP)
+* various providers already preconfigured - Microsoft, Google, Okta, Keycloak, ...
+* support for third-party IDPs supporting OpenID Connect
+  * easy setup using the provider's metadata document (`.well-known/openid-configuration`)
+* promote users automatically to administrators
+
+## Security
+
+The login to the Shopware administration is a critical part.
+Security vulnerabilities in this part allow attackers access to the whole shop.
+
+Therefore, we check our plugin critically for potential risks before merging pull requests.
+
+In addition, our OpenId Connect implementation also checks the signature of JWT tokens, whenever possible.
+When using a pre-configured OpenID Connect provider or when providing a OIDC metadata document,
+the JWKS keys are automatically fetched from the IDP.
 
 ## Supported providers
 
