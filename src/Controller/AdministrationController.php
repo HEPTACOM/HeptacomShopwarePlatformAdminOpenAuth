@@ -16,7 +16,6 @@ use Heptacom\OpenAuth\Behaviour\RedirectBehaviour;
 use Heptacom\OpenAuth\ClientProvider\Contract\ClientProviderRepositoryContract;
 use Heptacom\OpenAuth\Route\Contract\RedirectReceiveRouteContract;
 use Nyholm\Psr7\Factory\Psr17Factory;
-use Shopware\Core\Framework\Api\Acl\Role\AclRoleCollection;
 use Shopware\Core\Framework\Api\Context\AdminApiSource;
 use Shopware\Core\Framework\Api\Context\SystemSource;
 use Shopware\Core\Framework\Api\Response\ResponseFactoryInterface;

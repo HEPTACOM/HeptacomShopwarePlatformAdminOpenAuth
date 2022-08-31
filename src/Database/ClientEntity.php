@@ -45,7 +45,6 @@ class ClientEntity extends Entity
         $this->defaultAclRoles = new AclRoleCollection();
     }
 
-
     public function getName(): ?string
     {
         return $this->name;
