@@ -12,6 +12,7 @@ use Heptacom\AdminOpenAuth\Contract\UserResolverInterface;
 use Heptacom\AdminOpenAuth\Contract\UserTokenInterface;
 use Heptacom\AdminOpenAuth\OpenAuth\Struct\UserStructExtension;
 use Heptacom\OpenAuth\Struct\UserStruct;
+use InvalidArgumentException;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
@@ -23,6 +24,7 @@ use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\PrefixFilter;
 use Shopware\Core\Framework\Util\Random;
 use Shopware\Core\System\Language\LanguageEntity;
 use Shopware\Core\System\User\Service\UserProvisioner;
+use Shopware\Core\System\User\UserEntity;
 
 class UserResolver implements UserResolverInterface
 {
@@ -120,7 +122,10 @@ class UserResolver implements UserResolverInterface
         }
 
         if (count($userChangeSet) > 1) {
-            $this->userRepository->update([$userChangeSet], $context);
+            // check with database if update is required
+            if ($isNew || $this->isUserChanged($userChangeSet, $context)) {
+                $this->userRepository->update([$userChangeSet], $context);
+            }
         }
     }
 
@@ -192,5 +197,33 @@ class UserResolver implements UserResolverInterface
         $userChangeSet['localeId'] = $this->findLocaleId($user->getLocale() ?? '', $context);
 
         return \array_filter($userChangeSet, static fn ($value) => $value !== null);
+    }
+
+    protected function isUserChanged(array $userChangeSet, Context $context): bool
+    {
+        $userId = $userChangeSet['id'] ?? null;
+
+        if (!$userId) {
+            throw new InvalidArgumentException('Changeset must include the id.');
+        }
+
+        /** @var UserEntity|null $user */
+        $user = $this->userRepository->search(new Criteria([$userChangeSet['id']]), $context)->first();
+
+        if (!$user) {
+            return true;
+        }
+
+        foreach ($userChangeSet as $key => $newValue) {
+            try {
+                if ($user->get($key) !== $newValue) {
+                    return true;
+                }
+            } catch (InvalidArgumentException $e) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
