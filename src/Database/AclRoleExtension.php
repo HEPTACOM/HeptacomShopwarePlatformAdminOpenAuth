@@ -7,6 +7,7 @@ namespace Heptacom\AdminOpenAuth\Database;
 use Heptacom\AdminOpenAuth\Database\Aggregate\ClientAclRoleDefinition;
 use Shopware\Core\Framework\Api\Acl\Role\AclRoleDefinition;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityExtension;
+use Shopware\Core\Framework\DataAbstractionLayer\Field\Flag\CascadeDelete;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\ManyToManyAssociationField;
 use Shopware\Core\Framework\DataAbstractionLayer\FieldCollection;
 
@@ -22,7 +23,7 @@ class AclRoleExtension extends EntityExtension
         parent::extendFields($collection);
 
         $collection->add(
-            new ManyToManyAssociationField('heptacomOpenAuthClients', ClientDefinition::class, ClientAclRoleDefinition::class, 'acl_role_id', 'client_id'),
+            (new ManyToManyAssociationField('heptacomOpenAuthClients', ClientDefinition::class, ClientAclRoleDefinition::class, 'acl_role_id', 'client_id'))->addFlags(new CascadeDelete()),
         );
     }
 }

@@ -9,6 +9,7 @@ use Shopware\Core\Framework\Api\Acl\Role\AclRoleDefinition;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityDefinition;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\BoolField;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\CreatedAtField;
+use Shopware\Core\Framework\DataAbstractionLayer\Field\Flag\CascadeDelete;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\Flag\PrimaryKey;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\Flag\Required;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\IdField;
@@ -54,12 +55,12 @@ class ClientDefinition extends EntityDefinition
             new CreatedAtField(),
             new UpdatedAtField(),
 
-            new OneToManyAssociationField('logins', LoginDefinition::class, 'client_id', 'id'),
-            new OneToManyAssociationField('userEmails', UserEmailDefinition::class, 'client_id', 'id'),
-            new OneToManyAssociationField('userKeys', UserKeyDefinition::class, 'client_id', 'id'),
-            new OneToManyAssociationField('userTokens', UserTokenDefinition::class, 'client_id', 'id'),
+            (new OneToManyAssociationField('logins', LoginDefinition::class, 'client_id', 'id'))->addFlags(new CascadeDelete()),
+            (new OneToManyAssociationField('userEmails', UserEmailDefinition::class, 'client_id', 'id'))->addFlags(new CascadeDelete()),
+            (new OneToManyAssociationField('userKeys', UserKeyDefinition::class, 'client_id', 'id'))->addFlags(new CascadeDelete()),
+            (new OneToManyAssociationField('userTokens', UserTokenDefinition::class, 'client_id', 'id'))->addFlags(new CascadeDelete()),
 
-            new ManyToManyAssociationField('defaultAclRoles', AclRoleDefinition::class, ClientAclRoleDefinition::class, 'client_id', 'acl_role_id'),
+            (new ManyToManyAssociationField('defaultAclRoles', AclRoleDefinition::class, ClientAclRoleDefinition::class, 'client_id', 'acl_role_id'))->addFlags(new CascadeDelete()),
         ]);
     }
 }
