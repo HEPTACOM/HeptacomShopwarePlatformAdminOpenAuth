@@ -12,14 +12,11 @@ use Heptacom\AdminOpenAuth\Contract\UserResolverInterface;
 use Heptacom\AdminOpenAuth\Contract\UserTokenInterface;
 use Heptacom\AdminOpenAuth\OpenAuth\Struct\UserStructExtension;
 use Heptacom\OpenAuth\Struct\UserStruct;
-use InvalidArgumentException;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsAnyFilter;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
-use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\MultiFilter;
-use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\NotFilter;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\PrefixFilter;
 use Shopware\Core\Framework\Util\Random;
 use Shopware\Core\System\Language\LanguageEntity;
@@ -121,7 +118,7 @@ class UserResolver implements UserResolverInterface
             }
         }
 
-        if (count($userChangeSet) > 1) {
+        if (\count($userChangeSet) > 1) {
             // check with database if update is required
             if ($isNew || $this->isUserChanged($userChangeSet, $context)) {
                 $this->userRepository->update([$userChangeSet], $context);
@@ -204,7 +201,7 @@ class UserResolver implements UserResolverInterface
         $userId = $userChangeSet['id'] ?? null;
 
         if (!$userId) {
-            throw new InvalidArgumentException('Changeset must include the id.');
+            throw new \InvalidArgumentException('Changeset must include the id.');
         }
 
         /** @var UserEntity|null $user */
@@ -219,7 +216,7 @@ class UserResolver implements UserResolverInterface
                 if ($user->get($key) !== $newValue) {
                     return true;
                 }
-            } catch (InvalidArgumentException $e) {
+            } catch (\InvalidArgumentException $e) {
                 return true;
             }
         }
