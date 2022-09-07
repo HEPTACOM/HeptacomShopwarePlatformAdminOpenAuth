@@ -10,6 +10,7 @@ use Heptacom\AdminOpenAuth\Contract\OpenAuthenticationFlowInterface;
 use Heptacom\AdminOpenAuth\Contract\StateFactory\ConfirmStateFactoryInterface;
 use Heptacom\AdminOpenAuth\Database\ClientDefinition;
 use Heptacom\AdminOpenAuth\Database\ClientEntity;
+use Heptacom\AdminOpenAuth\OpenAuth\Struct\UserStructExtension;
 use Heptacom\AdminOpenAuth\Service\StateResolver;
 use Heptacom\OpenAuth\Behaviour\RedirectBehaviour;
 use Heptacom\OpenAuth\ClientProvider\Contract\ClientProviderRepositoryContract;
@@ -102,9 +103,10 @@ class AdministrationController extends AbstractController
             );
         $requestState = (string) $user->getPassthrough()['requestState'];
 
-        if (!$client->getUserBecomeAdmin()) {
-            $user->addPassthrough('swAclRoleIds', $client->getDefaultAclRoles()->getIds());
-        }
+        $userExtension = $user->getPassthrough()[UserStructExtension::class] ?? new UserStructExtension();
+        $userExtension->setIsAdmin($client->getUserBecomeAdmin() ?? false);
+        $userExtension->setAclRoleIds($client->getDefaultAclRoles()->getIds());
+        $user->addPassthrough(UserStructExtension::class, $userExtension);
 
         $this->flow->upsertUser($user, $clientId, $requestState, $context);
 

@@ -26,6 +26,8 @@ class ClientEntity extends Entity
 
     protected ?bool $userBecomeAdmin = null;
 
+    protected ?bool $keepUserUpdated = null;
+
     protected ?array $config = null;
 
     protected ?LoginCollection $logins = null;
@@ -123,6 +125,18 @@ class ClientEntity extends Entity
     public function setUserBecomeAdmin(?bool $userBecomeAdmin): self
     {
         $this->userBecomeAdmin = $userBecomeAdmin;
+
+        return $this;
+    }
+
+    public function getKeepUserUpdated(): ?bool
+    {
+        return $this->keepUserUpdated;
+    }
+
+    public function setKeepUserUpdated(?bool $keepUserUpdated): ClientEntity
+    {
+        $this->keepUserUpdated = $keepUserUpdated;
 
         return $this;
     }

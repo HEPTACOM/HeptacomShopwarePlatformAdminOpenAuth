@@ -122,3 +122,4 @@ services:
     Heptacom\AdminOpenAuth\Service\UserResolver:
         arguments:
             - '@user.repository'
+            - '@language.repository'

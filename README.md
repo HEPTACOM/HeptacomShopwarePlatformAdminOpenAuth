@@ -20,68 +20,20 @@ This Shopware 6 plugin allows to add "Login with" functionality into the Shopwar
 
 ## Supported providers
 
-### Atlassian Jira
+We support a variety of identity providers out of the box.
+If your identity provider is not listed below but offers OpenID Connect support, you can configure it manually using the OpenID Connect provider.
+In any other case feel free to create a pull request.
 
-<img alt="Atlassian Jira" height="64" src="./src/Resources/app/administration/static/logo/jira_logo.svg"/>
-
-Use with Atlassian Jira.
-Read more [here](https://developer.atlassian.com/cloud/jira/platform/oauth-2-3lo-apps/#enabling-oauth-2-0--3lo-).
-
-
-### cidaas
-
-<img alt="cidaas" height="64" src="./src/Resources/app/administration/static/logo/cidaas_logo.svg"/>
-
-Use with cidaas IAM service.
-Read more [here](https://docs.cidaas.com/create-application/createapplication.html).
-
-
-### Google Cloud
-
-<img alt="Google Cloud" height="64" style="margin: 25px 0;" src="./src/Resources/app/administration/static/logo/google_logo.svg"/>
-
-Use with Google Identity service.
-Read more [here](https://developers.google.com/identity/protocols/oauth2/openid-connect).
-
-
-### Keycloak
-
-<img alt="Keycloak" height="64" src="./src/Resources/app/administration/static/logo/keycloak_logo.svg"/>
-
-Use your own identity service with [keycloack](https://www.keycloak.org/).
-Read more [here](https://blogs.sap.com/2021/08/23/keyclock-as-an-openid-connect-oidc-provider./).
-
-
-### Microsoft Azure
-
-<img alt="Microsoft Azure" height="64" style="margin: 12px 0;" src="./src/Resources/app/administration/static/logo/microsoft_logo.svg"/>
-
-Use with Microsoft Azure Active Directory.
-Read more [here](https://docs.microsoft.com/en-US/azure/active-directory/develop/quickstart-register-app).
-
-
-### Okta
-
-<img alt="Okta" height="64" src="./src/Resources/app/administration/static/logo/okta_logo.png"/>
-
-Use with Okta Workforce Identity.
-Read more [here](https://help.okta.com/en-us/Content/Topics/Apps/Apps_App_Integration_Wizard_OIDC.htm).
-
-
-### OneLogin
-
-<img alt="OneLogin" height="64" src="./src/Resources/app/administration/static/logo/onelogin_logo.svg"/>
-
-Use with onelogin Workforce Identity.
-Read more [here](https://developers.onelogin.com/blog/how-to-use-openid-connect-authentication-with-dotnet-core#heading-menu).
-
-
-### OpenID Connect
-
-<img alt="OpenID Connect" height="64" src="./src/Resources/app/administration/static/logo/openid_logo.svg"/>
-
-Try any OpenID Connect provider, that we did not explicitly prepare an optimized configuration for.
-
+| Provider                                                                                                                                                    |  supports language sync  |  supports timezone sync  | more info                                                                                                                      |
+|-------------------------------------------------------------------------------------------------------------------------------------------------------------|:------------------------:|:------------------------:|--------------------------------------------------------------------------------------------------------------------------------|
+| Atlassian Jira<br><img alt="Atlassian Jira" height="25" src="./src/Resources/app/administration/static/logo/jira_logo.svg"/>                                |            ❌             |            ✅             | Read more [here](https://developer.atlassian.com/cloud/jira/platform/oauth-2-3lo-apps/#enabling-oauth-2-0--3lo-).              |
+| cidaas<br><img alt="cidaas" height="25" src="./src/Resources/app/administration/static/logo/cidaas_logo.svg"/>                                              |            ❌             |            ❌             | Read more [here](https://docs.cidaas.com/create-application/createapplication.html).                                           |
+| Google Cloud<br><img alt="Google Cloud" height="25" style="margin: 25px 0;" src="./src/Resources/app/administration/static/logo/google_logo.svg"/>          |            ✅             |            ❌             | Read more [here](https://developers.google.com/identity/protocols/oauth2/openid-connect).                                      |
+| [Keycloack](https://www.keycloak.org/)<br><img alt="Keycloak" height="25" src="./src/Resources/app/administration/static/logo/keycloak_logo.svg"/>          |            ✅             | depends on configuration | Read more [here](https://blogs.sap.com/2021/08/23/keyclock-as-an-openid-connect-oidc-provider./).                              |
+| Microsoft Azure<br><img alt="Microsoft Azure" height="25" style="margin: 12px 0;" src="./src/Resources/app/administration/static/logo/microsoft_logo.svg"/> |            ❌             |            ❌             | Read more [here](https://docs.microsoft.com/en-US/azure/active-directory/develop/quickstart-register-app).                     |
+| Okta<br><img alt="Okta" height="25" src="./src/Resources/app/administration/static/logo/okta_logo.png"/>                                                    |            ✅             |            ✅             | Read more [here](https://help.okta.com/en-us/Content/Topics/Apps/Apps_App_Integration_Wizard_OIDC.htm).                        |
+| OneLogin<br><img alt="OneLogin" height="25" src="./src/Resources/app/administration/static/logo/onelogin_logo.svg"/>                                        |            ✅             |            ❌             | Read more [here](https://developers.onelogin.com/blog/how-to-use-openid-connect-authentication-with-dotnet-core#heading-menu). |
+| OpenID Connect<br><img alt="OpenID Connect" height="25" src="./src/Resources/app/administration/static/logo/openid_logo.svg"/>                              | depends on configuration | depends on configuration | Try any OpenID Connect provider, that we did not explicitly prepare an optimized configuration for.                            |
 
 ## Changes
 
