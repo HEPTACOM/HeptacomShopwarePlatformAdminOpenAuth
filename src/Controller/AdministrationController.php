@@ -10,6 +10,7 @@ use Heptacom\AdminOpenAuth\Contract\OpenAuthenticationFlowInterface;
 use Heptacom\AdminOpenAuth\Contract\StateFactory\ConfirmStateFactoryInterface;
 use Heptacom\AdminOpenAuth\Database\ClientDefinition;
 use Heptacom\AdminOpenAuth\Database\ClientEntity;
+use Heptacom\AdminOpenAuth\OpenAuth\Struct\UserStructExtension;
 use Heptacom\AdminOpenAuth\Service\StateResolver;
 use Heptacom\OpenAuth\Behaviour\RedirectBehaviour;
 use Heptacom\OpenAuth\ClientProvider\Contract\ClientProviderRepositoryContract;
@@ -83,8 +84,11 @@ class AdministrationController extends AbstractController
     {
         $psr17Factory = new Psr17Factory();
         $psrHttpFactory = new PsrHttpFactory($psr17Factory, $psr17Factory, $psr17Factory, $psr17Factory);
+
+        $clientCriteria = new Criteria([$clientId]);
+        $clientCriteria->addAssociation('defaultAclRoles');
         /** @var ClientEntity|null $client */
-        $client = $this->clientsRepository->search(new Criteria([$clientId]), $context)->first();
+        $client = $this->clientsRepository->search($clientCriteria, $context)->first();
 
         if (!$client instanceof ClientEntity) {
             // TODO handle exceptions
@@ -98,6 +102,11 @@ class AdministrationController extends AbstractController
                 $this->getRedirectBehaviour($clientId)
             );
         $requestState = (string) $user->getPassthrough()['requestState'];
+
+        $userExtension = $user->getPassthrough()[UserStructExtension::class] ?? new UserStructExtension();
+        $userExtension->setIsAdmin($client->getUserBecomeAdmin() ?? false);
+        $userExtension->setAclRoleIds($client->getDefaultAclRoles()->getIds());
+        $user->addPassthrough(UserStructExtension::class, $userExtension);
 
         $this->flow->upsertUser($user, $clientId, $requestState, $context);
 

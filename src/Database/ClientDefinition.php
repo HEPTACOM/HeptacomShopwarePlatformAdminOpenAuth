@@ -4,13 +4,17 @@ declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\Database;
 
+use Heptacom\AdminOpenAuth\Database\Aggregate\ClientAclRoleDefinition;
+use Shopware\Core\Framework\Api\Acl\Role\AclRoleDefinition;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityDefinition;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\BoolField;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\CreatedAtField;
+use Shopware\Core\Framework\DataAbstractionLayer\Field\Flag\CascadeDelete;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\Flag\PrimaryKey;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\Flag\Required;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\IdField;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\JsonField;
+use Shopware\Core\Framework\DataAbstractionLayer\Field\ManyToManyAssociationField;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\OneToManyAssociationField;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\StringField;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\UpdatedAtField;
@@ -45,15 +49,18 @@ class ClientDefinition extends EntityDefinition
             (new BoolField('login', 'login'))->addFlags(new Required()),
             (new BoolField('connect', 'connect'))->addFlags(new Required()),
             (new BoolField('store_user_token', 'storeUserToken'))->addFlags(new Required()),
-            new BoolField('user_become_admin', 'userBecomeAdmin'),
+            (new BoolField('user_become_admin', 'userBecomeAdmin'))->addFlags(new Required()),
+            (new BoolField('keep_user_updated', 'keepUserUpdated'))->addFlags(new Required()),
             (new JsonField('config', 'config', [], []))->addFlags(new Required()),
             new CreatedAtField(),
             new UpdatedAtField(),
 
-            new OneToManyAssociationField('logins', LoginDefinition::class, 'client_id', 'id'),
-            new OneToManyAssociationField('userEmails', UserEmailDefinition::class, 'client_id', 'id'),
-            new OneToManyAssociationField('userKeys', UserKeyDefinition::class, 'client_id', 'id'),
-            new OneToManyAssociationField('userTokens', UserTokenDefinition::class, 'client_id', 'id'),
+            (new OneToManyAssociationField('logins', LoginDefinition::class, 'client_id', 'id'))->addFlags(new CascadeDelete()),
+            (new OneToManyAssociationField('userEmails', UserEmailDefinition::class, 'client_id', 'id'))->addFlags(new CascadeDelete()),
+            (new OneToManyAssociationField('userKeys', UserKeyDefinition::class, 'client_id', 'id'))->addFlags(new CascadeDelete()),
+            (new OneToManyAssociationField('userTokens', UserTokenDefinition::class, 'client_id', 'id'))->addFlags(new CascadeDelete()),
+
+            (new ManyToManyAssociationField('defaultAclRoles', AclRoleDefinition::class, ClientAclRoleDefinition::class, 'client_id', 'acl_role_id'))->addFlags(new CascadeDelete()),
         ]);
     }
 }

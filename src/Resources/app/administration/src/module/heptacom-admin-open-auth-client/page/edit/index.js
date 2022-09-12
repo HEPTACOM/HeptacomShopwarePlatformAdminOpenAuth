@@ -1,6 +1,7 @@
 import template from './heptacom-admin-open-auth-client-edit-page.html.twig';
 
-const { Component, Context, Mixin } = Shopware;
+const { Component, Context, Mixin, Data } = Shopware;
+const { Criteria } = Data;
 
 Component.register('heptacom-admin-open-auth-client-edit-page', {
     template,
@@ -59,8 +60,11 @@ Component.register('heptacom-admin-open-auth-client-edit-page', {
         loadClient() {
             this.item = null;
 
+            const criteria = new Criteria();
+            criteria.addAssociation('defaultAclRoles');
+
             return this.clientRepository
-                .get(this.clientId, Context.api)
+                .get(this.clientId, Context.api, criteria)
                 .then(item => {
                     this.item = item;
 

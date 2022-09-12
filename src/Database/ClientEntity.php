@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\Database;
 
+use Shopware\Core\Framework\Api\Acl\Role\AclRoleCollection;
 use Shopware\Core\Framework\DataAbstractionLayer\Entity;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityIdTrait;
 
@@ -25,6 +26,8 @@ class ClientEntity extends Entity
 
     protected ?bool $userBecomeAdmin = null;
 
+    protected ?bool $keepUserUpdated = null;
+
     protected ?array $config = null;
 
     protected ?LoginCollection $logins = null;
@@ -34,6 +37,13 @@ class ClientEntity extends Entity
     protected ?UserKeyCollection $userKeys = null;
 
     protected ?UserTokenCollection $userTokens = null;
+
+    protected AclRoleCollection $defaultAclRoles;
+
+    public function __construct()
+    {
+        $this->defaultAclRoles = new AclRoleCollection();
+    }
 
     public function getName(): ?string
     {
@@ -119,6 +129,18 @@ class ClientEntity extends Entity
         return $this;
     }
 
+    public function getKeepUserUpdated(): ?bool
+    {
+        return $this->keepUserUpdated;
+    }
+
+    public function setKeepUserUpdated(?bool $keepUserUpdated): ClientEntity
+    {
+        $this->keepUserUpdated = $keepUserUpdated;
+
+        return $this;
+    }
+
     public function getConfig(): ?array
     {
         return $this->config;
@@ -177,5 +199,15 @@ class ClientEntity extends Entity
         $this->userTokens = $userTokens;
 
         return $this;
+    }
+
+    public function getDefaultAclRoles(): AclRoleCollection
+    {
+        return $this->defaultAclRoles;
+    }
+
+    public function setDefaultAclRoles(AclRoleCollection $defaultAclRoles): void
+    {
+        $this->defaultAclRoles = $defaultAclRoles;
     }
 }

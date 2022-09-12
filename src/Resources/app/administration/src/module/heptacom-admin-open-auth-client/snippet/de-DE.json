@@ -33,6 +33,8 @@
                     "connect": "Zum Verknüpfen verwenden",
                     "storeUserToken": "Benutzerberechtigungsschlüssel speichern",
                     "userBecomeAdmin": "Benutzer als Administrator anlegen",
+                    "defaultAclRoles": "Rollen für neue Benutzer",
+                    "keepUserUpdated": "Benutzer automatisch aktualisieren",
                     "redirectUri": "Rücksende-URL"
                 },
                 "modals": {

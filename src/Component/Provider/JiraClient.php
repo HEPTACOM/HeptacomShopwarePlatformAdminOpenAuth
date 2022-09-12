@@ -59,6 +59,7 @@ class JiraClient extends ClientContract
         $token = $this->getInnerClient()->getAccessToken('authorization_code', $options);
         /** @var JiraResourceOwner $user */
         $user = $this->getInnerClient()->getResourceOwner($token);
+        $fullUserData = $user->toArray();
 
         return (new UserStruct())
             ->setPrimaryKey($user->getId())
@@ -66,6 +67,7 @@ class JiraClient extends ClientContract
             ->setDisplayName($user->getName())
             ->setPrimaryEmail($user->getEmail())
             ->setEmails([])
+            ->setTimezone($fullUserData['timezone'] ?? null)
             ->setPassthrough(['resourceOwner' => $user->toArray()]);
     }
 
