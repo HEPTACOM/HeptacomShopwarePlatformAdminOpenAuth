@@ -63,9 +63,9 @@ abstract class DefaultInjectingEntityRepositoryDecorator implements EntityReposi
         return $this->decorated->create($this->injectDefaults($data, $context), $context);
     }
 
-    public function delete(array $data, Context $context): EntityWrittenContainerEvent
+    public function delete(array $ids, Context $context): EntityWrittenContainerEvent
     {
-        return $this->decorated->delete($data, $context);
+        return $this->decorated->delete($ids, $context);
     }
 
     public function createVersion(string $id, Context $context, ?string $name = null, ?string $versionId = null): string
