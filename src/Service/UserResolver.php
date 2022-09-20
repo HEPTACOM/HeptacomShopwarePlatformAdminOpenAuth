@@ -198,7 +198,8 @@ class UserResolver implements UserResolverInterface
         return \array_filter($userChangeSet, static fn ($value) => $value !== null);
     }
 
-    protected function updateUser(string $userId, array $userChangeSet, ?array $aclRoles, bool $isNew): void {
+    protected function updateUser(string $userId, array $userChangeSet, ?array $aclRoles, bool $isNew): void
+    {
         if (\count($userChangeSet) < 1) {
             return;
         }
