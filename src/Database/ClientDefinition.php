@@ -39,6 +39,15 @@ class ClientDefinition extends EntityDefinition
         return ClientCollection::class;
     }
 
+    public function getDefaults(): array
+    {
+        return [
+            'active' => false,
+            'userBecomeAdmin' => true,
+            'keepUserUpdated' => true,
+        ];
+    }
+
     protected function defineFields(): FieldCollection
     {
         return new FieldCollection([
