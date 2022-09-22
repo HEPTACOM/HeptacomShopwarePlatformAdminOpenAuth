@@ -71,7 +71,7 @@ class OpenIdConnectClient extends ClientContract
             ->setDisplayName($name)
             ->setPrimaryEmail($user->getEmail())
             ->setEmails([$user->getEmail()])
-            ->setLocale(str_replace('_', '-', $user->getLocale()) ?? null)
+            ->setLocale($user->getLocale() !== null ? str_replace('_', '-', $user->getLocale()) : null)
             ->setTimezone($user->getZoneinfo() ?? null)
             ->addPassthrough('picture', $user->getPicture());
     }

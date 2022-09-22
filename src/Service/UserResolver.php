@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\Service;
 
+use Doctrine\DBAL\Connection;
 use Heptacom\AdminOpenAuth\Contract\ClientFeatureCheckerInterface;
 use Heptacom\AdminOpenAuth\Contract\LoginInterface;
 use Heptacom\AdminOpenAuth\Contract\UserEmailInterface;
@@ -12,6 +13,8 @@ use Heptacom\AdminOpenAuth\Contract\UserResolverInterface;
 use Heptacom\AdminOpenAuth\Contract\UserTokenInterface;
 use Heptacom\AdminOpenAuth\OpenAuth\Struct\UserStructExtension;
 use Heptacom\OpenAuth\Struct\UserStruct;
+use Shopware\Core\Defaults;
+use Shopware\Core\Framework\Api\Acl\Role\AclUserRoleDefinition;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
@@ -19,15 +22,18 @@ use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsAnyFilter;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\PrefixFilter;
 use Shopware\Core\Framework\Util\Random;
+use Shopware\Core\Framework\Uuid\Uuid;
 use Shopware\Core\System\Language\LanguageEntity;
 use Shopware\Core\System\User\Service\UserProvisioner;
-use Shopware\Core\System\User\UserEntity;
+use Shopware\Core\System\User\UserDefinition;
 
 class UserResolver implements UserResolverInterface
 {
     private EntityRepositoryInterface $userRepository;
 
     private EntityRepositoryInterface $languageRepository;
+
+    private Connection $connection;
 
     private UserProvisioner $userProvisioner;
 
@@ -44,6 +50,7 @@ class UserResolver implements UserResolverInterface
     public function __construct(
         EntityRepositoryInterface $userRepository,
         EntityRepositoryInterface $languageRepository,
+        Connection $connection,
         UserProvisioner $userProvisioner,
         LoginInterface $login,
         UserEmailInterface $userEmail,
@@ -51,6 +58,7 @@ class UserResolver implements UserResolverInterface
         UserTokenInterface $userToken,
         ClientFeatureCheckerInterface $clientFeatureChecker
     ) {
+        $this->connection = $connection;
         $this->userRepository = $userRepository;
         $this->languageRepository = $languageRepository;
         $this->userProvisioner = $userProvisioner;
@@ -102,6 +110,7 @@ class UserResolver implements UserResolverInterface
         $this->login->setCredentials($state, $userId, $context);
 
         $userChangeSet = $this->getUserInfoChangeSet($userId, $user, $isNew, $clientId, $context);
+        $aclRoles = null;
 
         if ($isNew) {
             /** @var UserStructExtension|null $userExtension */
@@ -114,16 +123,11 @@ class UserResolver implements UserResolverInterface
             $userChangeSet['admin'] = $userExtension->isAdmin();
 
             if (!$userExtension->isAdmin()) {
-                $userChangeSet['aclRoles'] = \array_map(static fn (string $roleId) => ['id' => $roleId], $userExtension->getAclRoleIds());
+                $aclRoles = $userExtension->getAclRoleIds();
             }
         }
 
-        if (\count($userChangeSet) > 1) {
-            // check with database if update is required
-            if ($isNew || $this->isUserChanged($userChangeSet, $context)) {
-                $this->userRepository->update([$userChangeSet], $context);
-            }
-        }
+        $this->updateUser($userId, $userChangeSet, $aclRoles, $isNew);
     }
 
     protected function findUserId(UserStruct $user, string $clientId, Context $context): ?string
@@ -173,54 +177,116 @@ class UserResolver implements UserResolverInterface
 
     protected function getUserInfoChangeSet(string $userId, UserStruct $user, bool $isNew, string $clientId, Context $context): array
     {
-        $userChangeSet = [
-            'id' => $userId,
-        ];
+        $userChangeSet = [];
 
         if (!$isNew && !$this->clientFeatureChecker->canKeepUserUpdated($clientId, $context)) {
             return $userChangeSet;
         }
 
-        $userChangeSet['firstName'] = '';
-        $userChangeSet['lastName'] = $user->getDisplayName();
+        $userChangeSet['first_name'] = '';
+        $userChangeSet['last_name'] = $user->getDisplayName();
 
         if (!empty($user->getFirstName()) && !empty($user->getLastName())) {
-            $userChangeSet['firstName'] = $user->getFirstName();
-            $userChangeSet['lastName'] = $user->getLastName();
+            $userChangeSet['first_name'] = $user->getFirstName();
+            $userChangeSet['last_name'] = $user->getLastName();
         }
 
         $userChangeSet['email'] = $user->getPrimaryEmail();
-        $userChangeSet['timeZone'] = $user->getTimezone();
-        $userChangeSet['localeId'] = $this->findLocaleId($user->getLocale() ?? '', $context);
+        $userChangeSet['time_zone'] = $user->getTimezone();
+        $userChangeSet['locale_id'] = $this->findLocaleId($user->getLocale() ?? '', $context);
 
         return \array_filter($userChangeSet, static fn ($value) => $value !== null);
     }
 
-    protected function isUserChanged(array $userChangeSet, Context $context): bool
+    protected function updateUser(string $userId, array $userChangeSet, ?array $aclRoles, bool $isNew): void
     {
-        $userId = $userChangeSet['id'] ?? null;
-
-        if (!$userId) {
-            throw new \InvalidArgumentException('Changeset must include the id.');
+        if (\count($userChangeSet) < 1) {
+            return;
         }
 
-        /** @var UserEntity|null $user */
-        $user = $this->userRepository->search(new Criteria([$userChangeSet['id']]), $context)->first();
+        foreach ($userChangeSet as $key => $newValue) {
+            if (substr($key, -3) === '_id') {
+                $userChangeSet[$key] = Uuid::fromHexToBytes($newValue);
+            }
+        }
+
+        // check with database if update is required
+        if ($isNew || $this->isUserChanged($userId, $userChangeSet)) {
+            $userChangeSet['updated_at'] = (new \DateTime())->format(Defaults::STORAGE_DATE_TIME_FORMAT);
+            $this->connection->update(UserDefinition::ENTITY_NAME, $userChangeSet, ['id' => Uuid::fromHexToBytes($userId)]);
+        }
+
+        // check if acl roles are changed
+        if ($aclRoles !== null) {
+            $this->updateAclRoles($userId, $aclRoles);
+        }
+    }
+
+    protected function isUserChanged(string $userId, array $userChangeSet): bool
+    {
+        /** @var array<array-key, mixed>|false $user */
+        $user = $this->connection->createQueryBuilder()
+            ->select(array_keys($userChangeSet))
+            ->from(UserDefinition::ENTITY_NAME)
+            ->where('id = :id')
+            ->setParameter('id', Uuid::fromHexToBytes($userId))
+            ->execute()
+            ->fetchAssociative();
 
         if (!$user) {
             return true;
         }
 
         foreach ($userChangeSet as $key => $newValue) {
-            try {
-                if ($user->get($key) !== $newValue) {
-                    return true;
-                }
-            } catch (\InvalidArgumentException $e) {
+            if (substr($key, -3) === '_id') {
+                $newValue = Uuid::fromHexToBytes($newValue);
+            }
+
+            if ($user[$key] !== $newValue) {
                 return true;
             }
         }
 
         return false;
+    }
+
+    protected function updateAclRoles(string $userId, array $aclRoles): void
+    {
+        $binUserId = Uuid::fromHexToBytes($userId);
+
+        $aclRoleIds = $this->connection->createQueryBuilder()
+            ->select('acl_role_id')
+            ->from(AclUserRoleDefinition::ENTITY_NAME)
+            ->where('user_id = :userId')
+            ->setParameter('userId', $binUserId)
+            ->execute()
+            ->fetchAssociative();
+
+        $aclRoleIds = Uuid::fromBytesToHexList(array_column($aclRoleIds, 'acl_role_id'));
+
+        // delete old
+        $toDelete = array_diff($aclRoleIds, $aclRoles);
+        if (\count($toDelete) > 0) {
+            $this->connection->createQueryBuilder()
+                ->delete(AclUserRoleDefinition::ENTITY_NAME)
+                ->where('user_id = :userId')
+                ->andWhere('acl_role_id IN (:aclRoleIds)')
+                ->setParameter('userId', $binUserId)
+                ->setParameter('aclRoleIds', $toDelete, Connection::PARAM_STR_ARRAY)
+                ->execute();
+        }
+
+        // insert new
+        $toAdd = array_diff($aclRoles, $aclRoleIds);
+        if (\count($toAdd) > 0) {
+            $this->connection->insert(
+                AclUserRoleDefinition::ENTITY_NAME,
+                array_map(static fn ($aclRoleId) => [
+                    'user_id' => $binUserId,
+                    'acl_role_id' => $aclRoleId,
+                    'created_at' => (new \DateTime())->format(Defaults::STORAGE_DATE_TIME_FORMAT),
+                ], $toAdd)
+            );
+        }
     }
 }

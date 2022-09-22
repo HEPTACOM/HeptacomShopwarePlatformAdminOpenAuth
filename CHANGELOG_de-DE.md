@@ -4,6 +4,7 @@
 * Konfiguration zum automatischen Aktualisieren von Benutzerdaten, wenn sich ein Nutzer via SSO anmeldet.
 * `views/administration/heptacom-admin-open-auth/page/confirm.html.twig` geändert, damit das Popup direkt nach Speicherung der Daten im LocaleStorage geschlossen wird.
 * `Heptacom\AdminOpenAuth\Service\UserResolver` und `Heptacom\AdminOpenAuth\Component\Provider\OpenIdConnectClient::getUser` geändert, damit dem Nutzer weitere Daten (z.B. Sprache and Zeitzone) hinzugefügt werden können.
+* Durch Hinzufügen von Standard-Werten in `Heptacom\AdminOpenAuth\Database\ClientDefinition`, Probleme in `Heptacom\AdminOpenAuth\Controller\AdministrationController::createClient` behoben.
 
 # 4.1.0
 
