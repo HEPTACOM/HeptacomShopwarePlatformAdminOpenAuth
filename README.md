@@ -57,6 +57,10 @@ In any other case feel free to create a pull request.
 
 View the [CHANGELOG](./CHANGELOG.md) file attached to this project.
 
+## Contributing
+
+Thank you for considering contributing to this package! Be sure to sign the [CLA](CLA.md) after creating the pull request. [![CLA assistant](https://cla-assistant.io/readme/badge/HEPTACOM/HeptacomShopwarePlatformAdminOpenAuth)](https://cla-assistant.io/HEPTACOM/HeptacomShopwarePlatformAdminOpenAuth)
+
 ## License
 
 Copyright 2020 HEPTACOM GmbH
