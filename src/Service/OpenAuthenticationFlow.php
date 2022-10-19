@@ -78,6 +78,7 @@ class OpenAuthenticationFlow implements OpenAuthenticationFlowInterface
         $state = Uuid::randomHex();
         $this->login->initiate($clientId, null, $state, $context);
 
+        // TODO: SAML: Add a redirect behaviour to the client
         return $this->clientLoader->load($clientId, $context)
             ->getLoginUrl($state, $this->getRedirectBehaviour($clientId));
     }
@@ -161,6 +162,7 @@ class OpenAuthenticationFlow implements OpenAuthenticationFlowInterface
 
     private function getRedirectBehaviour(string $clientId): RedirectBehaviour
     {
+        // TODO: SAML: Add a redirect behaviour to the client
         return (new RedirectBehaviour())
             ->setExpectState(true)
             ->setRedirectUri($this->router->generate('administration.heptacom.admin_open_auth.login', [
