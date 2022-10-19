@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types = 1);
-
+declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\Component\Saml;
 
@@ -25,7 +24,6 @@ class Saml2ServiceProviderService
     }
 
     /**
-     * @param string $redirectUri
      * @return string base64 encoded SAML request
      */
     public function buildSamlRequest(string $redirectUri): string

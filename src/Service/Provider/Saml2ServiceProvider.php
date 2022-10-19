@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\Service\Provider;
 
-use Heptacom\AdminOpenAuth\Component\OpenIdConnect\OpenIdConnectConfiguration;
-use Heptacom\AdminOpenAuth\Component\OpenIdConnect\OpenIdConnectService;
-use Heptacom\AdminOpenAuth\Component\Provider\OpenIdConnectClient;
 use Heptacom\AdminOpenAuth\Component\Provider\Saml2ServiceProviderClient;
 use Heptacom\AdminOpenAuth\Component\Saml\Saml2ServiceProviderConfiguration;
 use Heptacom\AdminOpenAuth\Component\Saml\Saml2ServiceProviderService;
@@ -87,7 +84,7 @@ class Saml2ServiceProvider extends ClientProviderContract
         // TODO: tag:v5.0.0 make generation configurable and dynamic per client in administration
         $privateKey = openssl_pkey_new([
             'private_key_bits' => 2048,
-            'private_key_type' => OPENSSL_KEYTYPE_RSA,
+            'private_key_type' => \OPENSSL_KEYTYPE_RSA,
         ]);
 
         openssl_pkey_export($privateKey, $result['serviceProviderPrivateKey'], $this->appSecret);

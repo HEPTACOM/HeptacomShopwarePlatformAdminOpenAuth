@@ -62,7 +62,7 @@ class Saml2ServiceProviderClient extends ClientContract
         $token = $this->getInnerClient()->getAccessToken('authorization_code', $options);
         $user = $this->getInnerClient()->getUserInfo($token);*/
 
-        return (new UserStruct()); // TODO: SAML: Build user struct
+        return new UserStruct(); // TODO: SAML: Build user struct
     }
 
     public function authorizeRequest(RequestInterface $request, TokenPairStruct $token): RequestInterface
