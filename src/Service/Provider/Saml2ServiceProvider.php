@@ -21,14 +21,18 @@ class Saml2ServiceProvider extends ClientProviderContract
 
     public const PROVIDER_NAME = 'saml2';
 
+    private string $appSecret;
+
     private TokenPairFactoryContract $tokenPairFactory;
 
     private Saml2ServiceProviderService $saml2ServiceProviderService;
 
     public function __construct(
+        string $appSecret,
         TokenPairFactoryContract $tokenPairFactory,
         Saml2ServiceProviderService $saml2ServiceProviderService
     ) {
+        $this->appSecret = $appSecret;
         $this->tokenPairFactory = $tokenPairFactory;
         $this->saml2ServiceProviderService = $saml2ServiceProviderService;
     }
@@ -60,12 +64,11 @@ class Saml2ServiceProvider extends ClientProviderContract
                 'attributeMapping' => [],
                 'redirectUri' => null,
             ])
-            ->setAllowedTypes('discoveryDocumentUrl', 'string')
-            ->setAllowedTypes('authorization_endpoint', 'string')
-            ->setAllowedTypes('token_endpoint', 'string')
-            ->setAllowedTypes('userinfo_endpoint', 'string')
-            ->setAllowedTypes('clientId', 'string')
-            ->setAllowedTypes('clientSecret', 'string')
+            ->setAllowedTypes('metadataUrl', 'string')
+            ->setAllowedTypes('identityProviderUrl', 'string')
+            ->setAllowedTypes('identityProviderCertificate', 'string')
+            ->setAllowedTypes('serviceProviderPrivateKey', 'string')
+            ->setAllowedTypes('serviceProviderPublicKey', 'string')
             ->setAllowedTypes('attributeMapping', 'array')
             ->setDeprecated(
                 'redirectUri',
@@ -81,9 +84,14 @@ class Saml2ServiceProvider extends ClientProviderContract
         $result['identityProviderUrl'] = '';
         $result['identityProviderCertificate'] = '';
 
-        // TODO: SAML: generate private key
-        $result['serviceProviderPrivateKey'] = '';
-        $result['serviceProviderPublicKey'] = '';
+        // TODO: tag:v5.0.0 make generation configurable and dynamic per client in administration
+        $privateKey = openssl_pkey_new([
+            'private_key_bits' => 2048,
+            'private_key_type' => OPENSSL_KEYTYPE_RSA,
+        ]);
+
+        openssl_pkey_export($privateKey, $result['serviceProviderPrivateKey'], $this->appSecret);
+        $result['serviceProviderPublicKey'] = openssl_pkey_get_details($privateKey)['key'];
 
         return $result;
     }

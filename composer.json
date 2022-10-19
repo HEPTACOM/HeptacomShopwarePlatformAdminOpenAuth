@@ -34,6 +34,7 @@
     "require": {
         "php": ">=7.4",
         "ext-json": "*",
+	    "ext-openssl": "*",
         "composer/composer": "^2",
         "doctrine/dbal": "^2",
         "guzzlehttp/guzzle": "~7.0",

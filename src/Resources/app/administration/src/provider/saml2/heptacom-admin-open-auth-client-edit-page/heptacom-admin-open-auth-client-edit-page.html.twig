@@ -1,0 +1,38 @@
+{% block heptacom_admin_open_auth_client_edit_page_content_provider_settings %}
+    {% parent %}
+
+    <sw-card
+        v-if="item && item.provider === 'saml2'"
+    >
+        <sw-url-field
+            :omitUrlHash="true"
+            :omitUrlSearch="false"
+            :label="$t('heptacomAdminOpenAuthClient.providerFields.saml2.metadataUrl')"
+            :help-text="$t('heptacomAdminOpenAuthClient.providerFields.saml2.metadataUrl-help')"
+            :placeholder="$t('heptacomAdminOpenAuthClient.providerFields.saml2.metadataUrl-placeholder')"
+            v-model="item.config.metadataUrl"
+        ></sw-url-field>
+        <sw-url-field
+            :omitUrlHash="true"
+            :omitUrlSearch="true"
+            :disabled="!!item.config.metadataUrl"
+            :label="$t('heptacomAdminOpenAuthClient.providerFields.saml2.identityProviderUrl')"
+            v-model="item.config.identityProviderUrl"
+        ></sw-url-field>
+        <sw-textarea-field
+            :disabled="!!item.config.metadataUrl"
+            :label="$t('heptacomAdminOpenAuthClient.providerFields.saml2.identityProviderCertificate')"
+            v-model="item.config.identityProviderCertificate"
+        ></sw-textarea-field>
+        <sw-textarea-field
+            :disabled="true"
+            :label="$t('heptacomAdminOpenAuthClient.providerFields.saml2.serviceProviderPublicKey')"
+            v-model="item.config.serviceProviderPublicKey"
+        ></sw-textarea-field>
+        {# TODO: create attribute mapping editor #}
+        <!--<heptacom-admin-open-auth-scope-field
+            :label="$t('heptacomAdminOpenAuthClient.providerFields.saml2.attributeMapping')"
+            v-model="item.config.attributeMapping"
+        ></heptacom-admin-open-auth-scope-field>-->
+    </sw-card>
+{% endblock %}

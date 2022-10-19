@@ -28,41 +28,39 @@ class Saml2ServiceProviderClient extends ClientContract
 
     public function getLoginUrl(?string $state, RedirectBehaviour $behaviour): string
     {
-        $state = $state ?? '';
+        /*$state = $state ?? '';
         $params = [];
-
-        $behaviour->setStateKey('RelayState');
 
         if (\is_string($behaviour->getRedirectUri())) {
             $params['SamlRequest'] = $this->getInnerClient()
                 ->buildSamlRequest($behaviour->getRedirectUri());
         }
 
+        // TODO: SAML: no state is given in case of SAML requests
         if ($state !== '') {
             $params[$behaviour->getStateKey()] = $state;
         }
 
-        return $this->getInnerClient()->getAuthorizationUrl($params);
+        return $this->getInnerClient()->getAuthorizationUrl($params);*/
     }
 
     public function refreshToken(string $refreshToken): TokenPairStruct
     {
-        return $this->tokenPairFactory->fromOpenIdConnectToken($this->getInnerClient()->getAccessToken('refresh_token', [
+        /*return $this->tokenPairFactory->fromOpenIdConnectToken($this->getInnerClient()->getAccessToken('refresh_token', [
             'refresh_token' => $refreshToken,
-        ]));
+        ]));*/
     }
 
     public function getUser(string $state, string $code, RedirectBehaviour $behaviour): UserStruct
     {
-        $options = [$behaviour->getCodeKey() => $code];
+        /*$options = [$behaviour->getCodeKey() => $code];
 
         if (\is_string($behaviour->getRedirectUri())) {
             $options['redirect_uri'] = $behaviour->getRedirectUri();
         }
 
         $token = $this->getInnerClient()->getAccessToken('authorization_code', $options);
-        $user = $this->getInnerClient()->getUserInfo($token);
-
+        $user = $this->getInnerClient()->getUserInfo($token);*/
 
         return (new UserStruct()); // TODO: SAML: Build user struct
     }
