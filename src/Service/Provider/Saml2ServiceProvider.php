@@ -49,7 +49,7 @@ class Saml2ServiceProvider extends ClientProviderContract
     {
         return parent::getConfigurationTemplate()
             ->setDefined([
-                'clientId',
+                'id',
                 'identityProviderMetadataUrl',
                 'identityProviderEntityId',
                 'identityProviderSsoUrl',
@@ -137,11 +137,11 @@ class Saml2ServiceProvider extends ClientProviderContract
 
         // Add routes to config
         $config->setServiceProviderEntityId($this->router->generate('administration.heptacom.admin_open_auth.metadata', [
-            'clientId' => $resolvedConfig['clientId'] ?? self::PROVIDER_NAME,
+            'clientId' => $resolvedConfig['id'] ?? self::PROVIDER_NAME,
         ], UrlGeneratorInterface::ABSOLUTE_URL));
 
         $config->setServiceProviderAssertionUrl($this->router->generate('administration.heptacom.admin_open_auth.login', [
-            'clientId' => $resolvedConfig['clientId'] ?? self::PROVIDER_NAME,
+            'clientId' => $resolvedConfig['id'] ?? self::PROVIDER_NAME,
         ], UrlGeneratorInterface::ABSOLUTE_URL));
 
         // create client and discover IdP metadata

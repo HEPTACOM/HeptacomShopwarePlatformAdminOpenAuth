@@ -37,6 +37,7 @@ class OpenIdConnectProvider extends ClientProviderContract
     {
         return parent::getConfigurationTemplate()
             ->setDefined([
+                'id',
                 'discoveryDocumentUrl',
                 'authorization_endpoint',
                 'token_endpoint',

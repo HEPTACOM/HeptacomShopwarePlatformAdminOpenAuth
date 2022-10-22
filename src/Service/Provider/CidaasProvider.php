@@ -38,6 +38,7 @@ class CidaasProvider extends ClientProviderContract
     {
         return parent::getConfigurationTemplate()
             ->setDefined([
+                'id',
                 'organizationUrl',
                 'clientId',
                 'clientSecret',

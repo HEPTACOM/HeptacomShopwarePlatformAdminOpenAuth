@@ -67,7 +67,7 @@ class ClientLoader implements ClientLoaderInterface
             $config = $clientProvider->getConfigurationTemplate()->resolve($clientProvider->getInitialConfiguration());
         }
 
-        $config['clientId'] = $id;
+        $config['id'] = $id;
 
         $this->clientsRepository->create([[
             'id' => $id,
