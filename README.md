@@ -1,4 +1,4 @@
-# Open Authentication login for shopware platform administration
+# SSO login for shopware platform administration
 ## This is part of HEPTACOM solutions for medium and large enterprise
 ### Shopware plugin to allow external login provider in the administration
 
@@ -23,6 +23,8 @@ This Shopware 6 plugin allows to add "Login with" functionality into the Shopwar
 * various providers already preconfigured - Microsoft, Google, Okta, Keycloak, ...
 * support for third-party IDPs supporting OpenID Connect
   * easy setup using the provider's metadata document (`.well-known/openid-configuration`)
+* support for third-party IDPs supporting SAML2
+  * easy setup using the provider's metadata xml
 * promote users automatically to administrators
 
 ## Security
@@ -52,6 +54,7 @@ In any other case feel free to create a pull request.
 | Okta<br><img alt="Okta" height="25" src="./src/Resources/app/administration/static/logo/okta_logo.png"/>                                                    |            ✅             |            ✅             | Read more [here](https://help.okta.com/en-us/Content/Topics/Apps/Apps_App_Integration_Wizard_OIDC.htm).                        |
 | OneLogin<br><img alt="OneLogin" height="25" src="./src/Resources/app/administration/static/logo/onelogin_logo.svg"/>                                        |            ✅             |            ❌             | Read more [here](https://developers.onelogin.com/blog/how-to-use-openid-connect-authentication-with-dotnet-core#heading-menu). |
 | OpenID Connect<br><img alt="OpenID Connect" height="25" src="./src/Resources/app/administration/static/logo/openid_logo.svg"/>                              | depends on configuration | depends on configuration | Try any OpenID Connect provider, that we did not explicitly prepare an optimized configuration for.                            |
+| SAML2<br><img alt="SAML2" height="25" src="./src/Resources/public/static/logo/saml2_logo.svg"/>                                                             | depends on configuration | depends on configuration | Try any SAML2 provider, that we did not explicitly prepare an optimized configuration for.                                     |
 
 ## Changes
 
