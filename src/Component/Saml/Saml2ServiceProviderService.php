@@ -50,7 +50,7 @@ class Saml2ServiceProviderService
     {
         $idpMetadataXmlUrl = $this->config->getIdentityProviderMetadataUrl();
 
-        if ($idpMetadataXmlUrl === '' || $this->config->getIdentityProviderMetadataXml() !== null) {
+        if ($idpMetadataXmlUrl === '' || $this->config->getIdentityProviderMetadataXml() !== '') {
             return true;
         }
 

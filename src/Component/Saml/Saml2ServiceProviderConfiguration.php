@@ -16,9 +16,9 @@ class Saml2ServiceProviderConfiguration extends Struct
     protected string $identityProviderMetadataUrl = '';
 
     /**
-     * @var string|null The IdP metadata. If null, metadata has not been discovered.
+     * @var string The IdP metadata. If empty, metadata has not been discovered.
      */
-    protected ?string $identityProviderMetadataXml = null;
+    protected string $identityProviderMetadataXml = '';
 
     /**
      * @var string Entity ID
@@ -33,17 +33,17 @@ class Saml2ServiceProviderConfiguration extends Struct
     /**
      * @var string X509 cert (base64 encoded)
      */
-    protected string $identityProviderCertificate;
+    protected string $identityProviderCertificate = '';
 
     /**
      * @var string Identifier of the SP entity (e.g. http://myapp.com/demo1/metadata.php)
      */
-    protected string $serviceProviderEntityId;
+    protected string $serviceProviderEntityId = '';
 
     /**
      * @var string Assertion consumer service URL (e.g. http://myapp.com/demo1/index.php?acs)
      */
-    protected string $serviceProviderAssertionUrl;
+    protected string $serviceProviderAssertionUrl = '';
 
     /**
      * @var string Name identifier used to represent the requested object
@@ -53,21 +53,21 @@ class Saml2ServiceProviderConfiguration extends Struct
     /**
      * @var string X509 cert (base64 encoded)
      */
-    protected string $serviceProviderCertificate;
+    protected string $serviceProviderCertificate = '';
 
     /**
      * @var string private key (base64 encoded)
      */
-    protected string $serviceProviderPrivateKey;
+    protected string $serviceProviderPrivateKey = '';
 
     /**
      * @var array Mapping for attributes to user properties
      */
-    protected array $attributeMapping;
+    protected array $attributeMapping = [];
 
     public function getOneLoginSettings(): array
     {
-        if ($this->identityProviderMetadataXml !== null) {
+        if ($this->identityProviderMetadataXml !== '') {
             $idpSettings = IdPMetadataParser::parseXML($this->identityProviderMetadataXml);
         } else {
             $idpSettings = [
@@ -98,6 +98,10 @@ class Saml2ServiceProviderConfiguration extends Struct
             'security' => [
                 'rejectUnsolicitedResponsesWithInResponseTo' => true,
                 'authnRequestsSigned' => true,
+                'signMetadata' => true,
+                'wantXMLValidation' => true,
+                'relaxDestinationValidation' => false,
+                'wantAssertionsSigned' => true,
             ],
         ], $idpSettings);
     }

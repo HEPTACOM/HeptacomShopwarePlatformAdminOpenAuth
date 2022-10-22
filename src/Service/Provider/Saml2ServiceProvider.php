@@ -51,6 +51,7 @@ class Saml2ServiceProvider extends ClientProviderContract
             ->setDefined([
                 'id',
                 'identityProviderMetadataUrl',
+                'identityProviderMetadataXml',
                 'identityProviderEntityId',
                 'identityProviderSsoUrl',
                 'identityProviderCertificate',
@@ -62,6 +63,7 @@ class Saml2ServiceProvider extends ClientProviderContract
                 'redirectUri',
             ])->setRequired([
                 'identityProviderMetadataUrl',
+                'identityProviderMetadataXml',
                 'identityProviderEntityId',
                 'identityProviderSsoUrl',
                 'identityProviderCertificate',
@@ -73,6 +75,7 @@ class Saml2ServiceProvider extends ClientProviderContract
                 'redirectUri' => null,
             ])
             ->setAllowedTypes('identityProviderMetadataUrl', 'string')
+            ->setAllowedTypes('identityProviderMetadataXml', 'string')
             ->setAllowedTypes('identityProviderEntityId', 'string')
             ->setAllowedTypes('identityProviderSsoUrl', 'string')
             ->setAllowedTypes('identityProviderCertificate', 'string')
@@ -91,6 +94,7 @@ class Saml2ServiceProvider extends ClientProviderContract
         $result = parent::getInitialConfiguration();
 
         $result['identityProviderMetadataUrl'] = '';
+        $result['identityProviderMetadataXml'] = '';
         $result['identityProviderEntityId'] = '';
         $result['identityProviderSsoUrl'] = '';
         $result['identityProviderCertificate'] = '';
