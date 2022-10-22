@@ -22,6 +22,11 @@ class Saml2ServiceProviderService
 
     public const ID_PREFIX = 'saml2_provider_';
 
+    /**
+     * @var array{request: array, get: array, post: array}|null
+     */
+    private static ?array $superGlobals = null;
+
     private ClientInterface $samlHttpClient;
 
     private LoggerInterface $logger;
@@ -149,7 +154,7 @@ class Saml2ServiceProviderService
     // TODO: SAML: specify return type
     public function validateLoginConfirmData(string $samlResponse, string $relayState): Auth
     {
-        Saml2Toolkit::prepareSuperGlobals($samlResponse, $relayState);
+        $this->prepareSuperGlobals($samlResponse, $relayState);
 
         try {
             $auth = new Auth($this->config->getOneLoginSettings());
@@ -162,7 +167,7 @@ class Saml2ServiceProviderService
 
             return $auth;
         } finally {
-            Saml2Toolkit::restoreSuperGlobals();
+            $this->restoreSuperGlobals();
         }
     }
 
@@ -198,5 +203,50 @@ class Saml2ServiceProviderService
         }
 
         return base64_encode($payload);
+    }
+
+    /**
+     * SAML library relies on super globals, so we need to set them.
+     *
+     * @return void
+     * @throws \Exception if super globals are already set
+     */
+    protected function prepareSuperGlobals(string $samlResponse, string $relayState): void
+    {
+        if (self::$superGlobals !== null) {
+            throw new \Exception('Super globals are already set. You cannot declare them multiple times.');
+        }
+
+        self::$superGlobals = [
+            'request' => $_REQUEST,
+            'get' => $_GET,
+            'post' => $_POST,
+        ];
+
+        $_GET = [];
+        $_POST = [
+            'SAMLResponse' => $samlResponse,
+            'RelayState' => $relayState,
+        ];
+
+        $_REQUEST = \array_merge($_GET, $_POST);
+    }
+
+    /**
+     * When we are done with super globals, we want to reset them to their original contents.
+     *
+     * @return void
+     */
+    protected function restoreSuperGlobals(): void
+    {
+        if (self::$superGlobals === null) {
+            return;
+        }
+
+        $_REQUEST = self::$superGlobals['request'];
+        $_GET = self::$superGlobals['get'];
+        $_POST = self::$superGlobals['post'];
+
+        self::$superGlobals = null;
     }
 }
