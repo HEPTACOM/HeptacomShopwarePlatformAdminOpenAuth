@@ -5,6 +5,19 @@ const { Component } = Shopware;
 Component.override('heptacom-admin-open-auth-client-edit-page', {
     template,
 
+    data() {
+        return {
+            availableProperties: [
+                'objectIdentifier',
+                'firstName',
+                'lastName',
+                'email',
+                'timezone',
+                'locale'
+            ],
+        };
+    },
+
     watch: {
         item(newValue) {
             if (newValue && newValue.provider === 'saml2') {

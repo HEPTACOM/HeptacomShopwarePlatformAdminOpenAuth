@@ -30,7 +30,8 @@ Component.register('heptacom-admin-open-auth-client-edit-page', {
             isSaveSuccessful: false,
             item: null,
             showDeleteModal: false,
-            redirectUri: null
+            redirectUri: null,
+            metadataUri: null
         }
     },
 
@@ -57,22 +58,15 @@ Component.register('heptacom-admin-open-auth-client-edit-page', {
             });
         },
 
-        loadClient() {
+        async loadClient() {
             this.item = null;
 
             const criteria = new Criteria();
             criteria.addAssociation('defaultAclRoles');
 
-            return this.clientRepository
-                .get(this.clientId, Context.api, criteria)
-                .then(item => {
-                    this.item = item;
-
-                    return this.HeptacomAdminOpenAuthProviderApiService.getRedirectUri(item.id);
-                })
-                .then(redirectUri => {
-                    this.redirectUri = redirectUri.target;
-                });
+            this.item = await this.clientRepository.get(this.clientId, Context.api, criteria);
+            this.redirectUri = (await this.HeptacomAdminOpenAuthProviderApiService.getRedirectUri(this.item.id)).target;
+            this.metadataUri = (await this.HeptacomAdminOpenAuthProviderApiService.getMetadataUri(this.item.id)).target;
         },
 
         cancelEdit() {

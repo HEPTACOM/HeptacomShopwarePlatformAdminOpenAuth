@@ -35,7 +35,8 @@
                     "userBecomeAdmin": "Benutzer als Administrator anlegen",
                     "defaultAclRoles": "Rollen für neue Benutzer",
                     "keepUserUpdated": "Benutzer automatisch aktualisieren",
-                    "redirectUri": "Rücksende-URL"
+                    "redirectUri": "Rücksende-URL",
+                    "metadataUri": "Metadaten-URL"
                 },
                 "modals": {
                     "delete": {

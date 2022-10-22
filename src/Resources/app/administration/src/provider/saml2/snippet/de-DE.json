@@ -9,13 +9,23 @@
         },
         "providerFields": {
             "saml2": {
-                "metadataUrl":  "SAML 2.0 Metadata URL",
-                "metadataUrl-help": "Sofern angegeben, wird die weitere Konfiguration automatisch geladen.",
-                "metadataUrl-placeholder": "https://login.microsoftonline.com/dd91042c-3521-4b7e-9e7e-318a582f176b/federationmetadata/2007-06/federationmetadata.xml?appid=7503dac2-2d73-43f0-b130-1b78acd622fc",
-                "identityProviderUrl":  "Anbieter URL",
-                "identityProviderCertificate":  "Anbieter Zertifikat (PEM)",
+                "serviceProviderCertificate":  "Service Provider Zertifikat (PEM)",
                 "serviceProviderPublicKey":  "Service Provider Öffentlicher Schlüssel (PEM)",
-                "attributeMapping":  "Attribute Mapping"
+                "identityProviderCardTitle": "Identitätsanbieter Einstellungen",
+                "identityProviderMetadataUrl":  "Metadata URL",
+                "identityProviderMetadataUrl-help": "Sofern angegeben, wird die weitere Konfiguration automatisch geladen.",
+                "identityProviderMetadataUrl-placeholder": "https://login.microsoftonline.com/dd91042c-3521-4b7e-9e7e-318a582f176b/federationmetadata/2007-06/federationmetadata.xml?appid=7503dac2-2d73-43f0-b130-1b78acd622fc",
+                "identityProviderEntityId":  "Entitäts-ID",
+                "identityProviderSsoUrl":  "Login URL",
+                "identityProviderCertificate":  "Zertifikat (PEM)",
+                "attributeMapping": {
+                    "firstName": "Attributname Vorname",
+                    "lastName": "Attributname Nachname",
+                    "displayName": "Attributname Angezeigter Name",
+                    "email": "Attributname E-Mail",
+                    "timezone": "Attributname Zeitzone",
+                    "locale": "Attributname Lokalität"
+                }
             }
         }
     }

@@ -9,13 +9,23 @@
         },
         "providerFields": {
             "saml2": {
-                "metadataUrl":  "SAML 2.0 Metadata URL",
-                "metadataUrl-help": "If given, the configuration will be discovered automatically.",
-                "metadataUrl-placeholder": "https://login.microsoftonline.com/dd91042c-3521-4b7e-9e7e-318a582f176b/federationmetadata/2007-06/federationmetadata.xml?appid=7503dac2-2d73-43f0-b130-1b78acd622fc",
-                "identityProviderUrl":  "Identity Provider URL",
-                "identityProviderCertificate":  "Identity Provider Certificate (PEM)",
+                "serviceProviderCertificate":  "Service Provider Certificate (PEM)",
                 "serviceProviderPublicKey":  "Service Provider Public Key (PEM)",
-                "attributeMapping":  "Attribute Mapping"
+                "identityProviderCardTitle": "Identity provider settings",
+                "identityProviderMetadataUrl":  "Metadata URL",
+                "identityProviderMetadataUrl-help": "If given, the configuration will be discovered automatically.",
+                "identityProviderMetadataUrl-placeholder": "https://login.microsoftonline.com/dd91042c-3521-4b7e-9e7e-318a582f176b/federationmetadata/2007-06/federationmetadata.xml?appid=7503dac2-2d73-43f0-b130-1b78acd622fc",
+                "identityProviderEntityId": "Entity ID",
+                "identityProviderSsoUrl":  "Login URL",
+                "identityProviderCertificate":  "Certificate (PEM)",
+                "attributeMapping": {
+                    "firstName": "Attribute first name",
+                    "lastName": "Attribute last name",
+                    "displayName": "Attribute display name",
+                    "email": "Attribute email",
+                    "timezone": "Attribute timezone",
+                    "locale": "Attribute locale"
+                }
             }
         }
     }

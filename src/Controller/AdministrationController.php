@@ -6,13 +6,15 @@ namespace Heptacom\AdminOpenAuth\Controller;
 
 use Heptacom\AdminOpenAuth\Contract\AuthorizationUrl\LoginUrlGeneratorInterface;
 use Heptacom\AdminOpenAuth\Contract\ClientLoaderInterface;
+use Heptacom\AdminOpenAuth\Contract\MetadataClientContract;
 use Heptacom\AdminOpenAuth\Contract\OpenAuthenticationFlowInterface;
+use Heptacom\AdminOpenAuth\Contract\RedirectBehaviourFactoryInterface;
 use Heptacom\AdminOpenAuth\Contract\StateFactory\ConfirmStateFactoryInterface;
 use Heptacom\AdminOpenAuth\Database\ClientDefinition;
 use Heptacom\AdminOpenAuth\Database\ClientEntity;
+use Heptacom\AdminOpenAuth\Exception\LoadClientClientNotFoundException;
 use Heptacom\AdminOpenAuth\OpenAuth\Struct\UserStructExtension;
 use Heptacom\AdminOpenAuth\Service\StateResolver;
-use Heptacom\OpenAuth\Behaviour\RedirectBehaviour;
 use Heptacom\OpenAuth\ClientProvider\Contract\ClientProviderRepositoryContract;
 use Heptacom\OpenAuth\Route\Contract\RedirectReceiveRouteContract;
 use Nyholm\Psr7\Factory\Psr17Factory;
@@ -27,10 +29,12 @@ use Shopware\Core\Framework\Routing\Annotation\RouteScope;
 use Shopware\Core\PlatformRequest;
 use Symfony\Bridge\PsrHttpMessage\Factory\PsrHttpFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
@@ -44,6 +48,8 @@ class AdministrationController extends AbstractController
 
     private EntityRepositoryInterface $clientsRepository;
 
+    private ClientLoaderInterface $clientLoader;
+
     private RedirectReceiveRouteContract $redirectReceiveRoute;
 
     private ConfirmStateFactoryInterface $confirmStateFactory;
@@ -52,24 +58,59 @@ class AdministrationController extends AbstractController
 
     private RouterInterface $router;
 
+    private RedirectBehaviourFactoryInterface $redirectBehaviourFactory;
+
     private StateResolver $stateResolver;
 
     public function __construct(
         OpenAuthenticationFlowInterface $flow,
         EntityRepositoryInterface $clientsRepository,
+        ClientLoaderInterface $clientLoader,
         RedirectReceiveRouteContract $redirectReceiveRoute,
         ConfirmStateFactoryInterface $confirmStateFactory,
         LoginUrlGeneratorInterface $confirmationUrlGenerator,
         RouterInterface $router,
+        RedirectBehaviourFactoryInterface $redirectBehaviourFactory,
         StateResolver $stateResolver
     ) {
         $this->flow = $flow;
         $this->clientsRepository = $clientsRepository;
+        $this->clientLoader = $clientLoader;
         $this->redirectReceiveRoute = $redirectReceiveRoute;
         $this->confirmStateFactory = $confirmStateFactory;
         $this->loginUrlGenerator = $confirmationUrlGenerator;
         $this->router = $router;
+        $this->redirectBehaviourFactory = $redirectBehaviourFactory;
         $this->stateResolver = $stateResolver;
+    }
+
+    /**
+     * @Route(
+     *     methods={"GET"},
+     *     name="administration.heptacom.admin_open_auth.metadata",
+     *     path="/admin/open-auth/{clientId}/metadata",
+     *     defaults={"auth_required" = false}
+     * )
+     */
+    public function metadata(string $clientId, Context $context): Response
+    {
+        try {
+            $clientProvider = $this->clientLoader->load($clientId, $context);
+
+            if (!$clientProvider instanceof MetadataClientContract) {
+                throw new BadRequestException();
+            }
+
+            $response = new Response();
+            $response->headers->add([
+                'Content-Type' => $clientProvider->getMetadataType(),
+            ]);
+            $response->setContent($clientProvider->getMetadata());
+
+            return $response;
+        } catch (LoadClientClientNotFoundException $exception) {
+            throw new NotFoundHttpException();
+        }
     }
 
     /**
@@ -94,13 +135,12 @@ class AdministrationController extends AbstractController
             // TODO handle exceptions
         }
 
-        // TODO: SAML: add support for saml
         $user = $this->redirectReceiveRoute
             ->onReceiveRequest(
                 $psrHttpFactory->createRequest($request),
                 $client->getProvider(),
                 $client->getConfig(),
-                $this->getRedirectBehaviour($clientId)
+                $this->redirectBehaviourFactory->createRedirectBehaviour($clientId, $context)
             );
         $requestState = (string) $user->getPassthrough()['requestState'];
 
@@ -124,7 +164,8 @@ class AdministrationController extends AbstractController
             UrlGeneratorInterface::ABSOLUTE_URL
         );
 
-        return new RedirectResponse($targetUrl, Response::HTTP_TEMPORARY_REDIRECT);
+        // redirect with "303 See Other" to ensure the request method becomes GET
+        return new RedirectResponse($targetUrl, Response::HTTP_SEE_OTHER);
     }
 
     /**
@@ -263,7 +304,7 @@ class AdministrationController extends AbstractController
             'target' => $this->loginUrlGenerator->generate(
                 $clientId,
                 $state,
-                $this->getRedirectBehaviour($clientId),
+                $this->redirectBehaviourFactory->createRedirectBehaviour($clientId, $context),
                 $systemContext
             ),
         ]);
@@ -281,7 +322,34 @@ class AdministrationController extends AbstractController
         $clientId = $request->get('client_id');
 
         return JsonResponse::create([
-            'target' => $this->generateRedirectUrl($clientId),
+            'target' => $this->router->generate('administration.heptacom.admin_open_auth.login', [
+                'clientId' => $clientId,
+            ], UrlGeneratorInterface::ABSOLUTE_URL),
+        ]);
+    }
+
+    /**
+     * @Route(
+     *     methods={"POST"},
+     *     name="api.heptacom.admin_open_auth.provider.metadata-url",
+     *     path="/api/_action/heptacom_admin_open_auth_provider/client-metadata-url"
+     * )
+     */
+    public function getMetadataUrl(Request $request, Context $context): Response
+    {
+        $clientId = $request->get('client_id');
+
+        $client = $this->clientLoader->load($clientId, $context);
+        if ($client instanceof MetadataClientContract) {
+            $metadataUrl = $this->router->generate('administration.heptacom.admin_open_auth.metadata', [
+                'clientId' => $clientId,
+            ], UrlGeneratorInterface::ABSOLUTE_URL);
+        } else {
+            $metadataUrl = null;
+        }
+
+        return JsonResponse::create([
+            'target' => $metadataUrl,
         ]);
     }
 
@@ -311,30 +379,15 @@ class AdministrationController extends AbstractController
         ResponseFactoryInterface $responseFactory,
         ClientDefinition $definition,
         EntityRepositoryInterface $clientsRepository,
-        ClientLoaderInterface $clientLoader,
         Context $context
     ): Response {
         $providerKey = $request->get('provider_key');
-        $clientId = $clientLoader->create($providerKey, $context);
+        $clientId = $this->clientLoader->create($providerKey, $context);
         $criteria = new Criteria();
         $criteria->setIds([$clientId]);
         $entity = $clientsRepository->search($criteria, $context)->first();
 
         return $responseFactory->createDetailResponse($criteria, $entity, $definition, $request, $context, false);
-    }
-
-    private function generateRedirectUrl(string $clientId): string
-    {
-        return $this->router->generate('administration.heptacom.admin_open_auth.login', [
-            'clientId' => $clientId,
-        ], UrlGeneratorInterface::ABSOLUTE_URL);
-    }
-
-    private function getRedirectBehaviour(string $clientId): RedirectBehaviour
-    {
-        return (new RedirectBehaviour())
-            ->setExpectState(true)
-            ->setRedirectUri($this->generateRedirectUrl($clientId));
     }
 
     private function getSystemContext(Context $context): Context

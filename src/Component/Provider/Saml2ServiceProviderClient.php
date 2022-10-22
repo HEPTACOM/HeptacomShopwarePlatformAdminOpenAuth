@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Heptacom\AdminOpenAuth\Component\Provider;
 
 use Heptacom\AdminOpenAuth\Component\Saml\Saml2ServiceProviderService;
+use Heptacom\AdminOpenAuth\Contract\MetadataClientContract;
+use Heptacom\AdminOpenAuth\Contract\ModifiedRedirectBehaviourClientContract;
 use Heptacom\AdminOpenAuth\Service\TokenPairFactoryContract;
 use Heptacom\OpenAuth\Behaviour\RedirectBehaviour;
 use Heptacom\OpenAuth\Client\Contract\ClientContract;
@@ -12,9 +14,15 @@ use Heptacom\OpenAuth\Struct\TokenPairStruct;
 use Heptacom\OpenAuth\Struct\UserStruct;
 use Psr\Http\Message\RequestInterface;
 
-class Saml2ServiceProviderClient extends ClientContract
+class Saml2ServiceProviderClient extends ClientContract implements MetadataClientContract, ModifiedRedirectBehaviourClientContract
 {
-    // TODO: SAML: implement
+    public const AVAILABLE_USER_PROPERTIES = [
+        'firstName',
+        'lastName',
+        'email',
+        'timezone',
+        'locale'
+    ];
 
     private TokenPairFactoryContract $tokenPairFactory;
 
@@ -28,20 +36,7 @@ class Saml2ServiceProviderClient extends ClientContract
 
     public function getLoginUrl(?string $state, RedirectBehaviour $behaviour): string
     {
-        /*$state = $state ?? '';
-        $params = [];
-
-        if (\is_string($behaviour->getRedirectUri())) {
-            $params['SamlRequest'] = $this->getInnerClient()
-                ->buildSamlRequest($behaviour->getRedirectUri());
-        }
-
-        // TODO: SAML: no state is given in case of SAML requests
-        if ($state !== '') {
-            $params[$behaviour->getStateKey()] = $state;
-        }
-
-        return $this->getInnerClient()->getAuthorizationUrl($params);*/
+        return $this->getInnerClient()->getAuthnRequestRedirectUri($state);
     }
 
     public function refreshToken(string $refreshToken): TokenPairStruct
@@ -53,16 +48,49 @@ class Saml2ServiceProviderClient extends ClientContract
 
     public function getUser(string $state, string $code, RedirectBehaviour $behaviour): UserStruct
     {
-        /*$options = [$behaviour->getCodeKey() => $code];
+        $auth = $this->getInnerClient()->validateLoginConfirmData($code, $state);
 
-        if (\is_string($behaviour->getRedirectUri())) {
-            $options['redirect_uri'] = $behaviour->getRedirectUri();
+        $user = new UserStruct();
+        $user->setPrimaryKey($auth->getNameId());
+
+        $mapping = $this->getInnerClient()->getConfig()->getAttributeMapping();
+        foreach ($mapping as $property => $attributeName) {
+            if (!in_array($property, self::AVAILABLE_USER_PROPERTIES) || $attributeName === '') {
+                continue;
+            }
+
+            $propertyValues = $auth->getAttribute($attributeName) ?? [];
+            $propertyValue = count($propertyValues) > 0 ? $propertyValues[array_key_first($propertyValues)] : null;
+
+            if ($propertyValue === null) {
+                continue;
+            }
+
+            switch($property) {
+                case 'firstName':
+                    $user->setFirstName($propertyValue);
+                    break;
+
+                case 'lastName':
+                    $user->setLastName($propertyValue);
+                    break;
+
+                case 'email':
+                    $user->setPrimaryEmail($propertyValue);
+                    $user->setEmails($propertyValues);
+                    break;
+
+                case 'timezone':
+                    $user->setTimezone($propertyValue);
+                    break;
+
+                case 'locale':
+                    $user->setLocale($propertyValue);
+                    break;
+            }
         }
 
-        $token = $this->getInnerClient()->getAccessToken('authorization_code', $options);
-        $user = $this->getInnerClient()->getUserInfo($token);*/
-
-        return new UserStruct(); // TODO: SAML: Build user struct
+        return $user;
     }
 
     public function authorizeRequest(RequestInterface $request, TokenPairStruct $token): RequestInterface
@@ -71,6 +99,23 @@ class Saml2ServiceProviderClient extends ClientContract
         throw new \RuntimeException('Not supported');
 
         return $request;
+    }
+
+    public function getMetadataType(): string
+    {
+        return 'text/xml';
+    }
+
+    public function getMetadata(): string
+    {
+        // TODO: SAML: ensure that the redirect URI is set correctly
+        return $this->getInnerClient()->getServiceProviderMetadata();
+    }
+
+    public function modifyRedirectBehaviour(RedirectBehaviour $behaviour): void
+    {
+        $behaviour->setStateKey('RelayState');
+        $behaviour->setCodeKey('SAMLResponse');
     }
 
     public function getInnerClient(): Saml2ServiceProviderService

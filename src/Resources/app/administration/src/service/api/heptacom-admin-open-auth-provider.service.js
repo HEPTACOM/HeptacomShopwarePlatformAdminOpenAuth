@@ -29,6 +29,14 @@ class HeptacomAdminOpenAuthProviderApiService extends ApiService {
             .post(`_action/${this.getApiBasePath()}/client-redirect-url`, { client_id: clientId }, { headers })
             .then(response => ApiService.handleResponse(response));
     }
+
+    getMetadataUri(clientId) {
+        const headers = this.getBasicHeaders();
+
+        return this.httpClient
+            .post(`_action/${this.getApiBasePath()}/client-metadata-url`, { client_id: clientId }, { headers })
+            .then(response => ApiService.handleResponse(response));
+    }
 }
 
 export default HeptacomAdminOpenAuthProviderApiService;
