@@ -11,9 +11,9 @@ use Psr\Http\Message\ResponseInterface;
 
 class Saml2RequestHelper
 {
-    public static function prepareRequest(RequestInterface $request, $token = null): RequestInterface
+    public static function prepareRequest(RequestInterface $request): RequestInterface
     {
-        // TODO: SAML: implement
+        // nothing special to do here
         return $request;
     }
 
