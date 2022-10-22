@@ -11,7 +11,8 @@
         "administration",
         "oauth",
         "open-authentication",
-        "openid-connect"
+        "openid-connect",
+        "saml"
     ],
     "authors": [
         {
