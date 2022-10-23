@@ -111,11 +111,8 @@ class Saml2ServiceProviderConfiguration extends Struct
         return $this->identityProviderMetadataUrl;
     }
 
-    /**
-     * @param string $identityProviderMetadataUrl
-     * @return Saml2ServiceProviderConfiguration
-     */
-    public function setIdentityProviderMetadataUrl(string $identityProviderMetadataUrl
+    public function setIdentityProviderMetadataUrl(
+        string $identityProviderMetadataUrl
     ): Saml2ServiceProviderConfiguration {
         $this->identityProviderMetadataUrl = $identityProviderMetadataUrl;
 
@@ -127,11 +124,8 @@ class Saml2ServiceProviderConfiguration extends Struct
         return $this->identityProviderMetadataXml;
     }
 
-    /**
-     * @param string|null $identityProviderMetadataXml
-     * @return Saml2ServiceProviderConfiguration
-     */
-    public function setIdentityProviderMetadataXml(?string $identityProviderMetadataXml
+    public function setIdentityProviderMetadataXml(
+        ?string $identityProviderMetadataXml
     ): Saml2ServiceProviderConfiguration {
         $this->identityProviderMetadataXml = $identityProviderMetadataXml;
 
@@ -143,10 +137,6 @@ class Saml2ServiceProviderConfiguration extends Struct
         return $this->identityProviderEntityId;
     }
 
-    /**
-     * @param string $identityProviderEntityId
-     * @return Saml2ServiceProviderConfiguration
-     */
     public function setIdentityProviderEntityId(string $identityProviderEntityId): Saml2ServiceProviderConfiguration
     {
         $this->identityProviderEntityId = $identityProviderEntityId;
@@ -159,10 +149,6 @@ class Saml2ServiceProviderConfiguration extends Struct
         return $this->identityProviderSsoUrl;
     }
 
-    /**
-     * @param string $identityProviderSsoUrl
-     * @return Saml2ServiceProviderConfiguration
-     */
     public function setIdentityProviderSsoUrl(string $identityProviderSsoUrl): Saml2ServiceProviderConfiguration
     {
         $this->identityProviderSsoUrl = $identityProviderSsoUrl;
@@ -175,11 +161,8 @@ class Saml2ServiceProviderConfiguration extends Struct
         return $this->identityProviderCertificate;
     }
 
-    /**
-     * @param string $identityProviderCertificate
-     * @return Saml2ServiceProviderConfiguration
-     */
-    public function setIdentityProviderCertificate(string $identityProviderCertificate
+    public function setIdentityProviderCertificate(
+        string $identityProviderCertificate
     ): Saml2ServiceProviderConfiguration {
         $this->identityProviderCertificate = $identityProviderCertificate;
 
@@ -191,10 +174,6 @@ class Saml2ServiceProviderConfiguration extends Struct
         return $this->serviceProviderEntityId;
     }
 
-    /**
-     * @param string $serviceProviderEntityId
-     * @return Saml2ServiceProviderConfiguration
-     */
     public function setServiceProviderEntityId(string $serviceProviderEntityId): Saml2ServiceProviderConfiguration
     {
         $this->serviceProviderEntityId = $serviceProviderEntityId;
@@ -207,11 +186,8 @@ class Saml2ServiceProviderConfiguration extends Struct
         return $this->serviceProviderAssertionUrl;
     }
 
-    /**
-     * @param string $serviceProviderAssertionUrl
-     * @return Saml2ServiceProviderConfiguration
-     */
-    public function setServiceProviderAssertionUrl(string $serviceProviderAssertionUrl
+    public function setServiceProviderAssertionUrl(
+        string $serviceProviderAssertionUrl
     ): Saml2ServiceProviderConfiguration {
         $this->serviceProviderAssertionUrl = $serviceProviderAssertionUrl;
 
@@ -223,11 +199,8 @@ class Saml2ServiceProviderConfiguration extends Struct
         return $this->serviceProviderNameIdFormat;
     }
 
-    /**
-     * @param string $serviceProviderNameIdFormat
-     * @return Saml2ServiceProviderConfiguration
-     */
-    public function setServiceProviderNameIdFormat(string $serviceProviderNameIdFormat
+    public function setServiceProviderNameIdFormat(
+        string $serviceProviderNameIdFormat
     ): Saml2ServiceProviderConfiguration {
         $this->serviceProviderNameIdFormat = $serviceProviderNameIdFormat;
 
@@ -239,10 +212,6 @@ class Saml2ServiceProviderConfiguration extends Struct
         return $this->serviceProviderCertificate;
     }
 
-    /**
-     * @param string $serviceProviderCertificate
-     * @return Saml2ServiceProviderConfiguration
-     */
     public function setServiceProviderCertificate(string $serviceProviderCertificate): Saml2ServiceProviderConfiguration
     {
         $this->serviceProviderCertificate = $serviceProviderCertificate;
@@ -255,10 +224,6 @@ class Saml2ServiceProviderConfiguration extends Struct
         return $this->serviceProviderPrivateKey;
     }
 
-    /**
-     * @param string $serviceProviderPrivateKey
-     * @return Saml2ServiceProviderConfiguration
-     */
     public function setServiceProviderPrivateKey(string $serviceProviderPrivateKey): Saml2ServiceProviderConfiguration
     {
         $this->serviceProviderPrivateKey = $serviceProviderPrivateKey;
@@ -271,10 +236,6 @@ class Saml2ServiceProviderConfiguration extends Struct
         return $this->attributeMapping;
     }
 
-    /**
-     * @param array $attributeMapping
-     * @return Saml2ServiceProviderConfiguration
-     */
     public function setAttributeMapping(array $attributeMapping): Saml2ServiceProviderConfiguration
     {
         $this->attributeMapping = $attributeMapping;

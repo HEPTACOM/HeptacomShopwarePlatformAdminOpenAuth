@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types = 1);
-
+declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\Contract;
 
@@ -12,7 +11,6 @@ interface MetadataClientContract
 {
     /**
      * Returns the mime type of the requested metadata
-     * @return string
      */
     public function getMetadataType(): string;
 

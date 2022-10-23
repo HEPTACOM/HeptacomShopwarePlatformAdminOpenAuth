@@ -17,9 +17,8 @@ use Symfony\Component\Cache\Adapter\AdapterInterface;
 
 class Saml2ServiceProviderService
 {
-    private const METADATA_CACHE_TTL = 900;
-
     public const ID_PREFIX = 'saml2_provider_';
+    private const METADATA_CACHE_TTL = 900;
 
     /**
      * @var array{request: array, get: array, post: array}|null
@@ -98,8 +97,9 @@ class Saml2ServiceProviderService
     }
 
     /**
-     * @return string|null The URL the user should be redirected to
      * @throws Saml2Exception
+     *
+     * @return string|null The URL the user should be redirected to
      */
     public function getAuthnRequestRedirectUri(?string $relayState): string
     {
@@ -114,7 +114,7 @@ class Saml2ServiceProviderService
             $samlRequest = $this->decodeRequest($authnRequest->getRequest());
 
             if ($relayState !== null) {
-                $samlRequest = preg_replace('/ID="[^"]+"/', 'ID="'.self::ID_PREFIX.$relayState.'"', $samlRequest, 1);
+                $samlRequest = preg_replace('/ID="[^"]+"/', 'ID="' . self::ID_PREFIX . $relayState . '"', $samlRequest, 1);
             }
             $samlRequest = $this->encodeRequest($samlRequest);
 
@@ -128,10 +128,10 @@ class Saml2ServiceProviderService
                 $parameters['Signature'] = $signature;
             }
 
-            $uri = new Uri((string)$settings->getIdPSSOUrl());
+            $uri = new Uri((string) $settings->getIdPSSOUrl());
             $uri = $uri->withQuery(http_build_query($parameters));
 
-            return (string)$uri;
+            return (string) $uri;
         } catch (\Exception $e) {
             $message = 'Could not build redirect URL';
 
@@ -147,7 +147,7 @@ class Saml2ServiceProviderService
 
     /**
      * Creates the SAML Service Provider Metadata XML
-     * @return string
+     *
      * @throws Saml2Exception
      */
     public function getServiceProviderMetadata(): string
@@ -157,12 +157,13 @@ class Saml2ServiceProviderService
             $metadata = $settings->getSPMetadata();
             $errors = $settings->validateMetadata($metadata);
 
-            if (count($errors) > 0) {
-                $errorMessage = sprintf("Invalid SP metadata: %s", implode(', ', $errors));
+            if (\count($errors) > 0) {
+                $errorMessage = sprintf('Invalid SP metadata: %s', implode(', ', $errors));
+
                 throw new OneLoginSaml2Error($errorMessage, OneLoginSaml2Error::METADATA_SP_INVALID);
-            } else {
-                return $metadata;
             }
+
+            return $metadata;
         } catch (\Exception $e) {
             $message = 'Could not retrieve SP metadata';
             $this->logger->critical($message . ': ' . $e->getMessage(), $e->getTrace());
@@ -173,9 +174,7 @@ class Saml2ServiceProviderService
 
     /**
      * Parse and verify incoming SAMLResponse
-     * @param string $samlResponse
-     * @param string $relayState
-     * @return Auth
+     *
      * @throws Saml2Exception
      */
     public function validateLoginConfirmData(string $samlResponse, string $relayState): Auth
@@ -187,7 +186,7 @@ class Saml2ServiceProviderService
             $auth->processResponse(self::ID_PREFIX . $relayState);
             $errors = $auth->getErrors();
 
-            if (count($errors) > 0) {
+            if (\count($errors) > 0) {
                 throw new OneLoginSaml2Error('Invalid response: ' . implode(', ', $errors));
             }
 
@@ -202,6 +201,16 @@ class Saml2ServiceProviderService
         }
     }
 
+    public function getConfig(): Saml2ServiceProviderConfiguration
+    {
+        return $this->config;
+    }
+
+    public function setConfig(Saml2ServiceProviderConfiguration $config): void
+    {
+        $this->config = $config;
+    }
+
     protected function getSaml2Settings(): Settings
     {
         try {
@@ -214,19 +223,9 @@ class Saml2ServiceProviderService
         }
     }
 
-    public function getConfig(): Saml2ServiceProviderConfiguration
-    {
-        return $this->config;
-    }
-
-    public function setConfig(Saml2ServiceProviderConfiguration $config): void
-    {
-        $this->config = $config;
-    }
-
     protected function decodeRequest(string $payload): string
     {
-        $encodedPayload = base64_decode($payload);
+        $encodedPayload = base64_decode($payload, true);
 
         $inflatedPayload = gzinflate($encodedPayload);
 
@@ -245,7 +244,6 @@ class Saml2ServiceProviderService
     /**
      * SAML library relies on super globals, so we need to set them.
      *
-     * @return void
      * @throws \Exception if super globals are already set
      */
     protected function prepareSuperGlobals(string $samlResponse, string $relayState): void
@@ -271,8 +269,6 @@ class Saml2ServiceProviderService
 
     /**
      * When we are done with super globals, we want to reset them to their original contents.
-     *
-     * @return void
      */
     protected function restoreSuperGlobals(): void
     {

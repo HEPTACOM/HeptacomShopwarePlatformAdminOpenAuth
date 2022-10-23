@@ -7,7 +7,6 @@ namespace Heptacom\AdminOpenAuth\Component\Provider;
 use Heptacom\AdminOpenAuth\Component\Saml\Saml2ServiceProviderService;
 use Heptacom\AdminOpenAuth\Contract\MetadataClientContract;
 use Heptacom\AdminOpenAuth\Contract\ModifiedRedirectBehaviourClientContract;
-use Heptacom\AdminOpenAuth\Service\TokenPairFactoryContract;
 use Heptacom\OpenAuth\Behaviour\RedirectBehaviour;
 use Heptacom\OpenAuth\Client\Contract\ClientContract;
 use Heptacom\OpenAuth\Struct\TokenPairStruct;
@@ -21,7 +20,7 @@ class Saml2ServiceProviderClient extends ClientContract implements MetadataClien
         'lastName',
         'email',
         'timezone',
-        'locale'
+        'locale',
     ];
 
     private Saml2ServiceProviderService $saml2ServiceProviderService;
@@ -50,37 +49,42 @@ class Saml2ServiceProviderClient extends ClientContract implements MetadataClien
 
         $mapping = $this->getInnerClient()->getConfig()->getAttributeMapping();
         foreach ($mapping as $property => $attributeName) {
-            if (!in_array($property, self::AVAILABLE_USER_PROPERTIES) || $attributeName === '') {
+            if (!\in_array($property, self::AVAILABLE_USER_PROPERTIES, true) || $attributeName === '') {
                 continue;
             }
 
             $propertyValues = $auth->getAttribute($attributeName) ?? [];
-            $propertyValue = count($propertyValues) > 0 ? $propertyValues[array_key_first($propertyValues)] : null;
+            $propertyValue = \count($propertyValues) > 0 ? $propertyValues[array_key_first($propertyValues)] : null;
 
             if ($propertyValue === null) {
                 continue;
             }
 
-            switch($property) {
+            switch ($property) {
                 case 'firstName':
                     $user->setFirstName($propertyValue);
+
                     break;
 
                 case 'lastName':
                     $user->setLastName($propertyValue);
+
                     break;
 
                 case 'email':
                     $user->setPrimaryEmail($propertyValue);
                     $user->setEmails($propertyValues);
+
                     break;
 
                 case 'timezone':
                     $user->setTimezone($propertyValue);
+
                     break;
 
                 case 'locale':
                     $user->setLocale($propertyValue);
+
                     break;
             }
         }
