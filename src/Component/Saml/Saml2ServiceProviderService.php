@@ -8,7 +8,7 @@ use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Uri;
 use OneLogin\Saml2\Auth;
 use OneLogin\Saml2\AuthnRequest;
-use OneLogin\Saml2\Error;
+use OneLogin\Saml2\Error as OneLoginSaml2Error;
 use OneLogin\Saml2\Settings;
 use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Client\ClientInterface;
@@ -17,7 +17,6 @@ use Symfony\Component\Cache\Adapter\AdapterInterface;
 
 class Saml2ServiceProviderService
 {
-    // TODO: SAML: implement
     private const METADATA_CACHE_TTL = 900;
 
     public const ID_PREFIX = 'saml2_provider_';
@@ -35,8 +34,11 @@ class Saml2ServiceProviderService
 
     private Saml2ServiceProviderConfiguration $config;
 
-    public function __construct(ClientInterface $samlHttpClient, LoggerInterface $logger, AdapterInterface $cache)
-    {
+    public function __construct(
+        ClientInterface $samlHttpClient,
+        LoggerInterface $logger,
+        AdapterInterface $cache
+    ) {
         $this->samlHttpClient = $samlHttpClient;
         $this->logger = $logger;
         $this->cache = $cache;
@@ -97,61 +99,85 @@ class Saml2ServiceProviderService
 
     /**
      * @return string|null The URL the user should be redirected to
-     * @throws Error
+     * @throws Saml2Exception
      */
     public function getAuthnRequestRedirectUri(?string $relayState): string
     {
-        $parameters = [];
+        try {
+            $parameters = [];
 
-        $settings = $this->getSaml2Settings();
-        $auth = new Auth($this->config->getOneLoginSettings());
-        $authnRequest = new AuthnRequest($settings);
+            $settings = $this->getSaml2Settings();
+            $auth = new Auth($this->config->getOneLoginSettings());
+            $authnRequest = new AuthnRequest($settings);
 
-        // replace request id
-        $samlRequest = $this->decodeRequest($authnRequest->getRequest());
+            // replace request id
+            $samlRequest = $this->decodeRequest($authnRequest->getRequest());
 
-        if ($relayState !== null) {
-            $samlRequest = preg_replace('/ID="[^"]+"/', 'ID="' . self::ID_PREFIX . $relayState . '"', $samlRequest, 1);
+            if ($relayState !== null) {
+                $samlRequest = preg_replace('/ID="[^"]+"/', 'ID="'.self::ID_PREFIX.$relayState.'"', $samlRequest, 1);
+            }
+            $samlRequest = $this->encodeRequest($samlRequest);
+
+            $parameters['SAMLRequest'] = $samlRequest;
+            $parameters['RelayState'] = $relayState;
+
+            $security = $settings->getSecurityData();
+            if (isset($security['authnRequestsSigned']) && $security['authnRequestsSigned']) {
+                $signature = $auth->buildRequestSignature($samlRequest, $relayState, $security['signatureAlgorithm']);
+                $parameters['SigAlg'] = $security['signatureAlgorithm'];
+                $parameters['Signature'] = $signature;
+            }
+
+            $uri = new Uri((string)$settings->getIdPSSOUrl());
+            $uri = $uri->withQuery(http_build_query($parameters));
+
+            return (string)$uri;
+        } catch (\Exception $e) {
+            $message = 'Could not build redirect URL';
+
+            if ($e instanceof Saml2Exception) {
+                $message .= ': ' . $e->getMessage();
+            }
+
+            $this->logger->error($message, $e->getTrace());
+
+            throw new Saml2Exception($message);
         }
-        $samlRequest = $this->encodeRequest($samlRequest);
-
-        $parameters['SAMLRequest'] = $samlRequest;
-        $parameters['RelayState'] = $relayState;
-
-        $security = $settings->getSecurityData();
-        if (isset($security['authnRequestsSigned']) && $security['authnRequestsSigned']) {
-            $signature = $auth->buildRequestSignature($samlRequest, $relayState, $security['signatureAlgorithm']);
-            $parameters['SigAlg'] = $security['signatureAlgorithm'];
-            $parameters['Signature'] = $signature;
-        }
-
-        $uri = new Uri((string) $settings->getIdPSSOUrl());
-        $uri = $uri->withQuery(http_build_query($parameters));
-
-        return (string) $uri;
     }
 
     /**
      * Creates the SAML Service Provider Metadata XML
      * @return string
-     * @throws Error
+     * @throws Saml2Exception
      */
     public function getServiceProviderMetadata(): string
     {
-        // TODO: SAML: Catch errors
-        $settings = $this->getSaml2Settings();
-        $metadata = $settings->getSPMetadata();
-        $errors = $settings->validateMetadata($metadata);
+        try {
+            $settings = $this->getSaml2Settings();
+            $metadata = $settings->getSPMetadata();
+            $errors = $settings->validateMetadata($metadata);
 
-        if (count($errors) > 0) {
-            // TODO: SAML: handle error
-            throw new Error('Invalid SP metadata: ' . implode(', ', $errors), Error::METADATA_SP_INVALID);
-        } else {
-            return $metadata;
+            if (count($errors) > 0) {
+                $errorMessage = sprintf("Invalid SP metadata: %s", implode(', ', $errors));
+                throw new OneLoginSaml2Error($errorMessage, OneLoginSaml2Error::METADATA_SP_INVALID);
+            } else {
+                return $metadata;
+            }
+        } catch (\Exception $e) {
+            $message = 'Could not retrieve SP metadata';
+            $this->logger->critical($message . ': ' . $e->getMessage(), $e->getTrace());
+
+            throw new Saml2Exception($message, $e);
         }
     }
 
-    // TODO: SAML: specify return type
+    /**
+     * Parse and verify incoming SAMLResponse
+     * @param string $samlResponse
+     * @param string $relayState
+     * @return Auth
+     * @throws Saml2Exception
+     */
     public function validateLoginConfirmData(string $samlResponse, string $relayState): Auth
     {
         $this->prepareSuperGlobals($samlResponse, $relayState);
@@ -162,10 +188,15 @@ class Saml2ServiceProviderService
             $errors = $auth->getErrors();
 
             if (count($errors) > 0) {
-                throw new Error('Invalid response: ' . implode(', ', $errors));
+                throw new OneLoginSaml2Error('Invalid response: ' . implode(', ', $errors));
             }
 
             return $auth;
+        } catch (\Exception $e) {
+            $message = sprintf('Could not verify SAMLResponse: %s', $e->getMessage());
+            $this->logger->error($message, $e->getTrace());
+
+            throw new Saml2Exception($message, $e);
         } finally {
             $this->restoreSuperGlobals();
         }
@@ -173,8 +204,14 @@ class Saml2ServiceProviderService
 
     protected function getSaml2Settings(): Settings
     {
-        // TODO: SAML: Catch error
-        return new Settings($this->config->getOneLoginSettings(), true);
+        try {
+            return new Settings($this->config->getOneLoginSettings(), true);
+        } catch (\Exception $e) {
+            $message = sprintf('Could not retrieve SAML settings: %s', $e->getMessage());
+            $this->logger->critical($message, $e->getTrace());
+
+            throw new Saml2Exception($message, $e);
+        }
     }
 
     public function getConfig(): Saml2ServiceProviderConfiguration

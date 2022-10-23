@@ -12,8 +12,6 @@ class Saml2ServiceProviderEntityRepository extends DefaultInjectingEntityReposit
 {
     protected function injectDefaults(array $payload, Context $context): array
     {
-        // TODO: SAML: implement
-
         $ids = \array_values(\array_column($payload, 'id'));
 
         if (!empty($ids)) {
@@ -29,7 +27,7 @@ class Saml2ServiceProviderEntityRepository extends DefaultInjectingEntityReposit
                 continue;
             }
 
-            $item['storeUserToken'] = $item['storeUserToken'] ?? true;
+            $item['storeUserToken'] = false;
             $item['login'] = $item['login'] ?? true;
             $item['connect'] = $item['connect'] ?? true;
         }

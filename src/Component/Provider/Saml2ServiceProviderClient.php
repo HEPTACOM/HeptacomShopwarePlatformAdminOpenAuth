@@ -24,13 +24,10 @@ class Saml2ServiceProviderClient extends ClientContract implements MetadataClien
         'locale'
     ];
 
-    private TokenPairFactoryContract $tokenPairFactory;
-
     private Saml2ServiceProviderService $saml2ServiceProviderService;
 
-    public function __construct(TokenPairFactoryContract $tokenPairFactory, Saml2ServiceProviderService $saml2ServiceProviderService)
+    public function __construct(Saml2ServiceProviderService $saml2ServiceProviderService)
     {
-        $this->tokenPairFactory = $tokenPairFactory;
         $this->saml2ServiceProviderService = $saml2ServiceProviderService;
     }
 
@@ -41,9 +38,7 @@ class Saml2ServiceProviderClient extends ClientContract implements MetadataClien
 
     public function refreshToken(string $refreshToken): TokenPairStruct
     {
-        /*return $this->tokenPairFactory->fromOpenIdConnectToken($this->getInnerClient()->getAccessToken('refresh_token', [
-            'refresh_token' => $refreshToken,
-        ]));*/
+        throw new \Exception('Not supported.');
     }
 
     public function getUser(string $state, string $code, RedirectBehaviour $behaviour): UserStruct
@@ -95,10 +90,7 @@ class Saml2ServiceProviderClient extends ClientContract implements MetadataClien
 
     public function authorizeRequest(RequestInterface $request, TokenPairStruct $token): RequestInterface
     {
-        // TODO: SAML: check if support is possible
         throw new \RuntimeException('Not supported');
-
-        return $request;
     }
 
     public function getMetadataType(): string
@@ -108,7 +100,6 @@ class Saml2ServiceProviderClient extends ClientContract implements MetadataClien
 
     public function getMetadata(): string
     {
-        // TODO: SAML: ensure that the redirect URI is set correctly
         return $this->getInnerClient()->getServiceProviderMetadata();
     }
 

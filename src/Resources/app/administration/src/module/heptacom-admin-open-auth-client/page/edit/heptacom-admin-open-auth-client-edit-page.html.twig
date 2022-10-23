@@ -68,62 +68,82 @@
                         >
                             <template v-if="item">
                                 {% block heptacom_admin_open_auth_client_edit_page_content_base_settings_inner %}
-                                    <sw-text-field
-                                        :label="$t('heptacom-admin-open-auth-client.pages.edit.fields.name')"
-                                        v-model="item.name"
-                                    ></sw-text-field>
-                                    <sw-switch-field
-                                        :label="$t('heptacom-admin-open-auth-client.pages.edit.fields.active')"
-                                        v-model="item.active"
-                                    ></sw-switch-field>
-                                    <sw-switch-field
-                                        :disabled="!item.active"
-                                        :label="$t('heptacom-admin-open-auth-client.pages.edit.fields.login')"
-                                        v-model="item.login"
-                                    ></sw-switch-field>
-                                    <sw-switch-field
-                                        :disabled="!item.active"
-                                        :label="$t('heptacom-admin-open-auth-client.pages.edit.fields.connect')"
-                                        v-model="item.connect"
-                                    ></sw-switch-field>
-                                    <sw-switch-field
-                                        :disabled="!item.active"
-                                        :label="$t('heptacom-admin-open-auth-client.pages.edit.fields.userBecomeAdmin')"
-                                        v-model="item.userBecomeAdmin"
-                                    ></sw-switch-field>
-                                    <sw-entity-multi-select
-                                        v-if="!item.userBecomeAdmin"
-                                        :disabled="!item.active"
-                                        v-model="item.defaultAclRoles"
-                                        :label="$t('heptacom-admin-open-auth-client.pages.edit.fields.defaultAclRoles')"
-                                        entityName="acl_role"
-                                    ></sw-entity-multi-select>
-                                    <sw-switch-field
-                                        :disabled="!item.active"
-                                        :label="$t('heptacom-admin-open-auth-client.pages.edit.fields.storeUserToken')"
-                                        v-model="item.storeUserToken"
-                                    ></sw-switch-field>
-                                    <sw-switch-field
-                                        :disabled="!item.active"
-                                        :label="$t('heptacom-admin-open-auth-client.pages.edit.fields.keepUserUpdated')"
-                                        v-model="item.keepUserUpdated"
-                                    ></sw-switch-field>
-                                    <sw-text-field
-                                        v-if="redirectUri"
-                                        :copyable="true"
-                                        :copyableTooltip="true"
-                                        :label="$t('heptacom-admin-open-auth-client.pages.edit.fields.redirectUri')"
-                                        :value="redirectUri"
-                                        disabled
-                                    ></sw-text-field>
-                                    <sw-text-field
-                                        v-if="metadataUri"
-                                        :copyable="true"
-                                        :copyableTooltip="true"
-                                        :label="$t('heptacom-admin-open-auth-client.pages.edit.fields.metadataUri')"
-                                        :value="metadataUri"
-                                        disabled
-                                    ></sw-text-field>
+                                    {% block heptacom_admin_open_auth_client_edit_page_content_base_settings_inner_name %}
+                                        <sw-text-field
+                                            :label="$t('heptacom-admin-open-auth-client.pages.edit.fields.name')"
+                                            v-model="item.name"
+                                        ></sw-text-field>
+                                    {% endblock %}
+                                    {% block heptacom_admin_open_auth_client_edit_page_content_base_settings_inner_active %}
+                                        <sw-switch-field
+                                            :label="$t('heptacom-admin-open-auth-client.pages.edit.fields.active')"
+                                            v-model="item.active"
+                                        ></sw-switch-field>
+                                    {% endblock %}
+                                    {% block heptacom_admin_open_auth_client_edit_page_content_base_settings_inner_can_login %}
+                                        <sw-switch-field
+                                            :disabled="!item.active"
+                                            :label="$t('heptacom-admin-open-auth-client.pages.edit.fields.login')"
+                                            v-model="item.login"
+                                        ></sw-switch-field>
+                                    {% endblock %}
+                                    {% block heptacom_admin_open_auth_client_edit_page_content_base_settings_inner_can_connect %}
+                                        <sw-switch-field
+                                            :disabled="!item.active"
+                                            :label="$t('heptacom-admin-open-auth-client.pages.edit.fields.connect')"
+                                            v-model="item.connect"
+                                        ></sw-switch-field>
+                                    {% endblock %}
+                                    {% block heptacom_admin_open_auth_client_edit_page_content_base_settings_inner_user_become_admin %}
+                                        <sw-switch-field
+                                            :disabled="!item.active"
+                                            :label="$t('heptacom-admin-open-auth-client.pages.edit.fields.userBecomeAdmin')"
+                                            v-model="item.userBecomeAdmin"
+                                        ></sw-switch-field>
+                                    {% endblock %}
+                                    {% block heptacom_admin_open_auth_client_edit_page_content_base_settings_inner_default_acl_roles %}
+                                        <sw-entity-multi-select
+                                            v-if="!item.userBecomeAdmin"
+                                            :disabled="!item.active"
+                                            v-model="item.defaultAclRoles"
+                                            :label="$t('heptacom-admin-open-auth-client.pages.edit.fields.defaultAclRoles')"
+                                            entityName="acl_role"
+                                        ></sw-entity-multi-select>
+                                    {% endblock %}
+                                    {% block heptacom_admin_open_auth_client_edit_page_content_base_settings_inner_store_user_token %}
+                                        <sw-switch-field
+                                            :disabled="!item.active"
+                                            :label="$t('heptacom-admin-open-auth-client.pages.edit.fields.storeUserToken')"
+                                            v-model="item.storeUserToken"
+                                        ></sw-switch-field>
+                                    {% endblock %}
+                                    {% block heptacom_admin_open_auth_client_edit_page_content_base_settings_inner_keep_user_updated %}
+                                        <sw-switch-field
+                                            :disabled="!item.active"
+                                            :label="$t('heptacom-admin-open-auth-client.pages.edit.fields.keepUserUpdated')"
+                                            v-model="item.keepUserUpdated"
+                                        ></sw-switch-field>
+                                    {% endblock %}
+                                    {% block heptacom_admin_open_auth_client_edit_page_content_base_settings_inner_redirect_uri %}
+                                        <sw-text-field
+                                            v-if="redirectUri"
+                                            :copyable="true"
+                                            :copyableTooltip="true"
+                                            :label="$t('heptacom-admin-open-auth-client.pages.edit.fields.redirectUri')"
+                                            :value="redirectUri"
+                                            disabled
+                                        ></sw-text-field>
+                                    {% endblock %}
+                                    {% block heptacom_admin_open_auth_client_edit_page_content_base_settings_inner_metadata_uri %}
+                                        <sw-text-field
+                                            v-if="metadataUri"
+                                            :copyable="true"
+                                            :copyableTooltip="true"
+                                            :label="$t('heptacom-admin-open-auth-client.pages.edit.fields.metadataUri')"
+                                            :value="metadataUri"
+                                            disabled
+                                        ></sw-text-field>
+                                    {% endblock %}
                                 {% endblock %}
                             </template>
                         </sw-card>

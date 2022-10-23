@@ -178,7 +178,6 @@ class AdministrationController extends AbstractController
      */
     public function confirm(Request $request): Response
     {
-        // TODO: SAML: Implement confirm() method.
         return $this->render('@KskHeptacomAdminOpenAuth/administration/heptacom-admin-open-auth/page/confirm.html.twig', [
             'cspNonce' => $request->attributes->get(PlatformRequest::ATTRIBUTE_CSP_NONCE),
         ]);
@@ -194,7 +193,6 @@ class AdministrationController extends AbstractController
      */
     public function remoteLogin(string $clientId, Context $context): Response
     {
-        // TODO: SAML: Implement remoteLogin() method.
         return RedirectResponse::create(
             $this->flow->getRedirectUrl($clientId, $context),
             Response::HTTP_TEMPORARY_REDIRECT

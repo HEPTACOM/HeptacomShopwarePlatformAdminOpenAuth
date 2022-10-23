@@ -41,7 +41,7 @@
         "doctrine/dbal": "^2",
         "guzzlehttp/guzzle": "~7.0",
         "guzzlehttp/psr7": "*",
-        "heptacom/open-auth": ">=1.5",
+        "heptacom/open-auth": ">=1.4",
         "league/oauth2-client": "~2.0",
         "league/oauth2-server": "^8",
         "mrjoops/oauth2-jira": "^0.2.4",

@@ -16,8 +16,6 @@ use Symfony\Component\Routing\RouterInterface;
 
 class Saml2ServiceProvider extends ClientProviderContract
 {
-    // TODO: SAML: Implement SAML2 provider
-
     public const PROVIDER_NAME = 'saml2';
 
     private string $appSecret;

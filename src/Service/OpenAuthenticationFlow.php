@@ -82,7 +82,6 @@ class OpenAuthenticationFlow implements OpenAuthenticationFlowInterface
         $state = Uuid::randomHex();
         $this->login->initiate($clientId, null, $state, $context);
 
-        // TODO: SAML: Add a redirect behaviour to the client
         return $this->clientLoader->load($clientId, $context)
             ->getLoginUrl($state, $this->redirectBehaviourFactory->createRedirectBehaviour($clientId, $context));
     }

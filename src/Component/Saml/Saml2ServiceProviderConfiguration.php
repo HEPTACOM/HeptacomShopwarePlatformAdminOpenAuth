@@ -88,7 +88,7 @@ class Saml2ServiceProviderConfiguration extends Struct
             'sp' => [
                 'entityId' => $this->serviceProviderEntityId,
                 'assertionConsumerService' => [
-                    'url' => $this->serviceProviderAssertionUrl, // TODO: SAML: insert dynamically, using URL builder, while building configuration
+                    'url' => $this->serviceProviderAssertionUrl,
                     'binding' => Constants::BINDING_HTTP_POST,
                 ],
                 'NameIdFormat' => Constants::NAMEID_PERSISTENT,
