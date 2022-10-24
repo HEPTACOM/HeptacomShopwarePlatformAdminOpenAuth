@@ -26,6 +26,8 @@
                     "templateSelect-placeholder": "Select the template for your identity provider",
                     "templateApply": "Apply template",
                     "template": {
+                        "friendlyNames": "Simple (e.g. Keycloak)",
+                        "x500": "X500 (e.g. Keycloak)",
                         "azure": "Azure AD"
                     },
                     "field": {

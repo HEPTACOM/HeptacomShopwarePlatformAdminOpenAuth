@@ -49,7 +49,7 @@ services:
               verify: true
               timeout: 15
               headers:
-                  Accept: text/xml
+                  Accept: text/xml,application/xml
 
     Heptacom\AdminOpenAuth\Database\ClientDefinition:
         tags:

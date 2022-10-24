@@ -26,6 +26,8 @@
                     "templateSelect-placeholder": "Wählen Sie hier Ihren Identitätsanbieter aus",
                     "templateApply": "Vorlage anwenden",
                     "template": {
+                        "friendlyNames": "Einfach (bspw. Keycloak)",
+                        "x500": "X500 (bspw. Keycloak)",
                         "azure": "Azure AD"
                     },
                     "field": {

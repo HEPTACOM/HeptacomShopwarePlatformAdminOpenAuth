@@ -16,6 +16,16 @@ Component.override('heptacom-admin-open-auth-client-edit-page', {
                 'locale'
             ],
             attributeMappingTemplates: {
+                friendlyNames: {
+                    firstName: 'givenName',
+                    lastName: 'surName',
+                    email: 'emailAddress',
+                },
+                x500: {
+                    firstName: 'urn:oid:2.5.4.42',
+                    lastName: 'urn:oid:2.5.4.4',
+                    email: 'urn:oid:1.2.840.113549.1.9.1',
+                },
                 azure: {
                     firstName: 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname',
                     lastName: 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname',

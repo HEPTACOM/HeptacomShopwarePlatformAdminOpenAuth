@@ -53,7 +53,7 @@ class Saml2ServiceProviderClient extends ClientContract implements MetadataClien
                 continue;
             }
 
-            $propertyValues = $auth->getAttribute($attributeName) ?? [];
+            $propertyValues = $auth->getAttribute($attributeName) ?? $auth->getAttributeWithFriendlyName($attributeName) ?? [];
             $propertyValue = \count($propertyValues) > 0 ? $propertyValues[array_key_first($propertyValues)] : null;
 
             if ($propertyValue === null) {
@@ -99,7 +99,7 @@ class Saml2ServiceProviderClient extends ClientContract implements MetadataClien
 
     public function getMetadataType(): string
     {
-        return 'text/xml';
+        return 'application/xml';
     }
 
     public function getMetadata(): string

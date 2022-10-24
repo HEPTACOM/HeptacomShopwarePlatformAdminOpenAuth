@@ -30,9 +30,10 @@ class Saml2RequestHelper
             );
         }
 
-        if (substr($response->getHeaderLine('Content-Type'), 0, 8) !== 'text/xml') {
+        $contentType = explode(';', $response->getHeaderLine('Content-Type'))[0] ?? '';
+        if (!in_array($contentType, ['text/xml', 'application/xml'], true)) {
             throw new RequestException(
-                'Expected content type to be of type application/json, received ' . $response->getHeaderLine(
+                'Expected content type to be of type text/xml or application/xml, received ' . $response->getHeaderLine(
                     'Content-Type'
                 ),
                 $request,

@@ -82,7 +82,7 @@ class Saml2ServiceProviderConfiguration extends Struct
             ];
         }
 
-        return array_merge([
+        return array_merge_recursive([
             'strict' => true, // TODO: tag:5.0.0 make configurable
             'debug' => false, // TODO: tag:5.0.0 make configurable
             'sp' => [
@@ -96,12 +96,13 @@ class Saml2ServiceProviderConfiguration extends Struct
                 'privateKey' => $this->serviceProviderPrivateKey,
             ],
             'security' => [
-                'rejectUnsolicitedResponsesWithInResponseTo' => true,
+                'allowRepeatAttributeName' => true,
                 'authnRequestsSigned' => true,
-                'signMetadata' => true,
-                'wantXMLValidation' => true,
+                'rejectUnsolicitedResponsesWithInResponseTo' => true,
                 'relaxDestinationValidation' => false,
+                'signMetadata' => true,
                 'wantAssertionsSigned' => true,
+                'wantXMLValidation' => true,
             ],
         ], $idpSettings);
     }
