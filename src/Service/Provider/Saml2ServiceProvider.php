@@ -7,13 +7,14 @@ namespace Heptacom\AdminOpenAuth\Service\Provider;
 use Heptacom\AdminOpenAuth\Component\Provider\Saml2ServiceProviderClient;
 use Heptacom\AdminOpenAuth\Component\Saml\Saml2ServiceProviderConfiguration;
 use Heptacom\AdminOpenAuth\Component\Saml\Saml2ServiceProviderService;
+use Heptacom\AdminOpenAuth\Contract\ConfigurationRefresherClientProviderContract;
 use Heptacom\OpenAuth\Client\Contract\ClientContract;
 use Heptacom\OpenAuth\ClientProvider\Contract\ClientProviderContract;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 
-class Saml2ServiceProvider extends ClientProviderContract
+class Saml2ServiceProvider extends ClientProviderContract implements ConfigurationRefresherClientProviderContract
 {
     public const PROVIDER_NAME = 'saml2';
 
@@ -49,6 +50,7 @@ class Saml2ServiceProvider extends ClientProviderContract
                 'identityProviderSsoUrl',
                 'identityProviderCertificate',
                 'serviceProviderCertificate',
+                'serviceProviderCertificateExpiresAt',
                 'serviceProviderPrivateKey',
                 'serviceProviderPublicKey',
                 'attributeMapping',
@@ -61,6 +63,7 @@ class Saml2ServiceProvider extends ClientProviderContract
                 'identityProviderSsoUrl',
                 'identityProviderCertificate',
                 'serviceProviderCertificate',
+                'serviceProviderCertificateExpiresAt',
                 'serviceProviderPrivateKey',
                 'serviceProviderPublicKey',
             ])->setDefaults([
@@ -73,6 +76,7 @@ class Saml2ServiceProvider extends ClientProviderContract
             ->setAllowedTypes('identityProviderSsoUrl', 'string')
             ->setAllowedTypes('identityProviderCertificate', 'string')
             ->setAllowedTypes('serviceProviderCertificate', 'string')
+            ->setAllowedTypes('serviceProviderCertificateExpiresAt', 'string')
             ->setAllowedTypes('serviceProviderPrivateKey', 'string')
             ->setAllowedTypes('serviceProviderPublicKey', 'string')
             ->setAllowedTypes('attributeMapping', 'array')
@@ -98,25 +102,8 @@ class Saml2ServiceProvider extends ClientProviderContract
         );
 
         // TODO: tag:v5.0.0 make generation configurable and dynamic per client in administration
-        // TODO: SAML: implement auto renew
-        $this->createCertificate($result);
 
-        return $result;
-    }
-
-    public function createCertificate(array &$config): void
-    {
-        $privateKey = openssl_pkey_new([
-            'private_key_bits' => 2048,
-            'private_key_type' => \OPENSSL_KEYTYPE_RSA,
-        ]);
-
-        openssl_pkey_export($privateKey, $config['serviceProviderPrivateKey'], $this->appSecret);
-        $config['serviceProviderPublicKey'] = openssl_pkey_get_details($privateKey)['key'];
-
-        $csr = openssl_csr_new([], $privateKey, ['digest_alg' => 'sha256']);
-        $x509 = openssl_csr_sign($csr, null, $privateKey, 365, ['digest_alg' => 'sha256']);
-        openssl_x509_export($x509, $config['serviceProviderCertificate']);
+        return $this->createCertificate($result);
     }
 
     public function provideClient(array $resolvedConfig): ClientContract
@@ -146,5 +133,44 @@ class Saml2ServiceProvider extends ClientProviderContract
         $service->discoverIdpMetadata();
 
         return new Saml2ServiceProviderClient($service);
+    }
+
+    public function configurationNeedsUpdate(array $configuration): bool
+    {
+        $x509Details = openssl_x509_parse($configuration['serviceProviderCertificate'] ?? '');
+        if (!$x509Details) {
+            return true;
+        }
+
+        $expiresAt = \DateTimeImmutable::createFromFormat('ymdHise', $x509Details['validTo'])->diff(
+            new \DateTimeImmutable()
+        );
+
+        return $expiresAt->invert === 0 || $expiresAt->days < 30;
+    }
+
+    public function refreshConfiguration(array $configuration): array
+    {
+        return $this->createCertificate($configuration);
+    }
+
+    protected function createCertificate(array $config): array
+    {
+        $privateKey = openssl_pkey_new([
+            'private_key_bits' => 2048,
+            'private_key_type' => \OPENSSL_KEYTYPE_RSA,
+        ]);
+
+        openssl_pkey_export($privateKey, $config['serviceProviderPrivateKey'], $this->appSecret);
+        $config['serviceProviderPublicKey'] = openssl_pkey_get_details($privateKey)['key'];
+
+        $csr = openssl_csr_new([], $privateKey, ['digest_alg' => 'sha256']);
+        $x509 = openssl_csr_sign($csr, null, $privateKey, 365, ['digest_alg' => 'sha256']);
+        openssl_x509_export($x509, $config['serviceProviderCertificate']);
+
+        $x509Details = openssl_x509_parse($x509);
+        $config['serviceProviderCertificateExpiresAt'] = \DateTimeImmutable::createFromFormat('ymdHise', $x509Details['validFrom'])->format(\DateTimeInterface::ATOM);
+
+        return $config;
     }
 }

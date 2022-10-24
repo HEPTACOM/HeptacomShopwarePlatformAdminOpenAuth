@@ -10,7 +10,9 @@
         "providerFields": {
             "saml2": {
                 "serviceProviderCertificate":  "Service Provider Certificate (PEM)",
+                "serviceProviderCertificate-help":  "The certificate will automatically be renewed within 30 days before expiry.",
                 "serviceProviderPublicKey":  "Service Provider Public Key (PEM)",
+                "serviceProviderPublicKey-help":  "The public key will automatically be renewed, when the certificate is renewed.",
                 "identityProviderCardTitle": "Identity provider settings",
                 "identityProviderMetadataUrl":  "Metadata URL",
                 "identityProviderMetadataUrl-help": "If given, the IdP configuration will be discovered automatically.",

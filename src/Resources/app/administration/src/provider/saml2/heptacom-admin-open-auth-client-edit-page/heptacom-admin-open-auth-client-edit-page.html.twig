@@ -6,11 +6,13 @@
     <sw-textarea-field
         :disabled="true"
         :label="$t('heptacomAdminOpenAuthClient.providerFields.saml2.serviceProviderCertificate')"
+        :help-text="$t('heptacomAdminOpenAuthClient.providerFields.saml2.serviceProviderCertificate-help')"
         v-model="item.config.serviceProviderCertificate"
     ></sw-textarea-field>
     <sw-textarea-field
         :disabled="true"
         :label="$t('heptacomAdminOpenAuthClient.providerFields.saml2.serviceProviderPublicKey')"
+        :help-text="$t('heptacomAdminOpenAuthClient.providerFields.saml2.serviceProviderPublicKey-help')"
         v-model="item.config.serviceProviderPublicKey"
     ></sw-textarea-field>
 {% endblock %}
