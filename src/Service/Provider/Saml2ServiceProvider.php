@@ -7,7 +7,6 @@ namespace Heptacom\AdminOpenAuth\Service\Provider;
 use Heptacom\AdminOpenAuth\Component\Provider\Saml2ServiceProviderClient;
 use Heptacom\AdminOpenAuth\Component\Saml\Saml2ServiceProviderConfiguration;
 use Heptacom\AdminOpenAuth\Component\Saml\Saml2ServiceProviderService;
-use Heptacom\AdminOpenAuth\Service\TokenPairFactoryContract;
 use Heptacom\OpenAuth\Client\Contract\ClientContract;
 use Heptacom\OpenAuth\ClientProvider\Contract\ClientProviderContract;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -20,20 +19,16 @@ class Saml2ServiceProvider extends ClientProviderContract
 
     private string $appSecret;
 
-    private TokenPairFactoryContract $tokenPairFactory;
-
     private Saml2ServiceProviderService $saml2ServiceProviderService;
 
     private RouterInterface $router;
 
     public function __construct(
         string $appSecret,
-        TokenPairFactoryContract $tokenPairFactory,
         Saml2ServiceProviderService $saml2ServiceProviderService,
         RouterInterface $router
     ) {
         $this->appSecret = $appSecret;
-        $this->tokenPairFactory = $tokenPairFactory;
         $this->saml2ServiceProviderService = $saml2ServiceProviderService;
         $this->router = $router;
     }
@@ -150,6 +145,6 @@ class Saml2ServiceProvider extends ClientProviderContract
         $service = $this->saml2ServiceProviderService->createWithConfig($config);
         $service->discoverIdpMetadata();
 
-        return new Saml2ServiceProviderClient($this->tokenPairFactory, $service);
+        return new Saml2ServiceProviderClient($service);
     }
 }
