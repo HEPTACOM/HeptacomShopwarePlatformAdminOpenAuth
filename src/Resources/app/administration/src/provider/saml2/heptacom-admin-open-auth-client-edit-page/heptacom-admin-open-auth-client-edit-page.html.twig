@@ -54,6 +54,7 @@
                 v-model="item.config.identityProviderSsoUrl"
             ></sw-url-field>
             <sw-textarea-field
+                :disabled="!!item.config.identityProviderMetadataUrl || !!item.config.identityProviderMetadataXml"
                 :label="$t('heptacomAdminOpenAuthClient.providerFields.saml2.identityProviderCertificate')"
                 v-model="item.config.identityProviderCertificate"
             ></sw-textarea-field>
