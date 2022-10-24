@@ -16,10 +16,23 @@ class Migration1666400732AddConfigurationProperty extends MigrationStep
 
     public function update(Connection $connection): void
     {
-        $updateConfiguration = <<<'SQL'
-UPDATE `heptacom_admin_open_auth_client` SET `config` = JSON_SET(`config`, '$.id', `id`);
-SQL;
-        $connection->executeStatement($updateConfiguration);
+        $clients = $connection->executeQuery(<<<SQL
+SELECT `id`, `config` FROM `heptacom_admin_open_auth_client`
+SQL)->fetchAllAssociative();
+
+        $updateStatement = $connection->prepare(<<<SQL
+UPDATE `heptacom_admin_open_auth_client` SET `config` = :config WHERE `id` = :id;
+SQL);
+
+        foreach ($clients as $client) {
+            $config = json_decode($client['config'] ?? '', true);
+            $config['id'] = bin2hex($client['id']);
+
+            $updateStatement->executeQuery([
+                'config' => json_encode($config),
+                'id' => $client['id'],
+            ]);
+        }
     }
 
     public function updateDestructive(Connection $connection): void
