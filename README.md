@@ -56,6 +56,14 @@ In any other case feel free to create a pull request.
 | OpenID Connect<br><img alt="OpenID Connect" height="25" src="./src/Resources/app/administration/static/logo/openid_logo.svg"/>                              | depends on configuration | depends on configuration | Try any OpenID Connect provider, that we did not explicitly prepare an optimized configuration for.                            |
 | SAML2<br><img alt="SAML2" height="25" src="./src/Resources/public/static/logo/saml2_logo.svg"/>                                                             | depends on configuration | depends on configuration | Try any SAML2 provider, that we did not explicitly prepare an optimized configuration for.                                     |
 
+### SAML2 - Technical requirements
+
+In case you want to use a SAML2 provider, your IdP must meet the following requirements:
+- include AuthnRequest in the SAML response
+- sign the returned assertions
+- support HTTP-POST binding for the Assertion Consumer Service (ACS)
+- return the user's email address as attribute (all other attributes are optional)
+
 ## Changes
 
 View the [CHANGELOG](./CHANGELOG.md) file attached to this project.
