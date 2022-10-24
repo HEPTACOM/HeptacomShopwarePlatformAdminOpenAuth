@@ -6,6 +6,7 @@
 * `Heptacom\AdminOpenAuth\Service\UserResolver` und `Heptacom\AdminOpenAuth\Component\Provider\OpenIdConnectClient::getUser` geändert, damit dem Nutzer weitere Daten (z.B. Sprache and Zeitzone) hinzugefügt werden können.
 * Durch Hinzufügen von Standard-Werten in `Heptacom\AdminOpenAuth\Database\ClientDefinition`, Probleme in `Heptacom\AdminOpenAuth\Controller\AdministrationController::createClient` behoben.
 * SAML2 Provider hinzugefügt
+* JumpCloud Provider hinzugefügt
 
 # 4.1.0
 

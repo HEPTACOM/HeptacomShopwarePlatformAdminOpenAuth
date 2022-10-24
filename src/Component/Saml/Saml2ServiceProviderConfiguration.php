@@ -82,7 +82,7 @@ class Saml2ServiceProviderConfiguration extends Struct
             ];
         }
 
-        return array_merge_recursive([
+        return [
             'strict' => true, // TODO: tag:5.0.0 make configurable
             'debug' => false, // TODO: tag:5.0.0 make configurable
             'sp' => [
@@ -95,7 +95,8 @@ class Saml2ServiceProviderConfiguration extends Struct
                 'x509cert' => $this->serviceProviderCertificate,
                 'privateKey' => $this->serviceProviderPrivateKey,
             ],
-            'security' => [
+            'idp' => $idpSettings['idp'] ?? [],
+            'security' => array_merge([
                 'allowRepeatAttributeName' => true,
                 'authnRequestsSigned' => true,
                 'rejectUnsolicitedResponsesWithInResponseTo' => true,
@@ -103,8 +104,8 @@ class Saml2ServiceProviderConfiguration extends Struct
                 'signMetadata' => true,
                 'wantAssertionsSigned' => true,
                 'wantXMLValidation' => true,
-            ],
-        ], $idpSettings);
+            ], $idpSettings['security'] ?? []),
+        ];
     }
 
     public function getIdentityProviderMetadataUrl(): string

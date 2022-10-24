@@ -8,7 +8,7 @@ use Heptacom\AdminOpenAuth\Component\Provider\DefaultInjectingEntityRepositoryDe
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 
-class Saml2ServiceProviderEntityRepository extends DefaultInjectingEntityRepositoryDecorator
+class Saml2ClientEntityRepository extends DefaultInjectingEntityRepositoryDecorator
 {
     protected function injectDefaults(array $payload, Context $context): array
     {
