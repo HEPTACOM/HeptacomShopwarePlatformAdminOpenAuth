@@ -5,8 +5,8 @@
 * Changed `views/administration/heptacom-admin-open-auth/page/confirm.html.twig` to immediately close the window after local storage item was set
 * Changed `Heptacom\AdminOpenAuth\Service\UserResolver` and `Heptacom\AdminOpenAuth\Component\Provider\OpenIdConnectClient::getUser` to add more data to the user (e.g. locale and timezone)
 * Fixed `Heptacom\AdminOpenAuth\Controller\AdministrationController::createClient` issues by adding default values in `Heptacom\AdminOpenAuth\Database\ClientDefinition`
-* Added SAML2 Provider
-* Added JumpCloud Provider
+* Added generic SAML2 provider
+* Added JumpCloud provider
 
 # 4.1.0
 
