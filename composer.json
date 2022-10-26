@@ -29,6 +29,10 @@
         {
             "name": "Silvio Kennecke",
             "role": "Developer"
+        },
+        {
+            "name": "GitHub contributors",
+            "homepage": "https://github.com/HEPTACOM/HeptacomShopwarePlatformAdminOpenAuth/graphs/contributors"
         }
     ],
     "require": {
