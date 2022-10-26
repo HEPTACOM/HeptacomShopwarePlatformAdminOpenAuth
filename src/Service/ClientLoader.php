@@ -78,6 +78,8 @@ class ClientLoader implements ClientLoaderInterface
             'provider' => $providerKey,
             'active' => false,
             'config' => $config,
+            'userBecomeAdmin' => false,
+            'keepUserUpdated' => false,
         ]], $context);
 
         return $id;

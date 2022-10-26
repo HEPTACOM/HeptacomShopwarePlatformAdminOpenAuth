@@ -5,6 +5,7 @@
 * Changed `views/administration/heptacom-admin-open-auth/page/confirm.html.twig` to immediately close the window after local storage item was set
 * Changed `Heptacom\AdminOpenAuth\Service\UserResolver` and `Heptacom\AdminOpenAuth\Component\Provider\OpenIdConnectClient::getUser` to add more data to the user (e.g. locale and timezone)
 * Fixed `Heptacom\AdminOpenAuth\Controller\AdministrationController::createClient` issues by adding default values in `Heptacom\AdminOpenAuth\Database\ClientDefinition`
+* Changed composer dependency constraint of "thenetworg/oauth2-azure" from "^1.4" to "^1.4 | ^2.0" to support projects with PHP 8.0 as minimum version (thanks to Hans Höchtl @hhoechtl)
 * Added generic SAML2 provider
 * Added JumpCloud provider
 

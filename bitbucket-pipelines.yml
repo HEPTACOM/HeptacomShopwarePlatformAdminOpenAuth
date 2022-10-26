@@ -42,6 +42,22 @@ definitions:
                     - make .build
                     - mv vendor .build/vendor-low
                     - echo 'mkdir -p vendor; rm -rf vendor; mv .build/vendor-low vendor' > setup-vendor.sh
+        -   step: &composer-install-php-80
+                <<: *default-step
+                image: heptacom/shopware-6-plugin-pipeline:php80-node14-latest
+                name: Install PHP 8.0
+                script:
+                    - make clean
+                    - composer update --prefer-stable
+                    - COMPOSER_EXTRA_ARGS=-vvv make -e vendor
+        -   step: &composer-install-php-81
+                <<: *default-step
+                image: heptacom/shopware-6-plugin-pipeline:php81-node14-latest
+                name: Install PHP 8.1
+                script:
+                    - make clean
+                    - composer update --prefer-stable
+                    - COMPOSER_EXTRA_ARGS=-vvv make -e vendor
         -   step: &build-fix-and-commit
                 <<: *default-step
                 name: Build and fix (composer.json, ECS, admin)
@@ -120,6 +136,8 @@ pipelines:
                     -   step: *test-code-style-composer-unused
                     -   step: *test-code-style-json
                     -   step: *test-code-style-soft-require
+                    -   step: *composer-install-php-80
+                    -   step: *composer-install-php-81
             -   step:
                     image: atlassian/default-image:2
                     name: Mirror to Github
@@ -140,6 +158,8 @@ pipelines:
                             name: Lint plugins store readiness
                             script:
                                 - make releasecheck
+                    -   step: *composer-install-php-80
+                    -   step: *composer-install-php-81
 
     tags:
         '*':
@@ -152,6 +172,8 @@ pipelines:
                     -   step: *test-code-style-php
                     -   step: *test-code-style-json
                     -   step: *test-code-style-soft-require
+                    -   step: *composer-install-php-80
+                    -   step: *composer-install-php-81
             -   step:
                     image: atlassian/default-image:2
                     name: Mirror tags to Github
@@ -171,3 +193,5 @@ pipelines:
                         name: Lint plugins store readiness
                         script:
                             - make releasecheck
+                -   step: *composer-install-php-80
+                -   step: *composer-install-php-81

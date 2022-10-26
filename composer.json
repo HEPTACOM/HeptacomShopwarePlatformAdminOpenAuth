@@ -30,6 +30,10 @@
         {
             "name": "Silvio Kennecke",
             "role": "Developer"
+        },
+        {
+            "name": "GitHub contributors",
+            "homepage": "https://github.com/HEPTACOM/HeptacomShopwarePlatformAdminOpenAuth/graphs/contributors"
         }
     ],
     "require": {
@@ -59,7 +63,7 @@
         "symfony/options-resolver": ">=5.4 <6",
         "symfony/psr-http-message-bridge": "^2",
         "symfony/routing": ">=5.4 <6",
-        "thenetworg/oauth2-azure": "^1.4",
+        "thenetworg/oauth2-azure": "^1.4 || ^2.0",
         "web-token/jwt-core": "^2.2",
         "web-token/jwt-signature": "^2.2",
         "web-token/jwt-signature-algorithm-ecdsa": "^2.2",
