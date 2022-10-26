@@ -3,7 +3,7 @@
     "description": "Shopware plugin to allow OAuth providers to provide admin logins",
     "license": "Apache-2.0",
     "type": "shopware-platform-plugin",
-    "version": "4.1.0",
+    "version": "4.1.1",
     "keywords": [
         "ecommerce",
         "shopware",
@@ -55,7 +55,7 @@
         "symfony/options-resolver": ">=5.4 <6",
         "symfony/psr-http-message-bridge": "^2",
         "symfony/routing": ">=5.4 <6",
-        "thenetworg/oauth2-azure": "^1.4",
+        "thenetworg/oauth2-azure": "^2.0",
         "web-token/jwt-core": "^2.2",
         "web-token/jwt-signature": "^2.2",
         "web-token/jwt-signature-algorithm-ecdsa": "^2.2",
