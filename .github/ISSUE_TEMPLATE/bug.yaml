@@ -1,0 +1,67 @@
+name: Bug Report
+description: File a bug report
+title: "[Bug]: "
+body:
+  - type: input
+    id: plugin_version
+    attributes:
+      label: Plugin Version
+      description: Which version of the plugin did you install
+    validations:
+      required: yes
+  - type: input
+    id: php_version
+    attributes:
+      label: PHP Version
+      description: Which PHP version are you using?
+    validations:
+      required: yes
+  - type: input
+    id: shopware_version
+    attributes:
+      label: Shopware Version
+      description: Which shopware version are you using?
+    validations:
+      required: yes
+  - type: dropdown
+    id: install_method
+    attributes:
+      label: Installation method
+      description: How did you install the plugin?
+      options:
+        - Composer
+        - Community-Store
+    validations:
+      required: true
+  - type: dropdown
+    id: identity_provider
+    attributes:
+      label: Identity provider
+      description: Which identity provider are you using?
+      options:
+        - Cidaas
+        - Google Cloud
+        - Jira
+        - Jump Cloud
+        - Keycloak
+        - Microsoft Azure (Legacy -> configuration does not contain tenantId field)
+        - Microsoft Azure OIDC
+        - Okta
+        - One Login
+        - OpenID Connect
+        - SAML2
+    validations:
+      required: false
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: Also tell us, what did you expect to happen?
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant log output
+      description: Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks.
+      render: shell
