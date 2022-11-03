@@ -35,5 +35,4 @@ class JumpCloudServiceProvider extends Saml2ServiceProvider
 
         return $config;
     }
-
 }
