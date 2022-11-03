@@ -8,10 +8,10 @@ use Heptacom\AdminOpenAuth\Contract\ClientFeatureCheckerInterface;
 use Heptacom\AdminOpenAuth\Contract\ClientLoaderInterface;
 use Heptacom\AdminOpenAuth\Contract\LoginInterface;
 use Heptacom\AdminOpenAuth\Contract\OpenAuthenticationFlowInterface;
+use Heptacom\AdminOpenAuth\Contract\RedirectBehaviourFactoryInterface;
 use Heptacom\AdminOpenAuth\Contract\UserResolverInterface;
 use Heptacom\AdminOpenAuth\Database\ClientEntity;
 use Heptacom\AdminOpenAuth\Exception\LoadClientException;
-use Heptacom\OpenAuth\Behaviour\RedirectBehaviour;
 use Heptacom\OpenAuth\Struct\UserStruct;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityCollection;
@@ -43,6 +43,8 @@ class OpenAuthenticationFlow implements OpenAuthenticationFlowInterface
 
     private RouterInterface $router;
 
+    private RedirectBehaviourFactoryInterface $redirectBehaviourFactory;
+
     private ClientFeatureCheckerInterface $clientFeatureChecker;
 
     public function __construct(
@@ -55,6 +57,7 @@ class OpenAuthenticationFlow implements OpenAuthenticationFlowInterface
         EntityRepositoryInterface $userKeysRepository,
         EntityRepositoryInterface $userTokensRepository,
         RouterInterface $router,
+        RedirectBehaviourFactoryInterface $redirectBehaviourFactory,
         ClientFeatureCheckerInterface $clientFeatureChecker
     ) {
         $this->login = $login;
@@ -66,6 +69,7 @@ class OpenAuthenticationFlow implements OpenAuthenticationFlowInterface
         $this->userKeysRepository = $userKeysRepository;
         $this->userTokensRepository = $userTokensRepository;
         $this->router = $router;
+        $this->redirectBehaviourFactory = $redirectBehaviourFactory;
         $this->clientFeatureChecker = $clientFeatureChecker;
     }
 
@@ -79,7 +83,7 @@ class OpenAuthenticationFlow implements OpenAuthenticationFlowInterface
         $this->login->initiate($clientId, null, $state, $context);
 
         return $this->clientLoader->load($clientId, $context)
-            ->getLoginUrl($state, $this->getRedirectBehaviour($clientId));
+            ->getLoginUrl($state, $this->redirectBehaviourFactory->createRedirectBehaviour($clientId, $context));
     }
 
     public function getRedirectUrlToConnect(string $clientId, string $userId, Context $context): string
@@ -92,7 +96,7 @@ class OpenAuthenticationFlow implements OpenAuthenticationFlowInterface
         $this->login->initiate($clientId, $userId, $state, $context);
 
         return $this->clientLoader->load($clientId, $context)
-            ->getLoginUrl($state, $this->getRedirectBehaviour($clientId));
+            ->getLoginUrl($state, $this->redirectBehaviourFactory->createRedirectBehaviour($clientId, $context));
     }
 
     public function upsertUser(UserStruct $user, string $clientId, string $state, Context $context): void
@@ -157,14 +161,5 @@ class OpenAuthenticationFlow implements OpenAuthenticationFlowInterface
                     ),
                 ];
             }));
-    }
-
-    private function getRedirectBehaviour(string $clientId): RedirectBehaviour
-    {
-        return (new RedirectBehaviour())
-            ->setExpectState(true)
-            ->setRedirectUri($this->router->generate('administration.heptacom.admin_open_auth.login', [
-                'clientId' => $clientId,
-            ], UrlGeneratorInterface::ABSOLUTE_URL));
     }
 }

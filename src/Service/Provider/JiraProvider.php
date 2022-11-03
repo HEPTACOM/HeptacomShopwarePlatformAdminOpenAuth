@@ -31,6 +31,7 @@ class JiraProvider extends ClientProviderContract
     {
         return parent::getConfigurationTemplate()
             ->setDefined([
+                'id',
                 'clientId',
                 'clientSecret',
                 'scopes',

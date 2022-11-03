@@ -37,6 +37,7 @@ class MicrosoftAzureOidcProvider extends ClientProviderContract
     {
         return parent::getConfigurationTemplate()
             ->setDefined([
+                'id',
                 'tenantId',
                 'clientId',
                 'clientSecret',

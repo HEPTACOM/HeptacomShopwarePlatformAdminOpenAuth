@@ -1,4 +1,4 @@
-# Open Authentication login for shopware platform administration
+# SSO login for shopware platform administration
 ## This is part of HEPTACOM solutions for medium and large enterprise
 ### Shopware plugin to allow external login provider in the administration
 
@@ -23,6 +23,8 @@ This Shopware 6 plugin allows to add "Login with" functionality into the Shopwar
 * various providers already preconfigured - Microsoft, Google, Okta, Keycloak, ...
 * support for third-party IDPs supporting OpenID Connect
   * easy setup using the provider's metadata document (`.well-known/openid-configuration`)
+* support for third-party IDPs supporting SAML2
+  * easy setup using the provider's metadata xml
 * promote users automatically to administrators
 
 ## Security
@@ -47,11 +49,21 @@ In any other case feel free to create a pull request.
 | Atlassian Jira<br><img alt="Atlassian Jira" height="25" src="./src/Resources/app/administration/static/logo/jira_logo.svg"/>                                |            ❌             |            ✅             | Read more [here](https://developer.atlassian.com/cloud/jira/platform/oauth-2-3lo-apps/#enabling-oauth-2-0--3lo-).              |
 | cidaas<br><img alt="cidaas" height="25" src="./src/Resources/app/administration/static/logo/cidaas_logo.svg"/>                                              |            ❌             |            ❌             | Read more [here](https://docs.cidaas.com/create-application/createapplication.html).                                           |
 | Google Cloud<br><img alt="Google Cloud" height="25" style="margin: 25px 0;" src="./src/Resources/app/administration/static/logo/google_logo.svg"/>          |            ✅             |            ❌             | Read more [here](https://developers.google.com/identity/protocols/oauth2/openid-connect).                                      |
+| JumpCloud                                                                                                                                                   | depends on configuration | depends on configuration | Read more [here](https://support.jumpcloud.com/support/s/article/single-sign-on-sso-with-saml-20-connector1).                  |
 | [Keycloack](https://www.keycloak.org/)<br><img alt="Keycloak" height="25" src="./src/Resources/app/administration/static/logo/keycloak_logo.svg"/>          |            ✅             | depends on configuration | Read more [here](https://blogs.sap.com/2021/08/23/keyclock-as-an-openid-connect-oidc-provider./).                              |
 | Microsoft Azure<br><img alt="Microsoft Azure" height="25" style="margin: 12px 0;" src="./src/Resources/app/administration/static/logo/microsoft_logo.svg"/> |            ❌             |            ❌             | Read more [here](https://docs.microsoft.com/en-US/azure/active-directory/develop/quickstart-register-app).                     |
 | Okta<br><img alt="Okta" height="25" src="./src/Resources/app/administration/static/logo/okta_logo.png"/>                                                    |            ✅             |            ✅             | Read more [here](https://help.okta.com/en-us/Content/Topics/Apps/Apps_App_Integration_Wizard_OIDC.htm).                        |
 | OneLogin<br><img alt="OneLogin" height="25" src="./src/Resources/app/administration/static/logo/onelogin_logo.svg"/>                                        |            ✅             |            ❌             | Read more [here](https://developers.onelogin.com/blog/how-to-use-openid-connect-authentication-with-dotnet-core#heading-menu). |
 | OpenID Connect<br><img alt="OpenID Connect" height="25" src="./src/Resources/app/administration/static/logo/openid_logo.svg"/>                              | depends on configuration | depends on configuration | Try any OpenID Connect provider, that we did not explicitly prepare an optimized configuration for.                            |
+| SAML2<br><img alt="SAML2" height="25" src="./src/Resources/public/static/logo/saml2_logo.svg"/>                                                             | depends on configuration | depends on configuration | Try any SAML2 provider, that we did not explicitly prepare an optimized configuration for.                                     |
+
+### SAML2 - Technical requirements
+
+In case you want to use a SAML2 provider, your IdP must meet the following requirements:
+- include AuthnRequest in the SAML response
+- sign the returned assertions
+- support HTTP-POST binding for the Assertion Consumer Service (ACS)
+- return the user's email address as attribute (all other attributes are optional)
 
 ## Changes
 

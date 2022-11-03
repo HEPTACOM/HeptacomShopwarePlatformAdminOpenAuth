@@ -37,6 +37,7 @@ class KeycloakProvider extends ClientProviderContract
     {
         return parent::getConfigurationTemplate()
             ->setDefined([
+                'id',
                 'keycloakOidcJson',
                 'scopes',
                 // TODO remove in v5

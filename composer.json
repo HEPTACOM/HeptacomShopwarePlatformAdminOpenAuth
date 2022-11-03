@@ -11,7 +11,8 @@
         "administration",
         "oauth",
         "open-authentication",
-        "openid-connect"
+        "openid-connect",
+        "saml"
     ],
     "authors": [
         {
@@ -38,15 +39,18 @@
     "require": {
         "php": ">=7.4",
         "ext-json": "*",
+        "ext-openssl": "*",
+        "ext-zlib": "*",
         "composer/composer": "^2",
         "doctrine/dbal": "^2",
         "guzzlehttp/guzzle": "~7.0",
         "guzzlehttp/psr7": "*",
-        "heptacom/open-auth": ">=1.4",
+        "heptacom/open-auth": ">=1.5",
         "league/oauth2-client": "~2.0",
         "league/oauth2-server": "^8",
         "mrjoops/oauth2-jira": "^0.2.4",
         "nyholm/psr7": "^1.4",
+        "onelogin/php-saml": "^4.1.0",
         "psr/http-client": "^1.0",
         "psr/http-message": "^1.0",
         "psr/log": "^1.1",
@@ -80,12 +84,12 @@
     },
     "extra": {
         "description": {
-            "de-DE": "Verbindet OAuth Anbieter zum Administrationslogin",
-            "en-GB": "Connects oauth providers to admin login"
+            "de-DE": "Verbindet OAuth und SAML Anbieter zum Administrationslogin",
+            "en-GB": "Connects OAuth and SAML providers to admin login"
         },
         "label": {
-            "de-DE": "OAuth Login für Administration",
-            "en-GB": "OAuth login for administration"
+            "de-DE": "SSO Login für Administration",
+            "en-GB": "SSO login for administration"
         },
         "manufacturerLink": {
             "de-DE": "https://www.heptacom.de/",
