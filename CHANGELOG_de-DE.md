@@ -1,5 +1,7 @@
 # Unreleased
 
+# 4.2.0
+
 * Konfiguration zum automatischen Zuweisen von Benutzerrollen für neue Benutzer, die nicht Administratoren sind, hinzugefügt.
 * Konfiguration zum automatischen Aktualisieren von Benutzerdaten, wenn sich ein Nutzer via SSO anmeldet.
 * `views/administration/heptacom-admin-open-auth/page/confirm.html.twig` geändert, damit das Popup direkt nach Speicherung der Daten im LocaleStorage geschlossen wird.

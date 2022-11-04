@@ -1,5 +1,7 @@
 # Unreleased
 
+# 4.2.0
+
 * Added client configuration to assign default roles to new non admin users
 * Added client configuration to always update the user on login with data from the IDP
 * Changed `views/administration/heptacom-admin-open-auth/page/confirm.html.twig` to immediately close the window after local storage item was set
