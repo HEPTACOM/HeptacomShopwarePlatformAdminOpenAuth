@@ -84,8 +84,8 @@
     },
     "extra": {
         "description": {
-            "de-DE": "Verbindet OAuth und SAML Anbieter zum Administrationslogin",
-            "en-GB": "Connects OAuth and SAML providers to admin login"
+            "de-DE": "Verbindet OAuth und SAML Anbieter zum Administrationslogin                                                                                            ",
+            "en-GB": "Connects OAuth and SAML providers to admin login                                                                                                      "
         },
         "label": {
             "de-DE": "SSO Login für Administration",
