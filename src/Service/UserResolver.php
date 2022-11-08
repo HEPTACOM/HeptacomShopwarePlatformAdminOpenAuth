@@ -239,7 +239,7 @@ class UserResolver implements UserResolverInterface
 
         foreach ($userChangeSet as $key => $newValue) {
             if (substr($key, -3) === '_id') {
-                $newValue = Uuid::fromHexToBytes($newValue);
+                $newValue = Uuid::fromBytesToHex($newValue);
             }
 
             if ($user[$key] !== $newValue) {
