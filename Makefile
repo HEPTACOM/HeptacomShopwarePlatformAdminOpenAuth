@@ -10,7 +10,7 @@ COMPOSER_REQUIRE_CHECKER_PHAR := https://github.com/maglnet/ComposerRequireCheck
 COMPOSER_REQUIRE_CHECKER_FILE := dev-ops/bin/composer-require-checker
 COMPOSER_UNUSED_FILE := dev-ops/bin/composer-unused/vendor/bin/composer-unused
 EASY_CODING_STANDARD_FILE := dev-ops/bin/easy-coding-standard/vendor/bin/ecs
-FROSH_PLUGIN_UPLOAD_PHAR := https://github.com/FriendsOfShopware/FroshPluginUploader/releases/download/0.3.2/frosh-plugin-upload.phar
+FROSH_PLUGIN_UPLOAD_PHAR := https://github.com/FriendsOfShopware/FroshPluginUploader/releases/download/0.3.19/frosh-plugin-upload.phar
 FROSH_PLUGIN_UPLOAD_FILE := dev-ops/bin/frosh-plugin-upload
 
 .DEFAULT_GOAL := help
