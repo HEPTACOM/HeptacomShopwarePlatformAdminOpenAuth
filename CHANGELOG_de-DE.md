@@ -2,7 +2,7 @@
 
 # 4.2.1
 
-* Fehler behoben, der das Zuweisen von Rollen verhinderte und eine Ausnahme auslöste
+* Fehler behoben, der das Zuweisen von Rollen verhinderte
 
 # 4.2.0
 
