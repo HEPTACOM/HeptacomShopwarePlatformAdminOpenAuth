@@ -1,5 +1,9 @@
 # Unreleased
 
+# 4.2.1
+
+* Fehler behoben, der das Zuweisen von Rollen verhinderte
+
 # 4.2.0
 
 * Konfiguration zum automatischen Zuweisen von Benutzerrollen für neue Benutzer, die nicht Administratoren sind, hinzugefügt.
