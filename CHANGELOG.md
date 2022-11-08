@@ -1,5 +1,9 @@
 # Unreleased
 
+# 4.2.1
+
+* Fixed a bug causing the role assignment to fail and throw an exception
+
 # 4.2.0
 
 * Added client configuration to assign default roles to new non admin users

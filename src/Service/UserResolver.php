@@ -250,11 +250,11 @@ class UserResolver implements UserResolverInterface
         return false;
     }
 
-    protected function updateAclRoles(string $userId, array $aclRoles): void
+    protected function updateAclRoles(string $userId, array $newAclRoles): void
     {
         $binUserId = Uuid::fromHexToBytes($userId);
 
-        $aclRoleIds = $this->connection->createQueryBuilder()
+        $currentAclRoleIds = $this->connection->createQueryBuilder()
             ->select('acl_role_id')
             ->from(AclUserRoleDefinition::ENTITY_NAME)
             ->where('user_id = :userId')
@@ -262,10 +262,14 @@ class UserResolver implements UserResolverInterface
             ->execute()
             ->fetchAssociative();
 
-        $aclRoleIds = Uuid::fromBytesToHexList(array_column($aclRoleIds, 'acl_role_id'));
+        if ($currentAclRoleIds === false) {
+            $currentAclRoleIds = [];
+        }
+
+        $currentAclRoleIds = Uuid::fromBytesToHexList(array_column($currentAclRoleIds, 'acl_role_id'));
 
         // delete old
-        $toDelete = array_diff($aclRoleIds, $aclRoles);
+        $toDelete = array_diff($currentAclRoleIds, $newAclRoles);
         if (\count($toDelete) > 0) {
             $this->connection->createQueryBuilder()
                 ->delete(AclUserRoleDefinition::ENTITY_NAME)
@@ -277,16 +281,18 @@ class UserResolver implements UserResolverInterface
         }
 
         // insert new
-        $toAdd = array_diff($aclRoles, $aclRoleIds);
+        $toAdd = array_diff($newAclRoles, $currentAclRoleIds);
         if (\count($toAdd) > 0) {
-            $this->connection->insert(
-                AclUserRoleDefinition::ENTITY_NAME,
-                array_map(static fn ($aclRoleId) => [
-                    'user_id' => $binUserId,
-                    'acl_role_id' => $aclRoleId,
-                    'created_at' => (new \DateTime())->format(Defaults::STORAGE_DATE_TIME_FORMAT),
-                ], $toAdd)
-            );
+            foreach ($toAdd as $aclRoleId) {
+                $this->connection->insert(
+                    AclUserRoleDefinition::ENTITY_NAME,
+                    [
+                        'user_id' => $binUserId,
+                        'acl_role_id' => Uuid::fromHexToBytes($aclRoleId),
+                        'created_at' => (new \DateTime())->format(Defaults::STORAGE_DATE_TIME_FORMAT),
+                    ]
+                );
+            }
         }
     }
 }
