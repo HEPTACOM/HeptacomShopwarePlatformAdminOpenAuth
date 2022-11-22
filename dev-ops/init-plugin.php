@@ -48,8 +48,8 @@ $name = \implode(' ', \array_map('caseWord', \explode('-', $repositoryName)));
 $topicName = \trim(\str_replace(['Heptacom', 'Shopware', 'Platform'], '', $name));
 $technicalName = \str_replace(' ', '', $name);
 $topic = \str_replace(['Heptacom', 'Shopware', 'Platform'], '', $technicalName);
-$packagistName = 'heptacom/shopware-platform' . \strtolower(\preg_replace('/([A-Z])/', '-$1', $topic));
-$shopwareBundleName = 'heptacom-shopware-platform' . \strtolower(\preg_replace('/([A-Z])/', '-$1', $topic));
+$packagistName = 'heptacom/shopware-platform' . \str_replace('c-m-s', 'cms', \strtolower(\preg_replace('/([A-Z])/', '-$1', $topic)));
+$shopwareBundleName = 'heptacom-shopware-platform' . \str_replace('c-m-s', 'cms', \strtolower(\preg_replace('/([A-Z])/', '-$1', $topic)));
 
 replaceInFiles(
     [
@@ -96,8 +96,8 @@ replaceInFiles(
 replaceInFiles(
     [__DIR__ . '/../composer.json'],
     [
-        'HEPTACOM Shopware 6 Plugin' => \trim(\json_encode($description), '"'),
-        'Plugin name' => \trim(\json_encode($label), '"'),
+        'HEPTACOM Shopware 6 Plugin' => \trim(\json_encode($description, \JSON_UNESCAPED_SLASHES), '"'),
+        'Plugin name' => \trim(\json_encode($label, \JSON_UNESCAPED_SLASHES), '"'),
     ]
 );
 replaceInFiles(
