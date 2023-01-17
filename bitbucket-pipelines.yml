@@ -168,6 +168,7 @@ pipelines:
                     -   step: *test-code-style-json
 
     default:
+        -   step: *keyword-check
         -   step: *composer-low-install
         -   step: *build-fix-and-commit
         -   parallel:
