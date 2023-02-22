@@ -54,7 +54,7 @@
         "psr/http-client": "^1.0",
         "psr/http-message": "^1.0",
         "psr/log": "~3.0.0",
-        "shopware/core": "^6.5.0",
+        "shopware/core": "~6.5.0.0-rc1",
         "symfony/cache": "~6.2.0",
         "symfony/event-dispatcher": "~6.2.0",
         "symfony/framework-bundle": "~6.2.0",
@@ -70,7 +70,7 @@
         "web-token/jwt-signature-algorithm-rsa": "^2.2"
     },
     "require-dev": {
-        "shopware/administration": "^6.4.11"
+        "shopware/administration": "~6.5.0.0-rc1"
     },
     "autoload": {
         "psr-4": {
@@ -79,7 +79,9 @@
     },
     "config": {
         "allow-plugins": {
-            "composer/package-versions-deprecated": true
+            "composer/package-versions-deprecated": true,
+            "infection/extension-installer": true,
+            "symfony/runtime": true
         }
     },
     "extra": {
