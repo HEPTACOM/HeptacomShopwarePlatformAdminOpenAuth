@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunuhi
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="bin/phpunuhi/vendor/boxblinkracer/phpunuhi/config.xsd"
+>
+    <translations>
+        <set name="Administration">
+            <format>
+                <json indent="4" sort="true"/>
+            </format>
+            <locales>
+                <locale name="en">../src/Resources/app/administration/src/snippet/en-GB.json</locale>
+                <locale name="de">../src/Resources/app/administration/src/snippet/de-DE.json</locale>
+            </locales>
+        </set>
+    </translations>
+</phpunuhi>

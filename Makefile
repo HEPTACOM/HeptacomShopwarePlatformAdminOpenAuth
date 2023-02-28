@@ -3,7 +3,10 @@ PHP := $(shell which php) $(PHP_EXTRA_ARGS)
 COMPOSER := $(PHP) $(shell which composer) $(COMPOSER_EXTRA_ARGS)
 CURL := $(shell which curl)
 JQ := $(shell which jq)
+GREP := $(shell which grep)
 JSON_FILES := $(shell find . -name '*.json' -not -path './vendor/*' -not -path './.build/*')
+TRANSLATION_JSON_FILES := $(shell find src -name '*.json' | $(GREP) -v -e '/vendor/' -e '/node_modules/' | $(GREP) -e '/snippet')
+TRANSLATION_JSON_FILES__CHECK_TRANSLATION := $(TRANSLATION_JSON_FILES:%=%__CHECK_TRANSLATION)
 PHPSTAN_FILE := dev-ops/bin/phpstan/vendor/bin/phpstan
 COMPOSER_NORMALIZE_PHAR := https://github.com/ergebnis/composer-normalize/releases/download/2.22.0/composer-normalize.phar
 COMPOSER_NORMALIZE_FILE := dev-ops/bin/composer-normalize
@@ -15,6 +18,8 @@ PSALM_FILE := dev-ops/bin/psalm/vendor/bin/psalm
 COMPOSER_UNUSED_FILE := dev-ops/bin/composer-unused/vendor/bin/composer-unused
 EASY_CODING_STANDARD_FILE := dev-ops/bin/easy-coding-standard/vendor/bin/ecs
 PHPCHURN_FILE := dev-ops/bin/php-churn/vendor/bin/churn
+PHPUNUHI_DIR := dev-ops/bin/phpunuhi
+PHPUNUHI_FILE := $(PHPUNUHI_DIR)/vendor/bin/phpunuhi
 
 .DEFAULT_GOAL := help
 .PHONY: help
@@ -48,7 +53,7 @@ build-administration: vendor ## Builds any administration js, when administratio
 it: cs-fix cs ## Fix code style
 
 .PHONY: cs
-cs: cs-ecs cs-phpstan cs-psalm cs-phpmd cs-soft-require cs-composer-unused cs-composer-normalize cs-json cs-phpchurn ## Run every code style check target
+cs: cs-ecs cs-phpstan cs-psalm cs-phpmd cs-soft-require cs-composer-unused cs-composer-normalize cs-json cs-phpchurn cs-translation ## Run every code style check target
 
 .PHONY: cs-ecs
 cs-ecs: vendor .build $(EASY_CODING_STANDARD_FILE) ## Run easy-coding-standard for code style analysis
@@ -85,6 +90,10 @@ cs-composer-normalize: vendor $(COMPOSER_NORMALIZE_FILE) ## Run composer-normali
 .PHONY: cs-json
 cs-json: $(JSON_FILES) ## Run jq on every json file to ensure they are parsable and therefore valid
 
+.PHONY: cs-translation
+cs-translation: vendor .build $(PHPUNUHI_FILE) $(TRANSLATION_JSON_FILES__CHECK_TRANSLATION) ## Run phpunuhi for validating translation files
+	$(PHP) $(PHPUNUHI_FILE) $(PHPUNUHI_EXTRA_ARGS) validate --configuration=dev-ops/phpunuhi.xml
+
 .PHONY: cs-phpchurn
 cs-phpchurn: vendor .build $(PHPCHURN_FILE) ## Run php-churn for prediction of refactoring cases
 	$(PHP) $(PHPCHURN_FILE) run --configuration dev-ops/churn.yml --format text
@@ -93,8 +102,12 @@ cs-phpchurn: vendor .build $(PHPCHURN_FILE) ## Run php-churn for prediction of r
 $(JSON_FILES):
 	$(JQ) . "$@"
 
+.PHONY: $(TRANSLATION_JSON_FILES__CHECK_TRANSLATION)
+$(TRANSLATION_JSON_FILES__CHECK_TRANSLATION):
+	@$(GREP) -so -e $(subst __CHECK_TRANSLATION,,$@) $(shell pwd)/dev-ops/phpunuhi.xml
+
 .PHONY: cs-fix ## Run all code style fixer that change files
-cs-fix: cs-fix-composer-normalize cs-fix-ecs
+cs-fix: cs-fix-composer-normalize cs-fix-ecs cs-fix-translation
 
 .PHONY: cs-fix-composer-normalize
 cs-fix-composer-normalize: vendor $(COMPOSER_NORMALIZE_FILE) ## Run composer-normalize for automatic composer.json style fixes
@@ -103,6 +116,10 @@ cs-fix-composer-normalize: vendor $(COMPOSER_NORMALIZE_FILE) ## Run composer-nor
 .PHONY: cs-fix-ecs
 cs-fix-ecs: vendor .build $(EASY_CODING_STANDARD_FILE) ## Run easy-coding-standard for automatic code style fixes
 	$(PHP) $(EASY_CODING_STANDARD_FILE) check --config=dev-ops/ecs.php --fix
+
+.PHONY: cs-fix-translation
+cs-fix-translation: vendor .build $(PHPUNUHI_FILE) $(TRANSLATION_JSON_FILES__CHECK_TRANSLATION) ## Run phpunuhi add missing entries in translation files
+	$(PHP) $(PHPUNUHI_FILE) fix:structure --configuration=dev-ops/phpunuhi.xml
 
 $(PHPSTAN_FILE): ## Install phpstan executable
 	$(COMPOSER) install -d dev-ops/bin/phpstan
@@ -127,6 +144,9 @@ $(EASY_CODING_STANDARD_FILE): ## Install easy-coding-standard executable
 
 $(PHPCHURN_FILE): ## Install php-churn executable
 	$(COMPOSER) install -d dev-ops/bin/php-churn
+
+$(PHPUNUHI_FILE): ## Install phpunuhi executable
+	$(COMPOSER) install -d $(PHPUNUHI_DIR)
 
 vendor:
 	[[ -f vendor/autoload.php ]] || $(COMPOSER) install

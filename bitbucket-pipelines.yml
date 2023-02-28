@@ -133,6 +133,14 @@ definitions:
                 script:
                     - bash setup-vendor.sh
                     - COMPOSER_EXTRA_ARGS=-vvv make -e cs-json
+        -   step: &test-code-style-translation
+                <<: *default-step
+                image: heptacom/shopware-6-plugin-pipeline:php80-node14-latest
+                name: Analyse translations are complete
+                script:
+                    # delete php74 artifacts
+                    - rm -rf composer.lock vendor
+                    - PHPUNUHI_EXTRA_ARGS="--report-format=junit --report-output=.build/phpunuhi-report.xml" make -e cs-translation
         -   step: &test-build-administration
                 <<: *default-step
                 name: Check administration is built
@@ -150,10 +158,12 @@ pipelines:
             -   parallel:
                     -   step: *test-code-style-composer-unused
                     -   step: *test-code-style-json
+                    -   step: *test-code-style-translation
         '*.*.x':
             -   step: *tag-check
             -   step: *keyword-check
             -   step: *composer-low-install
+            -   step: *test-code-style-translation
             -   step: *build-fix-and-commit
 
     tags:
@@ -162,6 +172,7 @@ pipelines:
             -   step: *keyword-check
             -   step: *composer-low-install
             -   parallel:
+                    -   step: *test-code-style-translation
                     -   step: *test-code-style-composer-normalize
                     -   step: *test-build-administration
                     -   step: *test-code-style-php
@@ -172,6 +183,7 @@ pipelines:
         -   step: *composer-low-install
         -   step: *build-fix-and-commit
         -   parallel:
+                -   step: *test-code-style-translation
                 -   step: *test-code-style-composer-unused
                 -   step: *test-code-style-json
                 -   step: *test-code-style-soft-require
