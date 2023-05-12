@@ -4,19 +4,16 @@ declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\Service;
 
+use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Heptacom\AdminOpenAuth\Contract\ClientFeatureCheckerInterface;
 use Shopware\Core\Framework\Context;
-use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
 
 class ClientFeatureChecker implements ClientFeatureCheckerInterface
 {
-    private EntityRepositoryInterface $clientsRepository;
-
-    public function __construct(EntityRepositoryInterface $clientsRepository)
+    public function __construct(private readonly EntityRepository $clientsRepository)
     {
-        $this->clientsRepository = $clientsRepository;
     }
 
     public function canLogin(string $clientId, Context $context): bool

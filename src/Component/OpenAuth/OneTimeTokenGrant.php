@@ -19,15 +19,12 @@ use Shopware\Core\Framework\Context;
 
 class OneTimeTokenGrant extends PasswordGrant
 {
-    private LoginInterface $login;
-
     public function __construct(
         UserRepositoryInterface $userRepository,
         RefreshTokenRepositoryInterface $refreshTokenRepository,
-        LoginInterface $login
+        private readonly LoginInterface $login
     ) {
         parent::__construct($userRepository, $refreshTokenRepository);
-        $this->login = $login;
     }
 
     public function getIdentifier()

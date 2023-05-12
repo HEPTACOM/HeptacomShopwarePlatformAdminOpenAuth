@@ -4,22 +4,19 @@ declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\Service;
 
+use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Heptacom\AdminOpenAuth\Contract\LoginInterface;
 use Heptacom\AdminOpenAuth\Database\LoginCollection;
 use Heptacom\AdminOpenAuth\Database\LoginEntity;
 use Shopware\Core\Framework\Context;
-use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
 use Shopware\Core\Framework\Uuid\Uuid;
 
 class Login implements LoginInterface
 {
-    private EntityRepositoryInterface $loginsRepository;
-
-    public function __construct(EntityRepositoryInterface $loginsRepository)
+    public function __construct(private readonly EntityRepository $loginsRepository)
     {
-        $this->loginsRepository = $loginsRepository;
     }
 
     public function initiate(string $clientId, ?string $userId, string $state, Context $context): string

@@ -13,16 +13,8 @@ use Shopware\Core\Framework\Context;
 
 final class LoginUrlGenerator implements LoginUrlGeneratorInterface
 {
-    private ClientFeatureCheckerInterface $clientFeatureChecker;
-
-    private ClientLoaderInterface $clientLoader;
-
-    public function __construct(
-        ClientFeatureCheckerInterface $clientFeatureChecker,
-        ClientLoaderInterface $clientLoader
-    ) {
-        $this->clientFeatureChecker = $clientFeatureChecker;
-        $this->clientLoader = $clientLoader;
+    public function __construct(private readonly ClientFeatureCheckerInterface $clientFeatureChecker, private readonly ClientLoaderInterface $clientLoader)
+    {
     }
 
     public function generate(

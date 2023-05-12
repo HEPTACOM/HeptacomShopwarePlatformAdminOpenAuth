@@ -18,20 +18,8 @@ class Saml2ServiceProvider extends ClientProviderContract implements Configurati
 {
     public const PROVIDER_NAME = 'saml2';
 
-    private string $appSecret;
-
-    private Saml2ServiceProviderService $saml2ServiceProviderService;
-
-    private RouterInterface $router;
-
-    public function __construct(
-        string $appSecret,
-        Saml2ServiceProviderService $saml2ServiceProviderService,
-        RouterInterface $router
-    ) {
-        $this->appSecret = $appSecret;
-        $this->saml2ServiceProviderService = $saml2ServiceProviderService;
-        $this->router = $router;
+    public function __construct(private readonly string $appSecret, private readonly Saml2ServiceProviderService $saml2ServiceProviderService, private readonly RouterInterface $router)
+    {
     }
 
     public function provides(): string

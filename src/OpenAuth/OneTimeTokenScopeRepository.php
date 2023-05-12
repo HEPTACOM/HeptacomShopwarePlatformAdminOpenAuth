@@ -9,11 +9,8 @@ use League\OAuth2\Server\Repositories\ScopeRepositoryInterface;
 
 class OneTimeTokenScopeRepository implements ScopeRepositoryInterface
 {
-    private ScopeRepositoryInterface $decorated;
-
-    public function __construct(ScopeRepositoryInterface $decorated)
+    public function __construct(private readonly ScopeRepositoryInterface $decorated)
     {
-        $this->decorated = $decorated;
     }
 
     public function getScopeEntityByIdentifier($identifier)

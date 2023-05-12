@@ -4,23 +4,20 @@ declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\Service;
 
+use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Heptacom\AdminOpenAuth\Contract\UserTokenInterface;
 use Heptacom\AdminOpenAuth\Database\UserTokenCollection;
 use Heptacom\AdminOpenAuth\Database\UserTokenEntity;
 use Heptacom\OpenAuth\Struct\TokenPairStruct;
 use Shopware\Core\Framework\Context;
-use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
 use Shopware\Core\Framework\Uuid\Uuid;
 
 class UserToken implements UserTokenInterface
 {
-    private EntityRepositoryInterface $userTokensRepository;
-
-    public function __construct(EntityRepositoryInterface $userTokensRepository)
+    public function __construct(private readonly EntityRepository $userTokensRepository)
     {
-        $this->userTokensRepository = $userTokensRepository;
     }
 
     public function setToken(string $userId, string $clientId, TokenPairStruct $token, Context $context): string

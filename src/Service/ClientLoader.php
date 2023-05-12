@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\Service;
 
+use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Heptacom\AdminOpenAuth\Contract\ClientLoaderInterface;
 use Heptacom\AdminOpenAuth\Contract\ConfigurationRefresherClientProviderContract;
 use Heptacom\AdminOpenAuth\Database\ClientCollection;
@@ -16,26 +17,16 @@ use Heptacom\OpenAuth\Client\Exception\FactorizeClientException;
 use Heptacom\OpenAuth\ClientProvider\Contract\ClientProviderContract;
 use Heptacom\OpenAuth\ClientProvider\Contract\ClientProviderRepositoryContract;
 use Shopware\Core\Framework\Context;
-use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\Uuid\Uuid;
 
 class ClientLoader implements ClientLoaderInterface
 {
-    private ClientProviderRepositoryContract $providers;
-
-    private EntityRepositoryInterface $clientsRepository;
-
-    private ClientFactoryContract $clientFactory;
-
     public function __construct(
-        ClientProviderRepositoryContract $providers,
-        EntityRepositoryInterface $clientsRepository,
-        ClientFactoryContract $clientFactory
+        private readonly ClientProviderRepositoryContract $providers,
+        private readonly EntityRepository $clientsRepository,
+        private readonly ClientFactoryContract $clientFactory
     ) {
-        $this->providers = $providers;
-        $this->clientsRepository = $clientsRepository;
-        $this->clientFactory = $clientFactory;
     }
 
     public function load(string $clientId, Context $context): ClientContract

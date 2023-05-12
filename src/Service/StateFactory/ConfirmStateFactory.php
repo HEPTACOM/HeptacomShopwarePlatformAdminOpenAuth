@@ -4,18 +4,15 @@ declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\Service\StateFactory;
 
+use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Heptacom\AdminOpenAuth\Contract\StateFactory\ConfirmStateFactoryInterface;
 use Shopware\Core\Framework\Context;
-use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\Uuid\Uuid;
 
 final class ConfirmStateFactory implements ConfirmStateFactoryInterface
 {
-    private EntityRepositoryInterface $loginsRepository;
-
-    public function __construct(EntityRepositoryInterface $loginsRepository)
+    public function __construct(private readonly EntityRepository $loginsRepository)
     {
-        $this->loginsRepository = $loginsRepository;
     }
 
     public function create(string $clientId, string $userId, Context $context): string

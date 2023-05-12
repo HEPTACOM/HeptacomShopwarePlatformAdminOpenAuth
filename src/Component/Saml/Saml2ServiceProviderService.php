@@ -25,22 +25,13 @@ class Saml2ServiceProviderService
      */
     private static ?array $superGlobals = null;
 
-    private ClientInterface $samlHttpClient;
-
-    private LoggerInterface $logger;
-
-    private AdapterInterface $cache;
-
     private Saml2ServiceProviderConfiguration $config;
 
     public function __construct(
-        ClientInterface $samlHttpClient,
-        LoggerInterface $logger,
-        AdapterInterface $cache
+        private readonly ClientInterface $samlHttpClient,
+        private readonly LoggerInterface $logger,
+        private readonly AdapterInterface $cache
     ) {
-        $this->samlHttpClient = $samlHttpClient;
-        $this->logger = $logger;
-        $this->cache = $cache;
         $this->config = new Saml2ServiceProviderConfiguration();
     }
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\Controller;
 
+use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Heptacom\AdminOpenAuth\Contract\AuthorizationUrl\LoginUrlGeneratorInterface;
 use Heptacom\AdminOpenAuth\Contract\ClientLoaderInterface;
 use Heptacom\AdminOpenAuth\Contract\MetadataClientContract;
@@ -22,7 +23,6 @@ use Shopware\Core\Framework\Api\Context\AdminApiSource;
 use Shopware\Core\Framework\Api\Context\SystemSource;
 use Shopware\Core\Framework\Api\Response\ResponseFactoryInterface;
 use Shopware\Core\Framework\Context;
-use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
 use Shopware\Core\Framework\Routing\Annotation\RouteScope;
@@ -44,44 +44,17 @@ use Symfony\Component\Routing\RouterInterface;
  */
 class AdministrationController extends AbstractController
 {
-    private OpenAuthenticationFlowInterface $flow;
-
-    private EntityRepositoryInterface $clientsRepository;
-
-    private ClientLoaderInterface $clientLoader;
-
-    private RedirectReceiveRouteContract $redirectReceiveRoute;
-
-    private ConfirmStateFactoryInterface $confirmStateFactory;
-
-    private LoginUrlGeneratorInterface $loginUrlGenerator;
-
-    private RouterInterface $router;
-
-    private RedirectBehaviourFactoryInterface $redirectBehaviourFactory;
-
-    private StateResolver $stateResolver;
-
     public function __construct(
-        OpenAuthenticationFlowInterface $flow,
-        EntityRepositoryInterface $clientsRepository,
-        ClientLoaderInterface $clientLoader,
-        RedirectReceiveRouteContract $redirectReceiveRoute,
-        ConfirmStateFactoryInterface $confirmStateFactory,
-        LoginUrlGeneratorInterface $confirmationUrlGenerator,
-        RouterInterface $router,
-        RedirectBehaviourFactoryInterface $redirectBehaviourFactory,
-        StateResolver $stateResolver
+        private readonly OpenAuthenticationFlowInterface $flow,
+        private readonly EntityRepository $clientsRepository,
+        private readonly ClientLoaderInterface $clientLoader,
+        private readonly RedirectReceiveRouteContract $redirectReceiveRoute,
+        private readonly ConfirmStateFactoryInterface $confirmStateFactory,
+        private readonly LoginUrlGeneratorInterface $loginUrlGenerator,
+        private readonly RouterInterface $router,
+        private readonly RedirectBehaviourFactoryInterface $redirectBehaviourFactory,
+        private readonly StateResolver $stateResolver
     ) {
-        $this->flow = $flow;
-        $this->clientsRepository = $clientsRepository;
-        $this->clientLoader = $clientLoader;
-        $this->redirectReceiveRoute = $redirectReceiveRoute;
-        $this->confirmStateFactory = $confirmStateFactory;
-        $this->loginUrlGenerator = $confirmationUrlGenerator;
-        $this->router = $router;
-        $this->redirectBehaviourFactory = $redirectBehaviourFactory;
-        $this->stateResolver = $stateResolver;
     }
 
     /**
@@ -376,7 +349,7 @@ class AdministrationController extends AbstractController
         Request $request,
         ResponseFactoryInterface $responseFactory,
         ClientDefinition $definition,
-        EntityRepositoryInterface $clientsRepository,
+        EntityRepository $clientsRepository,
         Context $context
     ): Response {
         $providerKey = $request->get('provider_key');

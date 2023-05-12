@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\Service;
 
+use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Heptacom\AdminOpenAuth\Contract\ClientFeatureCheckerInterface;
 use Heptacom\AdminOpenAuth\Contract\ClientLoaderInterface;
 use Heptacom\AdminOpenAuth\Contract\LoginInterface;
@@ -15,7 +16,6 @@ use Heptacom\AdminOpenAuth\Exception\LoadClientException;
 use Heptacom\OpenAuth\Struct\UserStruct;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityCollection;
-use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Sorting\FieldSorting;
@@ -25,52 +25,19 @@ use Symfony\Component\Routing\RouterInterface;
 
 class OpenAuthenticationFlow implements OpenAuthenticationFlowInterface
 {
-    private LoginInterface $login;
-
-    private ClientLoaderInterface $clientLoader;
-
-    private UserResolverInterface $userResolver;
-
-    private EntityRepositoryInterface $clientsRepository;
-
-    private EntityRepositoryInterface $loginsRepository;
-
-    private EntityRepositoryInterface $userEmailsRepository;
-
-    private EntityRepositoryInterface $userKeysRepository;
-
-    private EntityRepositoryInterface $userTokensRepository;
-
-    private RouterInterface $router;
-
-    private RedirectBehaviourFactoryInterface $redirectBehaviourFactory;
-
-    private ClientFeatureCheckerInterface $clientFeatureChecker;
-
     public function __construct(
-        LoginInterface $login,
-        ClientLoaderInterface $clientLoader,
-        UserResolverInterface $userResolver,
-        EntityRepositoryInterface $clientsRepository,
-        EntityRepositoryInterface $loginsRepository,
-        EntityRepositoryInterface $userEmailsRepository,
-        EntityRepositoryInterface $userKeysRepository,
-        EntityRepositoryInterface $userTokensRepository,
-        RouterInterface $router,
-        RedirectBehaviourFactoryInterface $redirectBehaviourFactory,
-        ClientFeatureCheckerInterface $clientFeatureChecker
+        private readonly LoginInterface $login,
+        private readonly ClientLoaderInterface $clientLoader,
+        private readonly UserResolverInterface $userResolver,
+        private readonly EntityRepository $clientsRepository,
+        private readonly EntityRepository $loginsRepository,
+        private readonly EntityRepository $userEmailsRepository,
+        private readonly EntityRepository $userKeysRepository,
+        private readonly EntityRepository $userTokensRepository,
+        private readonly RouterInterface $router,
+        private readonly RedirectBehaviourFactoryInterface $redirectBehaviourFactory,
+        private readonly ClientFeatureCheckerInterface $clientFeatureChecker
     ) {
-        $this->login = $login;
-        $this->clientLoader = $clientLoader;
-        $this->userResolver = $userResolver;
-        $this->clientsRepository = $clientsRepository;
-        $this->loginsRepository = $loginsRepository;
-        $this->userEmailsRepository = $userEmailsRepository;
-        $this->userKeysRepository = $userKeysRepository;
-        $this->userTokensRepository = $userTokensRepository;
-        $this->router = $router;
-        $this->redirectBehaviourFactory = $redirectBehaviourFactory;
-        $this->clientFeatureChecker = $clientFeatureChecker;
     }
 
     public function getRedirectUrl(string $clientId, Context $context): string
@@ -119,7 +86,7 @@ class OpenAuthenticationFlow implements OpenAuthenticationFlowInterface
             $this->userTokensRepository,
         ];
 
-        /** @var EntityRepositoryInterface $repo */
+        /** @var EntityRepository $repo */
         foreach ($repos as $repo) {
             $ids = $repo->searchIds($criteria, $context)->getIds();
 

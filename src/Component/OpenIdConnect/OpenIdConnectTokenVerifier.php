@@ -30,25 +30,15 @@ class OpenIdConnectTokenVerifier
 {
     private const CACHE_TTL = 900;
 
-    private ClientInterface $oidcHttpClient;
+    private readonly JWSSerializerManager $serializerManager;
 
-    private AdapterInterface $cache;
-
-    private LoggerInterface $logger;
-
-    private JWSSerializerManager $serializerManager;
-
-    private JWSVerifier $verifier;
+    private readonly JWSVerifier $verifier;
 
     public function __construct(
-        ClientInterface $oidcHttpClient,
-        AdapterInterface $cache,
-        LoggerInterface $logger
+        private readonly ClientInterface $oidcHttpClient,
+        private readonly AdapterInterface $cache,
+        private readonly LoggerInterface $logger
     ) {
-        $this->oidcHttpClient = $oidcHttpClient;
-        $this->cache = $cache;
-        $this->logger = $logger;
-
         $this->serializerManager = new JWSSerializerManager([
             new CompactSerializer(),
         ]);

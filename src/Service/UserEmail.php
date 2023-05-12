@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\Service;
 
+use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Heptacom\AdminOpenAuth\Contract\UserEmailInterface;
 use Heptacom\AdminOpenAuth\Database\UserEmailCollection;
 use Shopware\Core\Framework\Context;
-use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsAnyFilter;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
@@ -16,11 +16,8 @@ use Shopware\Core\System\User\UserCollection;
 
 class UserEmail implements UserEmailInterface
 {
-    private EntityRepositoryInterface $userEmailsRepository;
-
-    public function __construct(EntityRepositoryInterface $userEmailsRepository)
+    public function __construct(private readonly EntityRepository $userEmailsRepository)
     {
-        $this->userEmailsRepository = $userEmailsRepository;
     }
 
     public function add(string $userId, string $email, string $clientId, Context $context): string

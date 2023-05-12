@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\Service;
 
+use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Heptacom\AdminOpenAuth\Contract\UserKeyInterface;
 use Heptacom\AdminOpenAuth\Database\UserKeyCollection;
 use Shopware\Core\Framework\Context;
-use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
 use Shopware\Core\Framework\Uuid\Uuid;
@@ -15,11 +15,8 @@ use Shopware\Core\System\User\UserCollection;
 
 class UserKey implements UserKeyInterface
 {
-    private EntityRepositoryInterface $userKeysRepository;
-
-    public function __construct(EntityRepositoryInterface $userKeysRepository)
+    public function __construct(private readonly EntityRepository $userKeysRepository)
     {
-        $this->userKeysRepository = $userKeysRepository;
     }
 
     public function add(string $userId, string $primaryKey, string $clientId, Context $context): string

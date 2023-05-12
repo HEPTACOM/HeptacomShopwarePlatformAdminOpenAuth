@@ -16,16 +16,8 @@ class OpenIdConnectProvider extends ClientProviderContract
 {
     public const PROVIDER_NAME = 'open_id_connect';
 
-    private TokenPairFactoryContract $tokenPairFactory;
-
-    private OpenIdConnectService $openIdConnectService;
-
-    public function __construct(
-        TokenPairFactoryContract $tokenPairFactory,
-        OpenIdConnectService $openIdConnectService
-    ) {
-        $this->tokenPairFactory = $tokenPairFactory;
-        $this->openIdConnectService = $openIdConnectService;
+    public function __construct(private readonly TokenPairFactoryContract $tokenPairFactory, private readonly OpenIdConnectService $openIdConnectService)
+    {
     }
 
     public function provides(): string

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\Service;
 
+use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
+use Shopware\Core\Maintenance\User\Service\UserProvisioner;
 use Doctrine\DBAL\Connection;
 use Heptacom\AdminOpenAuth\Contract\ClientFeatureCheckerInterface;
 use Heptacom\AdminOpenAuth\Contract\LoginInterface;
@@ -16,7 +18,6 @@ use Heptacom\OpenAuth\Struct\UserStruct;
 use Shopware\Core\Defaults;
 use Shopware\Core\Framework\Api\Acl\Role\AclUserRoleDefinition;
 use Shopware\Core\Framework\Context;
-use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsAnyFilter;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
@@ -24,49 +25,21 @@ use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\PrefixFilter;
 use Shopware\Core\Framework\Util\Random;
 use Shopware\Core\Framework\Uuid\Uuid;
 use Shopware\Core\System\Language\LanguageEntity;
-use Shopware\Core\System\User\Service\UserProvisioner;
 use Shopware\Core\System\User\UserDefinition;
 
 class UserResolver implements UserResolverInterface
 {
-    private EntityRepositoryInterface $userRepository;
-
-    private EntityRepositoryInterface $languageRepository;
-
-    private Connection $connection;
-
-    private UserProvisioner $userProvisioner;
-
-    private LoginInterface $login;
-
-    private UserEmailInterface $userEmail;
-
-    private UserKeyInterface $userKey;
-
-    private UserTokenInterface $userToken;
-
-    private ClientFeatureCheckerInterface $clientFeatureChecker;
-
     public function __construct(
-        EntityRepositoryInterface $userRepository,
-        EntityRepositoryInterface $languageRepository,
-        Connection $connection,
-        UserProvisioner $userProvisioner,
-        LoginInterface $login,
-        UserEmailInterface $userEmail,
-        UserKeyInterface $userKey,
-        UserTokenInterface $userToken,
-        ClientFeatureCheckerInterface $clientFeatureChecker
+        private readonly EntityRepository $userRepository,
+        private readonly EntityRepository $languageRepository,
+        private readonly Connection $connection,
+        private readonly UserProvisioner $userProvisioner,
+        private readonly LoginInterface $login,
+        private readonly UserEmailInterface $userEmail,
+        private readonly UserKeyInterface $userKey,
+        private readonly UserTokenInterface $userToken,
+        private readonly ClientFeatureCheckerInterface $clientFeatureChecker
     ) {
-        $this->connection = $connection;
-        $this->userRepository = $userRepository;
-        $this->languageRepository = $languageRepository;
-        $this->userProvisioner = $userProvisioner;
-        $this->login = $login;
-        $this->userEmail = $userEmail;
-        $this->userKey = $userKey;
-        $this->userToken = $userToken;
-        $this->clientFeatureChecker = $clientFeatureChecker;
     }
 
     public function resolve(UserStruct $user, string $state, string $clientId, Context $context): void

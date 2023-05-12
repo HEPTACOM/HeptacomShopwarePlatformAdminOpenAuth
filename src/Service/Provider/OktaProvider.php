@@ -17,16 +17,8 @@ class OktaProvider extends ClientProviderContract
 {
     public const PROVIDER_NAME = 'okta';
 
-    private TokenPairFactoryContract $tokenPairFactory;
-
-    private OpenIdConnectService $openIdConnectService;
-
-    public function __construct(
-        TokenPairFactoryContract $tokenPairFactory,
-        OpenIdConnectService $openIdConnectService
-    ) {
-        $this->tokenPairFactory = $tokenPairFactory;
-        $this->openIdConnectService = $openIdConnectService;
+    public function __construct(private readonly TokenPairFactoryContract $tokenPairFactory, private readonly OpenIdConnectService $openIdConnectService)
+    {
     }
 
     public function provides(): string
