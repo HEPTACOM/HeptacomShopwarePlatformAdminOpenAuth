@@ -26,7 +26,7 @@ SQL);
 
         foreach ($clients as $client) {
             $config = json_decode($client['config'] ?? '', true);
-            $config['id'] = bin2hex($client['id']);
+            $config['id'] = bin2hex((string) $client['id']);
 
             $updateStatement->executeQuery([
                 'config' => json_encode($config),

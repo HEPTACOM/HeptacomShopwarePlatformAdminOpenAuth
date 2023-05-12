@@ -178,7 +178,7 @@ class UserResolver implements UserResolverInterface
         }
 
         foreach ($userChangeSet as $key => $newValue) {
-            if (substr($key, -3) === '_id') {
+            if (str_ends_with($key, '_id')) {
                 $userChangeSet[$key] = Uuid::fromHexToBytes($newValue);
             }
         }
@@ -211,7 +211,7 @@ class UserResolver implements UserResolverInterface
         }
 
         foreach ($userChangeSet as $key => $newValue) {
-            if (substr($key, -3) === '_id') {
+            if (str_ends_with($key, '_id')) {
                 $newValue = Uuid::fromBytesToHex($newValue);
             }
 
