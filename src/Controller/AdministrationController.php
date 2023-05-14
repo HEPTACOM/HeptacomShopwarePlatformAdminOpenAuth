@@ -21,7 +21,6 @@ use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
 use Shopware\Core\Framework\Routing\Annotation\RouteScope;
-use Shopware\Core\PlatformRequest;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -44,21 +43,6 @@ final class AdministrationController extends AbstractController
         private readonly RouterInterface $router,
         private readonly RedirectBehaviourFactoryInterface $redirectBehaviourFactory,
     ) {
-    }
-
-    /**
-     * @Route(
-     *     methods={"GET"},
-     *     name="administration.heptacom.admin_open_auth.confirm",
-     *     path="/admin/open-auth/confirm",
-     *     defaults={"auth_required" = false}
-     * )
-     */
-    public function confirm(Request $request): Response
-    {
-        return $this->render('@KskHeptacomAdminOpenAuth/administration/heptacom-admin-open-auth/page/confirm.html.twig', [
-            'cspNonce' => $request->attributes->get(PlatformRequest::ATTRIBUTE_CSP_NONCE),
-        ]);
     }
 
     /**
