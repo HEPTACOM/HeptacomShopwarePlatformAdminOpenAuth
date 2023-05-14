@@ -255,7 +255,7 @@ class Saml2ServiceProviderService
             'RelayState' => $relayState,
         ];
 
-        $_REQUEST = \array_merge($_GET, $_POST);
+        $_REQUEST = [...$_GET, ...$_POST];
     }
 
     /**

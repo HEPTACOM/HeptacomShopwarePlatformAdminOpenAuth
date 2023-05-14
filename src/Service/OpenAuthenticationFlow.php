@@ -118,15 +118,13 @@ final class OpenAuthenticationFlow implements OpenAuthenticationFlowInterface
     public function getLoginRoutes(Context $context): array
     {
         return \array_values($this->getAvailableClients(new Criteria(), $context)
-            ->map(function (ClientEntity $client): array {
-                return [
-                    'name' => $client->getName(),
-                    'url' => $this->router->generate(
-                        'administration.heptacom.admin_open_auth.remote_login',
-                        ['clientId' => $client->getId()],
-                        UrlGeneratorInterface::ABSOLUTE_URL
-                    ),
-                ];
-            }));
+            ->map(fn(ClientEntity $client): array => [
+                'name' => $client->getName(),
+                'url' => $this->router->generate(
+                    'administration.heptacom.admin_open_auth.remote_login',
+                    ['clientId' => $client->getId()],
+                    UrlGeneratorInterface::ABSOLUTE_URL
+                ),
+            ]));
     }
 }

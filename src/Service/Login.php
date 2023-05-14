@@ -60,9 +60,7 @@ final class Login implements LoginInterface
         $logins = $this->loginsRepository->search($criteria, $context)->getEntities();
 
         if ($logins->count() > 0) {
-            $deletePayload = $logins->map(function (LoginEntity $login): array {
-                return ['id' => $login->getId()];
-            });
+            $deletePayload = $logins->map(fn(LoginEntity $login): array => ['id' => $login->getId()]);
             $this->loginsRepository->delete(\array_values($deletePayload), $context);
         }
 
