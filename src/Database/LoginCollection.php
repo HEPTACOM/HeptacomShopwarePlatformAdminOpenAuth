@@ -7,13 +7,7 @@ namespace Heptacom\AdminOpenAuth\Database;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityCollection;
 
 /**
- * @method void             add(LoginEntity $entity)
- * @method void             set(string $key, LoginEntity $entity)
- * @method LoginEntity[]    getIterator()
- * @method LoginEntity[]    getElements()
- * @method LoginEntity|null get(string $key)
- * @method LoginEntity|null first()
- * @method LoginEntity|null last()
+ * @extends EntityCollection<LoginEntity>
  */
 final class LoginCollection extends EntityCollection
 {
