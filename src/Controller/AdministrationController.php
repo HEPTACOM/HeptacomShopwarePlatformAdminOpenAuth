@@ -12,14 +12,12 @@ use Heptacom\AdminOpenAuth\Contract\OpenAuthenticationFlowInterface;
 use Heptacom\AdminOpenAuth\Contract\RedirectBehaviourFactoryInterface;
 use Heptacom\AdminOpenAuth\Contract\StateFactory\ConfirmStateFactoryInterface;
 use Heptacom\AdminOpenAuth\Database\ClientDefinition;
-use Heptacom\AdminOpenAuth\Database\ClientEntity;
 use Heptacom\OpenAuth\ClientProvider\Contract\ClientProviderRepositoryContract;
 use Shopware\Core\Framework\Api\Context\AdminApiSource;
 use Shopware\Core\Framework\Api\Context\SystemSource;
 use Shopware\Core\Framework\Api\Response\ResponseFactoryInterface;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
-use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
 use Shopware\Core\Framework\Routing\Annotation\RouteScope;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -42,36 +40,6 @@ final class AdministrationController extends AbstractController
         private readonly RouterInterface $router,
         private readonly RedirectBehaviourFactoryInterface $redirectBehaviourFactory,
     ) {
-    }
-
-    /**
-     * @Route(
-     *     methods={"GET"},
-     *     name="api.heptacom.admin_open_auth.client.list",
-     *     path="/api/_admin/open-auth/client/list"
-     * )
-     */
-    public function clientList(Context $context): Response
-    {
-        /** @var AdminApiSource $adminApiSource */
-        $adminApiSource = $context->getSource();
-
-        $criteria = new Criteria();
-        $criteria->getAssociation('userKeys')
-            ->addFilter(
-                new EqualsFilter('userId', $adminApiSource->getUserId())
-            );
-
-        $clients = $this->flow->getAvailableClients($criteria, $context)
-            ->map(static fn (ClientEntity $client): array => [
-                'id' => $client->getId(),
-                'name' => $client->name,
-                'connected' => $client->userKeys?->count() > 0,
-            ]);
-
-        return new JsonResponse([
-            'data' => \array_values($clients),
-        ]);
     }
 
     /**
