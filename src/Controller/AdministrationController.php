@@ -8,7 +8,6 @@ use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Heptacom\AdminOpenAuth\Contract\AuthorizationUrl\LoginUrlGeneratorInterface;
 use Heptacom\AdminOpenAuth\Contract\ClientLoaderInterface;
 use Heptacom\AdminOpenAuth\Contract\MetadataClientContract;
-use Heptacom\AdminOpenAuth\Contract\OpenAuthenticationFlowInterface;
 use Heptacom\AdminOpenAuth\Contract\RedirectBehaviourFactoryInterface;
 use Heptacom\AdminOpenAuth\Contract\StateFactory\ConfirmStateFactoryInterface;
 use Heptacom\AdminOpenAuth\Database\ClientDefinition;
@@ -33,31 +32,12 @@ use Symfony\Component\Routing\RouterInterface;
 final class AdministrationController extends AbstractController
 {
     public function __construct(
-        private readonly OpenAuthenticationFlowInterface $flow,
         private readonly ClientLoaderInterface $clientLoader,
         private readonly ConfirmStateFactoryInterface $confirmStateFactory,
         private readonly LoginUrlGeneratorInterface $loginUrlGenerator,
         private readonly RouterInterface $router,
         private readonly RedirectBehaviourFactoryInterface $redirectBehaviourFactory,
     ) {
-    }
-
-    /**
-     * @Route(
-     *     methods={"POST"},
-     *     name="api.heptacom.admin_open_auth.remote_disconnect",
-     *     path="/api/_action/open-auth/{clientId}/disconnect",
-     *     defaults={"_acl"={"user_change_me"}}
-     * )
-     */
-    public function remoteDisconnect(string $clientId, Context $context): Response
-    {
-        /** @var AdminApiSource $adminApiSource */
-        $adminApiSource = $context->getSource();
-
-        $this->flow->disconnectClient($clientId, $adminApiSource->getUserId(), $this->getSystemContext($context));
-
-        return new JsonResponse();
     }
 
     /**
