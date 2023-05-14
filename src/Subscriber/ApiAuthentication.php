@@ -30,7 +30,7 @@ final class ApiAuthentication implements EventSubscriberInterface
 
     public function addOneTimeTokenGrant(RequestEvent $event): void
     {
-        if (!$event->isMasterRequest()) {
+        if (!$event->isMainRequest()) {
             return;
         }
 
