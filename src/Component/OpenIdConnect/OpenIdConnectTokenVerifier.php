@@ -21,10 +21,10 @@ use Jose\Component\Signature\JWSVerifier;
 use Jose\Component\Signature\Serializer\CompactSerializer;
 use Jose\Component\Signature\Serializer\JWSSerializerManager;
 use Jose\Component\Signature\Signature;
+use Psr\Cache\CacheItemPoolInterface;
 use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Client\ClientInterface;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Cache\Adapter\AdapterInterface;
 
 class OpenIdConnectTokenVerifier
 {
@@ -36,7 +36,7 @@ class OpenIdConnectTokenVerifier
 
     public function __construct(
         private readonly ClientInterface $oidcHttpClient,
-        private readonly AdapterInterface $cache,
+        private readonly CacheItemPoolInterface $cache,
         private readonly LoggerInterface $logger
     ) {
         $this->serializerManager = new JWSSerializerManager([

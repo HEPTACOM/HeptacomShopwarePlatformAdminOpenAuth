@@ -10,10 +10,10 @@ use OneLogin\Saml2\Auth;
 use OneLogin\Saml2\AuthnRequest;
 use OneLogin\Saml2\Error as OneLoginSaml2Error;
 use OneLogin\Saml2\Settings;
+use Psr\Cache\CacheItemPoolInterface;
 use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Client\ClientInterface;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Cache\Adapter\AdapterInterface;
 
 class Saml2ServiceProviderService
 {
@@ -30,7 +30,7 @@ class Saml2ServiceProviderService
     public function __construct(
         private readonly ClientInterface $samlHttpClient,
         private readonly LoggerInterface $logger,
-        private readonly AdapterInterface $cache
+        private readonly CacheItemPoolInterface $cache
     ) {
         $this->config = new Saml2ServiceProviderConfiguration();
     }
