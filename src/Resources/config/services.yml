@@ -23,6 +23,10 @@ services:
         Symfony\Component\EventDispatcher\EventSubscriberInterface:
             tags:
                 - 'kernel.event_subscriber'
+        Symfony\Bundle\FrameworkBundle\Controller\AbstractController:
+            public: true
+            calls:
+                - setContainer: [ '@service_container' ]
 
     Heptacom\AdminOpenAuth\:
         resource: '../../*'

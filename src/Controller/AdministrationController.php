@@ -13,7 +13,6 @@ use Heptacom\AdminOpenAuth\Contract\RedirectBehaviourFactoryInterface;
 use Heptacom\AdminOpenAuth\Contract\StateFactory\ConfirmStateFactoryInterface;
 use Heptacom\AdminOpenAuth\Database\ClientDefinition;
 use Heptacom\AdminOpenAuth\Database\ClientEntity;
-use Heptacom\AdminOpenAuth\Exception\LoadClientClientNotFoundException;
 use Heptacom\AdminOpenAuth\OpenAuth\Struct\UserStructExtension;
 use Heptacom\AdminOpenAuth\Service\StateResolver;
 use Heptacom\OpenAuth\ClientProvider\Contract\ClientProviderRepositoryContract;
@@ -29,12 +28,10 @@ use Shopware\Core\Framework\Routing\Annotation\RouteScope;
 use Shopware\Core\PlatformRequest;
 use Symfony\Bridge\PsrHttpMessage\Factory\PsrHttpFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
@@ -55,35 +52,6 @@ final class AdministrationController extends AbstractController
         private readonly RedirectBehaviourFactoryInterface $redirectBehaviourFactory,
         private readonly StateResolver $stateResolver
     ) {
-    }
-
-    /**
-     * @Route(
-     *     methods={"GET"},
-     *     name="administration.heptacom.admin_open_auth.metadata",
-     *     path="/admin/open-auth/{clientId}/metadata",
-     *     defaults={"auth_required" = false}
-     * )
-     */
-    public function metadata(string $clientId, Context $context): Response
-    {
-        try {
-            $clientProvider = $this->clientLoader->load($clientId, $context);
-
-            if (!$clientProvider instanceof MetadataClientContract) {
-                throw new BadRequestException();
-            }
-
-            $response = new Response();
-            $response->headers->add([
-                'Content-Type' => $clientProvider->getMetadataType(),
-            ]);
-            $response->setContent($clientProvider->getMetadata());
-
-            return $response;
-        } catch (LoadClientClientNotFoundException $exception) {
-            throw new NotFoundHttpException();
-        }
     }
 
     /**
