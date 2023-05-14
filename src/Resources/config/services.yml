@@ -70,65 +70,65 @@ services:
         tags:
             - { name: shopware.entity.definition , entity: 'heptacom_admin_open_auth_user_token' }
 
-    Heptacom\AdminOpenAuth\Service\Provider\CidaasClientEntityRepository:
-        decorates: heptacom_admin_open_auth_client.repository
+    Heptacom\AdminOpenAuth\Service\Provider\CidaasClientEntityWriter:
+        decorates: Shopware\Core\Framework\DataAbstractionLayer\Write\EntityWriter
         arguments:
-            - '@Heptacom\AdminOpenAuth\Service\Provider\CidaasClientEntityRepository.inner'
+            - '@Heptacom\AdminOpenAuth\Service\Provider\CidaasClientEntityWriter.inner'
 
-    Heptacom\AdminOpenAuth\Service\Provider\GoogleCloudClientEntityRepository:
-        decorates: heptacom_admin_open_auth_client.repository
+    Heptacom\AdminOpenAuth\Service\Provider\GoogleCloudClientEntityWriter:
+        decorates: Shopware\Core\Framework\DataAbstractionLayer\Write\EntityWriter
         arguments:
-            - '@Heptacom\AdminOpenAuth\Service\Provider\GoogleCloudClientEntityRepository.inner'
+            - '@Heptacom\AdminOpenAuth\Service\Provider\GoogleCloudClientEntityWriter.inner'
 
     Heptacom\AdminOpenAuth\Service\OpenAuth\OneTimeTokenClientRepository:
         decorates: Shopware\Core\Framework\Api\OAuth\ClientRepository
         arguments:
             - '@Heptacom\AdminOpenAuth\Service\OpenAuth\OneTimeTokenClientRepository.inner'
 
-    Heptacom\AdminOpenAuth\Service\Provider\JiraClientEntityRepository:
-        decorates: heptacom_admin_open_auth_client.repository
+    Heptacom\AdminOpenAuth\Service\Provider\JiraClientEntityWriter:
+        decorates: Shopware\Core\Framework\DataAbstractionLayer\Write\EntityWriter
         arguments:
-            - '@Heptacom\AdminOpenAuth\Service\Provider\JiraClientEntityRepository.inner'
+            - '@Heptacom\AdminOpenAuth\Service\Provider\JiraClientEntityWriter.inner'
 
-    Heptacom\AdminOpenAuth\Service\Provider\JumpCloudClientEntityRepository:
-        decorates: heptacom_admin_open_auth_client.repository
+    Heptacom\AdminOpenAuth\Service\Provider\JumpCloudClientEntityWriter:
+        decorates: Shopware\Core\Framework\DataAbstractionLayer\Write\EntityWriter
         arguments:
-            - '@Heptacom\AdminOpenAuth\Service\Provider\JumpCloudClientEntityRepository.inner'
+            - '@Heptacom\AdminOpenAuth\Service\Provider\JumpCloudClientEntityWriter.inner'
 
-    Heptacom\AdminOpenAuth\Service\Provider\KeycloakClientEntityRepository:
-        decorates: heptacom_admin_open_auth_client.repository
+    Heptacom\AdminOpenAuth\Service\Provider\KeycloakClientEntityWriter:
+        decorates: Shopware\Core\Framework\DataAbstractionLayer\Write\EntityWriter
         arguments:
-            - '@Heptacom\AdminOpenAuth\Service\Provider\KeycloakClientEntityRepository.inner'
+            - '@Heptacom\AdminOpenAuth\Service\Provider\KeycloakClientEntityWriter.inner'
 
-    Heptacom\AdminOpenAuth\Service\Provider\MicrosoftAzureClientEntityRepository:
-        decorates: heptacom_admin_open_auth_client.repository
+    Heptacom\AdminOpenAuth\Service\Provider\MicrosoftAzureClientEntityWriter:
+        decorates: Shopware\Core\Framework\DataAbstractionLayer\Write\EntityWriter
         arguments:
-            - '@Heptacom\AdminOpenAuth\Service\Provider\MicrosoftAzureClientEntityRepository.inner'
+            - '@Heptacom\AdminOpenAuth\Service\Provider\MicrosoftAzureClientEntityWriter.inner'
 
-    Heptacom\AdminOpenAuth\Service\Provider\MicrosoftAzureOidcClientEntityRepository:
-        decorates: heptacom_admin_open_auth_client.repository
+    Heptacom\AdminOpenAuth\Service\Provider\MicrosoftAzureOidcClientEntityWriter:
+        decorates: Shopware\Core\Framework\DataAbstractionLayer\Write\EntityWriter
         arguments:
-            - '@Heptacom\AdminOpenAuth\Service\Provider\MicrosoftAzureOidcClientEntityRepository.inner'
+            - '@Heptacom\AdminOpenAuth\Service\Provider\MicrosoftAzureOidcClientEntityWriter.inner'
 
-    Heptacom\AdminOpenAuth\Service\Provider\OktaClientEntityRepository:
-        decorates: heptacom_admin_open_auth_client.repository
+    Heptacom\AdminOpenAuth\Service\Provider\OktaClientEntityWriter:
+        decorates: Shopware\Core\Framework\DataAbstractionLayer\Write\EntityWriter
         arguments:
-            - '@Heptacom\AdminOpenAuth\Service\Provider\OktaClientEntityRepository.inner'
+            - '@Heptacom\AdminOpenAuth\Service\Provider\OktaClientEntityWriter.inner'
 
-    Heptacom\AdminOpenAuth\Service\Provider\OneLoginClientEntityRepository:
-        decorates: heptacom_admin_open_auth_client.repository
+    Heptacom\AdminOpenAuth\Service\Provider\OneLoginClientEntityWriter:
+        decorates: Shopware\Core\Framework\DataAbstractionLayer\Write\EntityWriter
         arguments:
-            - '@Heptacom\AdminOpenAuth\Service\Provider\OneLoginClientEntityRepository.inner'
+            - '@Heptacom\AdminOpenAuth\Service\Provider\OneLoginClientEntityWriter.inner'
 
-    Heptacom\AdminOpenAuth\Service\Provider\OpenIdConnectClientEntityRepository:
-        decorates: heptacom_admin_open_auth_client.repository
+    Heptacom\AdminOpenAuth\Service\Provider\OpenIdConnectClientEntityWriter:
+        decorates: Shopware\Core\Framework\DataAbstractionLayer\Write\EntityWriter
         arguments:
-            - '@Heptacom\AdminOpenAuth\Service\Provider\OpenIdConnectClientEntityRepository.inner'
+            - '@Heptacom\AdminOpenAuth\Service\Provider\OpenIdConnectClientEntityWriter.inner'
 
-    Heptacom\AdminOpenAuth\Service\Provider\Saml2ClientEntityRepository:
-        decorates: heptacom_admin_open_auth_client.repository
+    Heptacom\AdminOpenAuth\Service\Provider\Saml2ClientEntityWriter:
+        decorates: Shopware\Core\Framework\DataAbstractionLayer\Write\EntityWriter
         arguments:
-            - '@Heptacom\AdminOpenAuth\Service\Provider\Saml2ClientEntityRepository.inner'
+            - '@Heptacom\AdminOpenAuth\Service\Provider\Saml2ClientEntityWriter.inner'
 
     Heptacom\AdminOpenAuth\OpenAuth\OneTimeTokenScopeRepository:
         decorates: Shopware\Core\Framework\Api\OAuth\ScopeRepository
