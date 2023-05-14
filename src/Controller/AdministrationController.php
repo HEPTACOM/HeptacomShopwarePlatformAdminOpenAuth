@@ -45,28 +45,6 @@ final class AdministrationController extends AbstractController
     /**
      * @Route(
      *     methods={"POST"},
-     *     name="api.heptacom.admin_open_auth.remote_connect",
-     *     path="/api/_action/open-auth/{clientId}/connect",
-     *     defaults={"_acl"={"user_change_me"}}
-     * )
-     */
-    public function remoteConnect(string $clientId, Context $context): Response
-    {
-        /** @var AdminApiSource $adminApiSource */
-        $adminApiSource = $context->getSource();
-
-        return new JsonResponse([
-            'target' => $this->flow->getRedirectUrlToConnect(
-                $clientId,
-                $adminApiSource->getUserId(),
-                $this->getSystemContext($context)
-            ),
-        ]);
-    }
-
-    /**
-     * @Route(
-     *     methods={"POST"},
      *     name="api.heptacom.admin_open_auth.remote_disconnect",
      *     path="/api/_action/open-auth/{clientId}/disconnect",
      *     defaults={"_acl"={"user_change_me"}}
