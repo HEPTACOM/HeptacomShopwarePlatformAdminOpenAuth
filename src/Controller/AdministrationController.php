@@ -35,24 +35,6 @@ final class AdministrationController extends AbstractController
     /**
      * @Route(
      *     methods={"POST"},
-     *     name="api.heptacom.admin_open_auth.provider.redirect-url",
-     *     path="/api/_action/heptacom_admin_open_auth_provider/client-redirect-url"
-     * )
-     */
-    public function getRedirectUrl(Request $request): Response
-    {
-        $clientId = $request->get('client_id');
-
-        return new JsonResponse([
-            'target' => $this->router->generate('administration.heptacom.admin_open_auth.login', [
-                'clientId' => $clientId,
-            ], UrlGeneratorInterface::ABSOLUTE_URL),
-        ]);
-    }
-
-    /**
-     * @Route(
-     *     methods={"POST"},
      *     name="api.heptacom.admin_open_auth.provider.metadata-url",
      *     path="/api/_action/heptacom_admin_open_auth_provider/client-metadata-url"
      * )
