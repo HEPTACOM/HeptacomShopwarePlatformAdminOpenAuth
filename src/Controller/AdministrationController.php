@@ -5,15 +5,10 @@ declare(strict_types=1);
 namespace Heptacom\AdminOpenAuth\Controller;
 
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
-use Heptacom\AdminOpenAuth\Contract\AuthorizationUrl\LoginUrlGeneratorInterface;
 use Heptacom\AdminOpenAuth\Contract\ClientLoaderInterface;
 use Heptacom\AdminOpenAuth\Contract\MetadataClientContract;
-use Heptacom\AdminOpenAuth\Contract\RedirectBehaviourFactoryInterface;
-use Heptacom\AdminOpenAuth\Contract\StateFactory\ConfirmStateFactoryInterface;
 use Heptacom\AdminOpenAuth\Database\ClientDefinition;
 use Heptacom\OpenAuth\ClientProvider\Contract\ClientProviderRepositoryContract;
-use Shopware\Core\Framework\Api\Context\AdminApiSource;
-use Shopware\Core\Framework\Api\Context\SystemSource;
 use Shopware\Core\Framework\Api\Response\ResponseFactoryInterface;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
@@ -33,37 +28,8 @@ final class AdministrationController extends AbstractController
 {
     public function __construct(
         private readonly ClientLoaderInterface $clientLoader,
-        private readonly ConfirmStateFactoryInterface $confirmStateFactory,
-        private readonly LoginUrlGeneratorInterface $loginUrlGenerator,
         private readonly RouterInterface $router,
-        private readonly RedirectBehaviourFactoryInterface $redirectBehaviourFactory,
     ) {
-    }
-
-    /**
-     * @Route(
-     *     methods={"GET"},
-     *     name="api.heptacom.admin_open_auth.confirm",
-     *     path="/api/_admin/open-auth/{clientId}/confirm"
-     * )
-     */
-    public function confirmUrl(string $clientId, Context $context): Response
-    {
-        /** @var AdminApiSource $adminApiSource */
-        $adminApiSource = $context->getSource();
-
-        $systemContext = $this->getSystemContext($context);
-
-        $state = $this->confirmStateFactory->create($clientId, $adminApiSource->getUserId(), $systemContext);
-
-        return new JsonResponse([
-            'target' => $this->loginUrlGenerator->generate(
-                $clientId,
-                $state,
-                $this->redirectBehaviourFactory->createRedirectBehaviour($clientId, $context),
-                $systemContext
-            ),
-        ]);
     }
 
     /**
