@@ -111,15 +111,15 @@ final class AdministrationController extends AbstractController
         $user = $this->redirectReceiveRoute
             ->onReceiveRequest(
                 $psrHttpFactory->createRequest($request),
-                $client->getProvider(),
-                $client->getConfig(),
+                $client->provider,
+                $client->config,
                 $this->redirectBehaviourFactory->createRedirectBehaviour($clientId, $context)
             );
         $requestState = (string) $user->getPassthrough()['requestState'];
 
         $userExtension = $user->getPassthrough()[UserStructExtension::class] ?? new UserStructExtension();
-        $userExtension->setIsAdmin($client->getUserBecomeAdmin() ?? false);
-        $userExtension->setAclRoleIds($client->getDefaultAclRoles()->getIds());
+        $userExtension->setIsAdmin($client->userBecomeAdmin ?? false);
+        $userExtension->setAclRoleIds($client->defaultAclRoles?->getIds() ?? []);
         $user->addPassthrough(UserStructExtension::class, $userExtension);
 
         $this->flow->upsertUser($user, $clientId, $requestState, $context);
@@ -208,8 +208,8 @@ final class AdministrationController extends AbstractController
         $clients = $this->flow->getAvailableClients($criteria, $context)
             ->map(static fn (ClientEntity $client): array => [
                 'id' => $client->getId(),
-                'name' => $client->getName(),
-                'connected' => $client->getUserKeys()->count() > 0,
+                'name' => $client->name,
+                'connected' => $client->userKeys?->count() > 0,
             ]);
 
         return new JsonResponse([

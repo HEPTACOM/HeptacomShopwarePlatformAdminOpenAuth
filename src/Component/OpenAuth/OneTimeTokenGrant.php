@@ -46,7 +46,7 @@ final class OneTimeTokenGrant extends PasswordGrant
             throw OAuthServerException::invalidRequest('one_time_token', 'Expired');
         }
 
-        $user = new User($loginState->getUserId());
+        $user = new User($loginState->userId);
 
         if (!$user instanceof UserEntityInterface) {
             $this->getEmitter()->emit(new RequestEvent(RequestEvent::USER_AUTHENTICATION_FAILED, $request));

@@ -54,7 +54,7 @@ final class UserEmail implements UserEmailInterface
         $result = new UserCollection();
 
         foreach ($userEmails as $userEmail) {
-            $result->add($userEmail->getUser());
+            $result->add($userEmail->user);
         }
 
         return $result;

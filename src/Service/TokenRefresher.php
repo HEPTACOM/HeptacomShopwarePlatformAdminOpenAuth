@@ -27,16 +27,16 @@ final class TokenRefresher implements TokenRefresherInterface
 
         $token = $this->userToken->getToken($clientId, $userId, $context);
 
-        if ($token instanceof UserTokenEntity && !empty($token->getRefreshToken())) {
-            if ($token->getExpiresAt() !== null) {
+        if ($token instanceof UserTokenEntity && !empty($token->refreshToken)) {
+            if ($token->expiresAt !== null) {
                 $now = \date_create();
-                $expirationDelta = $token->getExpiresAt()->getTimestamp() - $now->getTimestamp();
+                $expirationDelta = $token->expiresAt->getTimestamp() - $now->getTimestamp();
 
                 if ($expirationDelta > $secondsValid && $expirationDelta > 0) {
                     return (new TokenPairStruct())
-                        ->setAccessToken($token->getAccessToken())
-                        ->setExpiresAt($token->getExpiresAt())
-                        ->setRefreshToken($token->getRefreshToken());
+                        ->setAccessToken($token->accessToken)
+                        ->setExpiresAt($token->expiresAt)
+                        ->setRefreshToken($token->refreshToken);
                 }
             }
 
@@ -46,7 +46,7 @@ final class TokenRefresher implements TokenRefresherInterface
                 return null;
             }
 
-            $tokenPair = $client->refreshToken($token->getRefreshToken());
+            $tokenPair = $client->refreshToken($token->refreshToken);
             $this->userToken->setToken($userId, $clientId, $tokenPair, $context);
 
             return $tokenPair;

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Heptacom\AdminOpenAuth\Service;
 
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
-use Heptacom\AdminOpenAuth\Database\LoginEntity;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
@@ -24,10 +23,6 @@ class StateResolver
         );
         $login = $this->loginsRepository->search($criteria, $context)->first();
 
-        if ($login instanceof LoginEntity) {
-            return $login->getPayload();
-        }
-
-        return null;
+        return $login?->payload;
     }
 }

@@ -45,7 +45,7 @@ final class ClientLoader implements ClientLoaderInterface
         $this->updateClientConfig($client, $context);
 
         try {
-            return $this->clientFactory->create($client->getProvider() ?? '', $client->getConfig() ?? []);
+            return $this->clientFactory->create($client->provider ?? '', $client->config ?? []);
         } catch (FactorizeClientException $exception) {
             throw new LoadClientException($exception->getMessage(), $clientId, $exception);
         }
@@ -78,16 +78,15 @@ final class ClientLoader implements ClientLoaderInterface
 
     protected function updateClientConfig(ClientEntity $client, Context $context): void
     {
-        $clientProvider = $this->providers->getMatchingProvider($client->getProvider() ?? '');
-
-        $config = $client->getConfig() ?? [];
+        $clientProvider = $this->providers->getMatchingProvider($client->provider ?? '');
+        $config = $client->config ?? [];
 
         if (!$clientProvider instanceof ConfigurationRefresherClientProviderContract || !$clientProvider->configurationNeedsUpdate($config)) {
             return;
         }
-        $config = $clientProvider->refreshConfiguration($config);
 
-        $client->setConfig($config);
+        $config = $clientProvider->refreshConfiguration($config);
+        $client->config = $config;
 
         $this->clientsRepository->update([[
             'id' => $client->getId(),

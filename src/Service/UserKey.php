@@ -57,7 +57,7 @@ final class UserKey implements UserKeyInterface
         $result = new UserCollection();
 
         foreach ($userKeys as $userKey) {
-            $result->add($userKey->getUser());
+            $result->add($userKey->user);
         }
 
         return $result;
