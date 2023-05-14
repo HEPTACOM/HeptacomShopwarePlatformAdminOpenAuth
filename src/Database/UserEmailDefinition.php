@@ -16,7 +16,7 @@ use Shopware\Core\Framework\DataAbstractionLayer\Field\UpdatedAtField;
 use Shopware\Core\Framework\DataAbstractionLayer\FieldCollection;
 use Shopware\Core\System\User\UserDefinition;
 
-class UserEmailDefinition extends EntityDefinition
+final class UserEmailDefinition extends EntityDefinition
 {
     public const ENTITY_NAME = 'heptacom_admin_open_auth_user_email';
 

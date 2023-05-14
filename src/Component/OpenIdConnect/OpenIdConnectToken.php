@@ -6,7 +6,7 @@ namespace Heptacom\AdminOpenAuth\Component\OpenIdConnect;
 
 use Shopware\Core\Framework\Struct\Struct;
 
-class OpenIdConnectToken extends Struct
+final class OpenIdConnectToken extends Struct
 {
     protected ?string $access_token = null;
 

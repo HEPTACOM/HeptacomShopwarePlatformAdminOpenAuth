@@ -7,7 +7,7 @@ namespace Heptacom\AdminOpenAuth\Service\OpenAuth;
 use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
 use Shopware\Core\Framework\Api\OAuth\Client\ApiClient;
 
-class OneTimeTokenClientRepository implements ClientRepositoryInterface
+final class OneTimeTokenClientRepository implements ClientRepositoryInterface
 {
     public function __construct(private readonly ClientRepositoryInterface $decorated)
     {

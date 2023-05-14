@@ -15,7 +15,7 @@ use Shopware\Core\Framework\DataAbstractionLayer\EntityCollection;
  * @method UserEmailEntity|null first()
  * @method UserEmailEntity|null last()
  */
-class UserEmailCollection extends EntityCollection
+final class UserEmailCollection extends EntityCollection
 {
     protected function getExpectedClass(): string
     {

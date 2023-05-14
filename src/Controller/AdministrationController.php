@@ -42,7 +42,7 @@ use Symfony\Component\Routing\RouterInterface;
 /**
  * @RouteScope(scopes={"administration"})
  */
-class AdministrationController extends AbstractController
+final class AdministrationController extends AbstractController
 {
     public function __construct(
         private readonly OpenAuthenticationFlowInterface $flow,

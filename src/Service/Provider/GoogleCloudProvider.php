@@ -12,7 +12,7 @@ use Heptacom\OpenAuth\Client\Contract\ClientContract;
 use Heptacom\OpenAuth\ClientProvider\Contract\ClientProviderContract;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class GoogleCloudProvider extends ClientProviderContract
+final class GoogleCloudProvider extends ClientProviderContract
 {
     public const PROVIDER_NAME = 'google_cloud';
 

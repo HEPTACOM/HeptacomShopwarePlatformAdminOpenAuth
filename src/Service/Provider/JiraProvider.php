@@ -11,7 +11,7 @@ use Heptacom\OpenAuth\ClientProvider\Contract\ClientProviderContract;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class JiraProvider extends ClientProviderContract
+final class JiraProvider extends ClientProviderContract
 {
     public const PROVIDER_NAME = 'jira';
 

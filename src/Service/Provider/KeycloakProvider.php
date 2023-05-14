@@ -12,7 +12,7 @@ use Heptacom\OpenAuth\Client\Contract\ClientContract;
 use Heptacom\OpenAuth\ClientProvider\Contract\ClientProviderContract;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class KeycloakProvider extends ClientProviderContract
+final class KeycloakProvider extends ClientProviderContract
 {
     public const PROVIDER_NAME = 'keycloak';
 

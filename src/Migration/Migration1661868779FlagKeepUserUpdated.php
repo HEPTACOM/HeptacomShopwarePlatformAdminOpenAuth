@@ -7,7 +7,7 @@ namespace Heptacom\AdminOpenAuth\Migration;
 use Doctrine\DBAL\Connection;
 use Shopware\Core\Framework\Migration\MigrationStep;
 
-class Migration1661868779FlagKeepUserUpdated extends MigrationStep
+final class Migration1661868779FlagKeepUserUpdated extends MigrationStep
 {
     public function getCreationTimestamp(): int
     {

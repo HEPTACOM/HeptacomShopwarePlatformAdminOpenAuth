@@ -12,7 +12,7 @@ use Heptacom\OpenAuth\Struct\TokenPairStruct;
 use Heptacom\OpenAuth\Struct\UserStruct;
 use Psr\Http\Message\RequestInterface;
 
-class OpenIdConnectClient extends ClientContract
+final class OpenIdConnectClient extends ClientContract
 {
     private TokenPairFactoryContract $tokenPairFactory;
 

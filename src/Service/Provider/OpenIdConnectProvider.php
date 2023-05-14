@@ -12,7 +12,7 @@ use Heptacom\OpenAuth\Client\Contract\ClientContract;
 use Heptacom\OpenAuth\ClientProvider\Contract\ClientProviderContract;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class OpenIdConnectProvider extends ClientProviderContract
+final class OpenIdConnectProvider extends ClientProviderContract
 {
     public const PROVIDER_NAME = 'open_id_connect';
 

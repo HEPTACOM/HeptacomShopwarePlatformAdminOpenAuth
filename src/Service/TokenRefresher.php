@@ -13,7 +13,7 @@ use Heptacom\AdminOpenAuth\Exception\LoadClientException;
 use Heptacom\OpenAuth\Struct\TokenPairStruct;
 use Shopware\Core\Framework\Context;
 
-class TokenRefresher implements TokenRefresherInterface
+final class TokenRefresher implements TokenRefresherInterface
 {
     public function __construct(private readonly UserTokenInterface $userToken, private readonly ClientLoaderInterface $clientLoader, private readonly ClientFeatureCheckerInterface $clientFeatureChecker)
     {

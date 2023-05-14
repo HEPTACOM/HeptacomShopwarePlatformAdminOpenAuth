@@ -8,7 +8,7 @@ use Heptacom\AdminOpenAuth\Component\Provider\DefaultInjectingEntityRepositoryDe
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 
-class GoogleCloudClientEntityRepository extends DefaultInjectingEntityRepositoryDecorator
+final class GoogleCloudClientEntityRepository extends DefaultInjectingEntityRepositoryDecorator
 {
     protected function injectDefaults(array $payload, Context $context): array
     {

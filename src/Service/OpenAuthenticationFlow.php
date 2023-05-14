@@ -23,7 +23,7 @@ use Shopware\Core\Framework\Uuid\Uuid;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 
-class OpenAuthenticationFlow implements OpenAuthenticationFlowInterface
+final class OpenAuthenticationFlow implements OpenAuthenticationFlowInterface
 {
     public function __construct(
         private readonly LoginInterface $login,

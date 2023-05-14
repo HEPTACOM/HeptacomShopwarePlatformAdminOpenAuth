@@ -8,7 +8,7 @@ use Shopware\Core\Framework\DataAbstractionLayer\Entity;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityIdTrait;
 use Shopware\Core\System\User\UserEntity;
 
-class UserEmailEntity extends Entity
+final class UserEmailEntity extends Entity
 {
     use EntityIdTrait;
 

@@ -15,7 +15,7 @@ use Shopware\Core\Framework\DataAbstractionLayer\EntityCollection;
  * @method LoginEntity|null first()
  * @method LoginEntity|null last()
  */
-class LoginCollection extends EntityCollection
+final class LoginCollection extends EntityCollection
 {
     protected function getExpectedClass(): string
     {

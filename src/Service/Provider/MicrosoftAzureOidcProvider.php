@@ -12,7 +12,7 @@ use Heptacom\OpenAuth\Client\Contract\ClientContract;
 use Heptacom\OpenAuth\ClientProvider\Contract\ClientProviderContract;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class MicrosoftAzureOidcProvider extends ClientProviderContract
+final class MicrosoftAzureOidcProvider extends ClientProviderContract
 {
     public const PROVIDER_NAME = 'microsoft_azure_oidc';
 

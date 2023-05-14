@@ -8,7 +8,7 @@ use Shopware\Core\Framework\Api\Acl\Role\AclRoleCollection;
 use Shopware\Core\Framework\DataAbstractionLayer\Entity;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityIdTrait;
 
-class ClientEntity extends Entity
+final class ClientEntity extends Entity
 {
     use EntityIdTrait;
 

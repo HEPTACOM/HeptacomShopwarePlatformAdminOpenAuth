@@ -13,7 +13,7 @@ use Heptacom\OpenAuth\Struct\UserStruct;
 use Mrjoops\OAuth2\Client\Provider\JiraResourceOwner;
 use Psr\Http\Message\RequestInterface;
 
-class JiraClient extends ClientContract
+final class JiraClient extends ClientContract
 {
     private TokenPairFactoryContract $tokenPairFactory;
 

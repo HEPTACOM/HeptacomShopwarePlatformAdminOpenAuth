@@ -13,7 +13,7 @@ use Heptacom\OpenAuth\Client\Contract\ClientContract;
 use Heptacom\OpenAuth\ClientProvider\Contract\ClientProviderContract;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class OktaProvider extends ClientProviderContract
+final class OktaProvider extends ClientProviderContract
 {
     public const PROVIDER_NAME = 'okta';
 

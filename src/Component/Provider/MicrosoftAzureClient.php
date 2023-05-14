@@ -15,7 +15,7 @@ use TheNetworg\OAuth2\Client\Provider\Azure;
 /**
  * @deprecated tag:v5.0.0 will be replaced by microsoft_azure_oidc provider
  */
-class MicrosoftAzureClient extends ClientContract
+final class MicrosoftAzureClient extends ClientContract
 {
     private TokenPairFactoryContract $tokenPairFactory;
 

@@ -27,7 +27,7 @@ use Shopware\Core\Framework\Uuid\Uuid;
 use Shopware\Core\System\Language\LanguageEntity;
 use Shopware\Core\System\User\UserDefinition;
 
-class UserResolver implements UserResolverInterface
+final class UserResolver implements UserResolverInterface
 {
     public function __construct(
         private readonly EntityRepository $userRepository,

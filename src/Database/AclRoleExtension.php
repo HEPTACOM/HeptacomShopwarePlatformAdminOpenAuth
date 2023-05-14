@@ -11,7 +11,7 @@ use Shopware\Core\Framework\DataAbstractionLayer\Field\Flag\CascadeDelete;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\ManyToManyAssociationField;
 use Shopware\Core\Framework\DataAbstractionLayer\FieldCollection;
 
-class AclRoleExtension extends EntityExtension
+final class AclRoleExtension extends EntityExtension
 {
     public function getDefinitionClass(): string
     {

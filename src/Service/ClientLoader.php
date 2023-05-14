@@ -20,7 +20,7 @@ use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\Uuid\Uuid;
 
-class ClientLoader implements ClientLoaderInterface
+final class ClientLoader implements ClientLoaderInterface
 {
     public function __construct(
         private readonly ClientProviderRepositoryContract $providers,

@@ -6,7 +6,7 @@ namespace Heptacom\AdminOpenAuth\Component\OpenAuth;
 
 use Mrjoops\OAuth2\Client\Provider\Jira;
 
-class Atlassian extends Jira
+final class Atlassian extends Jira
 {
     /**
      * @var string[]

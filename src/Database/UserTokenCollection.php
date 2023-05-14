@@ -15,7 +15,7 @@ use Shopware\Core\Framework\DataAbstractionLayer\EntityCollection;
  * @method UserTokenEntity|null first()
  * @method UserTokenEntity|null last()
  */
-class UserTokenCollection extends EntityCollection
+final class UserTokenCollection extends EntityCollection
 {
     protected function getExpectedClass(): string
     {

@@ -11,7 +11,7 @@ use Shopware\Core\Framework\Parameter\AdditionalBundleParameters;
 use Shopware\Core\Framework\Plugin;
 use Shopware\Core\Framework\Plugin\Context\UninstallContext;
 
-class KskHeptacomAdminOpenAuth extends Plugin
+final class KskHeptacomAdminOpenAuth extends Plugin
 {
     private static ?ClassLoader $dependencyClassLoader = null;
 

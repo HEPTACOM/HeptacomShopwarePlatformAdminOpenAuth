@@ -8,7 +8,7 @@ use OneLogin\Saml2\Constants;
 use OneLogin\Saml2\IdPMetadataParser;
 use Shopware\Core\Framework\Struct\Struct;
 
-class Saml2ServiceProviderConfiguration extends Struct
+final class Saml2ServiceProviderConfiguration extends Struct
 {
     /**
      * @var string The IdP settings will be fetched from the given metadata document (e.g. https://app.onelogin.com/saml/metadata/123456)

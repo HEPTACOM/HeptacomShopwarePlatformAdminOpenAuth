@@ -17,7 +17,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Shopware\Core\Framework\Api\OAuth\User\User;
 use Shopware\Core\Framework\Context;
 
-class OneTimeTokenGrant extends PasswordGrant
+final class OneTimeTokenGrant extends PasswordGrant
 {
     public function __construct(
         UserRepositoryInterface $userRepository,

@@ -14,7 +14,7 @@ use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
 use Shopware\Core\Framework\Uuid\Uuid;
 
-class UserToken implements UserTokenInterface
+final class UserToken implements UserTokenInterface
 {
     public function __construct(private readonly EntityRepository $userTokensRepository)
     {

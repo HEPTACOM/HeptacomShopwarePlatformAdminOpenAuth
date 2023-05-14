@@ -13,7 +13,7 @@ use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
 use Shopware\Core\Framework\Uuid\Uuid;
 
-class Login implements LoginInterface
+final class Login implements LoginInterface
 {
     public function __construct(private readonly EntityRepository $loginsRepository)
     {

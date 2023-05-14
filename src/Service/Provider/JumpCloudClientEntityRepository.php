@@ -7,7 +7,7 @@ namespace Heptacom\AdminOpenAuth\Service\Provider;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 
-class JumpCloudClientEntityRepository extends Saml2ClientEntityRepository
+final class JumpCloudClientEntityRepository extends Saml2ClientEntityRepository
 {
     protected function injectDefaults(array $payload, Context $context): array
     {

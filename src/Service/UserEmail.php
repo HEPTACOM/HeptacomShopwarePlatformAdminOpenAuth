@@ -14,7 +14,7 @@ use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
 use Shopware\Core\Framework\Uuid\Uuid;
 use Shopware\Core\System\User\UserCollection;
 
-class UserEmail implements UserEmailInterface
+final class UserEmail implements UserEmailInterface
 {
     public function __construct(private readonly EntityRepository $userEmailsRepository)
     {
