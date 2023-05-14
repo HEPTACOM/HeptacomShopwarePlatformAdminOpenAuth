@@ -7,13 +7,11 @@ namespace Heptacom\AdminOpenAuth\Controller;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Heptacom\AdminOpenAuth\Contract\ClientLoaderInterface;
 use Heptacom\AdminOpenAuth\Database\ClientDefinition;
-use Heptacom\OpenAuth\ClientProvider\Contract\ClientProviderRepositoryContract;
 use Shopware\Core\Framework\Api\Response\ResponseFactoryInterface;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\Routing\Annotation\RouteScope;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -26,20 +24,6 @@ final class AdministrationController extends AbstractController
     public function __construct(
         private readonly ClientLoaderInterface $clientLoader,
     ) {
-    }
-
-    /**
-     * @Route(
-     *     methods={"GET"},
-     *     name="api.heptacom.admin_open_auth.provider.list",
-     *     path="/api/_action/heptacom_admin_open_auth_provider/list"
-     * )
-     */
-    public function providerList(ClientProviderRepositoryContract $providerRepository): Response
-    {
-        return new JsonResponse([
-            'data' => $providerRepository->getProviderKeys(),
-        ]);
     }
 
     /**
