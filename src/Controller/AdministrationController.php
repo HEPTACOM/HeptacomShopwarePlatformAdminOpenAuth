@@ -23,7 +23,6 @@ use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
 use Shopware\Core\Framework\Routing\Annotation\RouteScope;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -43,22 +42,6 @@ final class AdministrationController extends AbstractController
         private readonly RouterInterface $router,
         private readonly RedirectBehaviourFactoryInterface $redirectBehaviourFactory,
     ) {
-    }
-
-    /**
-     * @Route(
-     *     methods={"GET"},
-     *     name="administration.heptacom.admin_open_auth.remote_login",
-     *     path="/admin/open-auth/{clientId}/remote",
-     *     defaults={"auth_required" = false}
-     * )
-     */
-    public function remoteLogin(string $clientId, Context $context): Response
-    {
-        return new RedirectResponse(
-            $this->flow->getRedirectUrl($clientId, $context),
-            Response::HTTP_TEMPORARY_REDIRECT
-        );
     }
 
     /**
