@@ -47,21 +47,6 @@ final class AdministrationController extends AbstractController
     /**
      * @Route(
      *     methods={"GET"},
-     *     name="administration.heptacom.admin_open_auth.routes",
-     *     path="/admin/open-auth/routes",
-     *     defaults={"auth_required" = false}
-     * )
-     */
-    public function clientRoutes(Context $context): JsonResponse
-    {
-        return new JsonResponse([
-            'clients' => $this->flow->getLoginRoutes($context),
-        ]);
-    }
-
-    /**
-     * @Route(
-     *     methods={"GET"},
      *     name="api.heptacom.admin_open_auth.client.list",
      *     path="/api/_admin/open-auth/client/list"
      * )
