@@ -166,7 +166,7 @@ final class AdministrationController extends AbstractController
      */
     public function remoteLogin(string $clientId, Context $context): Response
     {
-        return RedirectResponse::create(
+        return new RedirectResponse(
             $this->flow->getRedirectUrl($clientId, $context),
             Response::HTTP_TEMPORARY_REDIRECT
         );
@@ -182,7 +182,9 @@ final class AdministrationController extends AbstractController
      */
     public function clientRoutes(Context $context): JsonResponse
     {
-        return JsonResponse::create(['clients' => $this->flow->getLoginRoutes($context)]);
+        return new JsonResponse([
+            'clients' => $this->flow->getLoginRoutes($context),
+        ]);
     }
 
     /**
@@ -210,7 +212,7 @@ final class AdministrationController extends AbstractController
                 'connected' => $client->getUserKeys()->count() > 0,
             ]);
 
-        return JsonResponse::create([
+        return new JsonResponse([
             'data' => \array_values($clients),
         ]);
     }
@@ -228,7 +230,7 @@ final class AdministrationController extends AbstractController
         /** @var AdminApiSource $adminApiSource */
         $adminApiSource = $context->getSource();
 
-        return JsonResponse::create([
+        return new JsonResponse([
             'target' => $this->flow->getRedirectUrlToConnect(
                 $clientId,
                 $adminApiSource->getUserId(),
@@ -252,7 +254,7 @@ final class AdministrationController extends AbstractController
 
         $this->flow->disconnectClient($clientId, $adminApiSource->getUserId(), $this->getSystemContext($context));
 
-        return JsonResponse::create([]);
+        return new JsonResponse();
     }
 
     /**
@@ -271,7 +273,7 @@ final class AdministrationController extends AbstractController
 
         $state = $this->confirmStateFactory->create($clientId, $adminApiSource->getUserId(), $systemContext);
 
-        return JsonResponse::create([
+        return new JsonResponse([
             'target' => $this->loginUrlGenerator->generate(
                 $clientId,
                 $state,
@@ -292,7 +294,7 @@ final class AdministrationController extends AbstractController
     {
         $clientId = $request->get('client_id');
 
-        return JsonResponse::create([
+        return new JsonResponse([
             'target' => $this->router->generate('administration.heptacom.admin_open_auth.login', [
                 'clientId' => $clientId,
             ], UrlGeneratorInterface::ABSOLUTE_URL),
@@ -319,7 +321,7 @@ final class AdministrationController extends AbstractController
             $metadataUrl = null;
         }
 
-        return JsonResponse::create([
+        return new JsonResponse([
             'target' => $metadataUrl,
         ]);
     }
@@ -333,7 +335,7 @@ final class AdministrationController extends AbstractController
      */
     public function providerList(ClientProviderRepositoryContract $providerRepository): Response
     {
-        return JsonResponse::create([
+        return new JsonResponse([
             'data' => $providerRepository->getProviderKeys(),
         ]);
     }
