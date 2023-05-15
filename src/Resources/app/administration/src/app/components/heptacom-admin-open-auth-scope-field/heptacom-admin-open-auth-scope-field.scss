@@ -5,4 +5,9 @@
             min-height: auto;
         }
     }
+
+    .sw-confirm-field .sw-confirm-field__button-list {
+        /** Fixes button offset */
+        top: 68%;
+    }
 }

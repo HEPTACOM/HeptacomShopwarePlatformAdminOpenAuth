@@ -11,7 +11,7 @@ Module.register('heptacom-admin-open-auth-client', {
     title: 'heptacom-admin-open-auth-client.module.title',
     description: 'heptacom-admin-open-auth-client.module.description',
     color: '#FFC2A2',
-    icon: 'default-action-log-in',
+    icon: 'regular-sign-in',
 
     routes: {
         create: {
@@ -50,7 +50,7 @@ Module.register('heptacom-admin-open-auth-client', {
     settingsItem: [{
         to: 'heptacom.admin.open.auth.client.settings',
         group: 'system',
-        icon: 'default-action-log-in',
+        icon: 'regular-sign-in',
         privilege: 'heptacom_admin_open_auth_client.viewer'
     }]
 });

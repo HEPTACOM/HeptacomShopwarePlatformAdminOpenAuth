@@ -19,3 +19,7 @@
 
 # Ignore build folder
 /.build
+
+# Ignore non-prod-files
+*.js.map
+*.js.license.txt

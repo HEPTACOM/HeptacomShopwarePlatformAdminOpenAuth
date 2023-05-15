@@ -28,14 +28,14 @@
                                             <sw-button
                                                 v-if="client.connected"
                                                 @click="revokeHeptacomAdminOpenAuthUserKey(client.id)"
-                                                icon="default-basic-x-line"
+                                                icon="regular-minus"
                                             >
                                                 {{ $t('sw-profile-index.heptacomAdminOpenAuth.userKeys.actions.revoke') }}
                                             </sw-button>
                                             <sw-button
                                                 v-else-if="!client.connected"
                                                 @click="redirectToLoginMask(client.id)"
-                                                icon="default-basic-x-line"
+                                                icon="regular-plus"
                                             >
                                                 {{ $t('sw-profile-index.heptacomAdminOpenAuth.userKeys.actions.connect') }}
                                             </sw-button>

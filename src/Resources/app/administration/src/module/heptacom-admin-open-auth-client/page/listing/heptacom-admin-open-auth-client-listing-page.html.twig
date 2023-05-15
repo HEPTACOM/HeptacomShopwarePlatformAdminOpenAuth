@@ -44,12 +44,12 @@
                             <template #column-active="{ item }">
                                 <sw-icon
                                     :color="getLoginColor(item)"
-                                    name="default-action-log-in"
+                                    name="regular-sign-in"
                                     small
                                 ></sw-icon>
                                 <sw-icon
                                     :color="getConnectColor(item)"
-                                    name="default-action-share"
+                                    name="regular-share"
                                     small
                                 ></sw-icon>
                             </template>
@@ -94,7 +94,7 @@
                             <sw-sidebar-item
                                 :title="$tc('heptacom-admin-open-auth-client.pages.listing.actions.refresh')"
                                 @click="onRefresh"
-                                icon="default-arrow-360-left"
+                                icon="regular-undo"
                             ></sw-sidebar-item>
                         {% endblock %}
                     </sw-sidebar>
