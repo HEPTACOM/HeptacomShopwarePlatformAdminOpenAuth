@@ -70,6 +70,8 @@ class Saml2ServiceProvider extends ClientProviderContract implements Configurati
             ->setAllowedTypes('attributeMapping', 'array')
             ->setDeprecated(
                 'redirectUri',
+                'heptacom/shopware-platform-admin-open-auth',
+                '*',
                 'Use route api.heptacom.admin_open_auth.provider.redirect-url instead to live generate redirectUri'
             );
     }

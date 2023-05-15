@@ -43,7 +43,12 @@ final class JiraProvider extends ClientProviderContract
             ])->setAllowedTypes('clientId', 'string')
             ->setAllowedTypes('clientSecret', 'string')
             ->setAllowedTypes('scopes', 'array')
-            ->setDeprecated('redirectUri', 'Use route api.heptacom.admin_open_auth.provider.redirect-url instead to live generate redirectUri')
+            ->setDeprecated(
+                'redirectUri',
+                'heptacom/shopware-platform-admin-open-auth',
+                '*',
+                'Use route api.heptacom.admin_open_auth.provider.redirect-url instead to live generate redirectUri'
+            )
             ->addNormalizer('scopes', static function (Options $options, $value) {
                 $scopes = (array) $value;
 
