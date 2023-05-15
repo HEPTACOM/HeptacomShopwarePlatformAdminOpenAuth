@@ -42,7 +42,7 @@ final class TokenRefresher implements TokenRefresherInterface
 
             try {
                 $client = $this->clientLoader->load($clientId, $context);
-            } catch (LoadClientException $ignored) {
+            } catch (LoadClientException) {
                 return null;
             }
 
