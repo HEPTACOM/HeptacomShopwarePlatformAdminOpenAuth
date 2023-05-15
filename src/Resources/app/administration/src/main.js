@@ -8,7 +8,6 @@ import './provider/google_cloud/heptacom-admin-open-auth-client-edit-page';
 import './provider/jira/heptacom-admin-open-auth-client-edit-page';
 import './provider/jumpcloud/heptacom-admin-open-auth-client-edit-page';
 import './provider/keycloak/heptacom-admin-open-auth-client-edit-page';
-import './provider/microsoft_azure/heptacom-admin-open-auth-client-edit-page';
 import './provider/microsoft_azure_oidc/heptacom-admin-open-auth-client-edit-page';
 import './provider/okta/heptacom-admin-open-auth-client-edit-page';
 import './provider/onelogin/heptacom-admin-open-auth-client-edit-page';

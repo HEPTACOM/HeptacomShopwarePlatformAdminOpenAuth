@@ -104,11 +104,6 @@ services:
         arguments:
             - '@Heptacom\AdminOpenAuth\Service\Provider\KeycloakClientEntityWriter.inner'
 
-    Heptacom\AdminOpenAuth\Service\Provider\MicrosoftAzureClientEntityWriter:
-        decorates: Shopware\Core\Framework\DataAbstractionLayer\Write\EntityWriter
-        arguments:
-            - '@Heptacom\AdminOpenAuth\Service\Provider\MicrosoftAzureClientEntityWriter.inner'
-
     Heptacom\AdminOpenAuth\Service\Provider\MicrosoftAzureOidcClientEntityWriter:
         decorates: Shopware\Core\Framework\DataAbstractionLayer\Write\EntityWriter
         arguments:
