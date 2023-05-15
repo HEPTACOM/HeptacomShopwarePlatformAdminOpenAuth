@@ -34,6 +34,11 @@ final class KskHeptacomAdminOpenAuth extends Plugin
         return $result;
     }
 
+    public function executeComposerCommands(): bool
+    {
+        return true;
+    }
+
     public function uninstall(UninstallContext $uninstallContext): void
     {
         parent::uninstall($uninstallContext);
