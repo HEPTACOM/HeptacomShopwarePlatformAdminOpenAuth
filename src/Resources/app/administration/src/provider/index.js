@@ -1,0 +1,12 @@
+import './cidaas/components/provider-settings';
+import './google_cloud/components/provider-settings';
+import './jira/components/provider-settings';
+import './jumpcloud/components/provider-settings';
+import './jumpcloud/overrides/heptacom-admin-open-auth-client-edit-page';
+import './keycloak/components/provider-settings';
+import './microsoft_azure_oidc/components/provider-settings';
+import './okta/components/provider-settings';
+import './onelogin/components/provider-settings';
+import './open_id_connect/components/provider-settings';
+import './saml2/components/provider-settings';
+import './saml2/overrides/heptacom-admin-open-auth-client-edit-page';

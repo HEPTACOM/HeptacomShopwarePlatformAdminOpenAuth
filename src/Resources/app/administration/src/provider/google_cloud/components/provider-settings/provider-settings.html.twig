@@ -1,0 +1,18 @@
+{% block heptacom_admin_open_auth_client_google_cloud_settings %}
+    <sw-card position-identifier="heptacom-admin-open-auth-provider-google-cloud-settings">
+        <sw-text-field
+            required
+            :label="$t('heptacomAdminOpenAuthClient.providerFields.google_cloud.clientId')"
+            v-model="item.config.clientId"
+        ></sw-text-field>
+        <sw-password-field
+            required
+            :label="$t('heptacomAdminOpenAuthClient.providerFields.google_cloud.clientSecret')"
+            v-model="item.config.clientSecret"
+        ></sw-password-field>
+        <heptacom-admin-open-auth-scope-field
+            :label="$t('heptacomAdminOpenAuthClient.providerFields.google_cloud.additionalScopes')"
+            v-model="item.config.scopes"
+        ></heptacom-admin-open-auth-scope-field>
+    </sw-card>
+{% endblock %}

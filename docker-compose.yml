@@ -2,7 +2,7 @@ version: "3"
 
 services:
   shopware:
-    image: dockware/dev:6.5.0.0-rc1
+    image: dockware/dev:6.5.0.0
     ports:
       - "8080:80"
       - "3310:3306"
@@ -10,7 +10,7 @@ services:
       - "9999:9999"
       - "9998:9998"
     volumes:
-        - "./src/custom/plugins/KskHeptacomAdminOpenAuth:/var/www/html/custom/plugins/KskHeptacomAdminOpenAuth"
+        - ".:/var/www/html/custom/plugins/KskHeptacomAdminOpenAuth"
         # exclude by using anonymous volumes
         - "/var/www/html/custom/plugins/KskHeptacomAdminOpenAuth/.git/"
         - "/var/www/html/custom/plugins/KskHeptacomAdminOpenAuth/vendor/"

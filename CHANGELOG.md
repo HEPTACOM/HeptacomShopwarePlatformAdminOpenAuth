@@ -1,5 +1,9 @@
 # Unreleased
 
+**Changed**
+
+* Changed provider settings to have it's own component instead of overwriting `heptacom-admin-open-auth-client-edit-page`
+
 # 4.2.1
 
 * Fixed a bug causing the role assignment to fail and throw an exception

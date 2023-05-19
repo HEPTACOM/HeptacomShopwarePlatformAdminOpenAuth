@@ -1,0 +1,25 @@
+{% block heptacom_admin_open_auth_client_edit_page_content_base_settings_inner_store_user_token %}
+    <template v-if="!item || item.provider !== 'jumpcloud'">
+        {% parent %}
+    </template>
+{% endblock %}
+
+{%  block heptacom_admin_open_auth_client_edit_page_content_base_settings_inner %}
+    {% parent %}
+
+    <template v-if="item && item.provider === 'jumpcloud'">
+        <sw-textarea-field
+            :disabled="true"
+            :label="$t('heptacomAdminOpenAuthClient.providerFields.saml2.serviceProviderCertificate')"
+            :help-text="$t('heptacomAdminOpenAuthClient.providerFields.saml2.serviceProviderCertificate-help')"
+            v-model="item.config.serviceProviderCertificate"
+        ></sw-textarea-field>
+        <sw-textarea-field
+            :disabled="true"
+            :label="$t('heptacomAdminOpenAuthClient.providerFields.saml2.serviceProviderPublicKey')"
+            :help-text="$t('heptacomAdminOpenAuthClient.providerFields.saml2.serviceProviderPublicKey-help')"
+            v-model="item.config.serviceProviderPublicKey"
+        ></sw-textarea-field>
+    </template>
+{% endblock %}
+

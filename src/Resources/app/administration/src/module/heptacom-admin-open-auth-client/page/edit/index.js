@@ -46,7 +46,20 @@ Component.register('heptacom-admin-open-auth-client-edit-page', {
 
         clientRepository() {
             return this.repositoryFactory.create('heptacom_admin_open_auth_client');
-        }
+        },
+
+        providerSettingsComponent() {
+            let provider = (this.item && this.item.provider ? this.item.provider : '')
+                .replace(/_/g, '-');
+
+            return `heptacom-admin-open-auth-provider-${provider}-settings`;
+        },
+
+        providerSettingsProps() {
+            return {
+                item: this.item,
+            };
+        },
     },
 
     methods: {

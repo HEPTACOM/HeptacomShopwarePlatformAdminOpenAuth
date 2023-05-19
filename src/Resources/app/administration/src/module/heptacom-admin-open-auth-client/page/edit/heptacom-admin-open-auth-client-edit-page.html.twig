@@ -65,6 +65,7 @@
                     {% block heptacom_admin_open_auth_client_edit_page_content_base_settings %}
                         <sw-card
                             :isLoading="isLoading"
+                            position-identifier="heptacom-admin-open-auth-client-edit-page-base-settings"
                         >
                             <template v-if="item">
                                 {% block heptacom_admin_open_auth_client_edit_page_content_base_settings_inner %}
@@ -149,7 +150,13 @@
                         </sw-card>
                     {% endblock %}
 
-                    {% block heptacom_admin_open_auth_client_edit_page_content_provider_settings %}{% endblock %}
+                    {% block heptacom_admin_open_auth_client_edit_page_content_provider_settings %}
+                        <component
+                            v-if="item && item.provider"
+                            :is="providerSettingsComponent"
+                            v-bind="providerSettingsProps"
+                        ></component>
+                    {% endblock %}
                 </sw-card-view>
 
                 {% block heptacom_admin_open_auth_client_edit_page_content_modal_delete %}
