@@ -61,6 +61,11 @@ final class Saml2ServiceProviderConfiguration extends Struct
     protected string $serviceProviderPrivateKey = '';
 
     /**
+     * @var string[] allowed authn contexts (e.g. Password, MultiFactor, ...)
+     */
+    protected array $requestedAuthnContext = [];
+
+    /**
      * @var array Mapping for attributes to user properties
      */
     protected array $attributeMapping = [];
@@ -101,6 +106,7 @@ final class Saml2ServiceProviderConfiguration extends Struct
                 'authnRequestsSigned' => true,
                 'rejectUnsolicitedResponsesWithInResponseTo' => true,
                 'relaxDestinationValidation' => false,
+                'requestedAuthnContext' => count($this->requestedAuthnContext) > 0 ? $this->requestedAuthnContext : [Constants::AC_PASSWORD_PROTECTED],
                 'signMetadata' => true,
                 'wantAssertionsSigned' => true,
                 'wantXMLValidation' => true,
@@ -229,6 +235,21 @@ final class Saml2ServiceProviderConfiguration extends Struct
     public function setServiceProviderPrivateKey(string $serviceProviderPrivateKey): Saml2ServiceProviderConfiguration
     {
         $this->serviceProviderPrivateKey = $serviceProviderPrivateKey;
+
+        return $this;
+    }
+
+    public function getRequestedAuthnContext(): array
+    {
+        return $this->requestedAuthnContext;
+    }
+
+    /**
+     * @param string[] $requestedAuthnContext
+     */
+    public function setRequestedAuthnContext(array $requestedAuthnContext): Saml2ServiceProviderConfiguration
+    {
+        $this->requestedAuthnContext = $requestedAuthnContext;
 
         return $this;
     }

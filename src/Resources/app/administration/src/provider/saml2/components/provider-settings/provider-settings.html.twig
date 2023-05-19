@@ -43,6 +43,20 @@
             </sw-card>
         {% endblock %}
 
+        {% block heptacom_admin_open_auth_provider_saml2_settings_security %}
+            <sw-card
+                :title="$t('heptacomAdminOpenAuthClient.providerFields.saml2.security.cardTitle')"
+                position-identifier="heptacom-admin-open-auth-provider-saml2-settings-security"
+            >
+                <sw-multi-select :label="$t('heptacomAdminOpenAuthClient.providerFields.saml2.security.requestedAuthnContexts')"
+                                 :options="availableAuthnContexts"
+                                 placeholder="PasswordProtectedTransport" {# Default from SAML library #}
+                                 v-model="item.config.requestedAuthnContext"
+                >
+                </sw-multi-select>
+            </sw-card>
+        {% endblock %}
+
         {% block heptacom_admin_open_auth_provider_saml2_settings_attribute_mapping %}
             <sw-card
                 :title="$t('heptacomAdminOpenAuthClient.providerFields.saml2.attributeMapping.cardTitle')"

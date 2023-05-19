@@ -21,6 +21,18 @@ Component.register('heptacom-admin-open-auth-provider-saml2-settings', {
                 'timezone',
                 'locale'
             ],
+            availableAuthnContexts: [
+                'urn:oasis:names:tc:SAML:2.0:ac:classes:unspecified',
+                'urn:oasis:names:tc:SAML:2.0:ac:classes:Kerberos',
+                'urn:oasis:names:tc:SAML:2.0:ac:classes:Password',
+                'urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport',
+                'urn:oasis:names:tc:SAML:2.0:ac:classes:Smartcard',
+                'urn:oasis:names:tc:SAML:2.0:ac:classes:SmartcardPKI',
+                'urn:oasis:names:tc:SAML:2.0:ac:classes:TLSClient',
+                'urn:oasis:names:tc:SAML:2.0:ac:classes:TimeSyncToken',
+                'urn:oasis:names:tc:SAML:2.0:ac:classes:X509',
+                'urn:federation:authentication:windows',
+            ].map(context => ({ value: context, label: context.startsWith('urn:oasis:names:tc:SAML:2.0:ac:classes:') ? context.substring('urn:oasis:names:tc:SAML:2.0:ac:classes:'.length) : context})),
             attributeMappingTemplates: {
                 friendlyNames: {
                     firstName: 'givenName',

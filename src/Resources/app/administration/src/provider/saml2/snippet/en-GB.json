@@ -22,6 +22,10 @@
                 "identityProviderEntityId": "Entity ID",
                 "identityProviderSsoUrl":  "Login URL",
                 "identityProviderCertificate":  "Certificate (PEM)",
+                "security": {
+                    "cardTitle": "Security",
+                    "requestedAuthnContexts": "Allowed authentication methods"
+                },
                 "attributeMapping": {
                     "cardTitle": "Attribute Mapping",
                     "templateSelect": "Template",

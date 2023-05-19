@@ -75,6 +75,6 @@ final class Login implements LoginInterface
         $logins = $this->loginsRepository->search($criteria, $context)->getEntities();
         $first = $logins->first();
 
-        return $first === null ? null : $first->getUserId();
+        return $first === null ? null : $first->userId;
     }
 }

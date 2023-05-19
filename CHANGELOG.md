@@ -1,5 +1,9 @@
 # Unreleased
 
+**Added**
+
+* Added configuration option `requestedAuthnContext` to SAML2 provider
+
 **Changed**
 
 * Changed provider settings to have it's own component instead of overwriting `heptacom-admin-open-auth-client-edit-page`

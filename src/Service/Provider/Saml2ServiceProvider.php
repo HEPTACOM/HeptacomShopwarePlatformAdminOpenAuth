@@ -41,6 +41,7 @@ class Saml2ServiceProvider extends ClientProviderContract implements Configurati
                 'serviceProviderCertificateExpiresAt',
                 'serviceProviderPrivateKey',
                 'serviceProviderPublicKey',
+                'requestedAuthnContext',
                 'attributeMapping',
                 // TODO remove in v5
                 'redirectUri',
@@ -55,6 +56,7 @@ class Saml2ServiceProvider extends ClientProviderContract implements Configurati
                 'serviceProviderPrivateKey',
                 'serviceProviderPublicKey',
             ])->setDefaults([
+                'requestedAuthnContext' => [],
                 'attributeMapping' => [],
                 'redirectUri' => null,
             ])
@@ -67,6 +69,7 @@ class Saml2ServiceProvider extends ClientProviderContract implements Configurati
             ->setAllowedTypes('serviceProviderCertificateExpiresAt', 'string')
             ->setAllowedTypes('serviceProviderPrivateKey', 'string')
             ->setAllowedTypes('serviceProviderPublicKey', 'string')
+            ->setAllowedTypes('requestedAuthnContext', 'array')
             ->setAllowedTypes('attributeMapping', 'array')
             ->setDeprecated(
                 'redirectUri',
