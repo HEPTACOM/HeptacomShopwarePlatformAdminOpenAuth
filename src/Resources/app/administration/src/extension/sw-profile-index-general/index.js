@@ -7,10 +7,12 @@ Component.override('sw-profile-index-general', {
 
     inject: [
         'repositoryFactory',
+        'systemConfigApiService',
     ],
 
     data() {
         return {
+            denyPasswordLogin: false,
             heptacomAdminOpenAuthLoading: true,
             heptacomAdminOpenAuthClients: [],
         }
@@ -37,6 +39,12 @@ Component.override('sw-profile-index-general', {
                 this.loadHeptacomAdminOpenAuth().then()
             },
         },
+    },
+
+    created() {
+        this.systemConfigApiService.getValues('KskHeptacomAdminOpenAuth.config').then((response) => {
+            this.denyPasswordLogin = response['KskHeptacomAdminOpenAuth.config.denyPasswordLogin'];
+        });
     },
 
     methods: {

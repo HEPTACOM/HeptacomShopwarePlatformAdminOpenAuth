@@ -1,5 +1,7 @@
 {% block sw_profile_index_general_password %}
-    {% parent %}
+    <template v-if="!denyPasswordLogin">
+        {% parent %}
+    </template>
 
     {% block sw_profile_index_admin_open_auth %}
         <sw-card
