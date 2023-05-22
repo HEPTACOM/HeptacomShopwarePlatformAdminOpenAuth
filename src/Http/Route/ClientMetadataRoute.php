@@ -39,9 +39,18 @@ final class ClientMetadataRoute extends AbstractController
                 throw new BadRequestException();
             }
 
+            $fileType = $clientProvider->getMetadataType();
+            $fileExtension = match ($fileType) {
+                'application/json' => '.json',
+                'application/xml' => '.xml',
+                default => '',
+            };
+            $fileName = 'metadata_' . $clientId . $fileExtension;
+
             $response = new Response();
             $response->headers->add([
-                'Content-Type' => $clientProvider->getMetadataType(),
+                'Content-Type' => $fileType,
+                'Content-Disposition' => 'attachment; filename="' . $fileName . '"'
             ]);
             $response->setContent($clientProvider->getMetadata());
 

@@ -2,6 +2,7 @@
 
 **Added**
 
+* Added download metadata button to `heptacom-admin-open-auth-client-edit-page` component
 * Added configuration option `requestedAuthnContext` to SAML2 provider
 
 **Changed**

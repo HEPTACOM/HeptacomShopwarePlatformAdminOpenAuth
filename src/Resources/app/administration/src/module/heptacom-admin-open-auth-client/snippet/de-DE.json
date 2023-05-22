@@ -36,7 +36,8 @@
                     "defaultAclRoles": "Rollen für neue Benutzer",
                     "keepUserUpdated": "Benutzer automatisch aktualisieren",
                     "redirectUri": "Rücksende-URL",
-                    "metadataUri": "Metadaten-URL"
+                    "metadataUri": "Metadaten-URL",
+                    "downloadMetadata": "Metadaten-Datei herunterladen"
                 },
                 "modals": {
                     "delete": {

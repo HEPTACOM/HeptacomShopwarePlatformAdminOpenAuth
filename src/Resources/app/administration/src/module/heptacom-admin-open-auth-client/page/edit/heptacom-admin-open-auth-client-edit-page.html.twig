@@ -144,6 +144,16 @@
                                             :value="metadataUri"
                                             disabled
                                         ></sw-text-field>
+                                        <sw-button
+                                            v-if="metadataUri"
+                                            class="sw-button__metadata-download"
+                                            :disabled="!metadataUri"
+                                            :link="metadataUri"
+                                            size="small"
+                                            :block="true"
+                                        >
+                                            {{ $t('heptacom-admin-open-auth-client.pages.edit.fields.downloadMetadata') }}
+                                        </sw-button>
                                     {% endblock %}
                                 {% endblock %}
                             </template>
