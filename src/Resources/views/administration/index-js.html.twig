@@ -87,7 +87,14 @@
             handler();
         }
 
+        let lastPath = null;
         function handleEvent() {
+            if (lastPath === window.location.hash) {
+                return;
+            }
+
+            lastPath = window.location.hash;
+
             if (waitForElementTimeout !== null) {
                 window.clearTimeout(waitForElementTimeout);
                 waitForElementTimeout = null;
@@ -101,7 +108,8 @@
             }
         }
 
-        window.addEventListener('load', (event) => handleEvent(event));
-        window.addEventListener('hashchange', (event) => handleEvent(event));
+        window.addEventListener('load', () => handleEvent());
+        window.addEventListener('popstate', () => handleEvent());
+        window.setInterval(() => handleEvent(), 500);
     })();
 </script>
