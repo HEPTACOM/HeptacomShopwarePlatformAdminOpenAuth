@@ -8,6 +8,7 @@
 **Changed**
 
 * Changed provider settings to have it's own component instead of overwriting `heptacom-admin-open-auth-client-edit-page`
+* Changed `view/administration/index-js.html.twig` to only check for login form route matches
 
 # 4.2.1
 

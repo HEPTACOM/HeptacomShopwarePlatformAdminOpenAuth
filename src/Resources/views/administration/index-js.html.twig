@@ -9,14 +9,9 @@
     }
 </style>
 <script{% if cspNonce is defined %} nonce="{{ cspNonce }}" {% endif %}>
-    window.addEventListener('load', function() {
-        const clientRoutes = {{ url('administration.heptacom.admin_open_auth.routes')|json_encode|raw }};
-
-        const waitForLoginForm = function () {
-            if (!document.querySelector('.sw-login')) {
-                setTimeout(waitForLoginForm, 200);
-                return;
-            }
+    (function () {
+        function handleLoginRoute() {
+            const clientRoutes = {{ url('administration.heptacom.admin_open_auth.routes')|json_encode|raw }};
 
             fetch(clientRoutes)
                 .then(function (response) {
@@ -37,32 +32,70 @@
                         container.appendChild(link);
                     });
                 });
-        };
-        waitForLoginForm();
 
-        const match = window.location.search ? window.location.search.match(/[?&]state=([^&]+?)(&|$)/) : null;
+            const match = window.location.search ? window.location.search.match(/[?&]state=([^&]+?)(&|$)/) : null;
 
-        if (match && match.length > 2) {
-            const loginService = Shopware.Service().get('loginService');
-            const httpClient = Shopware.Service().get('userService').client;
-            const token = match[1];
+            if (match && match.length > 2) {
+                const loginService = Shopware.Service().get('loginService');
+                const httpClient = Shopware.Service().get('userService').client;
+                const token = match[1];
 
-            httpClient.post('/oauth/token', {
-                grant_type: 'heptacom_admin_open_auth_one_time_token',
-                client_id: 'administration',
-                scopes: 'write',
-                one_time_token: token
-            }, {
-                baseURL: Shopware.Context.api.apiPath
-            }).then((response) => {
-                loginService.setBearerAuthentication({
-                    access: response.data.access_token,
-                    refresh: response.data.refresh_token,
-                    expiry: response.data.expires_in
+                httpClient.post('/oauth/token', {
+                    grant_type: 'heptacom_admin_open_auth_one_time_token',
+                    client_id: 'administration',
+                    scopes: 'write',
+                    one_time_token: token
+                }, {
+                    baseURL: Shopware.Context.api.apiPath
+                }).then((response) => {
+                    loginService.setBearerAuthentication({
+                        access: response.data.access_token,
+                        refresh: response.data.refresh_token,
+                        expiry: response.data.expires_in
+                    });
+
+                    window.location = window.location.origin + window.location.pathname;
                 });
-
-                window.location = window.location.origin + window.location.pathname;
-            });
+            }
         }
-    });
+
+        const paths = [
+            {
+                path: /^#\/login$/,
+                requiredElement: '.sw-login',
+                handler: () => handleLoginRoute()
+            },
+        ];
+
+        /** @type number|null */
+        let waitForElementTimeout = null;
+
+        function waitForElement(selector, handler) {
+            waitForElementTimeout = null;
+
+            const element = document.querySelector(selector);
+            if (!element) {
+                waitForElementTimeout = window.setTimeout(() => waitForElement(selector, handler), 200);
+            }
+
+            handler();
+        }
+
+        function handleEvent() {
+            if (waitForElementTimeout !== null) {
+                window.clearTimeout(waitForElementTimeout);
+                waitForElementTimeout = null;
+            }
+
+            for (let path of paths) {
+                if (path.path.test(window.location.hash)) {
+                    waitForElement(path.requiredElement, path.handler);
+                    break;
+                }
+            }
+        }
+
+        window.addEventListener('load', (event) => handleEvent(event));
+        window.addEventListener('hashchange', (event) => handleEvent(event));
+    })();
 </script>
