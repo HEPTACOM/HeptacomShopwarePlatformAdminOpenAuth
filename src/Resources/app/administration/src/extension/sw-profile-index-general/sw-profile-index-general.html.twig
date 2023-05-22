@@ -1,30 +1,31 @@
-{% block sw_profile_index_content %}
+{% block sw_profile_index_general_password %}
     {% parent %}
 
-    {% block sw_profile_index_heptacom_admin_open_auth_card %}
+    {% block sw_profile_index_admin_open_auth %}
         <sw-card
+            position-identifier="heptacom-admin-open-auth-user-profile-sso"
             :title="$tc('sw-profile-index.titleHeptacomAdminOpenAuthCard')"
-            :isLoading="isUserLoading"
-            class="sw-profile__card sw-card--grid"
+            :isLoading="isUserLoading || !languageId"
         >
-            {% block sw_profile_index_heptacom_admin_open_auth_card_clients %}
+            {% block sw_profile_index_admin_open_auth_clients %}
                 <template>
-                    {% block sw_profile_index_heptacom_admin_open_auth_card_clients_cards %}
+                    {% block sw_profile_index_admin_open_auth_clients_cards %}
                         <sw-container rows="1fr">
                             <sw-card-section
                                 v-for="client of heptacomAdminOpenAuthClients"
                                 :key="client.id"
+                                :slim="true"
                                 divider="bottom"
                             >
-                                {% block sw_profile_index_heptacom_admin_open_auth_card_clients_cards_item %}
+                                {% block sw_profile_index_admin_open_auth_clients_cards_item %}
                                     <sw-container columns="1fr auto">
-                                        {% block sw_profile_index_heptacom_admin_open_auth_card_clients_cards_item_provider %}
+                                        {% block sw_profile_index_admin_open_auth_clients_cards_item_provider %}
                                             <div>
                                                 {{ client.name }}
                                             </div>
                                         {% endblock %}
 
-                                        {% block sw_profile_index_heptacom_admin_open_auth_card_clients_cards_item_action %}
+                                        {% block sw_profile_index_admin_open_auth_clients_cards_item_action %}
                                             <sw-button
                                                 v-if="client.connected"
                                                 @click="revokeHeptacomAdminOpenAuthUserKey(client.id)"
@@ -49,13 +50,4 @@
             {% endblock %}
         </sw-card>
     {% endblock %}
-{% endblock %}
-
-{% block sw_profile_index_content_confirm_password_modal_input__confirm_password %}
-    <heptacom-admin-open-auth-user-confirm-login
-        ref="heptacomAdminOpenAuthUserConfirmLogin"
-        @confirm="heptacomAdminOpenAuthUserConfirm"
-    ></heptacom-admin-open-auth-user-confirm-login>
-
-    {% parent %}
 {% endblock %}

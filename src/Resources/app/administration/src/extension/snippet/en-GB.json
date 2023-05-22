@@ -1,6 +1,6 @@
 {
     "sw-profile-index": {
-        "titleHeptacomAdminOpenAuthCard": "OAuth",
+        "titleHeptacomAdminOpenAuthCard": "Single Sign-on",
         "heptacomAdminOpenAuth": {
             "userKeys": {
                 "columns": {
