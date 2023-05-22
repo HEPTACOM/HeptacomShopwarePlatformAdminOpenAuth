@@ -2,15 +2,15 @@
     "sw-privileges": {
         "permissions": {
             "heptacom_admin_open_auth_client": {
-              "label": "OAuth Anmeldung Administration"
+              "label": "SSO Anmeldung Administration"
             }
         }
     },
     "heptacom-admin-open-auth-client": {
         "module": {
-            "description": "Erlaubt die Anmeldung über OAuth Anbieter",
+            "description": "Erlaubt die Anmeldung über SSO Anbieter",
             "name": "HEPTACOM Open Authentication Login",
-            "title": "OAuth Anmeldung"
+            "title": "SSO Anmeldung"
         },
         "pages": {
             "create": {
