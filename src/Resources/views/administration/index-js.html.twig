@@ -9,7 +9,9 @@
     }
 
     {% if config('KskHeptacomAdminOpenAuth.config.denyPasswordLogin') %}
-        .sw-login-login > :not(.sw-login__content-headline) {
+        .sw-login-login > :not(.sw-login__content-headline),
+        .sw-inactivity-login__modal .sw-modal__body .sw-field,
+        .sw-inactivity-login__modal .sw-modal__footer .sw-button {
             display: none;
         }
     {% endif %}
