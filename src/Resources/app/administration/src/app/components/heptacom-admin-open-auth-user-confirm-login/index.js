@@ -12,6 +12,13 @@ Component.register('heptacom-admin-open-auth-user-confirm-login', {
         'repositoryFactory',
     ],
 
+    props: {
+        divider: {
+            type: Boolean,
+            default: true,
+        },
+    },
+
     data() {
         return {
             loading: true,
@@ -28,6 +35,10 @@ Component.register('heptacom-admin-open-auth-user-confirm-login', {
 
         httpClient() {
             return this.heptacomAdminOpenAuthClientsRepository.httpClient;
+        },
+
+        sectionDivider() {
+            return this.divider ? 'bottom' : '';
         }
     },
 

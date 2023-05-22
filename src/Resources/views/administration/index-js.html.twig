@@ -7,6 +7,12 @@
     .sw-button.sw-button--ghost:focus {
         background-color: #e3f3ff;
     }
+
+    {% if config('KskHeptacomAdminOpenAuth.config.denyPasswordLogin') %}
+        .sw-login-login > :not(.sw-login__content-headline) {
+            display: none;
+        }
+    {% endif %}
 </style>
 <script{% if cspNonce is defined %} nonce="{{ cspNonce }}" {% endif %}>
     (function () {

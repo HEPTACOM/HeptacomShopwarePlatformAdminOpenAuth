@@ -9,7 +9,7 @@
             ></sw-loader>
             <sw-card-section
                 class="heptacom-admin-open-auth-user-confirm-login--clients"
-                divider="bottom"
+                :divider="sectionDivider"
                 v-if="clients.length > 0"
             >
                 <sw-button

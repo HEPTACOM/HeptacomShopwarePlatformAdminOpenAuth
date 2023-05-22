@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/shopware/platform/trunk/src/Core/System/SystemConfig/Schema/config.xsd">
+
+    <card>
+        <title>General Settings</title>
+        <title lang="de-DE">Allgemeine Einstellungen</title>
+
+        <input-field type="bool">
+            <name>denyPasswordLogin</name>
+            <label>Deny password login</label>
+            <label lang="de-DE">Anmeldung mit Passwort verbieten</label>
+            <helpText>If activated and you have issues with your identity provider, this configuration option must be reset via console command.</helpText>
+            <helpText lang="de-DE">Wenn aktiviert und Sie Probleme mit Ihrem Identity Provider haben, muss diese Konfigurationsoption über die Konsole zurückgesetzt werden.</helpText>
+            <defaultValue>false</defaultValue>
+        </input-field>
+    </card>
+</config>

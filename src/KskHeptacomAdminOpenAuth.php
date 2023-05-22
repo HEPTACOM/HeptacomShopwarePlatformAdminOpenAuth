@@ -13,6 +13,8 @@ use Shopware\Core\Framework\Plugin\Context\UninstallContext;
 
 final class KskHeptacomAdminOpenAuth extends Plugin
 {
+    public const CONFIG_DENY_PASSWORD_LOGIN = 'KskHeptacomAdminOpenAuth.config.denyPasswordLogin';
+
     private static ?ClassLoader $dependencyClassLoader = null;
 
     public function getAdditionalBundles(AdditionalBundleParameters $parameters): array

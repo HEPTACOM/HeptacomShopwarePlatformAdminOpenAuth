@@ -1,8 +1,17 @@
 {% block sw_settings_user_detail_content_confirm_password_modal_input__confirm_password %}
     <heptacom-admin-open-auth-user-confirm-login
+        :divider="!denyPasswordLogin"
         ref="heptacomAdminOpenAuthUserConfirmLogin"
         @confirm="heptacomAdminOpenAuthUserConfirm"
     ></heptacom-admin-open-auth-user-confirm-login>
 
-    {% parent %}
+    <template v-if="!denyPasswordLogin">
+        {% parent %}
+    </template>
+{% endblock %}
+
+{% block sw_settings_user_detail_content_confirm_password_modal_actions_change %}
+    <template v-if="!denyPasswordLogin">
+        {% parent %}
+    </template>
 {% endblock %}

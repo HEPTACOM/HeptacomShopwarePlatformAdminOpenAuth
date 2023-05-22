@@ -5,6 +5,20 @@ const { Component } = Shopware;
 Component.override('sw-verify-user-modal', {
     template,
 
+    inject: ['systemConfigApiService'],
+
+    data() {
+        return {
+            denyPasswordLogin: false,
+        };
+    },
+
+    created() {
+        this.systemConfigApiService.getValues('KskHeptacomAdminOpenAuth.config').then((response) => {
+            this.denyPasswordLogin = response['KskHeptacomAdminOpenAuth.config.denyPasswordLogin'];
+        });
+    },
+
     methods: {
         onCloseConfirmPasswordModal() {
             this.$refs.heptacomAdminOpenAuthUserConfirmLogin.abortAuthFlow();

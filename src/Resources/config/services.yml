@@ -74,6 +74,18 @@ services:
         tags:
             - { name: shopware.entity.definition , entity: 'heptacom_admin_open_auth_user_token' }
 
+    Heptacom\AdminOpenAuth\Component\OpenAuth\AuthorizationServer:
+        decorates: shopware.api.authorization_server
+        parent: shopware.api.authorization_server
+        calls:
+            - setDecorated: [ '@Heptacom\AdminOpenAuth\Component\OpenAuth\AuthorizationServer.inner' ]
+            - setSystemConfigService: [ '@Shopware\Core\System\SystemConfig\SystemConfigService' ]
+
+    Heptacom\AdminOpenAuth\Service\OpenAuth\OneTimeTokenClientRepository:
+        decorates: Shopware\Core\Framework\Api\OAuth\ClientRepository
+        arguments:
+            - '@Heptacom\AdminOpenAuth\Service\OpenAuth\OneTimeTokenClientRepository.inner'
+
     Heptacom\AdminOpenAuth\Service\Provider\CidaasClientEntityWriter:
         decorates: Shopware\Core\Framework\DataAbstractionLayer\Write\EntityWriter
         arguments:
@@ -83,11 +95,6 @@ services:
         decorates: Shopware\Core\Framework\DataAbstractionLayer\Write\EntityWriter
         arguments:
             - '@Heptacom\AdminOpenAuth\Service\Provider\GoogleCloudClientEntityWriter.inner'
-
-    Heptacom\AdminOpenAuth\Service\OpenAuth\OneTimeTokenClientRepository:
-        decorates: Shopware\Core\Framework\Api\OAuth\ClientRepository
-        arguments:
-            - '@Heptacom\AdminOpenAuth\Service\OpenAuth\OneTimeTokenClientRepository.inner'
 
     Heptacom\AdminOpenAuth\Service\Provider\JiraClientEntityWriter:
         decorates: Shopware\Core\Framework\DataAbstractionLayer\Write\EntityWriter
