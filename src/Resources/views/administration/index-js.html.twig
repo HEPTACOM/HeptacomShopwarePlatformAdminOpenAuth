@@ -4,6 +4,10 @@
         margin-top: 20px;
     }
 
+    .heptacom-admin-open-auth--separator {
+        border-color: #52667a;
+    }
+
     .sw-button.sw-button--ghost:focus {
         background-color: #e3f3ff;
     }
@@ -18,29 +22,14 @@
 </style>
 <script{% if cspNonce is defined %} nonce="{{ cspNonce }}" {% endif %}>
     (function () {
-        function handleLoginRoute() {
+        async function getClientRoutes() {
             const clientRoutes = {{ url('administration.heptacom.admin_open_auth.routes')|json_encode|raw }};
 
-            fetch(clientRoutes)
-                .then(function (response) {
-                    return response.json();
-                })
-                .then(function (data) {
-                    const container = document.querySelector('.sw-login__content');
-                    data.clients.forEach(function (item) {
-                        const link = document.createElement('a');
-                        link.classList.add(
-                            'sw-button',
-                            'sw-button--block',
-                            'sw-button--ghost',
-                            'heptacom-admin-open-auth--button'
-                        );
-                        link.href = item.url;
-                        link.innerHTML = item.name;
-                        container.appendChild(link);
-                    });
-                });
+            const result = await fetch(clientRoutes);
+            return await result.json();
+        }
 
+        function checkLogin() {
             const match = window.location.search ? window.location.search.match(/[?&]state=([^&]+?)(&|$)/) : null;
 
             if (match && match.length > 2) {
@@ -67,11 +56,67 @@
             }
         }
 
+        function handleLoginRoute() {
+            // add login buttons
+            getClientRoutes().then((data) => {
+                const container = document.querySelector('.sw-login__content');
+                data.clients.forEach(function (item) {
+                    const link = document.createElement('a');
+                    link.classList.add(
+                        'sw-button',
+                        'sw-button--block',
+                        'sw-button--ghost',
+                        'heptacom-admin-open-auth--button'
+                    );
+                    link.href = item.url;
+                    link.innerHTML = item.name;
+                    container.appendChild(link);
+                });
+            });
+
+            // check for login token
+            checkLogin();
+        }
+
+        function handleInactivityRoute() {
+            // add login buttons
+            getClientRoutes().then((data) => {
+                const container = document.querySelector('.sw-inactivity-login__modal .sw-modal__body');
+
+                {% if not config('KskHeptacomAdminOpenAuth.config.denyPasswordLogin') %}
+                    const separator = document.createElement('hr');
+                    separator.classList.add('heptacom-admin-open-auth--separator');
+                    container.appendChild(separator);
+                {% endif %}
+
+                data.clients.forEach(function (item) {
+                    const link = document.createElement('a');
+                    link.classList.add(
+                        'sw-button',
+                        'sw-button--block',
+                        'sw-button--ghost',
+                        'heptacom-admin-open-auth--button'
+                    );
+                    link.href = item.url;
+                    link.innerHTML = item.name;
+                    container.appendChild(link);
+                });
+            });
+
+            // check for login token
+            checkLogin();
+        }
+
         const paths = [
             {
                 path: /^#\/login$/,
                 requiredElement: '.sw-login',
                 handler: () => handleLoginRoute()
+            },
+            {
+                path: /^#\/inactivity\/login\/[a-z0-9]{32}$/,
+                requiredElement: '.sw-inactivity-login__modal',
+                handler: () => handleInactivityRoute()
             },
         ];
 
