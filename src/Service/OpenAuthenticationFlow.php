@@ -40,27 +40,27 @@ final class OpenAuthenticationFlow implements OpenAuthenticationFlowInterface
     ) {
     }
 
-    public function getRedirectUrl(string $clientId, Context $context): string
+    public function getRedirectUrl(string $clientId, ?string $redirectTo, Context $context): string
     {
         if (!$this->clientFeatureChecker->canLogin($clientId, $context)) {
             throw new LoadClientException('Client can not login', $clientId);
         }
 
         $state = Uuid::randomHex();
-        $this->login->initiate($clientId, null, $state, $context);
+        $this->login->initiate($clientId, null, $state, $redirectTo, $context);
 
         return $this->clientLoader->load($clientId, $context)
             ->getLoginUrl($state, $this->redirectBehaviourFactory->createRedirectBehaviour($clientId, $context));
     }
 
-    public function getRedirectUrlToConnect(string $clientId, string $userId, Context $context): string
+    public function getRedirectUrlToConnect(string $clientId, string $userId, ?string $redirectTo, Context $context): string
     {
         if (!$this->clientFeatureChecker->canConnect($clientId, $context)) {
             throw new LoadClientException('Client can not connect', $clientId);
         }
 
         $state = Uuid::randomHex();
-        $this->login->initiate($clientId, $userId, $state, $context);
+        $this->login->initiate($clientId, $userId, $state, $redirectTo, $context);
 
         return $this->clientLoader->load($clientId, $context)
             ->getLoginUrl($state, $this->redirectBehaviourFactory->createRedirectBehaviour($clientId, $context));

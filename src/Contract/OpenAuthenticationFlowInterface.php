@@ -16,12 +16,12 @@ interface OpenAuthenticationFlowInterface
     /**
      * @throws LoadClientException
      */
-    public function getRedirectUrl(string $clientId, Context $context): string;
+    public function getRedirectUrl(string $clientId, ?string $redirectTo, Context $context): string;
 
     /**
      * @throws LoadClientException
      */
-    public function getRedirectUrlToConnect(string $clientId, string $userId, Context $context): string;
+    public function getRedirectUrlToConnect(string $clientId, string $userId, ?string $redirectTo, Context $context): string;
 
     /**
      * @throws LoadClientException

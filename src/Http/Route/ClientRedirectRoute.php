@@ -74,19 +74,43 @@ final class ClientRedirectRoute extends AbstractController
         $this->flow->upsertUser($user, $clientId, $requestState, $context);
 
         $statePayload = $this->stateResolver->getPayload($requestState, $context);
-        $targetRoute = 'administration.index';
 
-        if ($statePayload['confirm'] ?? false) {
-            $targetRoute = 'administration.heptacom.admin_open_auth.confirm';
-        }
-
-        $targetUrl = $this->generateUrl(
-            $targetRoute,
-            ['state' => $requestState],
+        $targetUrl = $statePayload['redirectTo'] ?? $this->generateUrl(
+            'administration.index',
+            [],
             UrlGeneratorInterface::ABSOLUTE_URL
         );
+        $targetUrl = $this->enrichRedirectUrl($targetUrl, $requestState);
 
         // redirect with "303 See Other" to ensure the request method becomes GET
         return new RedirectResponse($targetUrl, Response::HTTP_SEE_OTHER);
+    }
+
+    protected function enrichRedirectUrl(string $targetUrl, string $requestState): string
+    {
+        $targetUrlParts = [
+            ...[
+                'path' => '/',
+                'query' => '',
+                'fragment' => '',
+            ],
+            ...\parse_url($targetUrl)
+        ];
+
+        $targetUrl = '';
+
+        if (\array_key_exists('scheme', $targetUrlParts) && \array_key_exists('host', $targetUrlParts)) {
+            $targetUrl .= $targetUrlParts['scheme'] . '://' . $targetUrlParts['host'];
+        }
+
+        if (\array_key_exists('port', $targetUrlParts)) {
+            $targetUrl .= ':' . $targetUrlParts['port'];
+        }
+
+        $targetUrl .= $targetUrlParts['path'] .
+            '?' . \ltrim($targetUrlParts['query'] . '&state=' . \urlencode($requestState), '&') .
+            '#' . $targetUrlParts['fragment'];
+
+        return $targetUrl;
     }
 }

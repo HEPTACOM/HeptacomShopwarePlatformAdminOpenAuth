@@ -7,7 +7,9 @@ namespace Heptacom\AdminOpenAuth\Http\Route;
 use Heptacom\AdminOpenAuth\Contract\OpenAuthenticationFlowInterface;
 use Shopware\Core\Framework\Context;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -27,10 +29,20 @@ final class ClientRemoteLoginRoute extends AbstractController
         ],
         methods: ['GET']
     )]
-    public function remoteLogin(string $clientId, Context $context): Response
+    public function remoteLogin(
+        string $clientId,
+        Request $request,
+        Context $context
+    ): Response
     {
+        $redirectTo = (string) $request->query->get('redirectTo') ?: null;
+
+        if ($redirectTo && !\str_starts_with($redirectTo, '/')) {
+            throw new BadRequestException('Only absolute redirect urls are allowed.');
+        }
+
         return new RedirectResponse(
-            $this->flow->getRedirectUrl($clientId, $context),
+            $this->flow->getRedirectUrl($clientId, $redirectTo, $context),
             Response::HTTP_TEMPORARY_REDIRECT
         );
     }

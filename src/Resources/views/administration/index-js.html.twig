@@ -29,13 +29,12 @@
             return await result.json();
         }
 
-        function checkLogin() {
-            const match = window.location.search ? window.location.search.match(/[?&]state=([^&]+?)(&|$)/) : null;
+        function checkLogin(redirectHandler) {
+            const token = new URLSearchParams(window.location.search).get('state');
 
-            if (match && match.length > 2) {
+            if (token) {
                 const loginService = Shopware.Service().get('loginService');
                 const httpClient = Shopware.Service().get('userService').client;
-                const token = match[1];
 
                 httpClient.post('/oauth/token', {
                     grant_type: 'heptacom_admin_open_auth_one_time_token',
@@ -51,7 +50,7 @@
                         expiry: response.data.expires_in
                     });
 
-                    window.location = window.location.origin + window.location.pathname;
+                    redirectHandler();
                 });
             }
         }
@@ -75,36 +74,58 @@
             });
 
             // check for login token
-            checkLogin();
+            checkLogin(() => {
+                window.location = window.location.origin + window.location.pathname;
+            });
         }
 
         function handleInactivityRoute() {
+            const container = document.querySelector('.sw-inactivity-login');
+            if (!container) {
+                console.error('Could not find inactivity login container.');
+                return;
+            }
+
+            const inactivityLogin = container.__vue__;
+            inactivityLogin.isLoading = true;
+
             // add login buttons
-            getClientRoutes().then((data) => {
-                const container = document.querySelector('.sw-inactivity-login__modal .sw-modal__body');
+            getClientRoutes()
+                .then((data) => {
+                    const container = document.querySelector('.sw-inactivity-login__modal .sw-modal__body');
 
-                {% if not config('KskHeptacomAdminOpenAuth.config.denyPasswordLogin') %}
-                    const separator = document.createElement('hr');
-                    separator.classList.add('heptacom-admin-open-auth--separator');
-                    container.appendChild(separator);
-                {% endif %}
+                    {% if not config('KskHeptacomAdminOpenAuth.config.denyPasswordLogin') %}
+                        const separator = document.createElement('hr');
+                        separator.classList.add('heptacom-admin-open-auth--separator');
+                        container.appendChild(separator);
+                    {% endif %}
 
-                data.clients.forEach(function (item) {
-                    const link = document.createElement('a');
-                    link.classList.add(
-                        'sw-button',
-                        'sw-button--block',
-                        'sw-button--ghost',
-                        'heptacom-admin-open-auth--button'
-                    );
-                    link.href = item.url;
-                    link.innerHTML = item.name;
-                    container.appendChild(link);
-                });
-            });
+                    data.clients.forEach(function (item) {
+                        const link = document.createElement('a');
+                        link.classList.add(
+                            'sw-button',
+                            'sw-button--block',
+                            'sw-button--ghost',
+                            'heptacom-admin-open-auth--button'
+                        );
+                        link.href = item.url
+                            + (item.url.includes('?') ? '&' : '?')
+                            + 'redirectTo='
+                            + encodeURIComponent(window.location.pathname + window.location.search + window.location.hash);
+                        link.innerHTML = item.name;
+                        container.appendChild(link);
+                    });
+                })
+                .finally(() => inactivityLogin.isLoading = false);
 
             // check for login token
-            checkLogin();
+            checkLogin(() => {
+                // complete login
+                inactivityLogin.handleLoginSuccess();
+
+                // dump query string
+                window.location = window.location.origin + window.location.pathname + window.location.hash;
+            });
         }
 
         const paths = [
@@ -115,7 +136,7 @@
             },
             {
                 path: /^#\/inactivity\/login\/[a-z0-9]{32}$/,
-                requiredElement: '.sw-inactivity-login__modal',
+                requiredElement: '.sw-inactivity-login__modal .sw-modal__body',
                 handler: () => handleInactivityRoute()
             },
         ];
@@ -129,6 +150,7 @@
             const element = document.querySelector(selector);
             if (!element) {
                 waitForElementTimeout = window.setTimeout(() => waitForElement(selector, handler), 200);
+                return;
             }
 
             handler();

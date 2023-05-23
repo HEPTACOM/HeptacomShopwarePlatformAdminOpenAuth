@@ -8,12 +8,15 @@ use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Heptacom\AdminOpenAuth\Contract\StateFactory\ConfirmStateFactoryInterface;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\Uuid\Uuid;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\RouterInterface;
 
 final class ConfirmStateFactory implements ConfirmStateFactoryInterface
 {
-    public function __construct(private readonly EntityRepository $loginsRepository)
-    {
-    }
+    public function __construct(
+        private readonly EntityRepository $loginsRepository,
+        private readonly RouterInterface $router
+    ) {}
 
     public function create(string $clientId, string $userId, Context $context): string
     {
@@ -25,7 +28,11 @@ final class ConfirmStateFactory implements ConfirmStateFactoryInterface
             'userId' => $userId,
             'state' => $state,
             'payload' => [
-                'confirm' => true,
+                'redirectTo' => $this->router->generate(
+                    'administration.heptacom.admin_open_auth.confirm',
+                    [],
+                    UrlGeneratorInterface::ABSOLUTE_URL
+                )
             ],
         ]], $context);
 

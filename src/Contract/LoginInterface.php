@@ -9,7 +9,7 @@ use Shopware\Core\Framework\Context;
 
 interface LoginInterface
 {
-    public function initiate(string $clientId, ?string $userId, string $state, Context $context): string;
+    public function initiate(string $clientId, ?string $userId, string $state, ?string $redirectTo, Context $context): string;
 
     public function setCredentials(string $state, string $userId, Context $context): bool;
 

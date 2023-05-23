@@ -65,9 +65,11 @@ Component.override('sw-profile-index-general', {
         },
 
         async redirectToLoginMask(clientId) {
+            const currentPath = window.location.pathname + window.location.search + window.location.hash;
+
             const headers = this.heptacomAdminOpenAuthClientsRepository.buildHeaders(Context.api);
             const response = await this.heptacomAdminOpenAuthHttpClient
-                .post(`/_action/open-auth/${clientId}/connect`, {}, { headers });
+                .post(`/_action/open-auth/${clientId}/connect?redirectTo=${encodeURIComponent(currentPath)}`, {}, { headers });
 
             window.location.href = response.data.target;
         },

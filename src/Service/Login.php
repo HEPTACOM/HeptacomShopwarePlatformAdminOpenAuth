@@ -19,7 +19,7 @@ final class Login implements LoginInterface
     {
     }
 
-    public function initiate(string $clientId, ?string $userId, string $state, Context $context): string
+    public function initiate(string $clientId, ?string $userId, string $state, ?string $redirectTo, Context $context): string
     {
         $id = Uuid::randomHex();
         $this->loginsRepository->create([[
@@ -27,6 +27,9 @@ final class Login implements LoginInterface
             'clientId' => $clientId,
             'userId' => $userId,
             'state' => $state,
+            'payload' => [
+                'redirectTo' => $redirectTo,
+            ],
         ]], $context);
 
         return $id;
