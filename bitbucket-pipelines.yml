@@ -125,7 +125,16 @@ definitions:
                     - bash setup-vendor.sh
                     - COMPOSER_EXTRA_ARGS=-vvv make -e build-administration
                     - 'test $(git add -A -n | wc -l) -eq 0'
-
+        -   step: &lint-store-readiness
+                <<: *default-step
+                name: Lint plugins store readiness
+                script:
+                    - sed -i -e 's/# Unreleased/# 999.999.999/' CHANGELOG.md
+                    - sed -i -e 's/# Unreleased/# 999.999.999/' CHANGELOG_de-DE.md
+                    - git add CHANGELOG.md CHANGELOG_de-DE.md
+                    - git commit -m "$ releasecheck"
+                    - git tag 999.999.999
+                    - make releasecheck
 pipelines:
     branches:
         master:
@@ -154,10 +163,7 @@ pipelines:
                     -   step: *test-code-style-php
                     -   step: *test-code-style-json
                     -   step: *test-code-style-soft-require
-                    -   step:
-                            name: Lint plugins store readiness
-                            script:
-                                - make releasecheck
+                    -   step: *lint-store-readiness
                     -   step: *composer-install-php-80
                     -   step: *composer-install-php-81
 
@@ -172,6 +178,12 @@ pipelines:
                     -   step: *test-code-style-php
                     -   step: *test-code-style-json
                     -   step: *test-code-style-soft-require
+                    -   step:
+                            name: Lint plugins store readiness
+                            artifacts:
+                                - .build/KskHeptacomAdminOpenAuth-*.zip
+                            script:
+                                - make releasecheck
                     -   step: *composer-install-php-80
                     -   step: *composer-install-php-81
             -   step:
@@ -189,9 +201,6 @@ pipelines:
                 -   step: *test-code-style-php
                 -   step: *test-code-style-json
                 -   step: *test-code-style-soft-require
-                -   step:
-                        name: Lint plugins store readiness
-                        script:
-                            - make releasecheck
+                -   step: *lint-store-readiness
                 -   step: *composer-install-php-80
                 -   step: *composer-install-php-81

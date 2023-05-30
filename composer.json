@@ -87,8 +87,8 @@
     },
     "extra": {
         "description": {
-            "de-DE": "Verbindet OAuth und SAML Anbieter zum Administrationslogin",
-            "en-GB": "Connects OAuth and SAML providers to admin login"
+            "de-DE": "Verbindet OAuth und SAML Identitätsanbieter mit dem Administrationslogin. So können Sie ein zentrales Identity und Access Management (IAM) für Ihren Shopware Shop nutzen.",
+            "en-GB": "Connects OAuth and SAML identity providers to the admin login. This way you can use a centralized identity and access management (IAM) for your Shopware shop."
         },
         "label": {
             "de-DE": "SSO Login für Administration",
