@@ -59,6 +59,12 @@
             // add login buttons
             getClientRoutes().then((data) => {
                 const container = document.querySelector('.sw-login__content');
+
+                if (!container) {
+                    console.warn('Login modal does not exist anymore.');
+                    return;
+                }
+
                 data.clients.forEach(function (item) {
                     const link = document.createElement('a');
                     link.classList.add(
@@ -81,7 +87,7 @@
 
         function handleInactivityRoute() {
             const container = document.querySelector('.sw-inactivity-login');
-            if (!container) {
+            if (!container || !container.__vue__) {
                 console.error('Could not find inactivity login container.');
                 return;
             }
@@ -93,6 +99,18 @@
             getClientRoutes()
                 .then((data) => {
                     const container = document.querySelector('.sw-inactivity-login__modal .sw-modal__body');
+
+                    if (!container) {
+                        console.warn('Inactivity modal does not exist anymore.');
+                        return;
+                    }
+
+                    if (container.hasAttribute('data-heptacom-sso-initialized')) {
+                        console.warn('Inactivity modal already initialized with SSO IDPs.');
+                        return;
+                    } else {
+                        container.setAttribute('data-heptacom-sso-initialized', 'true');
+                    }
 
                     {% if not config('KskHeptacomAdminOpenAuth.config.denyPasswordLogin') %}
                         const separator = document.createElement('hr');
