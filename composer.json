@@ -16,12 +16,17 @@
         }
     ],
     "require": {
-        "php": ">=7.4",
-        "shopware/core": ">=6.4.8 <6.5"
+        "php": ">=8.0",
+        "shopware/core": ">=6.5.0.0 <6.6"
     },
     "autoload": {
         "psr-4": {
             "Heptacom\\ShopwarePlatform\\PluginName\\": "src/"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "symfony/runtime": true
         }
     },
     "extra": {
