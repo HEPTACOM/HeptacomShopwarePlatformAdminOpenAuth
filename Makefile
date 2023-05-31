@@ -4,7 +4,7 @@ COMPOSER := $(PHP) $(shell which composer) $(COMPOSER_EXTRA_ARGS)
 CURL := $(shell which curl)
 JQ := $(shell which jq)
 GREP := $(shell which grep)
-JSON_FILES := $(shell find . -name '*.json' -not -path './vendor/*' -not -path './.build/*' -not -path './dev-ops/*')
+JSON_FILES := $(shell find . -name '*.json' -not -path './vendor/*' -not -path './.build/*')
 TRANSLATION_JSON_FILES := $(shell find src -name '*.json' | $(GREP) -v -e '/vendor/' -e '/node_modules/' | $(GREP) -e '/snippet')
 TRANSLATION_JSON_FILES__CHECK_TRANSLATION := $(TRANSLATION_JSON_FILES:%=%__CHECK_TRANSLATION)
 PHPSTAN_FILE := dev-ops/bin/phpstan/vendor/bin/phpstan
