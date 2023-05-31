@@ -1,4 +1,4 @@
-image: heptacom/shopware-6-plugin-pipeline:php81-node18-latest
+image: heptacom/shopware-6-plugin-pipeline:php82-node18-latest
 
 definitions:
     steps:
