@@ -1,6 +1,6 @@
 {
     "require": {
-        "php": ">=8.0",
+        "php": ">=8.1",
         "dq5studios/psalm-junit": ">=2",
         "vimeo/psalm": ">=5"
     },

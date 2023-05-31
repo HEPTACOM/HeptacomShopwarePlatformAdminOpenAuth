@@ -1,6 +1,6 @@
 {
     "require": {
-        "php": ">=8.0",
+        "php": ">=8.1",
         "icanhazstring/composer-unused": ">=0.7"
     },
     "config": {
