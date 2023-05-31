@@ -1,18 +1,18 @@
 SHELL := /bin/bash
-PHP := $(shell which php) $(PHP_EXTRA_ARGS)
+PHP := $(shell which php) $(PHP_EXTRA_ARGS) -derror_reporting=0
 COMPOSER := $(PHP) $(shell which composer) $(COMPOSER_EXTRA_ARGS)
 CURL := $(shell which curl)
 JQ := $(shell which jq)
 GREP := $(shell which grep)
-JSON_FILES := $(shell find . -name '*.json' -not -path './vendor/*' -not -path './.build/*')
+JSON_FILES := $(shell find . -name '*.json' -not -path './vendor/*' -not -path './.build/*' -not -path './dev-ops/*')
 TRANSLATION_JSON_FILES := $(shell find src -name '*.json' | $(GREP) -v -e '/vendor/' -e '/node_modules/' | $(GREP) -e '/snippet')
 TRANSLATION_JSON_FILES__CHECK_TRANSLATION := $(TRANSLATION_JSON_FILES:%=%__CHECK_TRANSLATION)
 PHPSTAN_FILE := dev-ops/bin/phpstan/vendor/bin/phpstan
 COMPOSER_NORMALIZE_PHAR := https://github.com/ergebnis/composer-normalize/releases/download/2.22.0/composer-normalize.phar
 COMPOSER_NORMALIZE_FILE := dev-ops/bin/composer-normalize
-COMPOSER_REQUIRE_CHECKER_PHAR := https://github.com/maglnet/ComposerRequireChecker/releases/download/3.8.0/composer-require-checker.phar
+COMPOSER_REQUIRE_CHECKER_PHAR := https://github.com/maglnet/ComposerRequireChecker/releases/download/4.6.0/composer-require-checker.phar
 COMPOSER_REQUIRE_CHECKER_FILE := dev-ops/bin/composer-require-checker
-PHPMD_PHAR := https://github.com/phpmd/phpmd/releases/download/2.11.1/phpmd.phar
+PHPMD_PHAR := https://github.com/phpmd/phpmd/releases/download/2.13.0/phpmd.phar
 PHPMD_FILE := dev-ops/bin/phpmd
 PSALM_FILE := dev-ops/bin/psalm/vendor/bin/psalm
 COMPOSER_UNUSED_FILE := dev-ops/bin/composer-unused/vendor/bin/composer-unused

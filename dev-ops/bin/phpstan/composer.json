@@ -5,7 +5,7 @@
         }
     },
     "require": {
-        "php": ">=7.4",
+        "php": ">=8.0",
         "phpstan/extension-installer": ">=1",
         "phpstan/phpstan": ">=0.12.87",
         "phpstan/phpstan-deprecation-rules": ">=0.12",
