@@ -2,7 +2,7 @@
     "require": {
         "php": ">=8.0",
         "dq5studios/psalm-junit": ">=2",
-        "vimeo/psalm": ">=4.9"
+        "vimeo/psalm": ">=5"
     },
     "conflict": {
         "nikic/php-parser": "4.7.0"
