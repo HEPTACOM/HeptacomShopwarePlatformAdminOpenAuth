@@ -135,7 +135,6 @@ definitions:
                     - COMPOSER_EXTRA_ARGS=-vvv make -e cs-json
         -   step: &test-code-style-translation
                 <<: *default-step
-                image: heptacom/shopware-6-plugin-pipeline:php80-node14-latest
                 name: Analyse translations are complete
                 script:
                     # delete php74 artifacts
