@@ -1,8 +1,8 @@
 {
     "require": {
-        "php": ">=7.4",
+        "php": ">=8.1",
         "kubawerlos/php-cs-fixer-custom-fixers": "^2.5",
-        "symplify/easy-coding-standard": "~8.3.48"
+        "symplify/easy-coding-standard": "~9.4.70"
     },
     "config": {
         "allow-plugins": {
