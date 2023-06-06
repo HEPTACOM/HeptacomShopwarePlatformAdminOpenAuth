@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Heptacom\AdminOpenAuth\Service;
 
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Types\Types;
 use Heptacom\AdminOpenAuth\Contract\ClientFeatureCheckerInterface;
 use Heptacom\AdminOpenAuth\Contract\LoginInterface;
 use Heptacom\AdminOpenAuth\Contract\UserEmailInterface;
@@ -213,7 +214,7 @@ class UserResolver implements UserResolverInterface
         // check with database if update is required
         if ($isNew || $this->isUserChanged($userId, $userChangeSet)) {
             $userChangeSet['updated_at'] = (new \DateTime())->format(Defaults::STORAGE_DATE_TIME_FORMAT);
-            $this->connection->update(UserDefinition::ENTITY_NAME, $userChangeSet, ['id' => Uuid::fromHexToBytes($userId)]);
+            $this->connection->update(UserDefinition::ENTITY_NAME, $userChangeSet, ['id' => Uuid::fromHexToBytes($userId)], ['admin' => Types::BOOLEAN]);
         }
 
         // check if acl roles are changed
