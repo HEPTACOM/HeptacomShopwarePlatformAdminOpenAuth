@@ -1,5 +1,9 @@
 # Unreleased
 
+* Added `type` to login states to allow different behaviour per intended action
+* Added `expiresAt` to login states to remove unused login states after their underlying `authorization_code` should have expired already
+* Added `LoginsCleanupTask` to cleanup expired login states
+
 # 4.2.1
 
 * Fixed a bug causing the role assignment to fail and throw an exception

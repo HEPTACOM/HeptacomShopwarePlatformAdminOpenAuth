@@ -45,7 +45,7 @@ class OneTimeTokenGrant extends PasswordGrant
 
         $loginState = $this->login->pop($otp, Context::createDefaultContext());
 
-        if (!$loginState instanceof LoginEntity) {
+        if (!$loginState instanceof LoginEntity || $loginState->getType() !== 'login') {
             throw OAuthServerException::invalidRequest('one_time_token', 'Expired');
         }
 
