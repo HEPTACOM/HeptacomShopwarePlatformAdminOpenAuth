@@ -18,6 +18,10 @@ final class LoginEntity extends Entity
 
     public array $payload = [];
 
+    public string $type = '';
+
+    public \DateTime $expiresAt;
+
     public ?string $userId = null;
 
     public ?ClientEntity $client = null;

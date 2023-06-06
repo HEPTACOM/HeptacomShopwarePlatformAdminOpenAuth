@@ -47,7 +47,7 @@ final class OpenAuthenticationFlow implements OpenAuthenticationFlowInterface
         }
 
         $state = Uuid::randomHex();
-        $this->login->initiate($clientId, null, $state, $redirectTo, $context);
+        $this->login->initiate($clientId, null, $state, 'login', $redirectTo, $context);
 
         return $this->clientLoader->load($clientId, $context)
             ->getLoginUrl($state, $this->redirectBehaviourFactory->createRedirectBehaviour($clientId, $context));
@@ -60,7 +60,7 @@ final class OpenAuthenticationFlow implements OpenAuthenticationFlowInterface
         }
 
         $state = Uuid::randomHex();
-        $this->login->initiate($clientId, $userId, $state, $redirectTo, $context);
+        $this->login->initiate($clientId, $userId, $state, 'connect', $redirectTo, $context);
 
         return $this->clientLoader->load($clientId, $context)
             ->getLoginUrl($state, $this->redirectBehaviourFactory->createRedirectBehaviour($clientId, $context));

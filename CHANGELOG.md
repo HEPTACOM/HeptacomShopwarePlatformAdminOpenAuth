@@ -13,6 +13,18 @@
 * Changed `view/administration/index-js.html.twig` to allow login in `sw-inactivity-login`
 * Changed login payload to store the requested redirect url
 
+# 4.3.0-beta.1
+
+**Added**
+
+* Added `type` to login states to allow different behaviour per intended action
+* Added `expiresAt` to login states to remove unused login states after their underlying `authorization_code` should have expired already
+* Added `LoginsCleanupTask` to cleanup expired login states
+
+**Fixed**
+
+* Fixed usage of DBAL typed payload for non-admin users. See [AndreasA's contribution on GitHub](https://github.com/HEPTACOM/HeptacomShopwarePlatformAdminOpenAuth/pull/8)
+
 # 4.2.1
 
 * Fixed a bug causing the role assignment to fail and throw an exception

@@ -10,8 +10,10 @@ services:
             Shopware\Core\Framework\DataAbstractionLayer\EntityRepository $userEmailsRepository: '@heptacom_admin_open_auth_user_email.repository'
             Shopware\Core\Framework\DataAbstractionLayer\EntityRepository $userKeysRepository: '@heptacom_admin_open_auth_user_key.repository'
             Shopware\Core\Framework\DataAbstractionLayer\EntityRepository $userTokensRepository: '@heptacom_admin_open_auth_user_token.repository'
+            Shopware\Core\Framework\DataAbstractionLayer\EntityRepository $scheduledTaskRepository: '@scheduled_task.repository'
             Psr\Http\Client\ClientInterface $oidcHttpClient: '@heptacom.admin_open_auth.oidc.http_client'
             Psr\Http\Client\ClientInterface $samlHttpClient: '@heptacom.admin_open_auth.saml.http_client'
+            Psr\Log\LoggerInterface $logger: '@logger'
 
     _instanceof:
         Heptacom\OpenAuth\ClientProvider\Contract\ClientProviderContract:
@@ -20,9 +22,15 @@ services:
         Shopware\Core\Framework\DataAbstractionLayer\EntityExtension:
             tags:
                 - 'shopware.entity.extension'
+        Shopware\Core\Framework\MessageQueue\ScheduledTask\ScheduledTask:
+            tags:
+                - 'shopware.scheduled.task'
         Symfony\Component\EventDispatcher\EventSubscriberInterface:
             tags:
                 - 'kernel.event_subscriber'
+        Symfony\Component\Messenger\Handler\MessageHandlerInterface:
+            tags:
+                - 'messenger.message_handler'
         Symfony\Bundle\FrameworkBundle\Controller\AbstractController:
             public: true
             calls:
