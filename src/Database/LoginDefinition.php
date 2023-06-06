@@ -51,8 +51,8 @@ final class LoginDefinition extends EntityDefinition
             (new IdField('id', 'id'))->addFlags(new PrimaryKey(), new Required()),
             (new IdField('state', 'state'))->addFlags(new Required()),
             new JsonField('payload', 'payload', [], []),
-            new StringField('type', 'type'),
-            new DateTimeField('expires_at', 'expiresAt'),
+            (new StringField('type', 'type'))->addFlags(new Required()),
+            (new DateTimeField('expires_at', 'expiresAt'))->addFlags(new Required()),
             new CreatedAtField(),
             new UpdatedAtField(),
 
