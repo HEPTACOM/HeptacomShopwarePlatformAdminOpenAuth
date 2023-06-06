@@ -14,19 +14,12 @@ use Shopware\Core\Framework\MessageQueue\ScheduledTask\ScheduledTaskHandler;
 
 class LoginsCleanupTaskHandler extends ScheduledTaskHandler
 {
-    private EntityRepositoryInterface $loginsRepository;
-
-    private LoggerInterface $logger;
-
     public function __construct(
         EntityRepositoryInterface $scheduledTaskRepository,
-        EntityRepositoryInterface $loginsRepository,
-        LoggerInterface $logger
+        private EntityRepositoryInterface $loginsRepository,
+        private LoggerInterface $logger,
     ) {
         parent::__construct($scheduledTaskRepository);
-
-        $this->loginsRepository = $loginsRepository;
-        $this->logger = $logger;
     }
 
     public static function getHandledMessages(): iterable
@@ -47,7 +40,7 @@ class LoginsCleanupTaskHandler extends ScheduledTaskHandler
 
         if ($ids->getTotal() > 0) {
             $this->logger->info(\sprintf('Found %d expired SSO states. Deleting expired.', $ids->getTotal()));
-            $this->loginsRepository->delete(array_map(static fn ($id) => ['id' => $id], $ids->getIds()), $context);
+            $this->loginsRepository->delete(\array_map(static fn ($id) => ['id' => $id], $ids->getIds()), $context);
         }
     }
 }
