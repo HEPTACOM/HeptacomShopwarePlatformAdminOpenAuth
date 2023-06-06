@@ -18,6 +18,10 @@ class LoginEntity extends Entity
 
     protected array $payload = [];
 
+    protected ?string $type = 'login';
+
+    protected ?\DateTime $expiresAt = null;
+
     protected ?string $userId = null;
 
     protected ?ClientEntity $client = null;
@@ -56,6 +60,30 @@ class LoginEntity extends Entity
     public function setPayload(array $payload): self
     {
         $this->payload = $payload;
+
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(?string $type): self
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    public function getExpiresAt(): ?\DateTime
+    {
+        return $this->expiresAt;
+    }
+
+    public function setExpiresAt(?\DateTime $expiresAt): self
+    {
+        $this->expiresAt = $expiresAt;
 
         return $this;
     }

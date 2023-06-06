@@ -1,5 +1,9 @@
 # Unreleased
 
+* `type` zu Authentifizierungsstatus hinzugefügt um Verhaltensänderungen je OAuth Ablauf zu ermöglichen
+* `expiresAt` zu Authentifizierungsstatus hinzugefügt um ungenutzte und bereits abgelaufene `authorization_code` zu entfernen
+* `LoginsCleanupTask` als geplante Aufgabe hinzugefügt um unnutzbare Authentifizierungsstatus zu entfernen
+
 # 4.2.1
 
 * Fehler behoben, der das Zuweisen von Rollen verhinderte

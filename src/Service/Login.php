@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\Service;
 
+use Shopware\Core\Defaults;
 use Heptacom\AdminOpenAuth\Contract\LoginInterface;
 use Heptacom\AdminOpenAuth\Database\LoginCollection;
 use Heptacom\AdminOpenAuth\Database\LoginEntity;
@@ -11,10 +12,13 @@ use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
+use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\RangeFilter;
 use Shopware\Core\Framework\Uuid\Uuid;
 
 class Login implements LoginInterface
 {
+    public const LOGIN_EXPIRY = 600;
+
     private EntityRepositoryInterface $loginsRepository;
 
     public function __construct(EntityRepositoryInterface $loginsRepository)
@@ -22,7 +26,7 @@ class Login implements LoginInterface
         $this->loginsRepository = $loginsRepository;
     }
 
-    public function initiate(string $clientId, ?string $userId, string $state, Context $context): string
+    public function initiate(string $clientId, ?string $userId, string $state, Context $context, ?string $type = null): string
     {
         $id = Uuid::randomHex();
         $this->loginsRepository->create([[
@@ -30,6 +34,10 @@ class Login implements LoginInterface
             'clientId' => $clientId,
             'userId' => $userId,
             'state' => $state,
+            'type' => $type ?? 'login',
+            'expiresAt' => \date_create()
+                ->setTimestamp(\time() + self::LOGIN_EXPIRY)
+                ->format(Defaults::STORAGE_DATE_TIME_FORMAT)
         ]], $context);
 
         return $id;
@@ -59,6 +67,10 @@ class Login implements LoginInterface
         $criteria = new Criteria();
         $criteria->addAssociation('user');
         $criteria->addFilter(new EqualsFilter('state', $state));
+        $criteria->addFilter(new RangeFilter('expiresAt', [
+            RangeFilter::GTE => (new \DateTime())->format(Defaults::STORAGE_DATE_TIME_FORMAT)
+        ]));
+
         /** @var LoginCollection $logins */
         $logins = $this->loginsRepository->search($criteria, $context)->getEntities();
 
