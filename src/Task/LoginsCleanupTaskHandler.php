@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\Task;
 
@@ -38,7 +40,7 @@ class LoginsCleanupTaskHandler extends ScheduledTaskHandler
 
         $criteria = new Criteria();
         $criteria->addFilter(new RangeFilter('expiresAt', [
-            RangeFilter::LT => (new \DateTime())->format(Defaults::STORAGE_DATE_TIME_FORMAT)
+            RangeFilter::LT => (new \DateTime())->format(Defaults::STORAGE_DATE_TIME_FORMAT),
         ]));
 
         $ids = $this->loginsRepository->searchIds($criteria, $context);

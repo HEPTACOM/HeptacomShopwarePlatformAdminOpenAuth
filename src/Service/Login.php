@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\Service;
 
-use Shopware\Core\Defaults;
 use Heptacom\AdminOpenAuth\Contract\LoginInterface;
 use Heptacom\AdminOpenAuth\Database\LoginCollection;
 use Heptacom\AdminOpenAuth\Database\LoginEntity;
+use Shopware\Core\Defaults;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
@@ -37,7 +37,7 @@ class Login implements LoginInterface
             'type' => $type ?? 'login',
             'expiresAt' => \date_create()
                 ->setTimestamp(\time() + self::LOGIN_EXPIRY)
-                ->format(Defaults::STORAGE_DATE_TIME_FORMAT)
+                ->format(Defaults::STORAGE_DATE_TIME_FORMAT),
         ]], $context);
 
         return $id;
@@ -68,7 +68,7 @@ class Login implements LoginInterface
         $criteria->addAssociation('user');
         $criteria->addFilter(new EqualsFilter('state', $state));
         $criteria->addFilter(new RangeFilter('expiresAt', [
-            RangeFilter::GTE => (new \DateTime())->format(Defaults::STORAGE_DATE_TIME_FORMAT)
+            RangeFilter::GTE => (new \DateTime())->format(Defaults::STORAGE_DATE_TIME_FORMAT),
         ]));
 
         /** @var LoginCollection $logins */
