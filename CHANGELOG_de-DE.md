@@ -1,8 +1,16 @@
 # Unreleased
 
+# 4.3.0-beta.1
+
+**Hinzugefügt**
+
 * `type` zu Authentifizierungsstatus hinzugefügt um Verhaltensänderungen je OAuth Ablauf zu ermöglichen
 * `expiresAt` zu Authentifizierungsstatus hinzugefügt um ungenutzte und bereits abgelaufene `authorization_code` zu entfernen
 * `LoginsCleanupTask` als geplante Aufgabe hinzugefügt um unnutzbare Authentifizierungsstatus zu entfernen
+
+**Behoben**
+
+* Nutzung von typisierten Daten mit DBAL bei der Aktualisierung von Nicht-Administratorkonten korrigiert. Siehe [AndreasA's Beitrag auf GitHub](https://github.com/HEPTACOM/HeptacomShopwarePlatformAdminOpenAuth/pull/8)
 
 # 4.2.1
 
