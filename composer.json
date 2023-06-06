@@ -4,7 +4,6 @@
     "license": "Apache-2.0",
     "type": "shopware-platform-plugin",
     "version": "4.3.0",
-    "minimum-stability": "beta",
     "keywords": [
         "ecommerce",
         "shopware",
@@ -73,6 +72,7 @@
     "require-dev": {
         "shopware/administration": "^6.4.11"
     },
+    "minimum-stability": "beta",
     "autoload": {
         "psr-4": {
             "Heptacom\\AdminOpenAuth\\": "src/"
