@@ -17,8 +17,6 @@ use Shopware\Core\Framework\Uuid\Uuid;
 
 class Login implements LoginInterface
 {
-    public const LOGIN_EXPIRY = 600;
-
     private EntityRepositoryInterface $loginsRepository;
 
     public function __construct(EntityRepositoryInterface $loginsRepository)
@@ -35,9 +33,6 @@ class Login implements LoginInterface
             'userId' => $userId,
             'state' => $state,
             'type' => $type ?? 'login',
-            'expiresAt' => \date_create()
-                ->setTimestamp(\time() + self::LOGIN_EXPIRY)
-                ->format(Defaults::STORAGE_DATE_TIME_FORMAT),
         ]], $context);
 
         return $id;

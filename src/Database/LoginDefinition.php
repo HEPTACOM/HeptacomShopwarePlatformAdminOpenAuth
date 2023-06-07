@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\Database;
 
+use Shopware\Core\Defaults;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityDefinition;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\CreatedAtField;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\DateTimeField;
@@ -21,6 +22,8 @@ use Shopware\Core\System\User\UserDefinition;
 class LoginDefinition extends EntityDefinition
 {
     public const ENTITY_NAME = 'heptacom_admin_open_auth_login';
+
+    public const DEFAULT_LOGIN_EXPIRY = 600;
 
     public function getEntityName(): string
     {
@@ -42,6 +45,9 @@ class LoginDefinition extends EntityDefinition
         return [
             'payload' => [],
             'type' => 'login',
+            'expiresAt' => \date_create()
+                ->setTimestamp(\time() + self::DEFAULT_LOGIN_EXPIRY)
+                ->format(Defaults::STORAGE_DATE_TIME_FORMAT),
         ];
     }
 
