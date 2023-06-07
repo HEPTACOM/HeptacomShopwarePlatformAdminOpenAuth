@@ -119,6 +119,9 @@
                     {% endif %}
 
                     data.clients.forEach(function (item) {
+                        const url = new URL(item.url);
+                        url.searchParams.set('redirectTo', window.location.pathname + window.location.search + window.location.hash);
+
                         const link = document.createElement('a');
                         link.classList.add(
                             'sw-button',
@@ -126,10 +129,7 @@
                             'sw-button--ghost',
                             'heptacom-admin-open-auth--button'
                         );
-                        link.href = item.url
-                            + (item.url.includes('?') ? '&' : '?')
-                            + 'redirectTo='
-                            + encodeURIComponent(window.location.pathname + window.location.search + window.location.hash);
+                        link.href = url.toString();
                         link.innerHTML = item.name;
                         container.appendChild(link);
                     });
@@ -142,7 +142,11 @@
                 inactivityLogin.handleLoginSuccess();
 
                 // dump query string
-                window.location = window.location.origin + window.location.pathname + window.location.hash;
+                const url = new URL(window.location.href);
+                url.searchParams.delete('state');
+                url.hash = window.location.hash;
+
+                window.location.href = url.toString();
             });
         }
 
@@ -190,8 +194,15 @@
             for (let path of paths) {
                 if (path.path.test(window.location.hash)) {
                     waitForElement(path.requiredElement, path.handler);
-                    break;
+                    return;
                 }
+            }
+
+            // check current url for state param
+            const currentUrl = new URL(window.location.href);
+            if (currentUrl.searchParams.has('state')) {
+                currentUrl.searchParams.delete('state');
+                window.location.href = currentUrl.toString();
             }
         }
 
