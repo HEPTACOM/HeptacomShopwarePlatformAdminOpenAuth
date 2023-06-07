@@ -13,6 +13,12 @@
 * Changed `view/administration/index-js.html.twig` to allow login in `sw-inactivity-login`
 * Changed login payload to store the requested redirect url
 
+# 4.3.0-beta.2
+
+**Fixed**
+
+* Fixed `administration.heptacom.admin_open_auth.confirm` route by setting a default value for `expiresAt`
+
 # 4.3.0-beta.1
 
 **Added**

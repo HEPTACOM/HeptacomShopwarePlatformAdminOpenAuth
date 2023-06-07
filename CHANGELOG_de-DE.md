@@ -1,5 +1,11 @@
 # Unreleased
 
+# 4.3.0-beta.2
+
+**Fixed**
+
+* `administration.heptacom.admin_open_auth.confirm` Route gefixt, indem ein Standardwert für `expiresAt` gesetzt wurde
+
 # 4.3.0-beta.1
 
 **Hinzugefügt**
