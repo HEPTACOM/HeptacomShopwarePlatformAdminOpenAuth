@@ -7,7 +7,7 @@ namespace Heptacom\AdminOpenAuth\Task;
 use Psr\Log\LoggerInterface;
 use Shopware\Core\Defaults;
 use Shopware\Core\Framework\Context;
-use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
+use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\RangeFilter;
 use Shopware\Core\Framework\MessageQueue\ScheduledTask\ScheduledTaskHandler;
@@ -15,8 +15,8 @@ use Shopware\Core\Framework\MessageQueue\ScheduledTask\ScheduledTaskHandler;
 class LoginsCleanupTaskHandler extends ScheduledTaskHandler
 {
     public function __construct(
-        EntityRepositoryInterface $scheduledTaskRepository,
-        private EntityRepositoryInterface $loginsRepository,
+        EntityRepository $scheduledTaskRepository,
+        private EntityRepository $loginsRepository,
         private LoggerInterface $logger,
     ) {
         parent::__construct($scheduledTaskRepository);
