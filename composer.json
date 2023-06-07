@@ -55,7 +55,7 @@
         "psr/http-client": "^1.0",
         "psr/http-message": "^1.0",
         "psr/log": "~3.0.0",
-        "shopware/core": "~6.5.0.0",
+        "shopware/core": "~6.5.0",
         "symfony/cache": "~6.2.0",
         "symfony/event-dispatcher": "~6.2.0",
         "symfony/framework-bundle": "~6.2.0",
@@ -71,7 +71,7 @@
         "web-token/jwt-signature-algorithm-rsa": "^2.2"
     },
     "require-dev": {
-        "shopware/administration": "~6.5.0.0"
+        "shopware/administration": "~6.5.0"
     },
     "autoload": {
         "psr-4": {
