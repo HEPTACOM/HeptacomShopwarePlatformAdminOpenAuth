@@ -142,12 +142,16 @@
                 inactivityLogin.handleLoginSuccess();
 
                 // dump query string
-                const url = new URL(window.location.href);
-                url.searchParams.delete('state');
-                url.hash = window.location.hash;
-
-                window.location.href = url.toString();
+                removeStateFromUrl();
             });
+        }
+
+        function removeStateFromUrl() {
+            const currentUrl = new URL(window.location.href);
+            if (currentUrl.searchParams.has('state')) {
+                currentUrl.searchParams.delete('state');
+                window.location.href = currentUrl.toString();
+            }
         }
 
         const paths = [
@@ -196,13 +200,6 @@
                     waitForElement(path.requiredElement, path.handler);
                     return;
                 }
-            }
-
-            // check current url for state param
-            const currentUrl = new URL(window.location.href);
-            if (currentUrl.searchParams.has('state')) {
-                currentUrl.searchParams.delete('state');
-                window.location.href = currentUrl.toString();
             }
         }
 
