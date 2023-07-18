@@ -3,7 +3,7 @@
     "description": "Shopware plugin to allow OAuth providers to provide admin logins",
     "license": "Apache-2.0",
     "type": "shopware-platform-plugin",
-    "version": "5.0.0-beta.4",
+    "version": "5.0.0-beta.5",
     "minimum-stability": "beta",
     "keywords": [
         "ecommerce",

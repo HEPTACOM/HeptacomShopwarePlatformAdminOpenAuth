@@ -49,6 +49,13 @@ Component.register('heptacom-admin-open-auth-client-edit-page', {
             return this.repositoryFactory.create('heptacom_admin_open_auth_client');
         },
 
+        clientCriteria() {
+            const criteria = new Criteria();
+            criteria.addAssociation('defaultAclRoles');
+
+            return criteria;
+        },
+
         providerSettingsComponent() {
             let provider = (this.item && this.item.provider ? this.item.provider : '')
                 .replace(/_/g, '-');
@@ -75,10 +82,7 @@ Component.register('heptacom-admin-open-auth-client-edit-page', {
         async loadClient() {
             this.item = null;
 
-            const criteria = new Criteria();
-            criteria.addAssociation('defaultAclRoles');
-
-            this.item = await this.clientRepository.get(this.clientId, Context.api, criteria);
+            this.item = await this.clientRepository.get(this.clientId, Context.api, this.clientCriteria);
             this.redirectUri = (await this.HeptacomAdminOpenAuthProviderApiService.getRedirectUri(this.item.id)).target;
             this.metadataUri = (await this.HeptacomAdminOpenAuthProviderApiService.getMetadataUri(this.item.id)).target;
         },
