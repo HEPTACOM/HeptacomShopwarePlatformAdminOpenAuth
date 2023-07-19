@@ -89,6 +89,11 @@ services:
             - setDecorated: [ '@Heptacom\AdminOpenAuth\Component\OpenAuth\AuthorizationServer.inner' ]
             - setSystemConfigService: [ '@Shopware\Core\System\SystemConfig\SystemConfigService' ]
 
+    Heptacom\AdminOpenAuth\Http\Route\Support\RedirectReceiveRoute:
+        arguments:
+            - '@Heptacom\OpenAuth\Client\Contract\ClientFactoryContract'
+            - '@event_dispatcher'
+
     Heptacom\AdminOpenAuth\Service\OpenAuth\OneTimeTokenClientRepository:
         decorates: Shopware\Core\Framework\Api\OAuth\ClientRepository
         arguments:

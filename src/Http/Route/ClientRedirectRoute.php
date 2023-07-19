@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\Http\Route;
 
+use Heptacom\AdminOpenAuth\Http\Route\Support\RedirectReceiveRoute;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Heptacom\AdminOpenAuth\Contract\OpenAuthenticationFlowInterface;
 use Heptacom\AdminOpenAuth\Contract\RedirectBehaviourFactoryInterface;
 use Heptacom\AdminOpenAuth\Database\ClientEntity;
 use Heptacom\AdminOpenAuth\OpenAuth\Struct\UserStructExtension;
 use Heptacom\AdminOpenAuth\Service\StateResolver;
-use Heptacom\OpenAuth\Route\Contract\RedirectReceiveRouteContract;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
@@ -28,7 +28,7 @@ final class ClientRedirectRoute extends AbstractController
     public function __construct(
         private readonly OpenAuthenticationFlowInterface $flow,
         private readonly EntityRepository $clientsRepository,
-        private readonly RedirectReceiveRouteContract $redirectReceiveRoute,
+        private readonly RedirectReceiveRoute $redirectReceiveRoute,
         private readonly RedirectBehaviourFactoryInterface $redirectBehaviourFactory,
         private readonly StateResolver $stateResolver,
     ) {
