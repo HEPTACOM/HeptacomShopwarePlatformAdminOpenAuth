@@ -2,7 +2,10 @@
 .DS_Store
 
 # Ignore IDEs
-/.idea
+/.idea/*.iml
+/.idea/misc.xml
+/.idea/modules.xml
+/.idea/php.xml
 
 # Ignore package managers
 /vendor/
@@ -14,6 +17,11 @@
 /dev-ops/bin/composer-require-checker
 /dev-ops/bin/composer-unused/vendor/
 /dev-ops/bin/easy-coding-standard/vendor/
+/dev-ops/bin/phpmd
+/dev-ops/bin/phpstan/vendor/
+/dev-ops/bin/psalm/vendor/
+/dev-ops/bin/php-churn/vendor/
+/dev-ops/bin/phpunuhi/vendor/
 /dev-ops/bin/frosh-plugin-upload
 /dev-ops/bin/shopware/vendor
 
