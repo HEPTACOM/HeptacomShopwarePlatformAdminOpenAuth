@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Heptacom\AdminOpenAuth\Http\Route\Support;
 
 use Heptacom\AdminOpenAuth\Contract\Client\ClientFactoryContract;
+use Heptacom\AdminOpenAuth\Contract\Route\Exception\RedirectReceiveMissingStateException;
 use Heptacom\OpenAuth\Behaviour\RedirectBehaviour;
 use Heptacom\OpenAuth\Route\Exception\RedirectReceiveException;
-use Heptacom\OpenAuth\Route\Exception\RedirectReceiveMissingStateException;
 use Heptacom\OpenAuth\Struct\UserStruct;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\RequestInterface;
