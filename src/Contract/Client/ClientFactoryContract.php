@@ -14,7 +14,7 @@ use Heptacom\AdminOpenAuth\Contract\ClientProvider\Exception\ProvideClientExcept
 class ClientFactoryContract
 {
     public function __construct(
-        private ClientProviderRepositoryContract $clientProviderRepository
+        private readonly ClientProviderRepositoryContract $clientProviderRepository
     ) {
     }
 

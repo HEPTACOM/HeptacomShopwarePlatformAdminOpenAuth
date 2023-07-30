@@ -15,8 +15,8 @@ use Psr\Http\Message\RequestInterface;
 class RedirectReceiveRoute
 {
     public function __construct(
-        private ClientFactoryContract $clientFactory,
-        private EventDispatcherInterface $eventDispatcher
+        private readonly ClientFactoryContract $clientFactory,
+        private readonly EventDispatcherInterface $eventDispatcher
     ) {
     }
 
