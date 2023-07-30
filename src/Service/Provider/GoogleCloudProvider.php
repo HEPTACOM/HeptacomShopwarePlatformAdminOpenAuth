@@ -16,8 +16,10 @@ final class GoogleCloudProvider extends ClientProviderContract
 {
     public const PROVIDER_NAME = 'google_cloud';
 
-    public function __construct(private readonly TokenPairFactoryContract $tokenPairFactory, private readonly OpenIdConnectService $openIdConnectService)
-    {
+    public function __construct(
+        private readonly TokenPairFactoryContract $tokenPairFactory,
+        private readonly OpenIdConnectService $openIdConnectService,
+    ) {
     }
 
     public function provides(): string

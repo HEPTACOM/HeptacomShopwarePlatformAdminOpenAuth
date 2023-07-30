@@ -14,8 +14,10 @@ use Symfony\Component\Routing\RouterInterface;
 
 final class RedirectBehaviourFactoryService implements RedirectBehaviourFactoryInterface
 {
-    public function __construct(private readonly ClientLoaderInterface $clientLoader, private readonly RouterInterface $router)
-    {
+    public function __construct(
+        private readonly ClientLoaderInterface $clientLoader,
+        private readonly RouterInterface $router
+    ) {
     }
 
     public function createRedirectBehaviour(string $clientId, Context $context): RedirectBehaviour

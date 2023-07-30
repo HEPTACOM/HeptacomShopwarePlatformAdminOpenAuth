@@ -16,8 +16,9 @@ use Shopware\Core\System\User\UserCollection;
 
 final class UserEmail implements UserEmailInterface
 {
-    public function __construct(private readonly EntityRepository $userEmailsRepository)
-    {
+    public function __construct(
+        private readonly EntityRepository $userEmailsRepository,
+    ) {
     }
 
     public function add(string $userId, string $email, string $clientId, Context $context): string

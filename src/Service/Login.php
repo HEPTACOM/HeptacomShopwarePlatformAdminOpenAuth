@@ -17,8 +17,9 @@ use Shopware\Core\Framework\Uuid\Uuid;
 
 final class Login implements LoginInterface
 {
-    public function __construct(private readonly EntityRepository $loginsRepository)
-    {
+    public function __construct(
+        private readonly EntityRepository $loginsRepository,
+    ) {
     }
 
     public function initiate(string $clientId, ?string $userId, string $state, string $type, ?string $redirectTo, Context $context): string

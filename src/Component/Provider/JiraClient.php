@@ -15,14 +15,10 @@ use Psr\Http\Message\RequestInterface;
 
 final class JiraClient extends ClientContract
 {
-    private TokenPairFactoryContract $tokenPairFactory;
-
-    private Atlassian $jiraClient;
-
-    public function __construct(TokenPairFactoryContract $tokenPairFactory, array $options)
-    {
-        $this->tokenPairFactory = $tokenPairFactory;
-        $this->jiraClient = new Atlassian($options);
+    public function __construct(
+        private readonly TokenPairFactoryContract $tokenPairFactory,
+        private readonly Atlassian $jiraClient,
+    ) {
     }
 
     public function getLoginUrl(?string $state, RedirectBehaviour $behaviour): string

@@ -11,8 +11,9 @@ use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
 
 class StateResolver
 {
-    public function __construct(private readonly EntityRepository $loginsRepository)
-    {
+    public function __construct(
+        private readonly EntityRepository $loginsRepository,
+    ) {
     }
 
     public function getPayload(string $state, Context $context): ?array

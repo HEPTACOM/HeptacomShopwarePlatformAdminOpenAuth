@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\Service\Provider;
 
+use Heptacom\AdminOpenAuth\Component\OpenAuth\Atlassian;
 use Heptacom\AdminOpenAuth\Component\Provider\JiraClient;
 use Heptacom\AdminOpenAuth\Contract\Client\ClientContract;
 use Heptacom\AdminOpenAuth\Contract\ClientProvider\ClientProviderContract;
@@ -15,8 +16,9 @@ final class JiraProvider extends ClientProviderContract
 {
     public const PROVIDER_NAME = 'jira';
 
-    public function __construct(private readonly TokenPairFactoryContract $tokenPairFactory)
-    {
+    public function __construct(
+        private readonly TokenPairFactoryContract $tokenPairFactory,
+    ) {
     }
 
     public function provides(): string
@@ -77,6 +79,6 @@ final class JiraProvider extends ClientProviderContract
 
     public function provideClient(array $resolvedConfig): ClientContract
     {
-        return new JiraClient($this->tokenPairFactory, $resolvedConfig);
+        return new JiraClient($this->tokenPairFactory, new Atlassian($resolvedConfig));
     }
 }

@@ -15,8 +15,12 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 final class ApiAuthentication implements EventSubscriberInterface
 {
-    public function __construct(private readonly AuthorizationServer $authorizationServer, private readonly UserRepositoryInterface $userRepository, private readonly RefreshTokenRepositoryInterface $refreshTokenRepository, private readonly LoginInterface $login)
-    {
+    public function __construct(
+        private readonly AuthorizationServer $authorizationServer,
+        private readonly UserRepositoryInterface $userRepository,
+        private readonly RefreshTokenRepositoryInterface $refreshTokenRepository,
+        private readonly LoginInterface $login,
+    ) {
     }
 
     public static function getSubscribedEvents(): array

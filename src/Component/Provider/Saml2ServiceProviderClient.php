@@ -23,11 +23,9 @@ final class Saml2ServiceProviderClient extends ClientContract implements Metadat
         'locale',
     ];
 
-    private Saml2ServiceProviderService $saml2ServiceProviderService;
-
-    public function __construct(Saml2ServiceProviderService $saml2ServiceProviderService)
-    {
-        $this->saml2ServiceProviderService = $saml2ServiceProviderService;
+    public function __construct(
+        private readonly Saml2ServiceProviderService $saml2ServiceProviderService
+    ) {
     }
 
     public function getLoginUrl(?string $state, RedirectBehaviour $behaviour): string

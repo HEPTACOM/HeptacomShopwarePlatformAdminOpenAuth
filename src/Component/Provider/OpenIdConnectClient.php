@@ -14,14 +14,10 @@ use Psr\Http\Message\RequestInterface;
 
 final class OpenIdConnectClient extends ClientContract
 {
-    private TokenPairFactoryContract $tokenPairFactory;
-
-    private OpenIdConnectService $openIdConnectService;
-
-    public function __construct(TokenPairFactoryContract $tokenPairFactory, OpenIdConnectService $openIdConnectService)
-    {
-        $this->tokenPairFactory = $tokenPairFactory;
-        $this->openIdConnectService = $openIdConnectService;
+    public function __construct(
+        private readonly TokenPairFactoryContract $tokenPairFactory,
+        private readonly OpenIdConnectService $openIdConnectService
+    ) {
     }
 
     public function getLoginUrl(?string $state, RedirectBehaviour $behaviour): string

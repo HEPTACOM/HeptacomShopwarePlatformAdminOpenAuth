@@ -15,8 +15,9 @@ use Shopware\Core\System\User\UserCollection;
 
 final class UserKey implements UserKeyInterface
 {
-    public function __construct(private readonly EntityRepository $userKeysRepository)
-    {
+    public function __construct(
+        private readonly EntityRepository $userKeysRepository,
+    ) {
     }
 
     public function add(string $userId, string $primaryKey, string $clientId, Context $context): string

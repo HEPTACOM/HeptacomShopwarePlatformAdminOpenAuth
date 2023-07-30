@@ -12,8 +12,9 @@ use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
 
 final class ClientFeatureChecker implements ClientFeatureCheckerInterface
 {
-    public function __construct(private readonly EntityRepository $clientsRepository)
-    {
+    public function __construct(
+        private readonly EntityRepository $clientsRepository,
+    ) {
     }
 
     public function canLogin(string $clientId, Context $context): bool

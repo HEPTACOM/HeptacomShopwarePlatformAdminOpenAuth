@@ -15,8 +15,11 @@ use Shopware\Core\Framework\Context;
 
 final class TokenRefresher implements TokenRefresherInterface
 {
-    public function __construct(private readonly UserTokenInterface $userToken, private readonly ClientLoaderInterface $clientLoader, private readonly ClientFeatureCheckerInterface $clientFeatureChecker)
-    {
+    public function __construct(
+        private readonly UserTokenInterface $userToken,
+        private readonly ClientLoaderInterface $clientLoader,
+        private readonly ClientFeatureCheckerInterface $clientFeatureChecker,
+    ) {
     }
 
     public function refresh(string $clientId, string $userId, int $secondsValid, Context $context): ?TokenPair

@@ -16,8 +16,10 @@ final class MicrosoftAzureOidcProvider extends ClientProviderContract
 {
     public const PROVIDER_NAME = 'microsoft_azure_oidc';
 
-    public function __construct(private readonly TokenPairFactoryContract $tokenPairFactory, private readonly OpenIdConnectService $openIdConnectService)
-    {
+    public function __construct(
+        private readonly TokenPairFactoryContract $tokenPairFactory,
+        private readonly OpenIdConnectService $openIdConnectService,
+    ) {
     }
 
     public function provides(): string

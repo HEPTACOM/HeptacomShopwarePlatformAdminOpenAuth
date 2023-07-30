@@ -17,8 +17,10 @@ final class OneLoginProvider extends ClientProviderContract
 {
     public const PROVIDER_NAME = 'onelogin';
 
-    public function __construct(private readonly TokenPairFactoryContract $tokenPairFactory, private readonly OpenIdConnectService $openIdConnectService)
-    {
+    public function __construct(
+        private readonly TokenPairFactoryContract $tokenPairFactory,
+        private readonly OpenIdConnectService $openIdConnectService,
+    ) {
     }
 
     public function provides(): string

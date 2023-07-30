@@ -14,8 +14,10 @@ use Shopware\Core\Framework\DataAbstractionLayer\Write\WriteResult;
 
 abstract class DefaultInjectingEntityWriterDecorator implements EntityWriterInterface
 {
-    public function __construct(private readonly EntityWriterInterface $decorated, private readonly EntityWriteGatewayInterface $writeGateway)
-    {
+    public function __construct(
+        private readonly EntityWriterInterface $decorated,
+        private readonly EntityWriteGatewayInterface $writeGateway
+    ) {
     }
 
     public function sync(array $operations, WriteContext $context): WriteResult
