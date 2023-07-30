@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\Contract\Client\Exception;
 
-use Heptacom\OpenAuth\Client\Exception\FactorizeClientException;
 use Throwable;
 
 final class FactorizeClientInvalidConfigurationException extends FactorizeClientException
