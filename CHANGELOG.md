@@ -17,6 +17,7 @@
 **Removed**
 
 * Removed dependency `heptacom/open-auth` and ship its components with the plugin
+* Removed Microsoft Azure (non OIDC) and the required dependency `thenetworg/oauth2-azure`
 
 # 4.3.0-beta.2
 
