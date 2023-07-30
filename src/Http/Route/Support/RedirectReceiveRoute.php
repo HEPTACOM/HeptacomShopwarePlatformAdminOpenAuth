@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\Http\Route\Support;
 
+use Heptacom\AdminOpenAuth\Contract\Client\ClientFactoryContract;
 use Heptacom\OpenAuth\Behaviour\RedirectBehaviour;
-use Heptacom\OpenAuth\Client\Contract\ClientFactoryContract;
 use Heptacom\OpenAuth\Route\Exception\RedirectReceiveException;
 use Heptacom\OpenAuth\Route\Exception\RedirectReceiveMissingStateException;
 use Heptacom\OpenAuth\Route\UserRedirectReceivedEvent;
