@@ -1,8 +1,6 @@
 import template from './provider-settings.html.twig';
 
-const { Component } = Shopware;
-
-Component.register('heptacom-admin-open-auth-provider-jira-settings', {
+export default {
     template,
 
     props: {
@@ -10,4 +8,4 @@ Component.register('heptacom-admin-open-auth-provider-jira-settings', {
             required: true,
         },
     },
-});
+};

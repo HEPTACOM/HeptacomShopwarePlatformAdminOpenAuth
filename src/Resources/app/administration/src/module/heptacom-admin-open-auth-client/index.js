@@ -1,9 +1,10 @@
-import './acl';
-import './page/create';
-import './page/edit';
-import './page/listing';
+const { Component, Module } = Shopware;
 
-const { Module } = Shopware;
+import './acl';
+
+Component.register('heptacom-admin-open-auth-client-create-page', () => import ('./page/create'));
+Component.register('heptacom-admin-open-auth-client-edit-page', () => import ('./page/edit'));
+Component.register('heptacom-admin-open-auth-client-listing-page', () => import ('./page/listing'));
 
 Module.register('heptacom-admin-open-auth-client', {
     type: 'plugin',

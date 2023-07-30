@@ -12,6 +12,7 @@
 * Changed `view/administration/index-js.html.twig` to only check for relevant route matches
 * Changed `view/administration/index-js.html.twig` to allow login in `sw-inactivity-login`
 * Changed login payload to store the requested redirect url
+* Changed loading of custom Admin Vue components to asynchronous loading
 
 **Removed**
 

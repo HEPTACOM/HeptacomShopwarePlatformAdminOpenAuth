@@ -1,10 +1,10 @@
 import './heptacom-admin-open-auth-client-listing-page.scss';
 import template from './heptacom-admin-open-auth-client-listing-page.html.twig';
 
-const { Component, Context, Data, Mixin } = Shopware;
+const { Context, Data, Mixin } = Shopware;
 const { Criteria } = Data;
 
-Component.register('heptacom-admin-open-auth-client-listing-page', {
+export default {
     template,
 
     inject: [
@@ -117,4 +117,4 @@ Component.register('heptacom-admin-open-auth-client-listing-page', {
             return '#cc0000';
         }
     }
-});
+};

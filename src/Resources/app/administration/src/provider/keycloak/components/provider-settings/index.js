@@ -1,8 +1,6 @@
 import template from './provider-settings.html.twig';
 
-const { Component } = Shopware;
-
-Component.register('heptacom-admin-open-auth-provider-keycloak-settings', {
+export default {
     template,
 
     props: {
@@ -33,4 +31,4 @@ Component.register('heptacom-admin-open-auth-provider-keycloak-settings', {
             }
         }
     }
-});
+};

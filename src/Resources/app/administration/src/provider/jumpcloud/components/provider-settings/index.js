@@ -1,8 +1,6 @@
 import template from './provider-settings.html.twig';
 
-const { Component } = Shopware;
-
-Component.register('heptacom-admin-open-auth-provider-jumpcloud-settings', {
+export default {
     template,
 
     props: {
@@ -30,4 +28,4 @@ Component.register('heptacom-admin-open-auth-provider-jumpcloud-settings', {
             }
         }
     },
-});
+};

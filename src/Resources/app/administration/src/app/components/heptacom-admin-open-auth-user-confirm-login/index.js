@@ -4,7 +4,7 @@ import template from './heptacom-admin-open-auth-user-confirm-login.html.twig';
 const { Component, Context } = Shopware;
 const confirmStateKey = 'HeptacomAdminOpenAuthConfirmState';
 
-Component.register('heptacom-admin-open-auth-user-confirm-login', {
+export default {
     template,
 
     inject: [
@@ -150,4 +150,4 @@ Component.register('heptacom-admin-open-auth-user-confirm-login', {
             });
         }
     }
-});
+};
