@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Heptacom\AdminOpenAuth\Service\Provider;
 
 use Heptacom\AdminOpenAuth\Component\Provider\JiraClient;
+use Heptacom\AdminOpenAuth\Contract\ClientProvider\ClientProviderContract;
 use Heptacom\AdminOpenAuth\Service\TokenPairFactoryContract;
 use Heptacom\OpenAuth\Client\Contract\ClientContract;
-use Heptacom\OpenAuth\ClientProvider\Contract\ClientProviderContract;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 

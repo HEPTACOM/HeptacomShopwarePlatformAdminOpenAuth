@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\Contract\ClientProvider;
 
-use Heptacom\OpenAuth\ClientProvider\Contract\ClientProviderContract;
-
 class ClientProviderRepositoryContract
 {
     /**
