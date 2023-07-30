@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\Contract\Route\Exception;
 
-use Heptacom\OpenAuth\Route\Exception\RedirectReceiveException;
 use Throwable;
 
 final class RedirectReceiveMissingStateException extends RedirectReceiveException
