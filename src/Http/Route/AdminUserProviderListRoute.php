@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\Http\Route;
 
-use Heptacom\OpenAuth\ClientProvider\Contract\ClientProviderRepositoryContract;
+use Heptacom\AdminOpenAuth\Contract\ClientProvider\ClientProviderRepositoryContract;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;

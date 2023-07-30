@@ -93,6 +93,10 @@ services:
         arguments:
             - '@Heptacom\OpenAuth\ClientProvider\Contract\ClientProviderRepositoryContract'
 
+    Heptacom\AdminOpenAuth\Contract\ClientProvider\ClientProviderRepositoryContract:
+        arguments:
+            - !tagged_iterator heptacom_open_auth.client_provider
+
     Heptacom\AdminOpenAuth\Http\Route\Support\RedirectReceiveRoute:
         arguments:
             - '@Heptacom\AdminOpenAuth\Contract\Client\ClientFactoryContract'

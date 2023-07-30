@@ -6,6 +6,7 @@ namespace Heptacom\AdminOpenAuth\Service;
 
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Heptacom\AdminOpenAuth\Contract\ClientLoaderInterface;
+use Heptacom\AdminOpenAuth\Contract\ClientProvider\ClientProviderRepositoryContract;
 use Heptacom\AdminOpenAuth\Contract\Client\ClientFactoryContract;
 use Heptacom\AdminOpenAuth\Contract\ConfigurationRefresherClientProviderContract;
 use Heptacom\AdminOpenAuth\Database\ClientCollection;
@@ -15,7 +16,6 @@ use Heptacom\AdminOpenAuth\Exception\LoadClientException;
 use Heptacom\OpenAuth\Client\Contract\ClientContract;
 use Heptacom\OpenAuth\Client\Exception\FactorizeClientException;
 use Heptacom\OpenAuth\ClientProvider\Contract\ClientProviderContract;
-use Heptacom\OpenAuth\ClientProvider\Contract\ClientProviderRepositoryContract;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\Uuid\Uuid;

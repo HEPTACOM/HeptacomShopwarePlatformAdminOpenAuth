@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\Contract\Client;
 
+use Heptacom\AdminOpenAuth\Contract\ClientProvider\ClientProviderRepositoryContract;
 use Heptacom\OpenAuth\Client\Contract\ClientContract;
 use Heptacom\OpenAuth\Client\Exception\FactorizeClientInvalidConfigurationException;
 use Heptacom\OpenAuth\Client\Exception\FactorizeClientProviderFailedException;
 use Heptacom\OpenAuth\Client\Exception\FactorizeClientProviderNotFoundException;
 use Heptacom\OpenAuth\ClientProvider\Contract\ClientProviderContract;
-use Heptacom\OpenAuth\ClientProvider\Contract\ClientProviderRepositoryContract;
 use Heptacom\OpenAuth\ClientProvider\Exception\ProvideClientException;
 
 class ClientFactoryContract
