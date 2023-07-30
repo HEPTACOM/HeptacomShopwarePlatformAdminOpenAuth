@@ -8,9 +8,9 @@ use GuzzleHttp\Psr7\Uri;
 use Heptacom\AdminOpenAuth\Component\OpenIdConnect\OpenIdConnectConfiguration;
 use Heptacom\AdminOpenAuth\Component\OpenIdConnect\OpenIdConnectService;
 use Heptacom\AdminOpenAuth\Component\Provider\OpenIdConnectClient;
+use Heptacom\AdminOpenAuth\Contract\Client\ClientContract;
 use Heptacom\AdminOpenAuth\Contract\ClientProvider\ClientProviderContract;
 use Heptacom\AdminOpenAuth\Service\TokenPairFactoryContract;
-use Heptacom\OpenAuth\Client\Contract\ClientContract;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class CidaasProvider extends ClientProviderContract

@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Heptacom\AdminOpenAuth\Component\Provider;
 
 use Heptacom\AdminOpenAuth\Component\Saml\Saml2ServiceProviderService;
+use Heptacom\AdminOpenAuth\Contract\Client\ClientContract;
 use Heptacom\AdminOpenAuth\Contract\MetadataClientContract;
 use Heptacom\AdminOpenAuth\Contract\ModifiedRedirectBehaviourClientContract;
 use Heptacom\OpenAuth\Behaviour\RedirectBehaviour;
-use Heptacom\OpenAuth\Client\Contract\ClientContract;
 use Heptacom\OpenAuth\Struct\TokenPairStruct;
 use Heptacom\OpenAuth\Struct\UserStruct;
 use Psr\Http\Message\RequestInterface;

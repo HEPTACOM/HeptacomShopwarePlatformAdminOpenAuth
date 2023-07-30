@@ -6,7 +6,6 @@ namespace Heptacom\AdminOpenAuth\Contract\Client;
 
 use Heptacom\AdminOpenAuth\Contract\ClientProvider\ClientProviderContract;
 use Heptacom\AdminOpenAuth\Contract\ClientProvider\ClientProviderRepositoryContract;
-use Heptacom\OpenAuth\Client\Contract\ClientContract;
 use Heptacom\OpenAuth\Client\Exception\FactorizeClientInvalidConfigurationException;
 use Heptacom\OpenAuth\Client\Exception\FactorizeClientProviderFailedException;
 use Heptacom\OpenAuth\Client\Exception\FactorizeClientProviderNotFoundException;

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\Contract\ClientProvider;
 
-use Heptacom\OpenAuth\Client\Contract\ClientContract;
+use Heptacom\AdminOpenAuth\Contract\Client\ClientContract;
 use Heptacom\OpenAuth\ClientProvider\Exception\ProvideClientException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
