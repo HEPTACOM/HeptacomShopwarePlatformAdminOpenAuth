@@ -7,8 +7,8 @@ namespace Heptacom\AdminOpenAuth\Service\AuthorizationUrl;
 use Heptacom\AdminOpenAuth\Contract\AuthorizationUrl\LoginUrlGeneratorInterface;
 use Heptacom\AdminOpenAuth\Contract\ClientFeatureCheckerInterface;
 use Heptacom\AdminOpenAuth\Contract\ClientLoaderInterface;
+use Heptacom\AdminOpenAuth\Contract\RedirectBehaviour;
 use Heptacom\AdminOpenAuth\Exception\LoadClientException;
-use Heptacom\OpenAuth\Behaviour\RedirectBehaviour;
 use Shopware\Core\Framework\Context;
 
 final class LoginUrlGenerator implements LoginUrlGeneratorInterface

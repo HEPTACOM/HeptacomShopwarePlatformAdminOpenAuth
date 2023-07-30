@@ -8,7 +8,7 @@ use Heptacom\AdminOpenAuth\Component\Saml\Saml2ServiceProviderService;
 use Heptacom\AdminOpenAuth\Contract\Client\ClientContract;
 use Heptacom\AdminOpenAuth\Contract\MetadataClientContract;
 use Heptacom\AdminOpenAuth\Contract\ModifiedRedirectBehaviourClientContract;
-use Heptacom\OpenAuth\Behaviour\RedirectBehaviour;
+use Heptacom\AdminOpenAuth\Contract\RedirectBehaviour;
 use Heptacom\OpenAuth\Struct\TokenPairStruct;
 use Heptacom\OpenAuth\Struct\UserStruct;
 use Psr\Http\Message\RequestInterface;
@@ -109,8 +109,8 @@ final class Saml2ServiceProviderClient extends ClientContract implements Metadat
 
     public function modifyRedirectBehaviour(RedirectBehaviour $behaviour): void
     {
-        $behaviour->setStateKey('RelayState');
-        $behaviour->setCodeKey('SAMLResponse');
+        $behaviour->stateKey = 'RelayState';
+        $behaviour->codeKey = 'SAMLResponse';
     }
 
     public function getInnerClient(): Saml2ServiceProviderService

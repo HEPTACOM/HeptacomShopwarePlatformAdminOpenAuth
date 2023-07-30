@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\Contract\AuthorizationUrl;
 
-use Heptacom\OpenAuth\Behaviour\RedirectBehaviour;
+use Heptacom\AdminOpenAuth\Contract\RedirectBehaviour;
 use Shopware\Core\Framework\Context;
 
 interface LoginUrlGeneratorInterface

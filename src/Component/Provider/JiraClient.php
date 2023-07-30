@@ -6,8 +6,8 @@ namespace Heptacom\AdminOpenAuth\Component\Provider;
 
 use Heptacom\AdminOpenAuth\Component\OpenAuth\Atlassian;
 use Heptacom\AdminOpenAuth\Contract\Client\ClientContract;
+use Heptacom\AdminOpenAuth\Contract\RedirectBehaviour;
 use Heptacom\AdminOpenAuth\Service\TokenPairFactoryContract;
-use Heptacom\OpenAuth\Behaviour\RedirectBehaviour;
 use Heptacom\OpenAuth\Struct\TokenPairStruct;
 use Heptacom\OpenAuth\Struct\UserStruct;
 use Mrjoops\OAuth2\Client\Provider\JiraResourceOwner;
@@ -30,12 +30,12 @@ final class JiraClient extends ClientContract
         $state = $state ?? '';
         $params = [];
 
-        if (\is_string($behaviour->getRedirectUri())) {
-            $params['redirect_uri'] = $behaviour->getRedirectUri();
+        if (\is_string($behaviour->redirectUri)) {
+            $params['redirect_uri'] = $behaviour->redirectUri;
         }
 
         if ($state !== '') {
-            $params[$behaviour->getStateKey()] = $state;
+            $params[$behaviour->stateKey] = $state;
         }
 
         return $this->getInnerClient()->getAuthorizationUrl($params);
@@ -50,10 +50,10 @@ final class JiraClient extends ClientContract
 
     public function getUser(string $state, string $code, RedirectBehaviour $behaviour): UserStruct
     {
-        $options = [$behaviour->getCodeKey() => $code];
+        $options = [$behaviour->codeKey => $code];
 
-        if (\is_string($behaviour->getRedirectUri())) {
-            $options['redirect_uri'] = $behaviour->getRedirectUri();
+        if (\is_string($behaviour->redirectUri)) {
+            $options['redirect_uri'] = $behaviour->redirectUri;
         }
 
         $token = $this->getInnerClient()->getAccessToken('authorization_code', $options);

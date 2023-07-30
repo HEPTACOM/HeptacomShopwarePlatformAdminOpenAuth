@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Heptacom\AdminOpenAuth\Http\Route\Support;
 
 use Heptacom\AdminOpenAuth\Contract\Client\ClientFactoryContract;
+use Heptacom\AdminOpenAuth\Contract\RedirectBehaviour;
 use Heptacom\AdminOpenAuth\Contract\Route\Exception\RedirectReceiveException;
 use Heptacom\AdminOpenAuth\Contract\Route\Exception\RedirectReceiveMissingStateException;
-use Heptacom\OpenAuth\Behaviour\RedirectBehaviour;
 use Heptacom\OpenAuth\Struct\UserStruct;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\RequestInterface;
@@ -38,11 +38,11 @@ class RedirectReceiveRoute
 
         $params = array_merge($getParams, $postParams);
 
-        $state = (string) ($params[$behaviour->getStateKey()] ?? '');
-        $code = (string) ($params[$behaviour->getCodeKey()] ?? '');
+        $state = (string) ($params[$behaviour->stateKey] ?? '');
+        $code = (string) ($params[$behaviour->codeKey] ?? '');
 
-        if ($state === '' && $behaviour->isExpectState()) {
-            throw new RedirectReceiveMissingStateException($params, $behaviour->getStateKey());
+        if ($state === '' && $behaviour->expectState) {
+            throw new RedirectReceiveMissingStateException($params, $behaviour->stateKey);
         }
 
         $client = $this->clientFactory->create($providerKey, $configuration);
