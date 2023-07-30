@@ -48,7 +48,7 @@ class RedirectReceiveRoute
         $client = $this->clientFactory->create($providerKey, $configuration);
         $user = $client->getUser($state, $code, $behaviour);
         $user->addArrayExtension('requestState', [
-            'requestState' =>
+            'requestState' => $state,
         ]);
 
         $this->eventDispatcher->dispatch(new UserRedirectReceivedEvent($user, $request, $behaviour));
