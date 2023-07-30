@@ -13,6 +13,10 @@
 * Changed `view/administration/index-js.html.twig` to allow login in `sw-inactivity-login`
 * Changed login payload to store the requested redirect url
 
+**Removed**
+
+* Removed dependency `heptacom/open-auth` and ship its components with the plugin
+
 # 4.3.0-beta.2
 
 **Fixed**
