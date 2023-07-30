@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Heptacom\AdminOpenAuth\Service;
 
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
+use Heptacom\AdminOpenAuth\Contract\TokenPair;
 use Heptacom\AdminOpenAuth\Contract\UserTokenInterface;
 use Heptacom\AdminOpenAuth\Database\UserTokenCollection;
 use Heptacom\AdminOpenAuth\Database\UserTokenEntity;
-use Heptacom\OpenAuth\Struct\TokenPairStruct;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
@@ -20,7 +20,7 @@ final class UserToken implements UserTokenInterface
     {
     }
 
-    public function setToken(string $userId, string $clientId, TokenPairStruct $token, Context $context): string
+    public function setToken(string $userId, string $clientId, TokenPair $token, Context $context): string
     {
         $criteria = new Criteria();
         $criteria->addFilter(
@@ -33,12 +33,12 @@ final class UserToken implements UserTokenInterface
             $id = $exists->firstId();
             $payload = [
                 'id' => $id,
-                'accessToken' => $token->getAccessToken(),
-                'expiresAt' => $token->getExpiresAt(),
+                'accessToken' => $token->accessToken,
+                'expiresAt' => $token->expiresAt,
             ];
 
-            if ($token->getRefreshToken() !== null) {
-                $payload['refreshToken'] = $token->getRefreshToken();
+            if ($token->refreshToken !== null) {
+                $payload['refreshToken'] = $token->refreshToken;
             }
 
             $this->userTokensRepository->update([$payload], $context);
@@ -50,9 +50,9 @@ final class UserToken implements UserTokenInterface
         $this->userTokensRepository->create([[
             'id' => $id,
             'userId' => $userId,
-            'refreshToken' => $token->getRefreshToken(),
-            'accessToken' => $token->getAccessToken(),
-            'expiresAt' => $token->getExpiresAt(),
+            'refreshToken' => $token->refreshToken,
+            'accessToken' => $token->accessToken,
+            'expiresAt' => $token->expiresAt,
             'clientId' => $clientId,
         ]], $context);
 

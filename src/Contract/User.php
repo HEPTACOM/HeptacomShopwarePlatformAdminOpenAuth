@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\Contract;
 
-use Heptacom\OpenAuth\Struct\TokenPairStruct;
 use Shopware\Core\Framework\Struct\Struct;
 
 final class User extends Struct
@@ -28,5 +27,5 @@ final class User extends Struct
 
     public string $primaryKey = '';
 
-    public ?TokenPairStruct $tokenPair = null;
+    public ?TokenPair $tokenPair = null;
 }

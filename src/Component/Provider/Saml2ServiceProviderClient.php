@@ -9,8 +9,8 @@ use Heptacom\AdminOpenAuth\Contract\Client\ClientContract;
 use Heptacom\AdminOpenAuth\Contract\MetadataClientContract;
 use Heptacom\AdminOpenAuth\Contract\ModifiedRedirectBehaviourClientContract;
 use Heptacom\AdminOpenAuth\Contract\RedirectBehaviour;
+use Heptacom\AdminOpenAuth\Contract\TokenPair;
 use Heptacom\AdminOpenAuth\Contract\User;
-use Heptacom\OpenAuth\Struct\TokenPairStruct;
 use Psr\Http\Message\RequestInterface;
 
 final class Saml2ServiceProviderClient extends ClientContract implements MetadataClientContract, ModifiedRedirectBehaviourClientContract
@@ -35,7 +35,7 @@ final class Saml2ServiceProviderClient extends ClientContract implements Metadat
         return $this->getInnerClient()->getAuthnRequestRedirectUri($state);
     }
 
-    public function refreshToken(string $refreshToken): TokenPairStruct
+    public function refreshToken(string $refreshToken): TokenPair
     {
         throw new \Exception('Not supported.');
     }
@@ -92,7 +92,7 @@ final class Saml2ServiceProviderClient extends ClientContract implements Metadat
         return $user;
     }
 
-    public function authorizeRequest(RequestInterface $request, TokenPairStruct $token): RequestInterface
+    public function authorizeRequest(RequestInterface $request, TokenPair $token): RequestInterface
     {
         throw new \RuntimeException('Not supported');
     }

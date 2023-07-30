@@ -7,9 +7,9 @@ namespace Heptacom\AdminOpenAuth\Component\Provider;
 use Heptacom\AdminOpenAuth\Component\OpenIdConnect\OpenIdConnectService;
 use Heptacom\AdminOpenAuth\Contract\Client\ClientContract;
 use Heptacom\AdminOpenAuth\Contract\RedirectBehaviour;
+use Heptacom\AdminOpenAuth\Contract\TokenPair;
 use Heptacom\AdminOpenAuth\Contract\User;
 use Heptacom\AdminOpenAuth\Service\TokenPairFactoryContract;
-use Heptacom\OpenAuth\Struct\TokenPairStruct;
 use Psr\Http\Message\RequestInterface;
 
 final class OpenIdConnectClient extends ClientContract
@@ -40,7 +40,7 @@ final class OpenIdConnectClient extends ClientContract
         return $this->getInnerClient()->getAuthorizationUrl($params);
     }
 
-    public function refreshToken(string $refreshToken): TokenPairStruct
+    public function refreshToken(string $refreshToken): TokenPair
     {
         return $this->tokenPairFactory->fromOpenIdConnectToken($this->getInnerClient()->getAccessToken('refresh_token', [
             'refresh_token' => $refreshToken,
@@ -84,9 +84,9 @@ final class OpenIdConnectClient extends ClientContract
         return $result;
     }
 
-    public function authorizeRequest(RequestInterface $request, TokenPairStruct $token): RequestInterface
+    public function authorizeRequest(RequestInterface $request, TokenPair $token): RequestInterface
     {
-        return $request->withAddedHeader('Authorization', 'Bearer ' . $token->getAccessToken());
+        return $request->withAddedHeader('Authorization', 'Bearer ' . $token->accessToken);
     }
 
     public function getInnerClient(): OpenIdConnectService

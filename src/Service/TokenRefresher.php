@@ -6,11 +6,11 @@ namespace Heptacom\AdminOpenAuth\Service;
 
 use Heptacom\AdminOpenAuth\Contract\ClientFeatureCheckerInterface;
 use Heptacom\AdminOpenAuth\Contract\ClientLoaderInterface;
+use Heptacom\AdminOpenAuth\Contract\TokenPair;
 use Heptacom\AdminOpenAuth\Contract\TokenRefresherInterface;
 use Heptacom\AdminOpenAuth\Contract\UserTokenInterface;
 use Heptacom\AdminOpenAuth\Database\UserTokenEntity;
 use Heptacom\AdminOpenAuth\Exception\LoadClientException;
-use Heptacom\OpenAuth\Struct\TokenPairStruct;
 use Shopware\Core\Framework\Context;
 
 final class TokenRefresher implements TokenRefresherInterface
@@ -19,7 +19,7 @@ final class TokenRefresher implements TokenRefresherInterface
     {
     }
 
-    public function refresh(string $clientId, string $userId, int $secondsValid, Context $context): ?TokenPairStruct
+    public function refresh(string $clientId, string $userId, int $secondsValid, Context $context): ?TokenPair
     {
         if (!$this->clientFeatureChecker->canStoreUserTokens($clientId, $context)) {
             return null;
@@ -33,10 +33,12 @@ final class TokenRefresher implements TokenRefresherInterface
                 $expirationDelta = $token->expiresAt->getTimestamp() - $now->getTimestamp();
 
                 if ($expirationDelta > $secondsValid && $expirationDelta > 0) {
-                    return (new TokenPairStruct())
-                        ->setAccessToken($token->accessToken)
-                        ->setExpiresAt($token->expiresAt)
-                        ->setRefreshToken($token->refreshToken);
+                    $result = new TokenPair();
+                    $result->accessToken = $token->accessToken;
+                    $result->expiresAt = $token->expiresAt;
+                    $result->refreshToken = $token->refreshToken;
+
+                    return $result;
                 }
             }
 

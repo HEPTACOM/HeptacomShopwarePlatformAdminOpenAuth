@@ -7,9 +7,9 @@ namespace Heptacom\AdminOpenAuth\Component\Provider;
 use Heptacom\AdminOpenAuth\Component\OpenAuth\Atlassian;
 use Heptacom\AdminOpenAuth\Contract\Client\ClientContract;
 use Heptacom\AdminOpenAuth\Contract\RedirectBehaviour;
+use Heptacom\AdminOpenAuth\Contract\TokenPair;
 use Heptacom\AdminOpenAuth\Contract\User;
 use Heptacom\AdminOpenAuth\Service\TokenPairFactoryContract;
-use Heptacom\OpenAuth\Struct\TokenPairStruct;
 use Mrjoops\OAuth2\Client\Provider\JiraResourceOwner;
 use Psr\Http\Message\RequestInterface;
 
@@ -41,7 +41,7 @@ final class JiraClient extends ClientContract
         return $this->getInnerClient()->getAuthorizationUrl($params);
     }
 
-    public function refreshToken(string $refreshToken): TokenPairStruct
+    public function refreshToken(string $refreshToken): TokenPair
     {
         return $this->tokenPairFactory->fromLeagueToken($this->getInnerClient()->getAccessToken('refresh_token', [
             'refresh_token' => $refreshToken,
@@ -73,11 +73,11 @@ final class JiraClient extends ClientContract
         return $result;
     }
 
-    public function authorizeRequest(RequestInterface $request, TokenPairStruct $token): RequestInterface
+    public function authorizeRequest(RequestInterface $request, TokenPair $token): RequestInterface
     {
         $result = $request;
 
-        foreach ($this->getInnerClient()->getHeaders($token->getAccessToken()) as $headerKey => $headerValue) {
+        foreach ($this->getInnerClient()->getHeaders($token->accessToken) as $headerKey => $headerValue) {
             $result = $result->withAddedHeader($headerKey, $headerValue);
         }
 
