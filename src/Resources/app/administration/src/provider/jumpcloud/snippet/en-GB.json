@@ -1,15 +1,15 @@
 {
     "heptacomAdminOpenAuthClient": {
-        "providers": {
-            "jumpcloud": {
-                "label": "JumpCloud",
-                "logoFile": "saml2_logo.svg",
-                "helpUrl": "https://support.jumpcloud.com/support/s/article/single-sign-on-sso-with-saml-20-connector1"
-            }
-        },
         "providerFields": {
             "jumpcloud": {
                 "identityProviderMetadataXml": "JumpCloud Metadata XML"
+            }
+        },
+        "providers": {
+            "jumpcloud": {
+                "helpUrl": "https://support.jumpcloud.com/support/s/article/single-sign-on-sso-with-saml-20-connector1",
+                "label": "JumpCloud",
+                "logoFile": "saml2_logo.svg"
             }
         }
     }

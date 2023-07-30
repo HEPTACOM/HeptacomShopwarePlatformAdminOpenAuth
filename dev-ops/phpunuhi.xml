@@ -4,13 +4,143 @@
     xsi:noNamespaceSchemaLocation="bin/phpunuhi/vendor/boxblinkracer/phpunuhi/config.xsd"
 >
     <translations>
-        <set name="Administration">
+        <set name="Administration global snippets">
             <format>
                 <json indent="4" sort="true"/>
             </format>
             <locales>
                 <locale name="en">../src/Resources/app/administration/src/snippet/en-GB.json</locale>
                 <locale name="de">../src/Resources/app/administration/src/snippet/de-DE.json</locale>
+            </locales>
+        </set>
+
+        <set name="Administration setings">
+            <format>
+                <json indent="4" sort="true"/>
+            </format>
+            <locales>
+                <locale name="en">../src/Resources/app/administration/src/extension/snippet/en-GB.json</locale>
+                <locale name="de">../src/Resources/app/administration/src/extension/snippet/de-DE.json</locale>
+            </locales>
+        </set>
+
+        <set name="Administration user confirm login component">
+            <format>
+                <json indent="4" sort="true"/>
+            </format>
+            <locales>
+                <locale name="en">../src/Resources/app/administration/src/app/components/heptacom-admin-open-auth-user-confirm-login/snippet/en-GB.json</locale>
+                <locale name="de">../src/Resources/app/administration/src/app/components/heptacom-admin-open-auth-user-confirm-login/snippet/de-DE.json</locale>
+            </locales>
+        </set>
+
+        <set name="Administration admin auth module">
+            <format>
+                <json indent="4" sort="true"/>
+            </format>
+            <locales>
+                <locale name="en">../src/Resources/app/administration/src/module/heptacom-admin-open-auth-client/snippet/en-GB.json</locale>
+                <locale name="de">../src/Resources/app/administration/src/module/heptacom-admin-open-auth-client/snippet/de-DE.json</locale>
+            </locales>
+        </set>
+
+        <set name="Administration provider SAML">
+            <format>
+                <json indent="4" sort="true"/>
+            </format>
+            <locales>
+                <locale name="en">../src/Resources/app/administration/src/provider/saml2/snippet/en-GB.json</locale>
+                <locale name="de">../src/Resources/app/administration/src/provider/saml2/snippet/de-DE.json</locale>
+            </locales>
+        </set>
+
+        <set name="Administration provider OneLogin">
+            <format>
+                <json indent="4" sort="true"/>
+            </format>
+            <locales>
+                <locale name="en">../src/Resources/app/administration/src/provider/onelogin/snippet/en-GB.json</locale>
+                <locale name="de">../src/Resources/app/administration/src/provider/onelogin/snippet/de-DE.json</locale>
+            </locales>
+        </set>
+
+        <set name="Administration provider Google Cloud">
+            <format>
+                <json indent="4" sort="true"/>
+            </format>
+            <locales>
+                <locale name="en">../src/Resources/app/administration/src/provider/google_cloud/snippet/en-GB.json</locale>
+                <locale name="de">../src/Resources/app/administration/src/provider/google_cloud/snippet/de-DE.json</locale>
+            </locales>
+        </set>
+
+        <set name="Administration provider Jira">
+            <format>
+                <json indent="4" sort="true"/>
+            </format>
+            <locales>
+                <locale name="en">../src/Resources/app/administration/src/provider/jira/snippet/en-GB.json</locale>
+                <locale name="de">../src/Resources/app/administration/src/provider/jira/snippet/de-DE.json</locale>
+            </locales>
+        </set>
+
+        <set name="Administration provider OIDC">
+            <format>
+                <json indent="4" sort="true"/>
+            </format>
+            <locales>
+                <locale name="en">../src/Resources/app/administration/src/provider/open_id_connect/snippet/en-GB.json</locale>
+                <locale name="de">../src/Resources/app/administration/src/provider/open_id_connect/snippet/de-DE.json</locale>
+            </locales>
+        </set>
+
+        <set name="Administration provider Okta">
+            <format>
+                <json indent="4" sort="true"/>
+            </format>
+            <locales>
+                <locale name="en">../src/Resources/app/administration/src/provider/okta/snippet/en-GB.json</locale>
+                <locale name="de">../src/Resources/app/administration/src/provider/okta/snippet/de-DE.json</locale>
+            </locales>
+        </set>
+
+        <set name="Administration provider Jumpcloud">
+            <format>
+                <json indent="4" sort="true"/>
+            </format>
+            <locales>
+                <locale name="en">../src/Resources/app/administration/src/provider/jumpcloud/snippet/en-GB.json</locale>
+                <locale name="de">../src/Resources/app/administration/src/provider/jumpcloud/snippet/de-DE.json</locale>
+            </locales>
+        </set>
+
+        <set name="Administration provider Keycloak">
+            <format>
+                <json indent="4" sort="true"/>
+            </format>
+            <locales>
+                <locale name="en">../src/Resources/app/administration/src/provider/keycloak/snippet/en-GB.json</locale>
+                <locale name="de">../src/Resources/app/administration/src/provider/keycloak/snippet/de-DE.json</locale>
+            </locales>
+        </set>
+
+        <set name="Administration provider Microsoft Azure OIDC">
+            <format>
+                <json indent="4" sort="true"/>
+            </format>
+            <locales>
+                <locale name="en">../src/Resources/app/administration/src/provider/microsoft_azure_oidc/snippet/en-GB.json</locale>
+                <locale name="de">../src/Resources/app/administration/src/provider/microsoft_azure_oidc/snippet/de-DE.json</locale>
+            </locales>
+        </set>
+
+        <set name="Administration provider CIDAAS">
+            <format>
+                <json indent="4" sort="true"/>
+            </format>
+            <locales>
+                <locale name="en">../src/Resources/app/administration/src/provider/cidaas/snippet/en-GB.json</locale>
+                <locale name="de">../src/Resources/app/administration/src/provider/cidaas/snippet/de-DE.json</locale>
             </locales>
         </set>
     </translations>

@@ -1,18 +1,18 @@
 {
     "heptacomAdminOpenAuthClient": {
-        "providers": {
-            "okta": {
-                "label": "Okta",
-                "logoFile": "okta_logo.png",
-                "helpUrl": "https://help.okta.com/en-us/Content/Topics/Apps/Apps_App_Integration_Wizard_OIDC.htm"
-            }
-        },
         "providerFields": {
             "okta": {
                 "additionalScopes": "Anwendungsberechtigungen",
-                "organizationUrl": "Okta Organisations-URL",
                 "clientId": "Client-ID",
-                "clientSecret": "Clientschlüssel"
+                "clientSecret": "Clientschlüssel",
+                "organizationUrl": "Okta Organisations-URL"
+            }
+        },
+        "providers": {
+            "okta": {
+                "helpUrl": "https://help.okta.com/en-us/Content/Topics/Apps/Apps_App_Integration_Wizard_OIDC.htm",
+                "label": "Okta",
+                "logoFile": "okta_logo.png"
             }
         }
     }

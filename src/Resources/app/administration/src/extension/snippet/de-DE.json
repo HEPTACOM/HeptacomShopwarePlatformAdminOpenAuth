@@ -1,17 +1,17 @@
 {
     "sw-profile-index": {
-        "titleHeptacomAdminOpenAuthCard": "Single Sign-on",
         "heptacomAdminOpenAuth": {
             "userKeys": {
-                "columns": {
-                    "provider": "Anbieter",
-                    "createdAt": "Verbunden am"
-                },
                 "actions": {
                     "connect": "Verbinden",
                     "revoke": "Verbindung trennen"
+                },
+                "columns": {
+                    "createdAt": "Verbunden am",
+                    "provider": "Anbieter"
                 }
             }
-        }
+        },
+        "titleHeptacomAdminOpenAuthCard": "Single Sign-on"
     }
 }
