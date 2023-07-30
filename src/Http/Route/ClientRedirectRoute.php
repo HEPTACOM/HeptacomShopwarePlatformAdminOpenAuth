@@ -14,6 +14,7 @@ use Heptacom\AdminOpenAuth\Service\StateResolver;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
+use Shopware\Core\Framework\Struct\ArrayStruct;
 use Symfony\Bridge\PsrHttpMessage\Factory\PsrHttpFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -64,12 +65,12 @@ final class ClientRedirectRoute extends AbstractController
                 $client->config,
                 $this->redirectBehaviourFactory->createRedirectBehaviour($clientId, $context)
             );
-        $requestState = (string) $user->getPassthrough()['requestState'];
+        $requestState = (string) $user->getExtensionOfType('requestState', ArrayStruct::class)['requestState'];
 
-        $userExtension = $user->getPassthrough()[UserStructExtension::class] ?? new UserStructExtension();
+        $userExtension = $user->getExtensionOfType(UserStructExtension::class, UserStructExtension::class) ?? new UserStructExtension();
         $userExtension->setIsAdmin($client->userBecomeAdmin ?? false);
         $userExtension->setAclRoleIds($client->defaultAclRoles?->getIds() ?? []);
-        $user->addPassthrough(UserStructExtension::class, $userExtension);
+        $user->addExtension(UserStructExtension::class, $userExtension);
 
         $this->flow->upsertUser($user, $clientId, $requestState, $context);
 

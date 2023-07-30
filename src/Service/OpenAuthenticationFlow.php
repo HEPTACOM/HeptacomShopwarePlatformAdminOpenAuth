@@ -10,10 +10,10 @@ use Heptacom\AdminOpenAuth\Contract\ClientLoaderInterface;
 use Heptacom\AdminOpenAuth\Contract\LoginInterface;
 use Heptacom\AdminOpenAuth\Contract\OpenAuthenticationFlowInterface;
 use Heptacom\AdminOpenAuth\Contract\RedirectBehaviourFactoryInterface;
+use Heptacom\AdminOpenAuth\Contract\User;
 use Heptacom\AdminOpenAuth\Contract\UserResolverInterface;
 use Heptacom\AdminOpenAuth\Database\ClientEntity;
 use Heptacom\AdminOpenAuth\Exception\LoadClientException;
-use Heptacom\OpenAuth\Struct\UserStruct;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityCollection;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
@@ -66,7 +66,7 @@ final class OpenAuthenticationFlow implements OpenAuthenticationFlowInterface
             ->getLoginUrl($state, $this->redirectBehaviourFactory->createRedirectBehaviour($clientId, $context));
     }
 
-    public function upsertUser(UserStruct $user, string $clientId, string $state, Context $context): void
+    public function upsertUser(User $user, string $clientId, string $state, Context $context): void
     {
         $this->userResolver->resolve($user, $state, $clientId, $context);
     }

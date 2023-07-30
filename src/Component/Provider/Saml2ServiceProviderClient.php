@@ -9,8 +9,8 @@ use Heptacom\AdminOpenAuth\Contract\Client\ClientContract;
 use Heptacom\AdminOpenAuth\Contract\MetadataClientContract;
 use Heptacom\AdminOpenAuth\Contract\ModifiedRedirectBehaviourClientContract;
 use Heptacom\AdminOpenAuth\Contract\RedirectBehaviour;
+use Heptacom\AdminOpenAuth\Contract\User;
 use Heptacom\OpenAuth\Struct\TokenPairStruct;
-use Heptacom\OpenAuth\Struct\UserStruct;
 use Psr\Http\Message\RequestInterface;
 
 final class Saml2ServiceProviderClient extends ClientContract implements MetadataClientContract, ModifiedRedirectBehaviourClientContract
@@ -40,12 +40,12 @@ final class Saml2ServiceProviderClient extends ClientContract implements Metadat
         throw new \Exception('Not supported.');
     }
 
-    public function getUser(string $state, string $code, RedirectBehaviour $behaviour): UserStruct
+    public function getUser(string $state, string $code, RedirectBehaviour $behaviour): User
     {
         $auth = $this->getInnerClient()->validateLoginConfirmData($code, $state);
 
-        $user = new UserStruct();
-        $user->setPrimaryKey($auth->getNameId());
+        $user = new User();
+        $user->primaryKey = $auth->getNameId();
 
         $mapping = $this->getInnerClient()->getConfig()->getAttributeMapping();
         foreach ($mapping as $property => $attributeName) {
@@ -62,28 +62,28 @@ final class Saml2ServiceProviderClient extends ClientContract implements Metadat
 
             switch ($property) {
                 case 'firstName':
-                    $user->setFirstName($propertyValue);
+                    $user->firstName = $propertyValue;
 
                     break;
 
                 case 'lastName':
-                    $user->setLastName($propertyValue);
+                    $user->lastName = $propertyValue;
 
                     break;
 
                 case 'email':
-                    $user->setPrimaryEmail($propertyValue);
-                    $user->setEmails($propertyValues);
+                    $user->primaryEmail = $propertyValue;
+                    $user->emails = $propertyValues;
 
                     break;
 
                 case 'timezone':
-                    $user->setTimezone($propertyValue);
+                    $user->timezone = $propertyValue;
 
                     break;
 
                 case 'locale':
-                    $user->setLocale($propertyValue);
+                    $user->locale = $propertyValue;
 
                     break;
             }

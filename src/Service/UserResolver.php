@@ -10,12 +10,12 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;
 use Heptacom\AdminOpenAuth\Contract\ClientFeatureCheckerInterface;
 use Heptacom\AdminOpenAuth\Contract\LoginInterface;
+use Heptacom\AdminOpenAuth\Contract\User;
 use Heptacom\AdminOpenAuth\Contract\UserEmailInterface;
 use Heptacom\AdminOpenAuth\Contract\UserKeyInterface;
 use Heptacom\AdminOpenAuth\Contract\UserResolverInterface;
 use Heptacom\AdminOpenAuth\Contract\UserTokenInterface;
 use Heptacom\AdminOpenAuth\OpenAuth\Struct\UserStructExtension;
-use Heptacom\OpenAuth\Struct\UserStruct;
 use Shopware\Core\Defaults;
 use Shopware\Core\Framework\Api\Acl\Role\AclUserRoleDefinition;
 use Shopware\Core\Framework\Context;
@@ -43,7 +43,7 @@ final class UserResolver implements UserResolverInterface
     ) {
     }
 
-    public function resolve(UserStruct $user, string $state, string $clientId, Context $context): void
+    public function resolve(User $user, string $state, string $clientId, Context $context): void
     {
         $userId = $this->login->getUser($state, $context) ?? $this->findUserId($user, $clientId, $context);
         $isNew = false;
@@ -51,7 +51,7 @@ final class UserResolver implements UserResolverInterface
         if ($userId === null) {
             $isNew = true;
             $password = Random::getAlphanumericString(254);
-            $this->userProvisioner->provision($user->getPrimaryEmail(), $password, ['email' => $user->getPrimaryEmail()]);
+            $this->userProvisioner->provision($user->primaryEmail, $password, ['email' => $user->primaryEmail]);
 
             $userId = $this->findUserId($user, $clientId, $context);
         }
@@ -60,7 +60,7 @@ final class UserResolver implements UserResolverInterface
     }
 
     protected function postUpdates(
-        UserStruct $user,
+        User $user,
         string $userId,
         string $state,
         bool $isNew,
@@ -68,16 +68,16 @@ final class UserResolver implements UserResolverInterface
         Context $context
     ): void {
         if ($this->clientFeatureChecker->canStoreUserTokens($clientId, $context)
-            && ($tokenPair = $user->getTokenPair()) !== null) {
+            && ($tokenPair = $user->tokenPair) !== null) {
             if (!empty($tokenPair->getRefreshToken())) {
                 $this->userToken->setToken($userId, $clientId, $tokenPair, $context);
             }
         }
 
-        $this->userKey->add($userId, $user->getPrimaryKey(), $clientId, $context);
-        $this->userEmail->add($userId, $user->getPrimaryEmail(), $clientId, $context);
+        $this->userKey->add($userId, $user->primaryKey, $clientId, $context);
+        $this->userEmail->add($userId, $user->primaryEmail, $clientId, $context);
 
-        foreach ($user->getEmails() as $email) {
+        foreach ($user->emails as $email) {
             $this->userEmail->add($userId, $email, $clientId, $context);
         }
 
@@ -88,7 +88,7 @@ final class UserResolver implements UserResolverInterface
 
         if ($isNew) {
             /** @var UserStructExtension|null $userExtension */
-            $userExtension = $user->getPassthrough()[UserStructExtension::class] ?? null;
+            $userExtension = $user->getExtensionOfType(UserStructExtension::class, UserStructExtension::class);
 
             if (!$userExtension) {
                 return;
@@ -104,16 +104,16 @@ final class UserResolver implements UserResolverInterface
         $this->updateUser($userId, $userChangeSet, $aclRoles, $isNew);
     }
 
-    protected function findUserId(UserStruct $user, string $clientId, Context $context): ?string
+    protected function findUserId(User $user, string $clientId, Context $context): ?string
     {
-        $emails = $user->getEmails();
-        $emails[] = $user->getPrimaryEmail();
+        $emails = $user->emails;
+        $emails[] = $user->primaryEmail;
 
         if (($result = $this->userEmail->searchUser($emails, $context))->count() > 0) {
             return $result->first()->getId();
         }
 
-        if (($result = $this->userKey->searchUser($user->getPrimaryKey(), $clientId, $context))->count() > 0) {
+        if (($result = $this->userKey->searchUser($user->primaryKey, $clientId, $context))->count() > 0) {
             return $result->first()->getId();
         }
 
@@ -149,7 +149,7 @@ final class UserResolver implements UserResolverInterface
         return null;
     }
 
-    protected function getUserInfoChangeSet(string $userId, UserStruct $user, bool $isNew, string $clientId, Context $context): array
+    protected function getUserInfoChangeSet(string $userId, User $user, bool $isNew, string $clientId, Context $context): array
     {
         $userChangeSet = [];
 
@@ -158,16 +158,16 @@ final class UserResolver implements UserResolverInterface
         }
 
         $userChangeSet['first_name'] = '';
-        $userChangeSet['last_name'] = $user->getDisplayName();
+        $userChangeSet['last_name'] = $user->displayName;
 
-        if (!empty($user->getFirstName()) && !empty($user->getLastName())) {
-            $userChangeSet['first_name'] = $user->getFirstName();
-            $userChangeSet['last_name'] = $user->getLastName();
+        if (!empty($user->firstName) && !empty($user->lastName)) {
+            $userChangeSet['first_name'] = $user->firstName;
+            $userChangeSet['last_name'] = $user->lastName;
         }
 
-        $userChangeSet['email'] = $user->getPrimaryEmail();
-        $userChangeSet['time_zone'] = $user->getTimezone();
-        $userChangeSet['locale_id'] = $this->findLocaleId($user->getLocale() ?? '', $context);
+        $userChangeSet['email'] = $user->primaryEmail;
+        $userChangeSet['time_zone'] = $user->timezone;
+        $userChangeSet['locale_id'] = $this->findLocaleId($user->locale ?? '', $context);
 
         return \array_filter($userChangeSet, static fn ($value) => $value !== null);
     }

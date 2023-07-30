@@ -7,9 +7,9 @@ namespace Heptacom\AdminOpenAuth\Component\Provider;
 use Heptacom\AdminOpenAuth\Component\OpenIdConnect\OpenIdConnectService;
 use Heptacom\AdminOpenAuth\Contract\Client\ClientContract;
 use Heptacom\AdminOpenAuth\Contract\RedirectBehaviour;
+use Heptacom\AdminOpenAuth\Contract\User;
 use Heptacom\AdminOpenAuth\Service\TokenPairFactoryContract;
 use Heptacom\OpenAuth\Struct\TokenPairStruct;
-use Heptacom\OpenAuth\Struct\UserStruct;
 use Psr\Http\Message\RequestInterface;
 
 final class OpenIdConnectClient extends ClientContract
@@ -47,7 +47,7 @@ final class OpenIdConnectClient extends ClientContract
         ]));
     }
 
-    public function getUser(string $state, string $code, RedirectBehaviour $behaviour): UserStruct
+    public function getUser(string $state, string $code, RedirectBehaviour $behaviour): User
     {
         $options = [$behaviour->codeKey => $code];
 
@@ -63,17 +63,25 @@ final class OpenIdConnectClient extends ClientContract
             $name = $user->getNickname() ?? $user->getPreferredUsername() ?? $user->getEmail();
         }
 
-        return (new UserStruct())
-            ->setPrimaryKey($user->getSub())
-            ->setTokenPair($this->tokenPairFactory->fromOpenIdConnectToken($token))
-            ->setFirstName($user->getGivenName() ?? '')
-            ->setLastName($user->getFamilyName() ?? '')
-            ->setDisplayName($name)
-            ->setPrimaryEmail($user->getEmail())
-            ->setEmails([$user->getEmail()])
-            ->setLocale($user->getLocale() !== null ? str_replace('_', '-', $user->getLocale()) : null)
-            ->setTimezone($user->getZoneinfo() ?? null)
-            ->addPassthrough('picture', $user->getPicture());
+        $result = new User();
+        $result->primaryKey = $user->getSub();
+        $result->tokenPair = $this->tokenPairFactory->fromOpenIdConnectToken($token);
+        $result->firstName = $user->getGivenName() ?? '';
+        $result->lastName = $user->getFamilyName() ?? '';
+        $result->displayName = $name;
+        $result->primaryEmail = $user->getEmail();
+        $result->emails = [$user->getEmail()];
+        $result->timezone = $user->getZoneinfo();
+
+        if ($user->getLocale() !== null) {
+            $result->locale = str_replace('_', '-', $user->getLocale());
+        }
+
+        $result->addArrayExtension('picture', [
+            'picture' => $user->getPicture(),
+        ]);
+
+        return $result;
     }
 
     public function authorizeRequest(RequestInterface $request, TokenPairStruct $token): RequestInterface

@@ -7,9 +7,9 @@ namespace Heptacom\AdminOpenAuth\Component\Provider;
 use Heptacom\AdminOpenAuth\Component\OpenAuth\Atlassian;
 use Heptacom\AdminOpenAuth\Contract\Client\ClientContract;
 use Heptacom\AdminOpenAuth\Contract\RedirectBehaviour;
+use Heptacom\AdminOpenAuth\Contract\User;
 use Heptacom\AdminOpenAuth\Service\TokenPairFactoryContract;
 use Heptacom\OpenAuth\Struct\TokenPairStruct;
-use Heptacom\OpenAuth\Struct\UserStruct;
 use Mrjoops\OAuth2\Client\Provider\JiraResourceOwner;
 use Psr\Http\Message\RequestInterface;
 
@@ -48,7 +48,7 @@ final class JiraClient extends ClientContract
         ]));
     }
 
-    public function getUser(string $state, string $code, RedirectBehaviour $behaviour): UserStruct
+    public function getUser(string $state, string $code, RedirectBehaviour $behaviour): User
     {
         $options = [$behaviour->codeKey => $code];
 
@@ -61,14 +61,16 @@ final class JiraClient extends ClientContract
         $user = $this->getInnerClient()->getResourceOwner($token);
         $fullUserData = $user->toArray();
 
-        return (new UserStruct())
-            ->setPrimaryKey($user->getId())
-            ->setTokenPair($this->tokenPairFactory->fromLeagueToken($token))
-            ->setDisplayName($user->getName())
-            ->setPrimaryEmail($user->getEmail())
-            ->setEmails([])
-            ->setTimezone($fullUserData['timezone'] ?? null)
-            ->setPassthrough(['resourceOwner' => $user->toArray()]);
+        $result = new User();
+
+        $result->primaryKey = $user->getId();
+        $result->tokenPair = $this->tokenPairFactory->fromLeagueToken($token);
+        $result->displayName = $user->getName();
+        $result->primaryEmail = $user->getEmail();
+        $result->timezone = $fullUserData['timezone'] ?? null;
+        $result->addArrayExtension('resourceOwner', $user->toArray());
+
+        return $result;
     }
 
     public function authorizeRequest(RequestInterface $request, TokenPairStruct $token): RequestInterface

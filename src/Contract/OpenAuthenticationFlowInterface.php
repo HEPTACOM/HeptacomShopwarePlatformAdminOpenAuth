@@ -6,7 +6,6 @@ namespace Heptacom\AdminOpenAuth\Contract;
 
 use Heptacom\AdminOpenAuth\Database\ClientEntity;
 use Heptacom\AdminOpenAuth\Exception\LoadClientException;
-use Heptacom\OpenAuth\Struct\UserStruct;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityCollection;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
@@ -26,7 +25,7 @@ interface OpenAuthenticationFlowInterface
     /**
      * @throws LoadClientException
      */
-    public function upsertUser(UserStruct $user, string $clientId, string $state, Context $context): void;
+    public function upsertUser(User $user, string $clientId, string $state, Context $context): void;
 
     public function disconnectClient(string $clientId, string $userId, Context $context): void;
 
