@@ -23,7 +23,7 @@ final class AdminUserClientRedirectUrlRoute extends AbstractController
         path: '/api/_action/heptacom_admin_open_auth_provider/client-redirect-url',
         name: 'api.heptacom.admin_open_auth.provider.redirect-url',
         defaults: [
-            '_routeScope' => ['administration']
+            '_routeScope' => ['administration'],
         ],
         methods: ['POST']
     )]

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Heptacom\AdminOpenAuth\Contract\Client;
 
 use Heptacom\AdminOpenAuth\Contract\RedirectBehaviour;
-use Heptacom\AdminOpenAuth\Contract\User;
 use Heptacom\AdminOpenAuth\Contract\TokenPair;
+use Heptacom\AdminOpenAuth\Contract\User;
 use Psr\Http\Message\RequestInterface;
 
 abstract class ClientContract

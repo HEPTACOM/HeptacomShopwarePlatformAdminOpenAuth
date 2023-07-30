@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\Contract;
 
-use DateTimeInterface;
 use Shopware\Core\Framework\Struct\Struct;
 
 final class TokenPair extends Struct
@@ -13,5 +12,5 @@ final class TokenPair extends Struct
 
     public ?string $refreshToken = null;
 
-    public ?DateTimeInterface $expiresAt = null;
+    public ?\DateTimeInterface $expiresAt = null;
 }

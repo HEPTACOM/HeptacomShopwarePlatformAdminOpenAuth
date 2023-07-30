@@ -17,7 +17,7 @@ final class ConfirmationMessageRoute extends AbstractController
         name: 'administration.heptacom.admin_open_auth.confirm',
         defaults: [
             'auth_required' => false,
-            '_routeScope' => ['administration']
+            '_routeScope' => ['administration'],
         ],
         methods: ['GET']
     )]

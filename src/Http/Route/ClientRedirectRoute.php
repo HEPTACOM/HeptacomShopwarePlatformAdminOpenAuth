@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\Http\Route;
 
-use Heptacom\AdminOpenAuth\Http\Route\Support\RedirectReceiveRoute;
-use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Heptacom\AdminOpenAuth\Contract\OpenAuthenticationFlowInterface;
 use Heptacom\AdminOpenAuth\Contract\RedirectBehaviourFactoryInterface;
 use Heptacom\AdminOpenAuth\Database\ClientEntity;
+use Heptacom\AdminOpenAuth\Http\Route\Support\RedirectReceiveRoute;
 use Heptacom\AdminOpenAuth\OpenAuth\Struct\UserStructExtension;
 use Heptacom\AdminOpenAuth\Service\StateResolver;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Shopware\Core\Framework\Context;
+use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\Struct\ArrayStruct;
 use Symfony\Bridge\PsrHttpMessage\Factory\PsrHttpFactory;
@@ -40,7 +40,7 @@ final class ClientRedirectRoute extends AbstractController
         name: 'administration.heptacom.admin_open_auth.login',
         defaults: [
             'auth_required' => false,
-            '_routeScope' => ['administration']
+            '_routeScope' => ['administration'],
         ],
         methods: ['GET', 'POST']
     )]
@@ -95,7 +95,7 @@ final class ClientRedirectRoute extends AbstractController
                 'query' => '',
                 'fragment' => '',
             ],
-            ...\parse_url($targetUrl)
+            ...\parse_url($targetUrl),
         ];
 
         $targetUrl = '';
@@ -108,9 +108,9 @@ final class ClientRedirectRoute extends AbstractController
             $targetUrl .= ':' . $targetUrlParts['port'];
         }
 
-        $targetUrl .= $targetUrlParts['path'] .
-            '?' . \ltrim($targetUrlParts['query'] . '&state=' . \urlencode($requestState), '&') .
-            '#' . $targetUrlParts['fragment'];
+        $targetUrl .= $targetUrlParts['path']
+            . '?' . \ltrim($targetUrlParts['query'] . '&state=' . \urlencode($requestState), '&')
+            . '#' . $targetUrlParts['fragment'];
 
         return $targetUrl;
     }

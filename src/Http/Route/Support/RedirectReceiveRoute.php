@@ -33,7 +33,7 @@ class RedirectReceiveRoute
 
         $postParams = [];
         if ($request->getHeaderLine('content-type') === 'application/x-www-form-urlencoded') {
-            \parse_str((string)$request->getBody(), $postParams);
+            \parse_str((string) $request->getBody(), $postParams);
         }
 
         $params = array_merge($getParams, $postParams);

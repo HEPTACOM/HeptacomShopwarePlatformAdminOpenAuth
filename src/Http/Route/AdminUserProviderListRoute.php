@@ -21,7 +21,7 @@ final class AdminUserProviderListRoute extends AbstractController
         path: '/api/_action/heptacom_admin_open_auth_provider/list',
         name: 'api.heptacom.admin_open_auth.provider.list',
         defaults: [
-            '_routeScope' => ['administration']
+            '_routeScope' => ['administration'],
         ],
         methods: ['GET']
     )]

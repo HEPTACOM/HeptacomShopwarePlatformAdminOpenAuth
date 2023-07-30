@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\Service;
 
-use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Heptacom\AdminOpenAuth\Contract\ClientFeatureCheckerInterface;
 use Heptacom\AdminOpenAuth\Contract\ClientLoaderInterface;
 use Heptacom\AdminOpenAuth\Contract\LoginInterface;
@@ -16,6 +15,7 @@ use Heptacom\AdminOpenAuth\Database\ClientEntity;
 use Heptacom\AdminOpenAuth\Exception\LoadClientException;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityCollection;
+use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Sorting\FieldSorting;
@@ -118,7 +118,7 @@ final class OpenAuthenticationFlow implements OpenAuthenticationFlowInterface
     public function getLoginRoutes(Context $context): array
     {
         return \array_values($this->getAvailableClients(new Criteria(), $context)
-            ->map(fn(ClientEntity $client): array => [
+            ->map(fn (ClientEntity $client): array => [
                 'name' => $client->name,
                 'url' => $this->router->generate(
                     'administration.heptacom.admin_open_auth.remote_login',

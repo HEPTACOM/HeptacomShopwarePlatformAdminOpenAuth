@@ -25,7 +25,7 @@ final class ClientRemoteLoginRoute extends AbstractController
         name: 'administration.heptacom.admin_open_auth.remote_login',
         defaults: [
             'auth_required' => false,
-            '_routeScope' => ['administration']
+            '_routeScope' => ['administration'],
         ],
         methods: ['GET']
     )]
@@ -33,8 +33,7 @@ final class ClientRemoteLoginRoute extends AbstractController
         string $clientId,
         Request $request,
         Context $context
-    ): Response
-    {
+    ): Response {
         $redirectTo = (string) $request->query->get('redirectTo') ?: null;
 
         if ($redirectTo && !\str_starts_with($redirectTo, '/')) {

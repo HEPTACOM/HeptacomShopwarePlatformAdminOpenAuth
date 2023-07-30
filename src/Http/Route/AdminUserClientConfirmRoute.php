@@ -27,7 +27,7 @@ final class AdminUserClientConfirmRoute extends AbstractController
         path: '/api/_admin/open-auth/{clientId}/confirm',
         name: 'api.heptacom.admin_open_auth.confirm',
         defaults: [
-            '_routeScope' => ['administration']
+            '_routeScope' => ['administration'],
         ],
         methods: ['GET']
     )]

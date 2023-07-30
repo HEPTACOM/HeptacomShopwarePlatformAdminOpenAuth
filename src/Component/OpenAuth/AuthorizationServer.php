@@ -2,10 +2,8 @@
 
 declare(strict_types=1);
 
-
 namespace Heptacom\AdminOpenAuth\Component\OpenAuth;
 
-use DateInterval;
 use Heptacom\AdminOpenAuth\KskHeptacomAdminOpenAuth;
 use League\OAuth2\Server\AuthorizationServer as LeagueAuthorizationServer;
 use League\OAuth2\Server\Grant\GrantTypeInterface;
@@ -30,7 +28,7 @@ class AuthorizationServer extends LeagueAuthorizationServer
         $this->systemConfigService = $systemConfigService;
     }
 
-    public function enableGrantType(GrantTypeInterface $grantType, DateInterval $accessTokenTTL = null)
+    public function enableGrantType(GrantTypeInterface $grantType, ?\DateInterval $accessTokenTTL = null): void
     {
         if ($this->systemConfigService->getBool(KskHeptacomAdminOpenAuth::CONFIG_DENY_PASSWORD_LOGIN) && $grantType->getIdentifier() === 'password') {
             return;
@@ -54,12 +52,7 @@ class AuthorizationServer extends LeagueAuthorizationServer
         return $this->decorated->respondToAccessTokenRequest($request, $response);
     }
 
-    protected function getResponseType()
-    {
-        return $this->decorated->getResponseType();
-    }
-
-    public function setDefaultScope($defaultScope)
+    public function setDefaultScope($defaultScope): void
     {
         $this->decorated->setDefaultScope($defaultScope);
     }
@@ -67,5 +60,10 @@ class AuthorizationServer extends LeagueAuthorizationServer
     public function revokeRefreshTokens(bool $revokeRefreshTokens): void
     {
         $this->decorated->revokeRefreshTokens($revokeRefreshTokens);
+    }
+
+    protected function getResponseType()
+    {
+        return $this->decorated->getResponseType();
     }
 }

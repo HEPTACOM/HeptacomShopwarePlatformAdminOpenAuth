@@ -26,7 +26,7 @@ final class AdminUserClientRemoteConnectRoute extends AbstractController
         name: 'api.heptacom.admin_open_auth.remote_connect',
         defaults: [
             '_acl' => ['user_change_me'],
-            '_routeScope' => ['administration']
+            '_routeScope' => ['administration'],
         ],
         methods: ['POST']
     )]

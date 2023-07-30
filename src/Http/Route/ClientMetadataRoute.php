@@ -26,7 +26,7 @@ final class ClientMetadataRoute extends AbstractController
         name: 'administration.heptacom.admin_open_auth.metadata',
         defaults: [
             'auth_required' => false,
-            '_routeScope' => ['administration']
+            '_routeScope' => ['administration'],
         ],
         methods: ['GET']
     )]
@@ -50,7 +50,7 @@ final class ClientMetadataRoute extends AbstractController
             $response = new Response();
             $response->headers->add([
                 'Content-Type' => $fileType,
-                'Content-Disposition' => 'attachment; filename="' . $fileName . '"'
+                'Content-Disposition' => 'attachment; filename="' . $fileName . '"',
             ]);
             $response->setContent($clientProvider->getMetadata());
 

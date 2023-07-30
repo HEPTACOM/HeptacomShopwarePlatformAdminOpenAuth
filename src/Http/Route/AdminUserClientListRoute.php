@@ -26,7 +26,7 @@ final class AdminUserClientListRoute extends AbstractController
         path: '/api/_admin/open-auth/client/list',
         name: 'api.heptacom.admin_open_auth.client.list',
         defaults: [
-            '_routeScope' => ['administration']
+            '_routeScope' => ['administration'],
         ],
         methods: ['GET']
     )]

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\Http\Route;
 
-use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Heptacom\AdminOpenAuth\Contract\ClientLoaderInterface;
 use Heptacom\AdminOpenAuth\Database\ClientDefinition;
 use Shopware\Core\Framework\Api\Response\ResponseFactoryInterface;
 use Shopware\Core\Framework\Context;
+use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,7 +28,7 @@ final class AdminUserClientCreateRoute extends AbstractController
         path: '/api/_action/heptacom_admin_open_auth_provider/factorize',
         name: 'api.heptacom.admin_open_auth.provider.factorize',
         defaults: [
-            '_routeScope' => ['administration']
+            '_routeScope' => ['administration'],
         ],
         methods: ['POST']
     )]

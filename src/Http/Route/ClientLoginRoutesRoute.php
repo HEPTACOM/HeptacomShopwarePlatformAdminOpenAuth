@@ -22,7 +22,7 @@ final class ClientLoginRoutesRoute extends AbstractController
         name: 'administration.heptacom.admin_open_auth.routes',
         defaults: [
             'auth_required' => false,
-            '_routeScope' => ['administration']
+            '_routeScope' => ['administration'],
         ],
         methods: ['GET']
     )]

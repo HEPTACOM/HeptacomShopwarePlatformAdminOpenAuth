@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\Service;
 
-use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Heptacom\AdminOpenAuth\Contract\LoginInterface;
 use Heptacom\AdminOpenAuth\Database\LoginCollection;
 use Heptacom\AdminOpenAuth\Database\LoginEntity;
 use Shopware\Core\Defaults;
 use Shopware\Core\Framework\Context;
+use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\RangeFilter;
@@ -70,7 +70,7 @@ final class Login implements LoginInterface
         $logins = $this->loginsRepository->search($criteria, $context)->getEntities();
 
         if ($logins->count() > 0) {
-            $deletePayload = $logins->map(fn(LoginEntity $login): array => ['id' => $login->getId()]);
+            $deletePayload = $logins->map(fn (LoginEntity $login): array => ['id' => $login->getId()]);
             $this->loginsRepository->delete(\array_values($deletePayload), $context);
         }
 

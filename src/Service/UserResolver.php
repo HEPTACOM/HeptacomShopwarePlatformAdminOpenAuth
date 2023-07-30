@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\Service;
 
-use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
-use Shopware\Core\Maintenance\User\Service\UserProvisioner;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;
 use Heptacom\AdminOpenAuth\Contract\ClientFeatureCheckerInterface;
@@ -19,12 +17,14 @@ use Heptacom\AdminOpenAuth\OpenAuth\Struct\UserStructExtension;
 use Shopware\Core\Defaults;
 use Shopware\Core\Framework\Api\Acl\Role\AclUserRoleDefinition;
 use Shopware\Core\Framework\Context;
+use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsAnyFilter;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\PrefixFilter;
 use Shopware\Core\Framework\Util\Random;
 use Shopware\Core\Framework\Uuid\Uuid;
+use Shopware\Core\Maintenance\User\Service\UserProvisioner;
 use Shopware\Core\System\Language\LanguageEntity;
 use Shopware\Core\System\User\UserDefinition;
 
@@ -67,8 +67,9 @@ final class UserResolver implements UserResolverInterface
         string $clientId,
         Context $context
     ): void {
-        if ($this->clientFeatureChecker->canStoreUserTokens($clientId, $context)
-            && ($tokenPair = $user->tokenPair) !== null) {
+        $tokenPair = $user->tokenPair;
+
+        if ($this->clientFeatureChecker->canStoreUserTokens($clientId, $context) && $tokenPair !== null) {
             if (!empty($tokenPair->refreshToken)) {
                 $this->userToken->setToken($userId, $clientId, $tokenPair, $context);
             }
@@ -108,13 +109,16 @@ final class UserResolver implements UserResolverInterface
     {
         $emails = $user->emails;
         $emails[] = $user->primaryEmail;
+        $userEmails = $this->userEmail->searchUser($emails, $context);
 
-        if (($result = $this->userEmail->searchUser($emails, $context))->count() > 0) {
-            return $result->first()->getId();
+        if ($userEmails->count() > 0) {
+            return $userEmails->first()->getId();
         }
 
-        if (($result = $this->userKey->searchUser($user->primaryKey, $clientId, $context))->count() > 0) {
-            return $result->first()->getId();
+        $userKeys = $this->userKey->searchUser($user->primaryKey, $clientId, $context);
+
+        if ($userKeys->count() > 0) {
+            return $userKeys->first()->getId();
         }
 
         $criteria = new Criteria();

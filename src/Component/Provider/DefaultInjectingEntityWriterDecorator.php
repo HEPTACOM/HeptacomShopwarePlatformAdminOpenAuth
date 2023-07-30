@@ -41,7 +41,6 @@ abstract class DefaultInjectingEntityWriterDecorator implements EntityWriterInte
             }
         }
 
-
         return $this->decorated->upsert($definition, $rawData, $writeContext);
     }
 
