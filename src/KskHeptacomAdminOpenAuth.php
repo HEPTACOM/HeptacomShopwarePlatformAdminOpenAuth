@@ -4,42 +4,13 @@ declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth;
 
-use Composer\Autoload\ClassLoader;
 use Doctrine\DBAL\Connection;
-use Heptacom\OpenAuth\SymfonyBundle;
-use Shopware\Core\Framework\Parameter\AdditionalBundleParameters;
 use Shopware\Core\Framework\Plugin;
 use Shopware\Core\Framework\Plugin\Context\UninstallContext;
 
 final class KskHeptacomAdminOpenAuth extends Plugin
 {
     public const CONFIG_DENY_PASSWORD_LOGIN = 'KskHeptacomAdminOpenAuth.config.denyPasswordLogin';
-
-    private static ?ClassLoader $dependencyClassLoader = null;
-
-    public function getAdditionalBundles(AdditionalBundleParameters $parameters): array
-    {
-        $autoloader = \dirname(__DIR__) . '/vendor/autoload.php';
-
-        if (\is_file($autoloader) && !self::$dependencyClassLoader instanceof ClassLoader) {
-            self::$dependencyClassLoader = require $autoloader;
-
-            if (self::$dependencyClassLoader instanceof ClassLoader) {
-                \spl_autoload_unregister([self::$dependencyClassLoader, 'loadClass']);
-                self::$dependencyClassLoader->register(false);
-            }
-        }
-
-        $result = parent::getAdditionalBundles($parameters);
-        $result[] = new SymfonyBundle();
-
-        return $result;
-    }
-
-    public function executeComposerCommands(): bool
-    {
-        return true;
-    }
 
     public function uninstall(UninstallContext $uninstallContext): void
     {
