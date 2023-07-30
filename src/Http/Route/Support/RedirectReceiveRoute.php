@@ -8,7 +8,6 @@ use Heptacom\AdminOpenAuth\Contract\Client\ClientFactoryContract;
 use Heptacom\OpenAuth\Behaviour\RedirectBehaviour;
 use Heptacom\OpenAuth\Route\Exception\RedirectReceiveException;
 use Heptacom\OpenAuth\Route\Exception\RedirectReceiveMissingStateException;
-use Heptacom\OpenAuth\Route\UserRedirectReceivedEvent;
 use Heptacom\OpenAuth\Struct\UserStruct;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\RequestInterface;
