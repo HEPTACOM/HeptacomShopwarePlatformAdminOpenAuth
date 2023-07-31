@@ -50,6 +50,7 @@
         "mrjoops/oauth2-jira": "^0.2.4",
         "nyholm/psr7": "^1.5",
         "onelogin/php-saml": "^4.1.0",
+        "psr/cache": "~3.0.0",
         "psr/http-client": "^1.0",
         "psr/http-message": "^1.0",
         "psr/log": "~3.0.0",
