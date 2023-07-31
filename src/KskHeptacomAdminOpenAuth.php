@@ -12,6 +12,11 @@ final class KskHeptacomAdminOpenAuth extends Plugin
 {
     public const CONFIG_DENY_PASSWORD_LOGIN = 'KskHeptacomAdminOpenAuth.config.denyPasswordLogin';
 
+    public function executeComposerCommands(): bool
+    {
+        return true;
+    }
+
     public function uninstall(UninstallContext $uninstallContext): void
     {
         parent::uninstall($uninstallContext);
