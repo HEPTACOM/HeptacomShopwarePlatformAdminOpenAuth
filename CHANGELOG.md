@@ -2,6 +2,7 @@
 
 **Added**
 
+* Added Shopware 6.5 compatibility with related dependencies
 * Added download metadata button to `heptacom-admin-open-auth-client-edit-page` component
 * Added configuration option `requestedAuthnContext` to SAML2 provider
 * Added plugin configuration option `denyPasswordLogin` to disable password login #14
@@ -16,6 +17,7 @@
 
 **Removed**
 
+* Removed Shopware 6.4 compatibility
 * Removed dependency `heptacom/open-auth` and ship its components with the plugin
 * Removed Microsoft Azure (non OIDC) and the required dependency `thenetworg/oauth2-azure`
 

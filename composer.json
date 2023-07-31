@@ -63,10 +63,10 @@
         "symfony/options-resolver": "~6.2.0 || ~6.3.0",
         "symfony/psr-http-message-bridge": "^2",
         "symfony/routing": "~6.2.0 || ~6.3.0",
-        "web-token/jwt-core": "^2.2",
-        "web-token/jwt-signature": "^2.2",
-        "web-token/jwt-signature-algorithm-ecdsa": "^2.2",
-        "web-token/jwt-signature-algorithm-rsa": "^2.2"
+        "web-token/jwt-core": "^3.2",
+        "web-token/jwt-signature": "^3.2",
+        "web-token/jwt-signature-algorithm-ecdsa": "^3.2",
+        "web-token/jwt-signature-algorithm-rsa": "^3.2"
     },
     "require-dev": {
         "shopware/administration": "~6.5.0"
