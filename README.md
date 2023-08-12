@@ -1,3 +1,13 @@
+# BEGIN-INIT-PLUGIN
+To make full use of this template use either the manual pipeline step and fill out name and description in the run form,
+or run this in your clone
+```bash
+php dev-ops/init-plugin.php $(basename $(pwd)) "ENTER HERE A SHORT NAME" "ENTER HERE A SHORT DESCRIPTION"
+rm dev-ops/init-plugin.php
+```
+This will remove this hint, renames a lot of placeholders and ensures correct plugin JavaScript compilation.
+# END-INIT-PLUGIN
+
 # Shopware Platform Plugin Project
 #### This is part of HEPTACOM solutions for medium and large enterprises.
 
