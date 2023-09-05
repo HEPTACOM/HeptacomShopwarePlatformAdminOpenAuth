@@ -30,7 +30,10 @@ export default {
                 'urn:oasis:names:tc:SAML:2.0:ac:classes:TimeSyncToken',
                 'urn:oasis:names:tc:SAML:2.0:ac:classes:X509',
                 'urn:federation:authentication:windows',
-            ].map(context => ({ value: context, label: context.startsWith('urn:oasis:names:tc:SAML:2.0:ac:classes:') ? context.substring('urn:oasis:names:tc:SAML:2.0:ac:classes:'.length) : context})),
+            ].map(context => ({
+                value: context,
+                label: context.startsWith('urn:oasis:names:tc:SAML:2.0:ac:classes:') ? context.substring('urn:oasis:names:tc:SAML:2.0:ac:classes:'.length) : context
+            })),
             attributeMappingTemplates: {
                 friendlyNames: {
                     firstName: 'givenName',

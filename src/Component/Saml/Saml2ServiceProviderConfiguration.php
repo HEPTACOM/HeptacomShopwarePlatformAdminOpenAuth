@@ -106,7 +106,7 @@ final class Saml2ServiceProviderConfiguration extends Struct
                 'authnRequestsSigned' => true,
                 'rejectUnsolicitedResponsesWithInResponseTo' => true,
                 'relaxDestinationValidation' => false,
-                'requestedAuthnContext' => \count($this->requestedAuthnContext) > 0 ? $this->requestedAuthnContext : [Constants::AC_PASSWORD_PROTECTED],
+                'requestedAuthnContext' => \count($this->requestedAuthnContext) > 0 ? $this->requestedAuthnContext : false,
                 'signMetadata' => true,
                 'wantAssertionsSigned' => true,
                 'wantXMLValidation' => true,

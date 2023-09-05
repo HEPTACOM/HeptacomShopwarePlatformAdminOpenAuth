@@ -50,7 +50,8 @@
             >
                 <sw-multi-select :label="$t('heptacomAdminOpenAuthClient.providerFields.saml2.security.requestedAuthnContexts')"
                                  :options="availableAuthnContexts"
-                                 placeholder="PasswordProtectedTransport" {# Default from SAML library #}
+                                 :help-text="$t('heptacomAdminOpenAuthClient.providerFields.saml2.security.requestedAuthnContextsHelp')"
+                                 :placeholder="$t('heptacomAdminOpenAuthClient.providerFields.saml2.security.requestedAuthnContextsPlaceholder')"
                                  v-model="item.config.requestedAuthnContext"
                 >
                 </sw-multi-select>

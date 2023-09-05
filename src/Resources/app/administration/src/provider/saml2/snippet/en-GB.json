@@ -31,7 +31,9 @@
                 "identityProviderSsoUrl": "Login URL",
                 "security": {
                     "cardTitle": "Security",
-                    "requestedAuthnContexts": "Allowed authentication methods"
+                    "requestedAuthnContexts": "Allowed authentication methods",
+                    "requestedAuthnContextsHelp": "Sets how a user must authenticate at the IdP. If not given, all methods are allowed.",
+                    "requestedAuthnContextsPlaceholder": "no restrictions"
                 },
                 "serviceProviderCertificate": "Service Provider Certificate (PEM)",
                 "serviceProviderCertificate-help": "The certificate will automatically be renewed within 30 days before expiry.",

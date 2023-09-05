@@ -31,7 +31,9 @@
                 "identityProviderSsoUrl": "Login URL",
                 "security": {
                     "cardTitle": "Sicherheit",
-                    "requestedAuthnContexts": "Zulässige Authentifizierungs-Methoden"
+                    "requestedAuthnContexts": "Zulässige Authentifizierungs-Methoden",
+                    "requestedAuthnContextsHelp": "Gibt die Authentifizierungs-Methoden an, welche ein Benutzer beim IdP verwenden darf. Wenn keine gesetzt ist, werden alle Methoden erlaubt.",
+                    "requestedAuthnContextsPlaceholder": "keine Einschränkungen"
                 },
                 "serviceProviderCertificate": "Service Provider Zertifikat (PEM)",
                 "serviceProviderCertificate-help": "Das Zertifikat wird bei Nutzung automatisch 30 Tage vor Ablauf erneuert.",
