@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\Service;
 
-use Heptacom\AdminOpenAuth\Contract\ClientFeatureCheckerInterface;
 use Heptacom\AdminOpenAuth\Contract\ClientLoaderInterface;
 use Heptacom\AdminOpenAuth\Contract\OpenAuthenticationFlowInterface;
 use Heptacom\AdminOpenAuth\Contract\RedirectBehaviourFactoryInterface;
 use Heptacom\AdminOpenAuth\Contract\StateFactory\ConnectStateFactoryInterface;
-use Heptacom\AdminOpenAuth\Contract\StateFactory\LoginStateFactoryInterface;
 use Heptacom\AdminOpenAuth\Contract\User;
 use Heptacom\AdminOpenAuth\Contract\UserResolverInterface;
 use Heptacom\AdminOpenAuth\Database\ClientEntity;
@@ -34,17 +32,8 @@ final class OpenAuthenticationFlow implements OpenAuthenticationFlowInterface
         private readonly EntityRepository $userTokensRepository,
         private readonly RouterInterface $router,
         private readonly RedirectBehaviourFactoryInterface $redirectBehaviourFactory,
-        private readonly LoginStateFactoryInterface $loginStateFactory,
         private readonly ConnectStateFactoryInterface $connectStateFactory,
     ) {
-    }
-
-    public function getRedirectUrl(string $clientId, ?string $redirectTo, Context $context): string
-    {
-        $state = $this->loginStateFactory->create($clientId, $redirectTo, $context);
-
-        return $this->clientLoader->load($clientId, $context)
-            ->getLoginUrl($state, $this->redirectBehaviourFactory->createRedirectBehaviour($clientId, $context));
     }
 
     public function getRedirectUrlToConnect(string $clientId, string $userId, ?string $redirectTo, Context $context): string

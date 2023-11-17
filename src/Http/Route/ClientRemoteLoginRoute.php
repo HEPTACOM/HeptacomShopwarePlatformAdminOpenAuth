@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\Http\Route;
 
-use Heptacom\AdminOpenAuth\Contract\OpenAuthenticationFlowInterface;
+use Heptacom\AdminOpenAuth\Contract\ClientLoaderInterface;
+use Heptacom\AdminOpenAuth\Contract\RedirectBehaviourFactoryInterface;
+use Heptacom\AdminOpenAuth\Contract\StateFactory\LoginStateFactoryInterface;
 use Shopware\Core\Framework\Context;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
@@ -16,7 +18,9 @@ use Symfony\Component\Routing\Annotation\Route;
 final class ClientRemoteLoginRoute extends AbstractController
 {
     public function __construct(
-        private readonly OpenAuthenticationFlowInterface $flow,
+        private readonly RedirectBehaviourFactoryInterface $redirectBehaviourFactory,
+        private readonly ClientLoaderInterface $clientLoader,
+        private readonly LoginStateFactoryInterface $loginStateFactory,
     ) {
     }
 
@@ -40,9 +44,11 @@ final class ClientRemoteLoginRoute extends AbstractController
             throw new BadRequestException('Only absolute redirect urls are allowed.');
         }
 
-        return new RedirectResponse(
-            $this->flow->getRedirectUrl($clientId, $redirectTo, $context),
-            Response::HTTP_TEMPORARY_REDIRECT
-        );
+        $systemContext = $context->scope(Context::SYSTEM_SCOPE, static fn (Context $context): Context => $context);
+        $state = $this->loginStateFactory->create($clientId, $redirectTo, $systemContext);
+        $redirectBehaviour = $this->redirectBehaviourFactory->createRedirectBehaviour($clientId, $context);
+        $target = $this->clientLoader->load($clientId, $context)->getLoginUrl($state, $redirectBehaviour);
+
+        return new RedirectResponse($target, Response::HTTP_TEMPORARY_REDIRECT);
     }
 }
