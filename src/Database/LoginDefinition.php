@@ -44,7 +44,6 @@ final class LoginDefinition extends EntityDefinition
     {
         return [
             'payload' => [],
-            'type' => 'login',
             'expiresAt' => \date_create()
                 ->setTimestamp(\time() + self::DEFAULT_LOGIN_EXPIRY)
                 ->format(Defaults::STORAGE_DATE_TIME_FORMAT),

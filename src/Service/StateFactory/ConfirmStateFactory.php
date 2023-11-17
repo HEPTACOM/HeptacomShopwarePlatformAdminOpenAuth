@@ -28,6 +28,7 @@ final class ConfirmStateFactory implements ConfirmStateFactoryInterface
             'clientId' => $clientId,
             'userId' => $userId,
             'state' => $state,
+            'type' => 'login',
             'payload' => [
                 'redirectTo' => $this->router->generate(
                     'administration.heptacom.admin_open_auth.confirm',
