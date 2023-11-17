@@ -21,6 +21,7 @@
 * Removed Shopware 6.4 compatibility
 * Removed dependency `heptacom/open-auth` and ship its components with the plugin
 * Removed Microsoft Azure (non OIDC) and the required dependency `thenetworg/oauth2-azure`
+* Removed `\Heptacom\AdminOpenAuth\Contract\TokenRefresherInterface` and implementation `\Heptacom\AdminOpenAuth\Service\TokenRefresher`
 
 # 4.3.0-beta.2
 
