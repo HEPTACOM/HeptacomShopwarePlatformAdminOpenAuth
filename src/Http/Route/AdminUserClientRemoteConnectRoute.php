@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\Http\Route;
 
-use Heptacom\AdminOpenAuth\Contract\OpenAuthenticationFlowInterface;
+use Heptacom\AdminOpenAuth\Contract\ClientLoaderInterface;
+use Heptacom\AdminOpenAuth\Contract\RedirectBehaviourFactoryInterface;
+use Heptacom\AdminOpenAuth\Contract\StateFactory\ConnectStateFactoryInterface;
 use Shopware\Core\Framework\Api\Context\AdminApiSource;
 use Shopware\Core\Framework\Context;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,7 +19,9 @@ use Symfony\Component\Routing\Annotation\Route;
 final class AdminUserClientRemoteConnectRoute extends AbstractController
 {
     public function __construct(
-        private readonly OpenAuthenticationFlowInterface $flow,
+        private readonly ConnectStateFactoryInterface $connectStateFactory,
+        private readonly ClientLoaderInterface $clientLoader,
+        private readonly RedirectBehaviourFactoryInterface $redirectBehaviourFactory,
     ) {
     }
 
@@ -40,14 +44,13 @@ final class AdminUserClientRemoteConnectRoute extends AbstractController
 
         /** @var AdminApiSource $adminApiSource */
         $adminApiSource = $context->getSource();
+        $systemContext = $context->scope(Context::SYSTEM_SCOPE, static fn (Context $context): Context => $context);
+        $state = $this->connectStateFactory->create($clientId, $adminApiSource->getUserId(), $redirectTo, $systemContext);
+        $redirectBehaviour = $this->redirectBehaviourFactory->createRedirectBehaviour($clientId, $context);
+        $target = $this->clientLoader->load($clientId, $context)->getLoginUrl($state, $redirectBehaviour);
 
         return new JsonResponse([
-            'target' => $this->flow->getRedirectUrlToConnect(
-                $clientId,
-                $adminApiSource->getUserId(),
-                $redirectTo,
-                $context->scope(Context::SYSTEM_SCOPE, static fn (Context $context): Context => $context),
-            ),
+            'target' => $target,
         ]);
     }
 }

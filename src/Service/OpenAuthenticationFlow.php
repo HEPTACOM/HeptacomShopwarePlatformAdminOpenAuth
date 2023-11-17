@@ -4,10 +4,7 @@ declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\Service;
 
-use Heptacom\AdminOpenAuth\Contract\ClientLoaderInterface;
 use Heptacom\AdminOpenAuth\Contract\OpenAuthenticationFlowInterface;
-use Heptacom\AdminOpenAuth\Contract\RedirectBehaviourFactoryInterface;
-use Heptacom\AdminOpenAuth\Contract\StateFactory\ConnectStateFactoryInterface;
 use Heptacom\AdminOpenAuth\Contract\User;
 use Heptacom\AdminOpenAuth\Contract\UserResolverInterface;
 use Heptacom\AdminOpenAuth\Database\ClientEntity;
@@ -23,7 +20,6 @@ use Symfony\Component\Routing\RouterInterface;
 final class OpenAuthenticationFlow implements OpenAuthenticationFlowInterface
 {
     public function __construct(
-        private readonly ClientLoaderInterface $clientLoader,
         private readonly UserResolverInterface $userResolver,
         private readonly EntityRepository $clientsRepository,
         private readonly EntityRepository $loginsRepository,
@@ -31,17 +27,7 @@ final class OpenAuthenticationFlow implements OpenAuthenticationFlowInterface
         private readonly EntityRepository $userKeysRepository,
         private readonly EntityRepository $userTokensRepository,
         private readonly RouterInterface $router,
-        private readonly RedirectBehaviourFactoryInterface $redirectBehaviourFactory,
-        private readonly ConnectStateFactoryInterface $connectStateFactory,
     ) {
-    }
-
-    public function getRedirectUrlToConnect(string $clientId, string $userId, ?string $redirectTo, Context $context): string
-    {
-        $state = $this->connectStateFactory->create($clientId, $userId, $redirectTo, $context);
-
-        return $this->clientLoader->load($clientId, $context)
-            ->getLoginUrl($state, $this->redirectBehaviourFactory->createRedirectBehaviour($clientId, $context));
     }
 
     public function upsertUser(User $user, string $clientId, string $state, Context $context): void

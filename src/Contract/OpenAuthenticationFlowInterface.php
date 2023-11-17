@@ -15,11 +15,6 @@ interface OpenAuthenticationFlowInterface
     /**
      * @throws LoadClientException
      */
-    public function getRedirectUrlToConnect(string $clientId, string $userId, ?string $redirectTo, Context $context): string;
-
-    /**
-     * @throws LoadClientException
-     */
     public function upsertUser(User $user, string $clientId, string $state, Context $context): void;
 
     public function disconnectClient(string $clientId, string $userId, Context $context): void;
