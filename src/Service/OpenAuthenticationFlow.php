@@ -6,28 +6,25 @@ namespace Heptacom\AdminOpenAuth\Service;
 
 use Heptacom\AdminOpenAuth\Contract\ClientFeatureCheckerInterface;
 use Heptacom\AdminOpenAuth\Contract\ClientLoaderInterface;
-use Heptacom\AdminOpenAuth\Contract\LoginInterface;
 use Heptacom\AdminOpenAuth\Contract\OpenAuthenticationFlowInterface;
 use Heptacom\AdminOpenAuth\Contract\RedirectBehaviourFactoryInterface;
+use Heptacom\AdminOpenAuth\Contract\StateFactory\ConnectStateFactoryInterface;
 use Heptacom\AdminOpenAuth\Contract\StateFactory\LoginStateFactoryInterface;
 use Heptacom\AdminOpenAuth\Contract\User;
 use Heptacom\AdminOpenAuth\Contract\UserResolverInterface;
 use Heptacom\AdminOpenAuth\Database\ClientEntity;
-use Heptacom\AdminOpenAuth\Exception\LoadClientException;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityCollection;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Sorting\FieldSorting;
-use Shopware\Core\Framework\Uuid\Uuid;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 final class OpenAuthenticationFlow implements OpenAuthenticationFlowInterface
 {
     public function __construct(
-        private readonly LoginInterface $login,
         private readonly ClientLoaderInterface $clientLoader,
         private readonly UserResolverInterface $userResolver,
         private readonly EntityRepository $clientsRepository,
@@ -37,8 +34,8 @@ final class OpenAuthenticationFlow implements OpenAuthenticationFlowInterface
         private readonly EntityRepository $userTokensRepository,
         private readonly RouterInterface $router,
         private readonly RedirectBehaviourFactoryInterface $redirectBehaviourFactory,
-        private readonly ClientFeatureCheckerInterface $clientFeatureChecker,
         private readonly LoginStateFactoryInterface $loginStateFactory,
+        private readonly ConnectStateFactoryInterface $connectStateFactory,
     ) {
     }
 
@@ -52,12 +49,7 @@ final class OpenAuthenticationFlow implements OpenAuthenticationFlowInterface
 
     public function getRedirectUrlToConnect(string $clientId, string $userId, ?string $redirectTo, Context $context): string
     {
-        if (!$this->clientFeatureChecker->canConnect($clientId, $context)) {
-            throw new LoadClientException('Client can not connect', $clientId);
-        }
-
-        $state = Uuid::randomHex();
-        $this->login->initiate($clientId, $userId, $state, 'connect', $redirectTo, $context);
+        $state = $this->connectStateFactory->create($clientId, $userId, $redirectTo, $context);
 
         return $this->clientLoader->load($clientId, $context)
             ->getLoginUrl($state, $this->redirectBehaviourFactory->createRedirectBehaviour($clientId, $context));

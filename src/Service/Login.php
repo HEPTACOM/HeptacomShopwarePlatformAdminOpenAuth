@@ -22,23 +22,6 @@ final class Login implements LoginInterface
     ) {
     }
 
-    public function initiate(string $clientId, ?string $userId, string $state, string $type, ?string $redirectTo, Context $context): string
-    {
-        $id = Uuid::randomHex();
-        $this->loginsRepository->create([[
-            'id' => $id,
-            'clientId' => $clientId,
-            'userId' => $userId,
-            'state' => $state,
-            'type' => $type,
-            'payload' => [
-                'redirectTo' => $redirectTo,
-            ],
-        ]], $context);
-
-        return $id;
-    }
-
     public function setCredentials(string $state, string $userId, Context $context): bool
     {
         $criteria = new Criteria();
