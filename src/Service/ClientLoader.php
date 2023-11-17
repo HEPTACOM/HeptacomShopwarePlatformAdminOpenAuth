@@ -47,7 +47,7 @@ final class ClientLoader implements ClientLoaderInterface
         try {
             return $this->clientFactory->create($client->provider ?? '', $client->config ?? []);
         } catch (FactorizeClientException $exception) {
-            throw new LoadClientException($exception->getMessage(), $clientId, $exception);
+            throw new LoadClientException($exception->getMessage(), $clientId, 0, $exception);
         }
     }
 
