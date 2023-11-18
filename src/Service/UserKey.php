@@ -5,13 +5,15 @@ declare(strict_types=1);
 namespace Heptacom\AdminOpenAuth\Service;
 
 use Heptacom\AdminOpenAuth\Contract\UserKeyInterface;
-use Heptacom\AdminOpenAuth\Database\UserKeyCollection;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
+use Shopware\Core\Framework\DataAbstractionLayer\Search\Aggregation\Metric\EntityAggregation;
+use Shopware\Core\Framework\DataAbstractionLayer\Search\AggregationResult\Metric\EntityResult;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
 use Shopware\Core\Framework\Uuid\Uuid;
 use Shopware\Core\System\User\UserCollection;
+use Shopware\Core\System\User\UserDefinition;
 
 final class UserKey implements UserKeyInterface
 {
@@ -48,19 +50,14 @@ final class UserKey implements UserKeyInterface
     public function searchUser(string $primaryKey, string $clientId, Context $context): UserCollection
     {
         $criteria = new Criteria();
-        $criteria->addAssociation('user');
+        $criteria->addAggregation(new EntityAggregation('users', 'userId', UserDefinition::ENTITY_NAME));
         $criteria->addFilter(
             new EqualsFilter('primaryKey', $primaryKey),
             new EqualsFilter('clientId', $clientId)
         );
-        /** @var UserKeyCollection $userKeys */
-        $userKeys = $this->userKeysRepository->search($criteria, $context)->getEntities();
-        $result = new UserCollection();
+        /** @var EntityResult $userKeys */
+        $userKeys = $this->userKeysRepository->aggregate($criteria, $context)->get('users');
 
-        foreach ($userKeys as $userKey) {
-            $result->add($userKey->user);
-        }
-
-        return $result;
+        return new UserCollection($userKeys->getEntities());
     }
 }

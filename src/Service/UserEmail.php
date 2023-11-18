@@ -8,11 +8,14 @@ use Heptacom\AdminOpenAuth\Contract\UserEmailInterface;
 use Heptacom\AdminOpenAuth\Database\UserEmailCollection;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
+use Shopware\Core\Framework\DataAbstractionLayer\Search\Aggregation\Metric\EntityAggregation;
+use Shopware\Core\Framework\DataAbstractionLayer\Search\AggregationResult\Metric\EntityResult;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsAnyFilter;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
 use Shopware\Core\Framework\Uuid\Uuid;
 use Shopware\Core\System\User\UserCollection;
+use Shopware\Core\System\User\UserDefinition;
 
 final class UserEmail implements UserEmailInterface
 {
@@ -48,16 +51,11 @@ final class UserEmail implements UserEmailInterface
     public function searchUser(array $emails, Context $context): UserCollection
     {
         $criteria = new Criteria();
-        $criteria->addAssociation('user');
+        $criteria->addAggregation(new EntityAggregation('users', 'userId', UserDefinition::ENTITY_NAME));
         $criteria->addFilter(new EqualsAnyFilter('email', $emails));
-        /** @var UserEmailCollection $userEmails */
-        $userEmails = $this->userEmailsRepository->search($criteria, $context)->getEntities();
-        $result = new UserCollection();
+        /** @var EntityResult $userEmails */
+        $userEmails = $this->userEmailsRepository->aggregate($criteria, $context)->get('users');
 
-        foreach ($userEmails as $userEmail) {
-            $result->add($userEmail->user);
-        }
-
-        return $result;
+        return new UserCollection($userEmails->getEntities());
     }
 }
