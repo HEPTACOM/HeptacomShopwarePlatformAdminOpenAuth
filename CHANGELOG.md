@@ -6,6 +6,7 @@
 * Added download metadata button to `heptacom-admin-open-auth-client-edit-page` component
 * Added configuration option `requestedAuthnContext` to SAML2 provider
 * Added plugin configuration option `denyPasswordLogin` to disable password login #14
+* Added popup block check for user confirmation modals, that allows more seamless confirmation flow
 
 **Changed**
 

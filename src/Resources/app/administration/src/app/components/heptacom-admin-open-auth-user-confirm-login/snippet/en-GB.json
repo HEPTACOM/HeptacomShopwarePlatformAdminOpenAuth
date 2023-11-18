@@ -1,5 +1,6 @@
 {
     "heptacom-admin-open-auth-user-confirm-login": {
+        "popupsBlocked": "It looks like the confirmation popup has been blocked. Ensure to allow popups for this shop and retry confirmation again.",
         "confirmWith": "Confirm identity with {clientName}"
     }
 }

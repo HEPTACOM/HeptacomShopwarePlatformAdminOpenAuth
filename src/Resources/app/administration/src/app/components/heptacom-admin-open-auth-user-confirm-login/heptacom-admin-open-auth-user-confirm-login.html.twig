@@ -12,6 +12,13 @@
                 :divider="sectionDivider"
                 v-if="clients.length > 0"
             >
+                <sw-alert
+                    v-if="popupsAreBlocked"
+                    variant="warning"
+                >
+                    {{ $tc('heptacom-admin-open-auth-user-confirm-login.popupsBlocked') }}
+                </sw-alert>
+
                 <sw-button
                     v-for="client of clients"
                     :key="client.id"
