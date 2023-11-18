@@ -16,7 +16,7 @@ services:
             Psr\Log\LoggerInterface $logger: '@logger'
 
     _instanceof:
-        Heptacom\OpenAuth\ClientProvider\Contract\ClientProviderContract:
+        Heptacom\AdminOpenAuth\Contract\ClientProvider\ClientProviderContract:
             tags:
                 - 'heptacom_open_auth.client_provider'
         Shopware\Core\Framework\DataAbstractionLayer\EntityExtension:
@@ -91,7 +91,7 @@ services:
 
     Heptacom\AdminOpenAuth\Contract\Client\ClientFactoryContract:
         arguments:
-            - '@Heptacom\OpenAuth\ClientProvider\Contract\ClientProviderRepositoryContract'
+            - '@Heptacom\AdminOpenAuth\Contract\ClientProvider\ClientProviderRepositoryContract'
 
     Heptacom\AdminOpenAuth\Contract\ClientProvider\ClientProviderRepositoryContract:
         arguments:
