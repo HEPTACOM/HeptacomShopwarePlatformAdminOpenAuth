@@ -43,6 +43,10 @@ final class KskHeptacomAdminOpenAuth extends Plugin
                 $schemaManager->dropTable('heptacom_admin_open_auth_login');
             }
 
+            if ($schemaManager->tablesExist('heptacom_admin_open_auth_client_role')) {
+                $schemaManager->dropTable('heptacom_admin_open_auth_client_role');
+            }
+
             if ($schemaManager->tablesExist('heptacom_admin_open_auth_client')) {
                 $schemaManager->dropTable('heptacom_admin_open_auth_client');
             }
