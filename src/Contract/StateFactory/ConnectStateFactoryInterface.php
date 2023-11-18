@@ -12,5 +12,5 @@ interface ConnectStateFactoryInterface
     /**
      * @throws LoadClientException
      */
-    public function create(string $clientId, string $userId, string $redirectTo, Context $context): string;
+    public function create(string $clientId, string $userId, ?string $redirectTo, Context $context): string;
 }

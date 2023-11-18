@@ -19,7 +19,7 @@ final class ConnectStateFactory implements ConnectStateFactoryInterface
     ) {
     }
 
-    public function create(string $clientId, string $userId, string $redirectTo, Context $context): string
+    public function create(string $clientId, string $userId, ?string $redirectTo, Context $context): string
     {
         if (!$this->clientFeatureChecker->canConnect($clientId, $context)) {
             throw new LoadClientException('Client can not connect', $clientId, 1700229881);
