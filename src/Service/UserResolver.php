@@ -84,7 +84,7 @@ final class UserResolver implements UserResolverInterface
 
         $this->login->setCredentials($state, $userId, $context);
 
-        $userChangeSet = $this->getUserInfoChangeSet($userId, $user, $isNew, $clientId, $context);
+        $userChangeSet = $this->getUserInfoChangeSet($user, $isNew, $clientId, $context);
         $aclRoles = null;
 
         if ($isNew) {
@@ -153,7 +153,7 @@ final class UserResolver implements UserResolverInterface
         return null;
     }
 
-    protected function getUserInfoChangeSet(string $userId, User $user, bool $isNew, string $clientId, Context $context): array
+    protected function getUserInfoChangeSet(User $user, bool $isNew, string $clientId, Context $context): array
     {
         $userChangeSet = [];
 
