@@ -26,11 +26,26 @@ final class KskHeptacomAdminOpenAuth extends Plugin
 
         if (!$uninstallContext->keepUserData()) {
             $schemaManager = $connection->createSchemaManager();
-            $schemaManager->dropTable('heptacom_admin_open_auth_user_email');
-            $schemaManager->dropTable('heptacom_admin_open_auth_user_key');
-            $schemaManager->dropTable('heptacom_admin_open_auth_user_token');
-            $schemaManager->dropTable('heptacom_admin_open_auth_login');
-            $schemaManager->dropTable('heptacom_admin_open_auth_client');
+
+            if ($schemaManager->tablesExist('heptacom_admin_open_auth_user_email')) {
+                $schemaManager->dropTable('heptacom_admin_open_auth_user_email');
+            }
+
+            if ($schemaManager->tablesExist('heptacom_admin_open_auth_user_key')) {
+                $schemaManager->dropTable('heptacom_admin_open_auth_user_key');
+            }
+
+            if ($schemaManager->tablesExist('heptacom_admin_open_auth_user_token')) {
+                $schemaManager->dropTable('heptacom_admin_open_auth_user_token');
+            }
+
+            if ($schemaManager->tablesExist('heptacom_admin_open_auth_login')) {
+                $schemaManager->dropTable('heptacom_admin_open_auth_login');
+            }
+
+            if ($schemaManager->tablesExist('heptacom_admin_open_auth_client')) {
+                $schemaManager->dropTable('heptacom_admin_open_auth_client');
+            }
         }
     }
 }
