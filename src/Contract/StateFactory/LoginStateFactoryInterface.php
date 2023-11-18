@@ -12,5 +12,5 @@ interface LoginStateFactoryInterface
     /**
      * @throws LoadClientException
      */
-    public function create(string $clientId, string $redirectTo, Context $context): string;
+    public function create(string $clientId, ?string $redirectTo, Context $context): string;
 }

@@ -19,7 +19,7 @@ final class LoginStateFactory implements LoginStateFactoryInterface
     ) {
     }
 
-    public function create(string $clientId, string $redirectTo, Context $context): string
+    public function create(string $clientId, ?string $redirectTo, Context $context): string
     {
         if (!$this->clientFeatureChecker->canLogin($clientId, $context)) {
             throw new LoadClientException('Client can not login', $clientId, 1700229880);
