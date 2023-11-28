@@ -13,7 +13,7 @@ use Shopware\Core\Framework\DataAbstractionLayer\Field\ManyToOneAssociationField
 use Shopware\Core\Framework\DataAbstractionLayer\FieldCollection;
 use Shopware\Core\Framework\DataAbstractionLayer\MappingEntityDefinition;
 
-class ClientAclRoleDefinition extends MappingEntityDefinition
+final class ClientAclRoleDefinition extends MappingEntityDefinition
 {
     public const ENTITY_NAME = 'heptacom_admin_open_auth_client_role';
 

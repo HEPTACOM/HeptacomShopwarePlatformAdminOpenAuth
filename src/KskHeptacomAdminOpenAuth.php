@@ -4,34 +4,17 @@ declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth;
 
-use Composer\Autoload\ClassLoader;
 use Doctrine\DBAL\Connection;
-use Heptacom\OpenAuth\SymfonyBundle;
-use Shopware\Core\Framework\Parameter\AdditionalBundleParameters;
 use Shopware\Core\Framework\Plugin;
 use Shopware\Core\Framework\Plugin\Context\UninstallContext;
 
-class KskHeptacomAdminOpenAuth extends Plugin
+final class KskHeptacomAdminOpenAuth extends Plugin
 {
-    private static ?ClassLoader $dependencyClassLoader = null;
+    public const CONFIG_DENY_PASSWORD_LOGIN = 'KskHeptacomAdminOpenAuth.config.denyPasswordLogin';
 
-    public function getAdditionalBundles(AdditionalBundleParameters $parameters): array
+    public function executeComposerCommands(): bool
     {
-        $autoloader = \dirname(__DIR__) . '/vendor/autoload.php';
-
-        if (\is_file($autoloader) && !self::$dependencyClassLoader instanceof ClassLoader) {
-            self::$dependencyClassLoader = require $autoloader;
-
-            if (self::$dependencyClassLoader instanceof ClassLoader) {
-                \spl_autoload_unregister([self::$dependencyClassLoader, 'loadClass']);
-                self::$dependencyClassLoader->register(false);
-            }
-        }
-
-        $result = parent::getAdditionalBundles($parameters);
-        $result[] = new SymfonyBundle();
-
-        return $result;
+        return true;
     }
 
     public function uninstall(UninstallContext $uninstallContext): void
@@ -42,11 +25,31 @@ class KskHeptacomAdminOpenAuth extends Plugin
         $connection = $this->container->get(Connection::class);
 
         if (!$uninstallContext->keepUserData()) {
-            $connection->getSchemaManager()->dropTable('heptacom_admin_open_auth_user_email');
-            $connection->getSchemaManager()->dropTable('heptacom_admin_open_auth_user_key');
-            $connection->getSchemaManager()->dropTable('heptacom_admin_open_auth_user_token');
-            $connection->getSchemaManager()->dropTable('heptacom_admin_open_auth_login');
-            $connection->getSchemaManager()->dropTable('heptacom_admin_open_auth_client');
+            $schemaManager = $connection->createSchemaManager();
+
+            if ($schemaManager->tablesExist('heptacom_admin_open_auth_user_email')) {
+                $schemaManager->dropTable('heptacom_admin_open_auth_user_email');
+            }
+
+            if ($schemaManager->tablesExist('heptacom_admin_open_auth_user_key')) {
+                $schemaManager->dropTable('heptacom_admin_open_auth_user_key');
+            }
+
+            if ($schemaManager->tablesExist('heptacom_admin_open_auth_user_token')) {
+                $schemaManager->dropTable('heptacom_admin_open_auth_user_token');
+            }
+
+            if ($schemaManager->tablesExist('heptacom_admin_open_auth_login')) {
+                $schemaManager->dropTable('heptacom_admin_open_auth_login');
+            }
+
+            if ($schemaManager->tablesExist('heptacom_admin_open_auth_client_role')) {
+                $schemaManager->dropTable('heptacom_admin_open_auth_client_role');
+            }
+
+            if ($schemaManager->tablesExist('heptacom_admin_open_auth_client')) {
+                $schemaManager->dropTable('heptacom_admin_open_auth_client');
+            }
         }
     }
 }

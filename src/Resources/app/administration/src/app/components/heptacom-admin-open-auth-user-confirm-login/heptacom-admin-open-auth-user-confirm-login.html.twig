@@ -9,9 +9,16 @@
             ></sw-loader>
             <sw-card-section
                 class="heptacom-admin-open-auth-user-confirm-login--clients"
-                divider="bottom"
+                :divider="sectionDivider"
                 v-if="clients.length > 0"
             >
+                <sw-alert
+                    v-if="popupsAreBlocked"
+                    variant="warning"
+                >
+                    {{ $tc('heptacom-admin-open-auth-user-confirm-login.popupsBlocked') }}
+                </sw-alert>
+
                 <sw-button
                     v-for="client of clients"
                     :key="client.id"
@@ -22,7 +29,7 @@
                         'clientName': client.name
                     }) }}
                     <sw-icon
-                        name="small-arrow-small-external"
+                        name="regular-external-link-s"
                         small
                     ></sw-icon>
                 </sw-button>

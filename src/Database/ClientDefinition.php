@@ -20,7 +20,7 @@ use Shopware\Core\Framework\DataAbstractionLayer\Field\StringField;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\UpdatedAtField;
 use Shopware\Core\Framework\DataAbstractionLayer\FieldCollection;
 
-class ClientDefinition extends EntityDefinition
+final class ClientDefinition extends EntityDefinition
 {
     public const ENTITY_NAME = 'heptacom_admin_open_auth_client';
 

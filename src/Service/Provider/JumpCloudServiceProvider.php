@@ -7,7 +7,7 @@ namespace Heptacom\AdminOpenAuth\Service\Provider;
 use Heptacom\AdminOpenAuth\Component\Saml\Saml2ServiceProviderService;
 use Symfony\Component\Routing\RouterInterface;
 
-class JumpCloudServiceProvider extends Saml2ServiceProvider
+final class JumpCloudServiceProvider extends Saml2ServiceProvider
 {
     public const PROVIDER_NAME = 'jumpcloud';
 

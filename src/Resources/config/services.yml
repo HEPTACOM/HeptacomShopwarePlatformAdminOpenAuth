@@ -5,18 +5,18 @@ services:
         bind:
             string $appSecret: '%env(APP_SECRET)%'
             Doctrine\DBAL\Connection $connection: '@Doctrine\DBAL\Connection'
-            Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface $clientsRepository: '@heptacom_admin_open_auth_client.repository'
-            Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface $loginsRepository: '@heptacom_admin_open_auth_login.repository'
-            Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface $userEmailsRepository: '@heptacom_admin_open_auth_user_email.repository'
-            Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface $userKeysRepository: '@heptacom_admin_open_auth_user_key.repository'
-            Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface $userTokensRepository: '@heptacom_admin_open_auth_user_token.repository'
-            Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface $scheduledTaskRepository: '@scheduled_task.repository'
+            Shopware\Core\Framework\DataAbstractionLayer\EntityRepository $clientsRepository: '@heptacom_admin_open_auth_client.repository'
+            Shopware\Core\Framework\DataAbstractionLayer\EntityRepository $loginsRepository: '@heptacom_admin_open_auth_login.repository'
+            Shopware\Core\Framework\DataAbstractionLayer\EntityRepository $userEmailsRepository: '@heptacom_admin_open_auth_user_email.repository'
+            Shopware\Core\Framework\DataAbstractionLayer\EntityRepository $userKeysRepository: '@heptacom_admin_open_auth_user_key.repository'
+            Shopware\Core\Framework\DataAbstractionLayer\EntityRepository $userTokensRepository: '@heptacom_admin_open_auth_user_token.repository'
+            Shopware\Core\Framework\DataAbstractionLayer\EntityRepository $scheduledTaskRepository: '@scheduled_task.repository'
             Psr\Http\Client\ClientInterface $oidcHttpClient: '@heptacom.admin_open_auth.oidc.http_client'
             Psr\Http\Client\ClientInterface $samlHttpClient: '@heptacom.admin_open_auth.saml.http_client'
             Psr\Log\LoggerInterface $logger: '@logger'
 
     _instanceof:
-        Heptacom\OpenAuth\ClientProvider\Contract\ClientProviderContract:
+        Heptacom\AdminOpenAuth\Contract\ClientProvider\ClientProviderContract:
             tags:
                 - 'heptacom_open_auth.client_provider'
         Shopware\Core\Framework\DataAbstractionLayer\EntityExtension:
@@ -31,6 +31,10 @@ services:
         Symfony\Component\Messenger\Handler\MessageHandlerInterface:
             tags:
                 - 'messenger.message_handler'
+        Symfony\Bundle\FrameworkBundle\Controller\AbstractController:
+            public: true
+            calls:
+                - setContainer: [ '@service_container' ]
 
     Heptacom\AdminOpenAuth\:
         resource: '../../*'
@@ -78,65 +82,80 @@ services:
         tags:
             - { name: shopware.entity.definition , entity: 'heptacom_admin_open_auth_user_token' }
 
-    Heptacom\AdminOpenAuth\Service\Provider\CidaasClientEntityRepository:
-        decorates: heptacom_admin_open_auth_client.repository
-        arguments:
-            - '@Heptacom\AdminOpenAuth\Service\Provider\CidaasClientEntityRepository.inner'
+    Heptacom\AdminOpenAuth\Component\OpenAuth\AuthorizationServer:
+        decorates: shopware.api.authorization_server
+        parent: shopware.api.authorization_server
+        calls:
+            - setDecorated: [ '@Heptacom\AdminOpenAuth\Component\OpenAuth\AuthorizationServer.inner' ]
+            - setSystemConfigService: [ '@Shopware\Core\System\SystemConfig\SystemConfigService' ]
 
-    Heptacom\AdminOpenAuth\Service\Provider\GoogleCloudClientEntityRepository:
-        decorates: heptacom_admin_open_auth_client.repository
+    Heptacom\AdminOpenAuth\Contract\Client\ClientFactoryContract:
         arguments:
-            - '@Heptacom\AdminOpenAuth\Service\Provider\GoogleCloudClientEntityRepository.inner'
+            - '@Heptacom\AdminOpenAuth\Contract\ClientProvider\ClientProviderRepositoryContract'
+
+    Heptacom\AdminOpenAuth\Contract\ClientProvider\ClientProviderRepositoryContract:
+        arguments:
+            - !tagged_iterator heptacom_open_auth.client_provider
+
+    Heptacom\AdminOpenAuth\Http\Route\Support\RedirectReceiveRoute:
+        arguments:
+            - '@Heptacom\AdminOpenAuth\Contract\Client\ClientFactoryContract'
+            - '@event_dispatcher'
 
     Heptacom\AdminOpenAuth\Service\OpenAuth\OneTimeTokenClientRepository:
         decorates: Shopware\Core\Framework\Api\OAuth\ClientRepository
         arguments:
             - '@Heptacom\AdminOpenAuth\Service\OpenAuth\OneTimeTokenClientRepository.inner'
 
-    Heptacom\AdminOpenAuth\Service\Provider\JiraClientEntityRepository:
-        decorates: heptacom_admin_open_auth_client.repository
+    Heptacom\AdminOpenAuth\Service\Provider\CidaasClientEntityWriter:
+        decorates: Shopware\Core\Framework\DataAbstractionLayer\Write\EntityWriter
         arguments:
-            - '@Heptacom\AdminOpenAuth\Service\Provider\JiraClientEntityRepository.inner'
+            - '@Heptacom\AdminOpenAuth\Service\Provider\CidaasClientEntityWriter.inner'
 
-    Heptacom\AdminOpenAuth\Service\Provider\JumpCloudClientEntityRepository:
-        decorates: heptacom_admin_open_auth_client.repository
+    Heptacom\AdminOpenAuth\Service\Provider\GoogleCloudClientEntityWriter:
+        decorates: Shopware\Core\Framework\DataAbstractionLayer\Write\EntityWriter
         arguments:
-            - '@Heptacom\AdminOpenAuth\Service\Provider\JumpCloudClientEntityRepository.inner'
+            - '@Heptacom\AdminOpenAuth\Service\Provider\GoogleCloudClientEntityWriter.inner'
 
-    Heptacom\AdminOpenAuth\Service\Provider\KeycloakClientEntityRepository:
-        decorates: heptacom_admin_open_auth_client.repository
+    Heptacom\AdminOpenAuth\Service\Provider\JiraClientEntityWriter:
+        decorates: Shopware\Core\Framework\DataAbstractionLayer\Write\EntityWriter
         arguments:
-            - '@Heptacom\AdminOpenAuth\Service\Provider\KeycloakClientEntityRepository.inner'
+            - '@Heptacom\AdminOpenAuth\Service\Provider\JiraClientEntityWriter.inner'
 
-    Heptacom\AdminOpenAuth\Service\Provider\MicrosoftAzureClientEntityRepository:
-        decorates: heptacom_admin_open_auth_client.repository
+    Heptacom\AdminOpenAuth\Service\Provider\JumpCloudClientEntityWriter:
+        decorates: Shopware\Core\Framework\DataAbstractionLayer\Write\EntityWriter
         arguments:
-            - '@Heptacom\AdminOpenAuth\Service\Provider\MicrosoftAzureClientEntityRepository.inner'
+            - '@Heptacom\AdminOpenAuth\Service\Provider\JumpCloudClientEntityWriter.inner'
 
-    Heptacom\AdminOpenAuth\Service\Provider\MicrosoftAzureOidcClientEntityRepository:
-        decorates: heptacom_admin_open_auth_client.repository
+    Heptacom\AdminOpenAuth\Service\Provider\KeycloakClientEntityWriter:
+        decorates: Shopware\Core\Framework\DataAbstractionLayer\Write\EntityWriter
         arguments:
-            - '@Heptacom\AdminOpenAuth\Service\Provider\MicrosoftAzureOidcClientEntityRepository.inner'
+            - '@Heptacom\AdminOpenAuth\Service\Provider\KeycloakClientEntityWriter.inner'
 
-    Heptacom\AdminOpenAuth\Service\Provider\OktaClientEntityRepository:
-        decorates: heptacom_admin_open_auth_client.repository
+    Heptacom\AdminOpenAuth\Service\Provider\MicrosoftAzureOidcClientEntityWriter:
+        decorates: Shopware\Core\Framework\DataAbstractionLayer\Write\EntityWriter
         arguments:
-            - '@Heptacom\AdminOpenAuth\Service\Provider\OktaClientEntityRepository.inner'
+            - '@Heptacom\AdminOpenAuth\Service\Provider\MicrosoftAzureOidcClientEntityWriter.inner'
 
-    Heptacom\AdminOpenAuth\Service\Provider\OneLoginClientEntityRepository:
-        decorates: heptacom_admin_open_auth_client.repository
+    Heptacom\AdminOpenAuth\Service\Provider\OktaClientEntityWriter:
+        decorates: Shopware\Core\Framework\DataAbstractionLayer\Write\EntityWriter
         arguments:
-            - '@Heptacom\AdminOpenAuth\Service\Provider\OneLoginClientEntityRepository.inner'
+            - '@Heptacom\AdminOpenAuth\Service\Provider\OktaClientEntityWriter.inner'
 
-    Heptacom\AdminOpenAuth\Service\Provider\OpenIdConnectClientEntityRepository:
-        decorates: heptacom_admin_open_auth_client.repository
+    Heptacom\AdminOpenAuth\Service\Provider\OneLoginClientEntityWriter:
+        decorates: Shopware\Core\Framework\DataAbstractionLayer\Write\EntityWriter
         arguments:
-            - '@Heptacom\AdminOpenAuth\Service\Provider\OpenIdConnectClientEntityRepository.inner'
+            - '@Heptacom\AdminOpenAuth\Service\Provider\OneLoginClientEntityWriter.inner'
 
-    Heptacom\AdminOpenAuth\Service\Provider\Saml2ClientEntityRepository:
-        decorates: heptacom_admin_open_auth_client.repository
+    Heptacom\AdminOpenAuth\Service\Provider\OpenIdConnectClientEntityWriter:
+        decorates: Shopware\Core\Framework\DataAbstractionLayer\Write\EntityWriter
         arguments:
-            - '@Heptacom\AdminOpenAuth\Service\Provider\Saml2ClientEntityRepository.inner'
+            - '@Heptacom\AdminOpenAuth\Service\Provider\OpenIdConnectClientEntityWriter.inner'
+
+    Heptacom\AdminOpenAuth\Service\Provider\Saml2ClientEntityWriter:
+        decorates: Shopware\Core\Framework\DataAbstractionLayer\Write\EntityWriter
+        arguments:
+            - '@Heptacom\AdminOpenAuth\Service\Provider\Saml2ClientEntityWriter.inner'
 
     Heptacom\AdminOpenAuth\OpenAuth\OneTimeTokenScopeRepository:
         decorates: Shopware\Core\Framework\Api\OAuth\ScopeRepository

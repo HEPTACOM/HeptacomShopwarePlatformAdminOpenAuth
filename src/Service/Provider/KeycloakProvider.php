@@ -7,25 +7,19 @@ namespace Heptacom\AdminOpenAuth\Service\Provider;
 use Heptacom\AdminOpenAuth\Component\OpenIdConnect\OpenIdConnectConfiguration;
 use Heptacom\AdminOpenAuth\Component\OpenIdConnect\OpenIdConnectService;
 use Heptacom\AdminOpenAuth\Component\Provider\OpenIdConnectClient;
+use Heptacom\AdminOpenAuth\Contract\Client\ClientContract;
+use Heptacom\AdminOpenAuth\Contract\ClientProvider\ClientProviderContract;
 use Heptacom\AdminOpenAuth\Service\TokenPairFactoryContract;
-use Heptacom\OpenAuth\Client\Contract\ClientContract;
-use Heptacom\OpenAuth\ClientProvider\Contract\ClientProviderContract;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class KeycloakProvider extends ClientProviderContract
+final class KeycloakProvider extends ClientProviderContract
 {
     public const PROVIDER_NAME = 'keycloak';
 
-    private TokenPairFactoryContract $tokenPairFactory;
-
-    private OpenIdConnectService $openIdConnectService;
-
     public function __construct(
-        TokenPairFactoryContract $tokenPairFactory,
-        OpenIdConnectService $openIdConnectService
+        private readonly TokenPairFactoryContract $tokenPairFactory,
+        private readonly OpenIdConnectService $openIdConnectService,
     ) {
-        $this->tokenPairFactory = $tokenPairFactory;
-        $this->openIdConnectService = $openIdConnectService;
     }
 
     public function provides(): string
@@ -50,7 +44,12 @@ class KeycloakProvider extends ClientProviderContract
             ])
             ->setAllowedTypes('keycloakOidcJson', 'string')
             ->setAllowedTypes('scopes', 'array')
-            ->setDeprecated('redirectUri', 'Use route api.heptacom.admin_open_auth.provider.redirect-url instead to live generate redirectUri');
+            ->setDeprecated(
+                'redirectUri',
+                'heptacom/shopware-platform-admin-open-auth',
+                '*',
+                'Use route api.heptacom.admin_open_auth.provider.redirect-url instead to live generate redirectUri'
+            );
     }
 
     public function getInitialConfiguration(): array

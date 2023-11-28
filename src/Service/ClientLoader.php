@@ -4,38 +4,29 @@ declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\Service;
 
+use Heptacom\AdminOpenAuth\Contract\Client\ClientContract;
+use Heptacom\AdminOpenAuth\Contract\Client\ClientFactoryContract;
+use Heptacom\AdminOpenAuth\Contract\Client\Exception\FactorizeClientException;
 use Heptacom\AdminOpenAuth\Contract\ClientLoaderInterface;
+use Heptacom\AdminOpenAuth\Contract\ClientProvider\ClientProviderContract;
+use Heptacom\AdminOpenAuth\Contract\ClientProvider\ClientProviderRepositoryContract;
 use Heptacom\AdminOpenAuth\Contract\ConfigurationRefresherClientProviderContract;
 use Heptacom\AdminOpenAuth\Database\ClientCollection;
 use Heptacom\AdminOpenAuth\Database\ClientEntity;
 use Heptacom\AdminOpenAuth\Exception\LoadClientClientNotFoundException;
 use Heptacom\AdminOpenAuth\Exception\LoadClientException;
-use Heptacom\OpenAuth\Client\Contract\ClientContract;
-use Heptacom\OpenAuth\Client\Contract\ClientFactoryContract;
-use Heptacom\OpenAuth\Client\Exception\FactorizeClientException;
-use Heptacom\OpenAuth\ClientProvider\Contract\ClientProviderContract;
-use Heptacom\OpenAuth\ClientProvider\Contract\ClientProviderRepositoryContract;
 use Shopware\Core\Framework\Context;
-use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
+use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\Uuid\Uuid;
 
-class ClientLoader implements ClientLoaderInterface
+final class ClientLoader implements ClientLoaderInterface
 {
-    private ClientProviderRepositoryContract $providers;
-
-    private EntityRepositoryInterface $clientsRepository;
-
-    private ClientFactoryContract $clientFactory;
-
     public function __construct(
-        ClientProviderRepositoryContract $providers,
-        EntityRepositoryInterface $clientsRepository,
-        ClientFactoryContract $clientFactory
+        private readonly ClientProviderRepositoryContract $providers,
+        private readonly EntityRepository $clientsRepository,
+        private readonly ClientFactoryContract $clientFactory
     ) {
-        $this->providers = $providers;
-        $this->clientsRepository = $clientsRepository;
-        $this->clientFactory = $clientFactory;
     }
 
     public function load(string $clientId, Context $context): ClientContract
@@ -54,9 +45,9 @@ class ClientLoader implements ClientLoaderInterface
         $this->updateClientConfig($client, $context);
 
         try {
-            return $this->clientFactory->create($client->getProvider() ?? '', $client->getConfig() ?? []);
+            return $this->clientFactory->create($client->provider ?? '', $client->config ?? []);
         } catch (FactorizeClientException $exception) {
-            throw new LoadClientException($exception->getMessage(), $clientId, $exception);
+            throw new LoadClientException($exception->getMessage(), $clientId, 0, $exception);
         }
     }
 
@@ -87,16 +78,15 @@ class ClientLoader implements ClientLoaderInterface
 
     protected function updateClientConfig(ClientEntity $client, Context $context): void
     {
-        $clientProvider = $this->providers->getMatchingProvider($client->getProvider() ?? '');
-
-        $config = $client->getConfig() ?? [];
+        $clientProvider = $this->providers->getMatchingProvider($client->provider ?? '');
+        $config = $client->config ?? [];
 
         if (!$clientProvider instanceof ConfigurationRefresherClientProviderContract || !$clientProvider->configurationNeedsUpdate($config)) {
             return;
         }
-        $config = $clientProvider->refreshConfiguration($config);
 
-        $client->setConfig($config);
+        $config = $clientProvider->refreshConfiguration($config);
+        $client->config = $config;
 
         $this->clientsRepository->update([[
             'id' => $client->getId(),

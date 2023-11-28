@@ -47,7 +47,7 @@ SQL;
     {
     }
 
-    private function dropColumnAgain(Connection $connection, int $code, \Throwable $throwable): void
+    private function dropColumnAgain(Connection $connection, int $code, \Throwable $throwable): never
     {
         $connection->executeStatement('ALTER TABLE `heptacom_admin_open_auth_login` DROP COLUMN `payload`');
 

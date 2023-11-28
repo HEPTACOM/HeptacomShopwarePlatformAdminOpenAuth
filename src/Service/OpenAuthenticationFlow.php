@@ -4,102 +4,33 @@ declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\Service;
 
-use Heptacom\AdminOpenAuth\Contract\ClientFeatureCheckerInterface;
-use Heptacom\AdminOpenAuth\Contract\ClientLoaderInterface;
-use Heptacom\AdminOpenAuth\Contract\LoginInterface;
 use Heptacom\AdminOpenAuth\Contract\OpenAuthenticationFlowInterface;
-use Heptacom\AdminOpenAuth\Contract\RedirectBehaviourFactoryInterface;
+use Heptacom\AdminOpenAuth\Contract\User;
 use Heptacom\AdminOpenAuth\Contract\UserResolverInterface;
 use Heptacom\AdminOpenAuth\Database\ClientEntity;
-use Heptacom\AdminOpenAuth\Exception\LoadClientException;
-use Heptacom\OpenAuth\Struct\UserStruct;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityCollection;
-use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
+use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Sorting\FieldSorting;
-use Shopware\Core\Framework\Uuid\Uuid;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 
-class OpenAuthenticationFlow implements OpenAuthenticationFlowInterface
+final class OpenAuthenticationFlow implements OpenAuthenticationFlowInterface
 {
-    private LoginInterface $login;
-
-    private ClientLoaderInterface $clientLoader;
-
-    private UserResolverInterface $userResolver;
-
-    private EntityRepositoryInterface $clientsRepository;
-
-    private EntityRepositoryInterface $loginsRepository;
-
-    private EntityRepositoryInterface $userEmailsRepository;
-
-    private EntityRepositoryInterface $userKeysRepository;
-
-    private EntityRepositoryInterface $userTokensRepository;
-
-    private RouterInterface $router;
-
-    private RedirectBehaviourFactoryInterface $redirectBehaviourFactory;
-
-    private ClientFeatureCheckerInterface $clientFeatureChecker;
-
     public function __construct(
-        LoginInterface $login,
-        ClientLoaderInterface $clientLoader,
-        UserResolverInterface $userResolver,
-        EntityRepositoryInterface $clientsRepository,
-        EntityRepositoryInterface $loginsRepository,
-        EntityRepositoryInterface $userEmailsRepository,
-        EntityRepositoryInterface $userKeysRepository,
-        EntityRepositoryInterface $userTokensRepository,
-        RouterInterface $router,
-        RedirectBehaviourFactoryInterface $redirectBehaviourFactory,
-        ClientFeatureCheckerInterface $clientFeatureChecker
+        private readonly UserResolverInterface $userResolver,
+        private readonly EntityRepository $clientsRepository,
+        private readonly EntityRepository $loginsRepository,
+        private readonly EntityRepository $userEmailsRepository,
+        private readonly EntityRepository $userKeysRepository,
+        private readonly EntityRepository $userTokensRepository,
+        private readonly RouterInterface $router,
     ) {
-        $this->login = $login;
-        $this->clientLoader = $clientLoader;
-        $this->userResolver = $userResolver;
-        $this->clientsRepository = $clientsRepository;
-        $this->loginsRepository = $loginsRepository;
-        $this->userEmailsRepository = $userEmailsRepository;
-        $this->userKeysRepository = $userKeysRepository;
-        $this->userTokensRepository = $userTokensRepository;
-        $this->router = $router;
-        $this->redirectBehaviourFactory = $redirectBehaviourFactory;
-        $this->clientFeatureChecker = $clientFeatureChecker;
     }
 
-    public function getRedirectUrl(string $clientId, Context $context): string
-    {
-        if (!$this->clientFeatureChecker->canLogin($clientId, $context)) {
-            throw new LoadClientException('Client can not login', $clientId);
-        }
-
-        $state = Uuid::randomHex();
-        $this->login->initiate($clientId, null, $state, $context, 'login');
-
-        return $this->clientLoader->load($clientId, $context)
-            ->getLoginUrl($state, $this->redirectBehaviourFactory->createRedirectBehaviour($clientId, $context));
-    }
-
-    public function getRedirectUrlToConnect(string $clientId, string $userId, Context $context): string
-    {
-        if (!$this->clientFeatureChecker->canConnect($clientId, $context)) {
-            throw new LoadClientException('Client can not connect', $clientId);
-        }
-
-        $state = Uuid::randomHex();
-        $this->login->initiate($clientId, $userId, $state, $context, 'connect');
-
-        return $this->clientLoader->load($clientId, $context)
-            ->getLoginUrl($state, $this->redirectBehaviourFactory->createRedirectBehaviour($clientId, $context));
-    }
-
-    public function upsertUser(UserStruct $user, string $clientId, string $state, Context $context): void
+    public function upsertUser(User $user, string $clientId, string $state, Context $context): void
     {
         $this->userResolver->resolve($user, $state, $clientId, $context);
     }
@@ -119,7 +50,7 @@ class OpenAuthenticationFlow implements OpenAuthenticationFlowInterface
             $this->userTokensRepository,
         ];
 
-        /** @var EntityRepositoryInterface $repo */
+        /** @var EntityRepository $repo */
         foreach ($repos as $repo) {
             $ids = $repo->searchIds($criteria, $context)->getIds();
 
@@ -151,15 +82,13 @@ class OpenAuthenticationFlow implements OpenAuthenticationFlowInterface
     public function getLoginRoutes(Context $context): array
     {
         return \array_values($this->getAvailableClients(new Criteria(), $context)
-            ->map(function (ClientEntity $client): array {
-                return [
-                    'name' => $client->getName(),
-                    'url' => $this->router->generate(
-                        'administration.heptacom.admin_open_auth.remote_login',
-                        ['clientId' => $client->getId()],
-                        UrlGeneratorInterface::ABSOLUTE_URL
-                    ),
-                ];
-            }));
+            ->map(fn (ClientEntity $client): array => [
+                'name' => $client->name,
+                'url' => $this->router->generate(
+                    'administration.heptacom.admin_open_auth.remote_login',
+                    ['clientId' => $client->getId()],
+                    UrlGeneratorInterface::ABSOLUTE_URL
+                ),
+            ]));
     }
 }

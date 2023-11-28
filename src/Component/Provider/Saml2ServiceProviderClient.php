@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace Heptacom\AdminOpenAuth\Component\Provider;
 
 use Heptacom\AdminOpenAuth\Component\Saml\Saml2ServiceProviderService;
+use Heptacom\AdminOpenAuth\Contract\Client\ClientContract;
 use Heptacom\AdminOpenAuth\Contract\MetadataClientContract;
 use Heptacom\AdminOpenAuth\Contract\ModifiedRedirectBehaviourClientContract;
-use Heptacom\OpenAuth\Behaviour\RedirectBehaviour;
-use Heptacom\OpenAuth\Client\Contract\ClientContract;
-use Heptacom\OpenAuth\Struct\TokenPairStruct;
-use Heptacom\OpenAuth\Struct\UserStruct;
+use Heptacom\AdminOpenAuth\Contract\RedirectBehaviour;
+use Heptacom\AdminOpenAuth\Contract\TokenPair;
+use Heptacom\AdminOpenAuth\Contract\User;
 use Psr\Http\Message\RequestInterface;
 
-class Saml2ServiceProviderClient extends ClientContract implements MetadataClientContract, ModifiedRedirectBehaviourClientContract
+final class Saml2ServiceProviderClient extends ClientContract implements MetadataClientContract, ModifiedRedirectBehaviourClientContract
 {
     public const AVAILABLE_USER_PROPERTIES = [
         'firstName',
@@ -23,11 +23,9 @@ class Saml2ServiceProviderClient extends ClientContract implements MetadataClien
         'locale',
     ];
 
-    private Saml2ServiceProviderService $saml2ServiceProviderService;
-
-    public function __construct(Saml2ServiceProviderService $saml2ServiceProviderService)
-    {
-        $this->saml2ServiceProviderService = $saml2ServiceProviderService;
+    public function __construct(
+        private readonly Saml2ServiceProviderService $saml2ServiceProviderService
+    ) {
     }
 
     public function getLoginUrl(?string $state, RedirectBehaviour $behaviour): string
@@ -35,17 +33,17 @@ class Saml2ServiceProviderClient extends ClientContract implements MetadataClien
         return $this->getInnerClient()->getAuthnRequestRedirectUri($state);
     }
 
-    public function refreshToken(string $refreshToken): TokenPairStruct
+    public function refreshToken(string $refreshToken): TokenPair
     {
         throw new \Exception('Not supported.');
     }
 
-    public function getUser(string $state, string $code, RedirectBehaviour $behaviour): UserStruct
+    public function getUser(string $state, string $code, RedirectBehaviour $behaviour): User
     {
         $auth = $this->getInnerClient()->validateLoginConfirmData($code, $state);
 
-        $user = new UserStruct();
-        $user->setPrimaryKey($auth->getNameId());
+        $user = new User();
+        $user->primaryKey = $auth->getNameId();
 
         $mapping = $this->getInnerClient()->getConfig()->getAttributeMapping();
         foreach ($mapping as $property => $attributeName) {
@@ -62,28 +60,28 @@ class Saml2ServiceProviderClient extends ClientContract implements MetadataClien
 
             switch ($property) {
                 case 'firstName':
-                    $user->setFirstName($propertyValue);
+                    $user->firstName = $propertyValue;
 
                     break;
 
                 case 'lastName':
-                    $user->setLastName($propertyValue);
+                    $user->lastName = $propertyValue;
 
                     break;
 
                 case 'email':
-                    $user->setPrimaryEmail($propertyValue);
-                    $user->setEmails($propertyValues);
+                    $user->primaryEmail = $propertyValue;
+                    $user->emails = $propertyValues;
 
                     break;
 
                 case 'timezone':
-                    $user->setTimezone($propertyValue);
+                    $user->timezone = $propertyValue;
 
                     break;
 
                 case 'locale':
-                    $user->setLocale($propertyValue);
+                    $user->locale = $propertyValue;
 
                     break;
             }
@@ -92,7 +90,7 @@ class Saml2ServiceProviderClient extends ClientContract implements MetadataClien
         return $user;
     }
 
-    public function authorizeRequest(RequestInterface $request, TokenPairStruct $token): RequestInterface
+    public function authorizeRequest(RequestInterface $request, TokenPair $token): RequestInterface
     {
         throw new \RuntimeException('Not supported');
     }
@@ -109,8 +107,8 @@ class Saml2ServiceProviderClient extends ClientContract implements MetadataClien
 
     public function modifyRedirectBehaviour(RedirectBehaviour $behaviour): void
     {
-        $behaviour->setStateKey('RelayState');
-        $behaviour->setCodeKey('SAMLResponse');
+        $behaviour->stateKey = 'RelayState';
+        $behaviour->codeKey = 'SAMLResponse';
     }
 
     public function getInnerClient(): Saml2ServiceProviderService

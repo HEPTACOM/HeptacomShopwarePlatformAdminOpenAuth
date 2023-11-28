@@ -1,0 +1,5 @@
+{
+    "require": {
+        "boxblinkracer/phpunuhi": "^1.6"
+    }
+}

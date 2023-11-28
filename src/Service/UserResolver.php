@@ -8,114 +8,94 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;
 use Heptacom\AdminOpenAuth\Contract\ClientFeatureCheckerInterface;
 use Heptacom\AdminOpenAuth\Contract\LoginInterface;
+use Heptacom\AdminOpenAuth\Contract\User;
 use Heptacom\AdminOpenAuth\Contract\UserEmailInterface;
 use Heptacom\AdminOpenAuth\Contract\UserKeyInterface;
 use Heptacom\AdminOpenAuth\Contract\UserResolverInterface;
 use Heptacom\AdminOpenAuth\Contract\UserTokenInterface;
+use Heptacom\AdminOpenAuth\Exception\UserMismatchException;
 use Heptacom\AdminOpenAuth\OpenAuth\Struct\UserStructExtension;
-use Heptacom\OpenAuth\Struct\UserStruct;
 use Shopware\Core\Defaults;
 use Shopware\Core\Framework\Api\Acl\Role\AclUserRoleDefinition;
 use Shopware\Core\Framework\Context;
-use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
+use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsAnyFilter;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\PrefixFilter;
 use Shopware\Core\Framework\Util\Random;
 use Shopware\Core\Framework\Uuid\Uuid;
+use Shopware\Core\Maintenance\User\Service\UserProvisioner;
 use Shopware\Core\System\Language\LanguageEntity;
-use Shopware\Core\System\User\Service\UserProvisioner;
 use Shopware\Core\System\User\UserDefinition;
 
-class UserResolver implements UserResolverInterface
+final class UserResolver implements UserResolverInterface
 {
-    private EntityRepositoryInterface $userRepository;
-
-    private EntityRepositoryInterface $languageRepository;
-
-    private Connection $connection;
-
-    private UserProvisioner $userProvisioner;
-
-    private LoginInterface $login;
-
-    private UserEmailInterface $userEmail;
-
-    private UserKeyInterface $userKey;
-
-    private UserTokenInterface $userToken;
-
-    private ClientFeatureCheckerInterface $clientFeatureChecker;
-
     public function __construct(
-        EntityRepositoryInterface $userRepository,
-        EntityRepositoryInterface $languageRepository,
-        Connection $connection,
-        UserProvisioner $userProvisioner,
-        LoginInterface $login,
-        UserEmailInterface $userEmail,
-        UserKeyInterface $userKey,
-        UserTokenInterface $userToken,
-        ClientFeatureCheckerInterface $clientFeatureChecker
+        private readonly EntityRepository $userRepository,
+        private readonly EntityRepository $languageRepository,
+        private readonly Connection $connection,
+        private readonly UserProvisioner $userProvisioner,
+        private readonly LoginInterface $login,
+        private readonly UserEmailInterface $userEmail,
+        private readonly UserKeyInterface $userKey,
+        private readonly UserTokenInterface $userToken,
+        private readonly ClientFeatureCheckerInterface $clientFeatureChecker
     ) {
-        $this->connection = $connection;
-        $this->userRepository = $userRepository;
-        $this->languageRepository = $languageRepository;
-        $this->userProvisioner = $userProvisioner;
-        $this->login = $login;
-        $this->userEmail = $userEmail;
-        $this->userKey = $userKey;
-        $this->userToken = $userToken;
-        $this->clientFeatureChecker = $clientFeatureChecker;
     }
 
-    public function resolve(UserStruct $user, string $state, string $clientId, Context $context): void
+    public function resolve(User $user, string $state, string $clientId, Context $context): void
     {
-        $userId = $this->login->getUser($state, $context) ?? $this->findUserId($user, $clientId, $context);
+        $userId = $this->login->getUser($state, $context);
+        $mappedUserId = $this->findUserId($user, $clientId, $context);
         $isNew = false;
 
-        if ($userId === null) {
-            $isNew = true;
-            $password = Random::getAlphanumericString(254);
-            $this->userProvisioner->provision($user->getPrimaryEmail(), $password, ['email' => $user->getPrimaryEmail()]);
-
-            $userId = $this->findUserId($user, $clientId, $context);
+        if ($userId !== null && $mappedUserId !== null && $userId !== $mappedUserId) {
+            throw new UserMismatchException();
         }
 
-        $this->postUpdates($user, $userId, $state, $isNew, $clientId, $context);
+        if ($mappedUserId === null) {
+            $isNew = true;
+            $password = Random::getAlphanumericString(254);
+            $this->userProvisioner->provision($user->primaryEmail, $password, ['email' => $user->primaryEmail]);
+
+            $mappedUserId = $this->findUserId($user, $clientId, $context);
+        }
+
+        $this->postUpdates($user, $mappedUserId, $state, $isNew, $clientId, $context);
     }
 
     protected function postUpdates(
-        UserStruct $user,
+        User $user,
         string $userId,
         string $state,
         bool $isNew,
         string $clientId,
         Context $context
     ): void {
-        if ($this->clientFeatureChecker->canStoreUserTokens($clientId, $context)
-            && ($tokenPair = $user->getTokenPair()) !== null) {
-            if (!empty($tokenPair->getRefreshToken())) {
+        $tokenPair = $user->tokenPair;
+
+        if ($this->clientFeatureChecker->canStoreUserTokens($clientId, $context) && $tokenPair !== null) {
+            if (!empty($tokenPair->refreshToken)) {
                 $this->userToken->setToken($userId, $clientId, $tokenPair, $context);
             }
         }
 
-        $this->userKey->add($userId, $user->getPrimaryKey(), $clientId, $context);
-        $this->userEmail->add($userId, $user->getPrimaryEmail(), $clientId, $context);
+        $this->userKey->add($userId, $user->primaryKey, $clientId, $context);
+        $this->userEmail->add($userId, $user->primaryEmail, $clientId, $context);
 
-        foreach ($user->getEmails() as $email) {
+        foreach ($user->emails as $email) {
             $this->userEmail->add($userId, $email, $clientId, $context);
         }
 
         $this->login->setCredentials($state, $userId, $context);
 
-        $userChangeSet = $this->getUserInfoChangeSet($userId, $user, $isNew, $clientId, $context);
+        $userChangeSet = $this->getUserInfoChangeSet($user, $isNew, $clientId, $context);
         $aclRoles = null;
 
         if ($isNew) {
             /** @var UserStructExtension|null $userExtension */
-            $userExtension = $user->getPassthrough()[UserStructExtension::class] ?? null;
+            $userExtension = $user->getExtensionOfType(UserStructExtension::class, UserStructExtension::class);
 
             if (!$userExtension) {
                 return;
@@ -131,17 +111,20 @@ class UserResolver implements UserResolverInterface
         $this->updateUser($userId, $userChangeSet, $aclRoles, $isNew);
     }
 
-    protected function findUserId(UserStruct $user, string $clientId, Context $context): ?string
+    protected function findUserId(User $user, string $clientId, Context $context): ?string
     {
-        $emails = $user->getEmails();
-        $emails[] = $user->getPrimaryEmail();
+        $emails = $user->emails;
+        $emails[] = $user->primaryEmail;
+        $userEmails = $this->userEmail->searchUser($emails, $context);
 
-        if (($result = $this->userEmail->searchUser($emails, $context))->count() > 0) {
-            return $result->first()->getId();
+        if ($userEmails->count() > 0) {
+            return $userEmails->first()->getId();
         }
 
-        if (($result = $this->userKey->searchUser($user->getPrimaryKey(), $clientId, $context))->count() > 0) {
-            return $result->first()->getId();
+        $userKeys = $this->userKey->searchUser($user->primaryKey, $clientId, $context);
+
+        if ($userKeys->count() > 0) {
+            return $userKeys->first()->getId();
         }
 
         $criteria = new Criteria();
@@ -176,7 +159,7 @@ class UserResolver implements UserResolverInterface
         return null;
     }
 
-    protected function getUserInfoChangeSet(string $userId, UserStruct $user, bool $isNew, string $clientId, Context $context): array
+    protected function getUserInfoChangeSet(User $user, bool $isNew, string $clientId, Context $context): array
     {
         $userChangeSet = [];
 
@@ -185,16 +168,16 @@ class UserResolver implements UserResolverInterface
         }
 
         $userChangeSet['first_name'] = '';
-        $userChangeSet['last_name'] = $user->getDisplayName();
+        $userChangeSet['last_name'] = $user->displayName;
 
-        if (!empty($user->getFirstName()) && !empty($user->getLastName())) {
-            $userChangeSet['first_name'] = $user->getFirstName();
-            $userChangeSet['last_name'] = $user->getLastName();
+        if (!empty($user->firstName) && !empty($user->lastName)) {
+            $userChangeSet['first_name'] = $user->firstName;
+            $userChangeSet['last_name'] = $user->lastName;
         }
 
-        $userChangeSet['email'] = $user->getPrimaryEmail();
-        $userChangeSet['time_zone'] = $user->getTimezone();
-        $userChangeSet['locale_id'] = $this->findLocaleId($user->getLocale() ?? '', $context);
+        $userChangeSet['email'] = $user->primaryEmail;
+        $userChangeSet['time_zone'] = $user->timezone;
+        $userChangeSet['locale_id'] = $this->findLocaleId($user->locale ?? '', $context);
 
         return \array_filter($userChangeSet, static fn ($value) => $value !== null);
     }
@@ -206,7 +189,7 @@ class UserResolver implements UserResolverInterface
         }
 
         foreach ($userChangeSet as $key => $newValue) {
-            if (substr($key, -3) === '_id') {
+            if (str_ends_with($key, '_id')) {
                 $userChangeSet[$key] = Uuid::fromHexToBytes($newValue);
             }
         }
@@ -239,7 +222,7 @@ class UserResolver implements UserResolverInterface
         }
 
         foreach ($userChangeSet as $key => $newValue) {
-            if (substr($key, -3) === '_id') {
+            if (str_ends_with($key, '_id')) {
                 $newValue = Uuid::fromBytesToHex($newValue);
             }
 

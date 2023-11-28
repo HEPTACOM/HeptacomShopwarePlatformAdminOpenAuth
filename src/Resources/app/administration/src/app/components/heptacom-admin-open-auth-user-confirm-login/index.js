@@ -4,7 +4,7 @@ import template from './heptacom-admin-open-auth-user-confirm-login.html.twig';
 const { Component, Context } = Shopware;
 const confirmStateKey = 'HeptacomAdminOpenAuthConfirmState';
 
-Component.register('heptacom-admin-open-auth-user-confirm-login', {
+export default {
     template,
 
     inject: [
@@ -12,12 +12,20 @@ Component.register('heptacom-admin-open-auth-user-confirm-login', {
         'repositoryFactory',
     ],
 
+    props: {
+        divider: {
+            type: Boolean,
+            default: true,
+        },
+    },
+
     data() {
         return {
             loading: true,
             clients: [],
             waitingForConfirmation: false,
             confirmationClient: null,
+            popupsAreBlocked: null,
         }
     },
 
@@ -28,6 +36,10 @@ Component.register('heptacom-admin-open-auth-user-confirm-login', {
 
         httpClient() {
             return this.heptacomAdminOpenAuthClientsRepository.httpClient;
+        },
+
+        sectionDivider() {
+            return this.divider ? 'bottom' : '';
         }
     },
 
@@ -54,7 +66,9 @@ Component.register('heptacom-admin-open-auth-user-confirm-login', {
         },
 
         startAuthFlow(client) {
+            const that = this;
             this.waitingForConfirmation = true;
+            this.popupsAreBlocked = null;
             this.confirmationClient = client;
             localStorage.removeItem(confirmStateKey);
 
@@ -67,9 +81,33 @@ Component.register('heptacom-admin-open-auth-user-confirm-login', {
                         this.$t('heptacom-admin-open-auth-user-confirm-login.confirmWith', { 'clientName': client.name }),
                         `location=0,status=0,width=600,height=600, top=${top}, left=${left}`
                     );
-                    const windowLoop = window.setInterval(() => {
+                    let windowLoop = null;
+                    const windowPopupCheck = window.setTimeout(() => {
+                        if (!oauthWindow || oauthWindow.closed || typeof oauthWindow.closed === 'undefined') {
+                            that.popupsAreBlocked = true;
+                            that.waitingForConfirmation = false;
+
+                            if (windowLoop) {
+                                window.clearInterval(windowLoop);
+                            }
+                        }
+                    }, 1200); // must be longer than the loop, so the loop can run at least once
+
+                    try {
+                        oauthWindow.focus();
+                        that.popupsAreBlocked = false;
+                    } catch (e) {
+                        that.popupsAreBlocked = true;
+                        that.waitingForConfirmation = false;
+                        window.clearTimeout(windowPopupCheck);
+                        return;
+                    }
+
+                    windowLoop = window.setInterval(() => {
                         if (!this.waitingForConfirmation) {
                             window.clearInterval(windowLoop);
+                            window.clearTimeout(windowPopupCheck);
+                            this.popupsAreBlocked = false;
                             oauthWindow.close();
 
                             return;
@@ -77,6 +115,8 @@ Component.register('heptacom-admin-open-auth-user-confirm-login', {
 
                         if (oauthWindow.closed) {
                             window.clearInterval(windowLoop);
+                            window.clearTimeout(windowPopupCheck);
+                            this.popupsAreBlocked = false;
 
                             this.waitingForConfirmation = false;
                             const statePayload = localStorage.getItem(confirmStateKey);
@@ -139,4 +179,4 @@ Component.register('heptacom-admin-open-auth-user-confirm-login', {
             });
         }
     }
-});
+};

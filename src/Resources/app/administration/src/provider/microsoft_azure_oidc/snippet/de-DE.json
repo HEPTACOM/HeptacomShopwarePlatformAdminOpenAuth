@@ -1,18 +1,18 @@
 {
     "heptacomAdminOpenAuthClient": {
-        "providers": {
-            "microsoft_azure_oidc": {
-                "label": "Microsoft Azure",
-                "logoFile": "microsoft_logo.svg",
-                "helpUrl": "https://docs.microsoft.com/de-de/azure/active-directory/develop/quickstart-register-app"
-            }
-        },
         "providerFields": {
             "microsoft_azure_oidc": {
                 "additionalScopes": "Anwendungsberechtigungen",
-                "tenantId": "Verzeichnis-ID",
                 "clientId": "Anwendungsschlüssel",
-                "clientSecret": "Anwendungsgehemnis"
+                "clientSecret": "Anwendungsgehemnis",
+                "tenantId": "Verzeichnis-ID"
+            }
+        },
+        "providers": {
+            "microsoft_azure_oidc": {
+                "helpUrl": "https://docs.microsoft.com/de-de/azure/active-directory/develop/quickstart-register-app",
+                "label": "Microsoft Azure",
+                "logoFile": "microsoft_logo.svg"
             }
         }
     }

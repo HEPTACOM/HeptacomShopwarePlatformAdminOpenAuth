@@ -9,33 +9,16 @@ use Heptacom\AdminOpenAuth\Database\LoginCollection;
 use Heptacom\AdminOpenAuth\Database\LoginEntity;
 use Shopware\Core\Defaults;
 use Shopware\Core\Framework\Context;
-use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
+use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\RangeFilter;
-use Shopware\Core\Framework\Uuid\Uuid;
 
-class Login implements LoginInterface
+final class Login implements LoginInterface
 {
-    private EntityRepositoryInterface $loginsRepository;
-
-    public function __construct(EntityRepositoryInterface $loginsRepository)
-    {
-        $this->loginsRepository = $loginsRepository;
-    }
-
-    public function initiate(string $clientId, ?string $userId, string $state, Context $context, ?string $type = null): string
-    {
-        $id = Uuid::randomHex();
-        $this->loginsRepository->create([[
-            'id' => $id,
-            'clientId' => $clientId,
-            'userId' => $userId,
-            'state' => $state,
-            'type' => $type ?? 'login',
-        ]], $context);
-
-        return $id;
+    public function __construct(
+        private readonly EntityRepository $loginsRepository,
+    ) {
     }
 
     public function setCredentials(string $state, string $userId, Context $context): bool
@@ -70,9 +53,7 @@ class Login implements LoginInterface
         $logins = $this->loginsRepository->search($criteria, $context)->getEntities();
 
         if ($logins->count() > 0) {
-            $deletePayload = $logins->map(function (LoginEntity $login): array {
-                return ['id' => $login->getId()];
-            });
+            $deletePayload = $logins->map(fn (LoginEntity $login): array => ['id' => $login->getId()]);
             $this->loginsRepository->delete(\array_values($deletePayload), $context);
         }
 
@@ -87,6 +68,6 @@ class Login implements LoginInterface
         $logins = $this->loginsRepository->search($criteria, $context)->getEntities();
         $first = $logins->first();
 
-        return $first === null ? null : $first->getUserId();
+        return $first === null ? null : $first->userId;
     }
 }

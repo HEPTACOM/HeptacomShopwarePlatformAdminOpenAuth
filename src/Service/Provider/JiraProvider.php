@@ -4,22 +4,21 @@ declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\Service\Provider;
 
+use Heptacom\AdminOpenAuth\Component\OpenAuth\Atlassian;
 use Heptacom\AdminOpenAuth\Component\Provider\JiraClient;
+use Heptacom\AdminOpenAuth\Contract\Client\ClientContract;
+use Heptacom\AdminOpenAuth\Contract\ClientProvider\ClientProviderContract;
 use Heptacom\AdminOpenAuth\Service\TokenPairFactoryContract;
-use Heptacom\OpenAuth\Client\Contract\ClientContract;
-use Heptacom\OpenAuth\ClientProvider\Contract\ClientProviderContract;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class JiraProvider extends ClientProviderContract
+final class JiraProvider extends ClientProviderContract
 {
     public const PROVIDER_NAME = 'jira';
 
-    private TokenPairFactoryContract $tokenPairFactory;
-
-    public function __construct(TokenPairFactoryContract $tokenPairFactory)
-    {
-        $this->tokenPairFactory = $tokenPairFactory;
+    public function __construct(
+        private readonly TokenPairFactoryContract $tokenPairFactory,
+    ) {
     }
 
     public function provides(): string
@@ -46,7 +45,12 @@ class JiraProvider extends ClientProviderContract
             ])->setAllowedTypes('clientId', 'string')
             ->setAllowedTypes('clientSecret', 'string')
             ->setAllowedTypes('scopes', 'array')
-            ->setDeprecated('redirectUri', 'Use route api.heptacom.admin_open_auth.provider.redirect-url instead to live generate redirectUri')
+            ->setDeprecated(
+                'redirectUri',
+                'heptacom/shopware-platform-admin-open-auth',
+                '*',
+                'Use route api.heptacom.admin_open_auth.provider.redirect-url instead to live generate redirectUri'
+            )
             ->addNormalizer('scopes', static function (Options $options, $value) {
                 $scopes = (array) $value;
 
@@ -75,6 +79,6 @@ class JiraProvider extends ClientProviderContract
 
     public function provideClient(array $resolvedConfig): ClientContract
     {
-        return new JiraClient($this->tokenPairFactory, $resolvedConfig);
+        return new JiraClient($this->tokenPairFactory, new Atlassian($resolvedConfig));
     }
 }

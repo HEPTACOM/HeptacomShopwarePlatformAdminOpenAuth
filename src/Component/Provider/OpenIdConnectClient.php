@@ -5,23 +5,19 @@ declare(strict_types=1);
 namespace Heptacom\AdminOpenAuth\Component\Provider;
 
 use Heptacom\AdminOpenAuth\Component\OpenIdConnect\OpenIdConnectService;
+use Heptacom\AdminOpenAuth\Contract\Client\ClientContract;
+use Heptacom\AdminOpenAuth\Contract\RedirectBehaviour;
+use Heptacom\AdminOpenAuth\Contract\TokenPair;
+use Heptacom\AdminOpenAuth\Contract\User;
 use Heptacom\AdminOpenAuth\Service\TokenPairFactoryContract;
-use Heptacom\OpenAuth\Behaviour\RedirectBehaviour;
-use Heptacom\OpenAuth\Client\Contract\ClientContract;
-use Heptacom\OpenAuth\Struct\TokenPairStruct;
-use Heptacom\OpenAuth\Struct\UserStruct;
 use Psr\Http\Message\RequestInterface;
 
-class OpenIdConnectClient extends ClientContract
+final class OpenIdConnectClient extends ClientContract
 {
-    private TokenPairFactoryContract $tokenPairFactory;
-
-    private OpenIdConnectService $openIdConnectService;
-
-    public function __construct(TokenPairFactoryContract $tokenPairFactory, OpenIdConnectService $openIdConnectService)
-    {
-        $this->tokenPairFactory = $tokenPairFactory;
-        $this->openIdConnectService = $openIdConnectService;
+    public function __construct(
+        private readonly TokenPairFactoryContract $tokenPairFactory,
+        private readonly OpenIdConnectService $openIdConnectService
+    ) {
     }
 
     public function getLoginUrl(?string $state, RedirectBehaviour $behaviour): string
@@ -29,30 +25,30 @@ class OpenIdConnectClient extends ClientContract
         $state = $state ?? '';
         $params = [];
 
-        if (\is_string($behaviour->getRedirectUri())) {
-            $params['redirect_uri'] = $behaviour->getRedirectUri();
+        if (\is_string($behaviour->redirectUri)) {
+            $params['redirect_uri'] = $behaviour->redirectUri;
         }
 
         if ($state !== '') {
-            $params[$behaviour->getStateKey()] = $state;
+            $params[$behaviour->stateKey] = $state;
         }
 
         return $this->getInnerClient()->getAuthorizationUrl($params);
     }
 
-    public function refreshToken(string $refreshToken): TokenPairStruct
+    public function refreshToken(string $refreshToken): TokenPair
     {
         return $this->tokenPairFactory->fromOpenIdConnectToken($this->getInnerClient()->getAccessToken('refresh_token', [
             'refresh_token' => $refreshToken,
         ]));
     }
 
-    public function getUser(string $state, string $code, RedirectBehaviour $behaviour): UserStruct
+    public function getUser(string $state, string $code, RedirectBehaviour $behaviour): User
     {
-        $options = [$behaviour->getCodeKey() => $code];
+        $options = [$behaviour->codeKey => $code];
 
-        if (\is_string($behaviour->getRedirectUri())) {
-            $options['redirect_uri'] = $behaviour->getRedirectUri();
+        if (\is_string($behaviour->redirectUri)) {
+            $options['redirect_uri'] = $behaviour->redirectUri;
         }
 
         $token = $this->getInnerClient()->getAccessToken('authorization_code', $options);
@@ -63,22 +59,30 @@ class OpenIdConnectClient extends ClientContract
             $name = $user->getNickname() ?? $user->getPreferredUsername() ?? $user->getEmail();
         }
 
-        return (new UserStruct())
-            ->setPrimaryKey($user->getSub())
-            ->setTokenPair($this->tokenPairFactory->fromOpenIdConnectToken($token))
-            ->setFirstName($user->getGivenName() ?? '')
-            ->setLastName($user->getFamilyName() ?? '')
-            ->setDisplayName($name)
-            ->setPrimaryEmail($user->getEmail())
-            ->setEmails([$user->getEmail()])
-            ->setLocale($user->getLocale() !== null ? str_replace('_', '-', $user->getLocale()) : null)
-            ->setTimezone($user->getZoneinfo() ?? null)
-            ->addPassthrough('picture', $user->getPicture());
+        $result = new User();
+        $result->primaryKey = $user->getSub();
+        $result->tokenPair = $this->tokenPairFactory->fromOpenIdConnectToken($token);
+        $result->firstName = $user->getGivenName() ?? '';
+        $result->lastName = $user->getFamilyName() ?? '';
+        $result->displayName = $name;
+        $result->primaryEmail = $user->getEmail();
+        $result->emails = [$user->getEmail()];
+        $result->timezone = $user->getZoneinfo();
+
+        if ($user->getLocale() !== null) {
+            $result->locale = str_replace('_', '-', $user->getLocale());
+        }
+
+        $result->addArrayExtension('picture', [
+            'picture' => $user->getPicture(),
+        ]);
+
+        return $result;
     }
 
-    public function authorizeRequest(RequestInterface $request, TokenPairStruct $token): RequestInterface
+    public function authorizeRequest(RequestInterface $request, TokenPair $token): RequestInterface
     {
-        return $request->withAddedHeader('Authorization', 'Bearer ' . $token->getAccessToken());
+        return $request->withAddedHeader('Authorization', 'Bearer ' . $token->accessToken);
     }
 
     public function getInnerClient(): OpenIdConnectService

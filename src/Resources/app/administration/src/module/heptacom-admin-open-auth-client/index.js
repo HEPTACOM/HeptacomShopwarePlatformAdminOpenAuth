@@ -1,9 +1,10 @@
-import './acl';
-import './page/create';
-import './page/edit';
-import './page/listing';
+const { Component, Module } = Shopware;
 
-const { Module } = Shopware;
+import './acl';
+
+Component.register('heptacom-admin-open-auth-client-create-page', () => import ('./page/create'));
+Component.register('heptacom-admin-open-auth-client-edit-page', () => import ('./page/edit'));
+Component.register('heptacom-admin-open-auth-client-listing-page', () => import ('./page/listing'));
 
 Module.register('heptacom-admin-open-auth-client', {
     type: 'plugin',
@@ -11,7 +12,7 @@ Module.register('heptacom-admin-open-auth-client', {
     title: 'heptacom-admin-open-auth-client.module.title',
     description: 'heptacom-admin-open-auth-client.module.description',
     color: '#FFC2A2',
-    icon: 'default-action-log-in',
+    icon: 'regular-sign-in',
 
     routes: {
         create: {
@@ -50,7 +51,7 @@ Module.register('heptacom-admin-open-auth-client', {
     settingsItem: [{
         to: 'heptacom.admin.open.auth.client.settings',
         group: 'system',
-        icon: 'default-action-log-in',
+        icon: 'regular-sign-in',
         privilege: 'heptacom_admin_open_auth_client.viewer'
     }]
 });

@@ -1,14 +1,11 @@
 {
     "require": {
-        "php": "^7.4",
-        "icanhazstring/composer-unused": ">=0.7"
+        "php": ">=8.1",
+        "icanhazstring/composer-unused": ">=0.8.8"
     },
     "config": {
         "allow-plugins": {
             "icanhazstring/composer-unused": true
-        },
-        "platform": {
-            "php": "7.4.3"
         }
     }
 }

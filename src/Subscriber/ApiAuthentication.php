@@ -13,26 +13,14 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
-class ApiAuthentication implements EventSubscriberInterface
+final class ApiAuthentication implements EventSubscriberInterface
 {
-    private AuthorizationServer $authorizationServer;
-
-    private UserRepositoryInterface $userRepository;
-
-    private RefreshTokenRepositoryInterface $refreshTokenRepository;
-
-    private LoginInterface $login;
-
     public function __construct(
-        AuthorizationServer $authorizationServer,
-        UserRepositoryInterface $userRepository,
-        RefreshTokenRepositoryInterface $refreshTokenRepository,
-        LoginInterface $login
+        private readonly AuthorizationServer $authorizationServer,
+        private readonly UserRepositoryInterface $userRepository,
+        private readonly RefreshTokenRepositoryInterface $refreshTokenRepository,
+        private readonly LoginInterface $login,
     ) {
-        $this->authorizationServer = $authorizationServer;
-        $this->userRepository = $userRepository;
-        $this->refreshTokenRepository = $refreshTokenRepository;
-        $this->login = $login;
     }
 
     public static function getSubscribedEvents(): array
@@ -46,7 +34,7 @@ class ApiAuthentication implements EventSubscriberInterface
 
     public function addOneTimeTokenGrant(RequestEvent $event): void
     {
-        if (!$event->isMasterRequest()) {
+        if (!$event->isMainRequest()) {
             return;
         }
 

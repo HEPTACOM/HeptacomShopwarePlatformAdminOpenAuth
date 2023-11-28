@@ -19,7 +19,7 @@ use Shopware\Core\Framework\DataAbstractionLayer\Field\UpdatedAtField;
 use Shopware\Core\Framework\DataAbstractionLayer\FieldCollection;
 use Shopware\Core\System\User\UserDefinition;
 
-class LoginDefinition extends EntityDefinition
+final class LoginDefinition extends EntityDefinition
 {
     public const ENTITY_NAME = 'heptacom_admin_open_auth_login';
 
@@ -44,7 +44,6 @@ class LoginDefinition extends EntityDefinition
     {
         return [
             'payload' => [],
-            'type' => 'login',
             'expiresAt' => \date_create()
                 ->setTimestamp(\time() + self::DEFAULT_LOGIN_EXPIRY)
                 ->format(Defaults::STORAGE_DATE_TIME_FORMAT),
@@ -57,8 +56,8 @@ class LoginDefinition extends EntityDefinition
             (new IdField('id', 'id'))->addFlags(new PrimaryKey(), new Required()),
             (new IdField('state', 'state'))->addFlags(new Required()),
             new JsonField('payload', 'payload', [], []),
-            new StringField('type', 'type'),
-            new DateTimeField('expires_at', 'expiresAt'),
+            (new StringField('type', 'type'))->addFlags(new Required()),
+            (new DateTimeField('expires_at', 'expiresAt'))->addFlags(new Required()),
             new CreatedAtField(),
             new UpdatedAtField(),
 

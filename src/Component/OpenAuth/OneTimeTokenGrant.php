@@ -17,17 +17,14 @@ use Psr\Http\Message\ServerRequestInterface;
 use Shopware\Core\Framework\Api\OAuth\User\User;
 use Shopware\Core\Framework\Context;
 
-class OneTimeTokenGrant extends PasswordGrant
+final class OneTimeTokenGrant extends PasswordGrant
 {
-    private LoginInterface $login;
-
     public function __construct(
         UserRepositoryInterface $userRepository,
         RefreshTokenRepositoryInterface $refreshTokenRepository,
-        LoginInterface $login
+        private readonly LoginInterface $login
     ) {
         parent::__construct($userRepository, $refreshTokenRepository);
-        $this->login = $login;
     }
 
     public function getIdentifier()
@@ -45,11 +42,11 @@ class OneTimeTokenGrant extends PasswordGrant
 
         $loginState = $this->login->pop($otp, Context::createDefaultContext());
 
-        if (!$loginState instanceof LoginEntity || $loginState->getType() !== 'login') {
+        if (!$loginState instanceof LoginEntity || $loginState->type !== 'login') {
             throw OAuthServerException::invalidRequest('one_time_token', 'Expired');
         }
 
-        $user = new User($loginState->getUserId());
+        $user = new User($loginState->userId);
 
         if (!$user instanceof UserEntityInterface) {
             $this->getEmitter()->emit(new RequestEvent(RequestEvent::USER_AUTHENTICATION_FAILED, $request));

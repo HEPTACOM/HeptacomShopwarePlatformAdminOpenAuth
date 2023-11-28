@@ -1,4 +1,4 @@
-image: heptacom/shopware-6-plugin-pipeline:php74-node14-latest
+image: heptacom/shopware-6-plugin-pipeline:php82-node18-latest
 
 definitions:
     steps:
@@ -28,6 +28,19 @@ definitions:
                     - 'test ${BITBUCKET_EXIT_CODE} -eq 0 || echo "Bitbucket tag: ${BITBUCKET_TAG}"'
                     - 'test ${BITBUCKET_EXIT_CODE} -eq 0 || (echo "composer.json version: " && jq -r composer.json .version)'
                     - "test ${BITBUCKET_EXIT_CODE} -eq 0 || (echo 'CHANGELOG.md versions: ' && grep -e '# ' CHANGELOG.md)'"
+        -   step: &composer-high-install
+                <<: *default-step
+                name: Install (High dependencies)
+                artifacts:
+                    - .build/**
+                    - composer.lock
+                    - setup-vendor.sh
+                script:
+                    - make clean
+                    - COMPOSER_EXTRA_ARGS=-vvv make -e vendor
+                    - make .build
+                    - mv vendor .build/vendor-high
+                    - echo 'mkdir -p vendor; rm -rf vendor; mv .build/vendor-high vendor' > setup-vendor.sh
         -   step: &composer-low-install
                 <<: *default-step
                 name: Install (Low dependencies)
@@ -42,22 +55,6 @@ definitions:
                     - make .build
                     - mv vendor .build/vendor-low
                     - echo 'mkdir -p vendor; rm -rf vendor; mv .build/vendor-low vendor' > setup-vendor.sh
-        -   step: &composer-install-php-80
-                <<: *default-step
-                image: heptacom/shopware-6-plugin-pipeline:php80-node14-latest
-                name: Install PHP 8.0
-                script:
-                    - make clean
-                    - composer update --prefer-stable
-                    - COMPOSER_EXTRA_ARGS=-vvv make -e vendor
-        -   step: &composer-install-php-81
-                <<: *default-step
-                image: heptacom/shopware-6-plugin-pipeline:php81-node14-latest
-                name: Install PHP 8.1
-                script:
-                    - make clean
-                    - composer update --prefer-stable
-                    - COMPOSER_EXTRA_ARGS=-vvv make -e vendor
         -   step: &build-fix-and-commit
                 <<: *default-step
                 name: Build and fix (composer.json, ECS, admin)
@@ -94,6 +91,24 @@ definitions:
                 script:
                     - bash setup-vendor.sh
                     - COMPOSER_EXTRA_ARGS=-vvv make -e cs-ecs
+        -   step: &test-code-style-phpstan
+                <<: *default-step
+                name: PHPStan (Static code analysis)
+                script:
+                    - bash setup-vendor.sh
+                    - COMPOSER_EXTRA_ARGS=-vvv make -e cs-phpstan
+        -   step: &test-code-style-psalm
+                <<: *default-step
+                name: Psalm (Static code analysis)
+                script:
+                    - bash setup-vendor.sh
+                    - COMPOSER_EXTRA_ARGS=-vvv make -e cs-psalm
+        -   step: &test-code-style-phpmd
+                <<: *default-step
+                name: PHP Mess Detector (Static code analysis)
+                script:
+                    - bash setup-vendor.sh
+                    - COMPOSER_EXTRA_ARGS=-vvv make -e cs-phpmd
         -   step: &test-code-style-soft-require
                 <<: *default-step
                 name: Composer soft requirements (Requirement analysis)
@@ -118,6 +133,11 @@ definitions:
                 script:
                     - bash setup-vendor.sh
                     - COMPOSER_EXTRA_ARGS=-vvv make -e cs-json
+        -   step: &test-code-style-translation
+                <<: *default-step
+                name: Analyse translations are complete
+                script:
+                    - PHPUNUHI_EXTRA_ARGS="--report-format=junit --report-output=.build/phpunuhi-report.xml" make -e cs-translation
         -   step: &test-build-administration
                 <<: *default-step
                 name: Check administration is built
@@ -135,57 +155,35 @@ definitions:
                     - git commit -m "$ releasecheck"
                     - git tag 999.999.999
                     - make releasecheck
+
 pipelines:
     branches:
-        master:
+        main:
             -   step: *keyword-check
             -   step: *composer-low-install
             -   step: *build-fix-and-commit
             -   parallel:
                     -   step: *test-code-style-composer-unused
                     -   step: *test-code-style-json
-                    -   step: *test-code-style-soft-require
-                    -   step: *composer-install-php-80
-                    -   step: *composer-install-php-81
+                    -   step: *test-code-style-translation
             -   step:
                     image: atlassian/default-image:2
                     name: Mirror to Github
                     script:
                         - git remote add github git@github.com:HEPTACOM/HeptacomShopwarePlatformAdminOpenAuth.git
-                        - git push --force github master
-        '**':
-            -   step: *composer-low-install
-            -   step: *keyword-check
-            -   step: *build-fix-and-commit
-            -   parallel:
-                    -   step: *test-code-style-composer-normalize
-                    -   step: *test-build-administration
-                    -   step: *test-code-style-php
-                    -   step: *test-code-style-json
-                    -   step: *test-code-style-soft-require
-                    -   step: *lint-store-readiness
-                    -   step: *composer-install-php-80
-                    -   step: *composer-install-php-81
-
+                        - git push --force github main
     tags:
         '*':
             -   step: *tag-check
             -   step: *keyword-check
+            -   step: *lint-store-readiness
             -   step: *composer-low-install
             -   parallel:
+                    -   step: *test-code-style-translation
                     -   step: *test-code-style-composer-normalize
                     -   step: *test-build-administration
                     -   step: *test-code-style-php
                     -   step: *test-code-style-json
-                    -   step: *test-code-style-soft-require
-                    -   step:
-                            name: Lint plugins store readiness
-                            artifacts:
-                                - .build/KskHeptacomAdminOpenAuth-*.zip
-                            script:
-                                - make releasecheck
-                    -   step: *composer-install-php-80
-                    -   step: *composer-install-php-81
             -   step:
                     image: atlassian/default-image:2
                     name: Mirror tags to Github
@@ -193,14 +191,25 @@ pipelines:
                         - git remote add github git@github.com:HEPTACOM/HeptacomShopwarePlatformAdminOpenAuth.git
                         - git push --force github tag $BITBUCKET_TAG
     default:
-        -   step: *composer-low-install
         -   step: *keyword-check
+        -   step: *composer-low-install
+        -   step: *build-fix-and-commit
         -   parallel:
-                -   step: *test-code-style-composer-normalize
-                -   step: *test-build-administration
-                -   step: *test-code-style-php
+                -   step: *test-code-style-translation
+                -   step: *test-code-style-composer-unused
                 -   step: *test-code-style-json
                 -   step: *test-code-style-soft-require
                 -   step: *lint-store-readiness
-                -   step: *composer-install-php-80
-                -   step: *composer-install-php-81
+
+    custom:
+        deep-check:
+            -   step: *composer-high-install
+            -   parallel:
+                    -   step: *test-code-style-phpmd
+                    -   step: *test-code-style-phpstan
+                    -   step: *test-code-style-psalm
+            -   step: *composer-low-install
+            -   parallel:
+                    -   step: *test-code-style-phpmd
+                    -   step: *test-code-style-phpstan
+                    -   step: *test-code-style-psalm

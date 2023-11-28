@@ -1,5 +1,33 @@
 # Unreleased
 
+**Added**
+
+* Added Shopware 6.5 compatibility with related dependencies
+* Added download metadata button to `heptacom-admin-open-auth-client-edit-page` component
+* Added configuration option `requestedAuthnContext` to SAML2 provider
+* Added plugin configuration option `denyPasswordLogin` to disable password login #14
+* Added popup block check for user confirmation modals, that allows more seamless confirmation flow
+
+**Changed**
+
+* Changed provider settings to have it's own component instead of overwriting `heptacom-admin-open-auth-client-edit-page`
+* Changed `view/administration/index-js.html.twig` to only check for relevant route matches
+* Changed `view/administration/index-js.html.twig` to allow login in `sw-inactivity-login`
+* Changed login payload to store the requested redirect url
+* Changed loading of custom Admin Vue components to asynchronous loading
+* Changed SAML provider to disable the requested authn context by default
+
+**Removed**
+
+* Removed Shopware 6.4 compatibility
+* Removed dependency `heptacom/open-auth` and ship its components with the plugin
+* Removed Microsoft Azure (non OIDC) and the required dependency `thenetworg/oauth2-azure`
+* Removed `\Heptacom\AdminOpenAuth\Contract\TokenRefresherInterface` and implementation `\Heptacom\AdminOpenAuth\Service\TokenRefresher`
+
+**Security**
+
+* Prevent confirmation of another allowed user of the same identity provider, that is not the same user as the currently logged in one, and therefore prevent follow up confirmation and actions
+
 # 4.3.0-beta.2
 
 **Fixed**

@@ -1,9 +1,7 @@
 import './heptacom-admin-open-auth-client-create-page.scss';
 import template from './heptacom-admin-open-auth-client-create-page.html.twig';
 
-const { Component } = Shopware;
-
-Component.register('heptacom-admin-open-auth-client-create-page', {
+export default {
     template,
 
     inject: [
@@ -50,9 +48,6 @@ Component.register('heptacom-admin-open-auth-client-create-page', {
                     }))
                     .sort((a, b) =>
                         a.label.localeCompare(b.label)
-                    )
-                    .filter((provider) =>
-                        provider.key !== 'microsoft_azure'
                     );
                     this.isLoading = false;
                 });
@@ -66,4 +61,4 @@ Component.register('heptacom-admin-open-auth-client-create-page', {
                 });
         }
     }
-});
+};

@@ -1,18 +1,18 @@
 {
     "heptacomAdminOpenAuthClient": {
-        "providers": {
-            "cidaas": {
-                "label": "Cidaas",
-                "logoFile": "cidaas_logo.svg",
-                "helpUrl": "https://docs.cidaas.com/create-application/createapplication.html"
-            }
-        },
         "providerFields": {
             "cidaas": {
                 "additionalScopes": "Application scopes",
-                "organizationUrl": "Cidaas organization url",
                 "clientId": "Client ID",
-                "clientSecret": "Client secret"
+                "clientSecret": "Client secret",
+                "organizationUrl": "Cidaas organization url"
+            }
+        },
+        "providers": {
+            "cidaas": {
+                "helpUrl": "https://docs.cidaas.com/create-application/createapplication.html",
+                "label": "Cidaas",
+                "logoFile": "cidaas_logo.svg"
             }
         }
     }

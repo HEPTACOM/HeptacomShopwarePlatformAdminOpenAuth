@@ -3,7 +3,7 @@
     "description": "Shopware plugin to allow OAuth providers to provide admin logins",
     "license": "Apache-2.0",
     "type": "shopware-platform-plugin",
-    "version": "4.3.0",
+    "version": "5.0.0-beta.5",
     "keywords": [
         "ecommerce",
         "shopware",
@@ -37,40 +37,39 @@
         }
     ],
     "require": {
-        "php": ">=7.4",
+        "php": ">=8.1.0",
         "ext-json": "*",
         "ext-openssl": "*",
         "ext-zlib": "*",
         "composer/composer": "^2",
-        "doctrine/dbal": "^2",
-        "guzzlehttp/guzzle": "~7.0",
+        "doctrine/dbal": "^3.6",
+        "guzzlehttp/guzzle": "~7.5",
         "guzzlehttp/psr7": "*",
-        "heptacom/open-auth": ">=1.5",
         "league/oauth2-client": "~2.0",
         "league/oauth2-server": "^8",
         "mrjoops/oauth2-jira": "^0.2.4",
-        "nyholm/psr7": "^1.4",
+        "nyholm/psr7": "^1.5",
         "onelogin/php-saml": "^4.1.0",
+        "psr/cache": "~3.0.0",
         "psr/http-client": "^1.0",
         "psr/http-message": "^1.0",
-        "psr/log": "^1.1",
-        "shopware/core": "^6.4.11",
-        "symfony/cache": ">=5.4 <6",
-        "symfony/event-dispatcher": ">=5.4 <6",
-        "symfony/framework-bundle": ">=5.4 <6",
-        "symfony/http-foundation": ">=5.4 <6",
-        "symfony/http-kernel": ">=5.4 <6",
-        "symfony/options-resolver": ">=5.4 <6",
+        "psr/log": "~3.0.0",
+        "shopware/core": "~6.5.0",
+        "symfony/cache": "~6.2.0 || ~6.3.0",
+        "symfony/event-dispatcher": "~6.2.0 || ~6.3.0",
+        "symfony/framework-bundle": "~6.2.0 || ~6.3.0",
+        "symfony/http-foundation": "~6.2.0 || ~6.3.0",
+        "symfony/http-kernel": "~6.2.0 || ~6.3.0",
+        "symfony/options-resolver": "~6.2.0 || ~6.3.0",
         "symfony/psr-http-message-bridge": "^2",
-        "symfony/routing": ">=5.4 <6",
-        "thenetworg/oauth2-azure": "^1.4 || ^2.0",
-        "web-token/jwt-core": "^2.2",
-        "web-token/jwt-signature": "^2.2",
-        "web-token/jwt-signature-algorithm-ecdsa": "^2.2",
-        "web-token/jwt-signature-algorithm-rsa": "^2.2"
+        "symfony/routing": "~6.2.0 || ~6.3.0",
+        "web-token/jwt-core": "^3.2",
+        "web-token/jwt-signature": "^3.2",
+        "web-token/jwt-signature-algorithm-ecdsa": "^3.2",
+        "web-token/jwt-signature-algorithm-rsa": "^3.2"
     },
     "require-dev": {
-        "shopware/administration": "^6.4.11"
+        "shopware/administration": "~6.5.0"
     },
     "minimum-stability": "beta",
     "autoload": {
@@ -80,7 +79,9 @@
     },
     "config": {
         "allow-plugins": {
-            "composer/package-versions-deprecated": true
+            "composer/package-versions-deprecated": true,
+            "infection/extension-installer": true,
+            "symfony/runtime": true
         }
     },
     "extra": {

@@ -10,10 +10,10 @@ use OneLogin\Saml2\Auth;
 use OneLogin\Saml2\AuthnRequest;
 use OneLogin\Saml2\Error as OneLoginSaml2Error;
 use OneLogin\Saml2\Settings;
+use Psr\Cache\CacheItemPoolInterface;
 use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Client\ClientInterface;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Cache\Adapter\AdapterInterface;
 
 class Saml2ServiceProviderService
 {
@@ -25,22 +25,13 @@ class Saml2ServiceProviderService
      */
     private static ?array $superGlobals = null;
 
-    private ClientInterface $samlHttpClient;
-
-    private LoggerInterface $logger;
-
-    private AdapterInterface $cache;
-
     private Saml2ServiceProviderConfiguration $config;
 
     public function __construct(
-        ClientInterface $samlHttpClient,
-        LoggerInterface $logger,
-        AdapterInterface $cache
+        private readonly ClientInterface $samlHttpClient,
+        private readonly LoggerInterface $logger,
+        private readonly CacheItemPoolInterface $cache
     ) {
-        $this->samlHttpClient = $samlHttpClient;
-        $this->logger = $logger;
-        $this->cache = $cache;
         $this->config = new Saml2ServiceProviderConfiguration();
     }
 
@@ -264,7 +255,7 @@ class Saml2ServiceProviderService
             'RelayState' => $relayState,
         ];
 
-        $_REQUEST = \array_merge($_GET, $_POST);
+        $_REQUEST = [...$_GET, ...$_POST];
     }
 
     /**

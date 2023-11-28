@@ -5,24 +5,20 @@ declare(strict_types=1);
 namespace Heptacom\AdminOpenAuth\Component\Provider;
 
 use Heptacom\AdminOpenAuth\Component\OpenAuth\Atlassian;
+use Heptacom\AdminOpenAuth\Contract\Client\ClientContract;
+use Heptacom\AdminOpenAuth\Contract\RedirectBehaviour;
+use Heptacom\AdminOpenAuth\Contract\TokenPair;
+use Heptacom\AdminOpenAuth\Contract\User;
 use Heptacom\AdminOpenAuth\Service\TokenPairFactoryContract;
-use Heptacom\OpenAuth\Behaviour\RedirectBehaviour;
-use Heptacom\OpenAuth\Client\Contract\ClientContract;
-use Heptacom\OpenAuth\Struct\TokenPairStruct;
-use Heptacom\OpenAuth\Struct\UserStruct;
 use Mrjoops\OAuth2\Client\Provider\JiraResourceOwner;
 use Psr\Http\Message\RequestInterface;
 
-class JiraClient extends ClientContract
+final class JiraClient extends ClientContract
 {
-    private TokenPairFactoryContract $tokenPairFactory;
-
-    private Atlassian $jiraClient;
-
-    public function __construct(TokenPairFactoryContract $tokenPairFactory, array $options)
-    {
-        $this->tokenPairFactory = $tokenPairFactory;
-        $this->jiraClient = new Atlassian($options);
+    public function __construct(
+        private readonly TokenPairFactoryContract $tokenPairFactory,
+        private readonly Atlassian $jiraClient,
+    ) {
     }
 
     public function getLoginUrl(?string $state, RedirectBehaviour $behaviour): string
@@ -30,30 +26,30 @@ class JiraClient extends ClientContract
         $state = $state ?? '';
         $params = [];
 
-        if (\is_string($behaviour->getRedirectUri())) {
-            $params['redirect_uri'] = $behaviour->getRedirectUri();
+        if (\is_string($behaviour->redirectUri)) {
+            $params['redirect_uri'] = $behaviour->redirectUri;
         }
 
         if ($state !== '') {
-            $params[$behaviour->getStateKey()] = $state;
+            $params[$behaviour->stateKey] = $state;
         }
 
         return $this->getInnerClient()->getAuthorizationUrl($params);
     }
 
-    public function refreshToken(string $refreshToken): TokenPairStruct
+    public function refreshToken(string $refreshToken): TokenPair
     {
         return $this->tokenPairFactory->fromLeagueToken($this->getInnerClient()->getAccessToken('refresh_token', [
             'refresh_token' => $refreshToken,
         ]));
     }
 
-    public function getUser(string $state, string $code, RedirectBehaviour $behaviour): UserStruct
+    public function getUser(string $state, string $code, RedirectBehaviour $behaviour): User
     {
-        $options = [$behaviour->getCodeKey() => $code];
+        $options = [$behaviour->codeKey => $code];
 
-        if (\is_string($behaviour->getRedirectUri())) {
-            $options['redirect_uri'] = $behaviour->getRedirectUri();
+        if (\is_string($behaviour->redirectUri)) {
+            $options['redirect_uri'] = $behaviour->redirectUri;
         }
 
         $token = $this->getInnerClient()->getAccessToken('authorization_code', $options);
@@ -61,21 +57,23 @@ class JiraClient extends ClientContract
         $user = $this->getInnerClient()->getResourceOwner($token);
         $fullUserData = $user->toArray();
 
-        return (new UserStruct())
-            ->setPrimaryKey($user->getId())
-            ->setTokenPair($this->tokenPairFactory->fromLeagueToken($token))
-            ->setDisplayName($user->getName())
-            ->setPrimaryEmail($user->getEmail())
-            ->setEmails([])
-            ->setTimezone($fullUserData['timezone'] ?? null)
-            ->setPassthrough(['resourceOwner' => $user->toArray()]);
+        $result = new User();
+
+        $result->primaryKey = $user->getId();
+        $result->tokenPair = $this->tokenPairFactory->fromLeagueToken($token);
+        $result->displayName = $user->getName();
+        $result->primaryEmail = $user->getEmail();
+        $result->timezone = $fullUserData['timezone'] ?? null;
+        $result->addArrayExtension('resourceOwner', $user->toArray());
+
+        return $result;
     }
 
-    public function authorizeRequest(RequestInterface $request, TokenPairStruct $token): RequestInterface
+    public function authorizeRequest(RequestInterface $request, TokenPair $token): RequestInterface
     {
         $result = $request;
 
-        foreach ($this->getInnerClient()->getHeaders($token->getAccessToken()) as $headerKey => $headerValue) {
+        foreach ($this->getInnerClient()->getHeaders($token->accessToken) as $headerKey => $headerValue) {
             $result = $result->withAddedHeader($headerKey, $headerValue);
         }
 

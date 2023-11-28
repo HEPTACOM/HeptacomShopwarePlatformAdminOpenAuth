@@ -6,35 +6,33 @@ namespace Heptacom\AdminOpenAuth\Service;
 
 use Heptacom\AdminOpenAuth\Contract\ClientLoaderInterface;
 use Heptacom\AdminOpenAuth\Contract\ModifiedRedirectBehaviourClientContract;
+use Heptacom\AdminOpenAuth\Contract\RedirectBehaviour;
 use Heptacom\AdminOpenAuth\Contract\RedirectBehaviourFactoryInterface;
-use Heptacom\OpenAuth\Behaviour\RedirectBehaviour;
 use Shopware\Core\Framework\Context;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 
-class RedirectBehaviourFactoryService implements RedirectBehaviourFactoryInterface
+final class RedirectBehaviourFactoryService implements RedirectBehaviourFactoryInterface
 {
-    private ClientLoaderInterface $clientLoader;
-
-    private RouterInterface $router;
-
     public function __construct(
-        ClientLoaderInterface $clientLoader,
-        RouterInterface $router
+        private readonly ClientLoaderInterface $clientLoader,
+        private readonly RouterInterface $router
     ) {
-        $this->clientLoader = $clientLoader;
-        $this->router = $router;
     }
 
     public function createRedirectBehaviour(string $clientId, Context $context): RedirectBehaviour
     {
         $client = $this->clientLoader->load($clientId, $context);
 
-        $behaviour = (new RedirectBehaviour())
-            ->setExpectState(true)
-            ->setRedirectUri($this->router->generate('administration.heptacom.admin_open_auth.login', [
+        $behaviour = new RedirectBehaviour();
+        $behaviour->expectState = true;
+        $behaviour->redirectUri = $this->router->generate(
+            'administration.heptacom.admin_open_auth.login',
+            [
                 'clientId' => $clientId,
-            ], UrlGeneratorInterface::ABSOLUTE_URL));
+            ],
+            UrlGeneratorInterface::ABSOLUTE_URL
+        );
 
         if ($client instanceof ModifiedRedirectBehaviourClientContract) {
             $client->modifyRedirectBehaviour($behaviour);

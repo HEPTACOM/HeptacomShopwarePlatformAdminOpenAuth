@@ -7,9 +7,9 @@ namespace Heptacom\AdminOpenAuth\Service\Provider;
 use Heptacom\AdminOpenAuth\Component\Provider\Saml2ServiceProviderClient;
 use Heptacom\AdminOpenAuth\Component\Saml\Saml2ServiceProviderConfiguration;
 use Heptacom\AdminOpenAuth\Component\Saml\Saml2ServiceProviderService;
+use Heptacom\AdminOpenAuth\Contract\Client\ClientContract;
+use Heptacom\AdminOpenAuth\Contract\ClientProvider\ClientProviderContract;
 use Heptacom\AdminOpenAuth\Contract\ConfigurationRefresherClientProviderContract;
-use Heptacom\OpenAuth\Client\Contract\ClientContract;
-use Heptacom\OpenAuth\ClientProvider\Contract\ClientProviderContract;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
@@ -18,20 +18,11 @@ class Saml2ServiceProvider extends ClientProviderContract implements Configurati
 {
     public const PROVIDER_NAME = 'saml2';
 
-    private string $appSecret;
-
-    private Saml2ServiceProviderService $saml2ServiceProviderService;
-
-    private RouterInterface $router;
-
     public function __construct(
-        string $appSecret,
-        Saml2ServiceProviderService $saml2ServiceProviderService,
-        RouterInterface $router
+        private readonly string $appSecret,
+        private readonly Saml2ServiceProviderService $saml2ServiceProviderService,
+        private readonly RouterInterface $router
     ) {
-        $this->appSecret = $appSecret;
-        $this->saml2ServiceProviderService = $saml2ServiceProviderService;
-        $this->router = $router;
     }
 
     public function provides(): string
@@ -53,6 +44,7 @@ class Saml2ServiceProvider extends ClientProviderContract implements Configurati
                 'serviceProviderCertificateExpiresAt',
                 'serviceProviderPrivateKey',
                 'serviceProviderPublicKey',
+                'requestedAuthnContext',
                 'attributeMapping',
                 // TODO remove in v5
                 'redirectUri',
@@ -67,6 +59,7 @@ class Saml2ServiceProvider extends ClientProviderContract implements Configurati
                 'serviceProviderPrivateKey',
                 'serviceProviderPublicKey',
             ])->setDefaults([
+                'requestedAuthnContext' => [],
                 'attributeMapping' => [],
                 'redirectUri' => null,
             ])
@@ -79,9 +72,12 @@ class Saml2ServiceProvider extends ClientProviderContract implements Configurati
             ->setAllowedTypes('serviceProviderCertificateExpiresAt', 'string')
             ->setAllowedTypes('serviceProviderPrivateKey', 'string')
             ->setAllowedTypes('serviceProviderPublicKey', 'string')
+            ->setAllowedTypes('requestedAuthnContext', 'array')
             ->setAllowedTypes('attributeMapping', 'array')
             ->setDeprecated(
                 'redirectUri',
+                'heptacom/shopware-platform-admin-open-auth',
+                '*',
                 'Use route api.heptacom.admin_open_auth.provider.redirect-url instead to live generate redirectUri'
             );
     }

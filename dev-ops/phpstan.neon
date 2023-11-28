@@ -1,0 +1,15 @@
+rules:
+	- Heptacom\AdminOpenAuth\DevOps\PhpStan\Rule\ContractsHaveDocumentationRule
+	- Heptacom\AdminOpenAuth\DevOps\PhpStan\Rule\ImplementationsMustBeFinalRule
+	- Heptacom\AdminOpenAuth\DevOps\PhpStan\Rule\InterfacesHaveDocumentationRule
+	- Shopware\Core\DevOps\StaticAnalyze\PHPStan\Rules\Deprecation\DeprecatedMethodsThrowDeprecationRule
+parameters:
+	level: 6
+	checkMissingIterableValueType: false
+	inferPrivatePropertyTypeFromConstructor: true
+	paths:
+		- ../dev-ops/bin/phpstan/src/
+		- ../src/
+	tmpDir: ../.build/phpstan/
+	scanDirectories:
+		- ../vendor/

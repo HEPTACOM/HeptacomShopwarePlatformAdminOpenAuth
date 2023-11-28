@@ -6,10 +6,10 @@ namespace Heptacom\AdminOpenAuth\Component\OpenIdConnect;
 
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Uri;
+use Psr\Cache\CacheItemPoolInterface;
 use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Client\ClientInterface;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Cache\Adapter\AdapterInterface;
 
 /**
  * @notice signed/encrypted UserInfo is currently not supported
@@ -18,26 +18,14 @@ class OpenIdConnectService
 {
     private const WELL_KNOWN_CACHE_TTL = 900;
 
-    private ClientInterface $oidcHttpClient;
-
-    private LoggerInterface $logger;
-
-    private AdapterInterface $cache;
-
-    private OpenIdConnectTokenVerifier $tokenVerifier;
-
     private OpenIdConnectConfiguration $config;
 
     public function __construct(
-        ClientInterface $oidcHttpClient,
-        LoggerInterface $logger,
-        AdapterInterface $cache,
-        OpenIdConnectTokenVerifier $tokenVerifier
+        private readonly ClientInterface $oidcHttpClient,
+        private readonly LoggerInterface $logger,
+        private readonly CacheItemPoolInterface $cache,
+        private readonly OpenIdConnectTokenVerifier $tokenVerifier
     ) {
-        $this->oidcHttpClient = $oidcHttpClient;
-        $this->logger = $logger;
-        $this->cache = $cache;
-        $this->tokenVerifier = $tokenVerifier;
         $this->config = new OpenIdConnectConfiguration();
     }
 

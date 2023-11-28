@@ -6,7 +6,7 @@ namespace Heptacom\AdminOpenAuth\Component\OpenIdConnect;
 
 use Shopware\Core\Framework\Struct\Struct;
 
-class OpenIdConnectUser extends Struct
+final class OpenIdConnectUser extends Struct
 {
     protected string $sub = '';
 

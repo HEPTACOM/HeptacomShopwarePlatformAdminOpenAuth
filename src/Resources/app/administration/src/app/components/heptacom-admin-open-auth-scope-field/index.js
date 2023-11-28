@@ -1,9 +1,7 @@
 import './heptacom-admin-open-auth-scope-field.scss';
 import template from './heptacom-admin-open-auth-scope-field.html.twig';
 
-const { Component } = Shopware;
-
-Component.register('heptacom-admin-open-auth-scope-field', {
+export default {
     inheritAttrs: false,
 
     template,
@@ -88,4 +86,4 @@ Component.register('heptacom-admin-open-auth-scope-field', {
             return this.defaultScopes.findIndex(item => item === name) !== -1;
         }
     }
-});
+};

@@ -6,7 +6,7 @@ namespace Heptacom\AdminOpenAuth\Component\OpenIdConnect;
 
 use Shopware\Core\Framework\Struct\Struct;
 
-class OpenIdConnectConfiguration extends Struct
+final class OpenIdConnectConfiguration extends Struct
 {
     protected bool $wellKnownDiscovered = false;
 

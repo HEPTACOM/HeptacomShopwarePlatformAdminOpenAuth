@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\OpenAuth\Struct;
 
-class UserStructExtension
+use Shopware\Core\Framework\Struct\Struct;
+
+class UserStructExtension extends Struct
 {
     private bool $isAdmin = false;
 

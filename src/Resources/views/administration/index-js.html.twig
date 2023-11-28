@@ -4,27 +4,124 @@
         margin-top: 20px;
     }
 
+    .heptacom-admin-open-auth--separator {
+        border-color: #52667a;
+    }
+
     .sw-button.sw-button--ghost:focus {
         background-color: #e3f3ff;
     }
+
+    {% if config('KskHeptacomAdminOpenAuth.config.denyPasswordLogin') %}
+        .sw-login-login > :not(.sw-login__content-headline),
+        .sw-inactivity-login__modal .sw-modal__body .sw-field,
+        .sw-inactivity-login__modal .sw-modal__footer .sw-button {
+            display: none;
+        }
+    {% endif %}
 </style>
 <script{% if cspNonce is defined %} nonce="{{ cspNonce }}" {% endif %}>
-    window.addEventListener('load', function() {
-        const clientRoutes = {{ url('administration.heptacom.admin_open_auth.routes')|json_encode|raw }};
+    (function () {
+        async function getClientRoutes() {
+            const clientRoutes = {{ url('administration.heptacom.admin_open_auth.routes')|json_encode|raw }};
 
-        const waitForLoginForm = function () {
-            if (!document.querySelector('.sw-login')) {
-                setTimeout(waitForLoginForm, 200);
+            const result = await fetch(clientRoutes);
+            return await result.json();
+        }
+
+        function checkLogin(redirectHandler) {
+            const token = new URLSearchParams(window.location.search).get('state');
+
+            if (token) {
+                const loginService = Shopware.Service().get('loginService');
+                const httpClient = Shopware.Service().get('userService').client;
+
+                httpClient.post('/oauth/token', {
+                    grant_type: 'heptacom_admin_open_auth_one_time_token',
+                    client_id: 'administration',
+                    scopes: 'write',
+                    one_time_token: token
+                }, {
+                    baseURL: Shopware.Context.api.apiPath
+                }).then((response) => {
+                    loginService.setBearerAuthentication({
+                        access: response.data.access_token,
+                        refresh: response.data.refresh_token,
+                        expiry: response.data.expires_in
+                    });
+
+                    redirectHandler();
+                });
+            }
+        }
+
+        function handleLoginRoute() {
+            // add login buttons
+            getClientRoutes().then((data) => {
+                const container = document.querySelector('.sw-login__content');
+
+                if (!container) {
+                    console.warn('Login modal does not exist anymore.');
+                    return;
+                }
+
+                data.clients.forEach(function (item) {
+                    const link = document.createElement('a');
+                    link.classList.add(
+                        'sw-button',
+                        'sw-button--block',
+                        'sw-button--ghost',
+                        'heptacom-admin-open-auth--button'
+                    );
+                    link.href = item.url;
+                    link.innerHTML = item.name;
+                    container.appendChild(link);
+                });
+            });
+
+            // check for login token
+            checkLogin(() => {
+                window.location = window.location.origin + window.location.pathname;
+            });
+        }
+
+        function handleInactivityRoute() {
+            const container = document.querySelector('.sw-inactivity-login');
+            if (!container || !container.__vue__) {
+                console.error('Could not find inactivity login container.');
                 return;
             }
 
-            fetch(clientRoutes)
-                .then(function (response) {
-                    return response.json();
-                })
-                .then(function (data) {
-                    const container = document.querySelector('.sw-login__content');
+            const inactivityLogin = container.__vue__;
+            inactivityLogin.isLoading = true;
+
+            // add login buttons
+            getClientRoutes()
+                .then((data) => {
+                    const container = document.querySelector('.sw-inactivity-login__modal .sw-modal__body');
+
+                    if (!container) {
+                        console.warn('Inactivity modal does not exist anymore.');
+                        return;
+                    }
+
+                    if (container.hasAttribute('data-heptacom-sso-initialized')) {
+                        console.warn('Inactivity modal already initialized with SSO IDPs.');
+                        return;
+                    } else {
+                        container.setAttribute('data-heptacom-sso-initialized', 'true');
+                    }
+
+                    {% if not config('KskHeptacomAdminOpenAuth.config.denyPasswordLogin') %}
+                        const separator = document.createElement('hr');
+                        separator.classList.add('heptacom-admin-open-auth--separator');
+                        container.appendChild(separator);
+                    {% endif %}
+
                     data.clients.forEach(function (item) {
+                        const url = new URL(item.url);
+                        url.searchParams.set('redirectTo', window.location.pathname + window.location.search + window.location.hash);
+
                         const link = document.createElement('a');
                         link.classList.add(
                             'sw-button',
@@ -32,37 +129,82 @@
                             'sw-button--ghost',
                             'heptacom-admin-open-auth--button'
                         );
-                        link.href = item.url;
+                        link.href = url.toString();
                         link.innerHTML = item.name;
                         container.appendChild(link);
                     });
-                });
-        };
-        waitForLoginForm();
+                })
+                .finally(() => inactivityLogin.isLoading = false);
 
-        const match = window.location.search ? window.location.search.match(/[?&]state=([^&]+?)(&|$)/) : null;
+            // check for login token
+            checkLogin(() => {
+                // complete login
+                inactivityLogin.handleLoginSuccess();
 
-        if (match && match.length > 2) {
-            const loginService = Shopware.Service().get('loginService');
-            const httpClient = Shopware.Service().get('userService').client;
-            const token = match[1];
-
-            httpClient.post('/oauth/token', {
-                grant_type: 'heptacom_admin_open_auth_one_time_token',
-                client_id: 'administration',
-                scopes: 'write',
-                one_time_token: token
-            }, {
-                baseURL: Shopware.Context.api.apiPath
-            }).then((response) => {
-                loginService.setBearerAuthentication({
-                    access: response.data.access_token,
-                    refresh: response.data.refresh_token,
-                    expiry: response.data.expires_in
-                });
-
-                window.location = window.location.origin + window.location.pathname;
+                // dump query string
+                removeStateFromUrl();
             });
         }
-    });
+
+        function removeStateFromUrl() {
+            const currentUrl = new URL(window.location.href);
+            if (currentUrl.searchParams.has('state')) {
+                currentUrl.searchParams.delete('state');
+                window.location.href = currentUrl.toString();
+            }
+        }
+
+        const paths = [
+            {
+                path: /^#\/login$/,
+                requiredElement: '.sw-login',
+                handler: () => handleLoginRoute()
+            },
+            {
+                path: /^#\/inactivity\/login\/[a-z0-9]{32}$/,
+                requiredElement: '.sw-inactivity-login__modal .sw-modal__body',
+                handler: () => handleInactivityRoute()
+            },
+        ];
+
+        /** @type number|null */
+        let waitForElementTimeout = null;
+
+        function waitForElement(selector, handler) {
+            waitForElementTimeout = null;
+
+            const element = document.querySelector(selector);
+            if (!element) {
+                waitForElementTimeout = window.setTimeout(() => waitForElement(selector, handler), 200);
+                return;
+            }
+
+            handler();
+        }
+
+        let lastPath = null;
+        function handleEvent() {
+            if (lastPath === window.location.hash) {
+                return;
+            }
+
+            lastPath = window.location.hash;
+
+            if (waitForElementTimeout !== null) {
+                window.clearTimeout(waitForElementTimeout);
+                waitForElementTimeout = null;
+            }
+
+            for (let path of paths) {
+                if (path.path.test(window.location.hash)) {
+                    waitForElement(path.requiredElement, path.handler);
+                    return;
+                }
+            }
+        }
+
+        window.addEventListener('load', () => handleEvent());
+        window.addEventListener('popstate', () => handleEvent());
+        window.setInterval(() => handleEvent(), 500);
+    })();
 </script>

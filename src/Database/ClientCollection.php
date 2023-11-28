@@ -7,15 +7,9 @@ namespace Heptacom\AdminOpenAuth\Database;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityCollection;
 
 /**
- * @method void              add(ClientEntity $entity)
- * @method void              set(string $key, ClientEntity $entity)
- * @method ClientEntity[]    getIterator()
- * @method ClientEntity[]    getElements()
- * @method ClientEntity|null get(string $key)
- * @method ClientEntity|null first()
- * @method ClientEntity|null last()
+ * @extends EntityCollection<ClientEntity>
  */
-class ClientCollection extends EntityCollection
+final class ClientCollection extends EntityCollection
 {
     protected function getExpectedClass(): string
     {

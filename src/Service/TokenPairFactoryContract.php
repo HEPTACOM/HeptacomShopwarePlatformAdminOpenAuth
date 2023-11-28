@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Heptacom\AdminOpenAuth\Service;
 
 use Heptacom\AdminOpenAuth\Component\OpenIdConnect\OpenIdConnectToken;
-use Heptacom\OpenAuth\Struct\TokenPairStruct;
+use Heptacom\AdminOpenAuth\Contract\TokenPair;
 use League\OAuth2\Client\Token\AccessTokenInterface;
 
 class TokenPairFactoryContract
 {
-    public function fromLeagueToken(AccessTokenInterface $token): TokenPairStruct
+    public function fromLeagueToken(AccessTokenInterface $token): TokenPair
     {
         $expires = null;
 
@@ -20,14 +20,16 @@ class TokenPairFactoryContract
                 ->setTimezone(new \DateTimeZone('UTC'));
         }
 
-        return (new TokenPairStruct())
-            ->setAccessToken($token->getToken())
-            ->setRefreshToken($token->getRefreshToken())
-            ->setExpiresAt($expires)
-            ->setPassthrough($token->getValues());
+        $result = new TokenPair();
+        $result->accessToken = $token->getToken();
+        $result->refreshToken = $token->getRefreshToken();
+        $result->expiresAt = $expires;
+        $result->addArrayExtension('league', $token->getValues());
+
+        return $result;
     }
 
-    public function fromOpenIdConnectToken(OpenIdConnectToken $token): TokenPairStruct
+    public function fromOpenIdConnectToken(OpenIdConnectToken $token): TokenPair
     {
         $expires = null;
 
@@ -37,9 +39,11 @@ class TokenPairFactoryContract
                 ->setTimezone(new \DateTimeZone('UTC'));
         }
 
-        return (new TokenPairStruct())
-            ->setAccessToken($token->getAccessToken())
-            ->setRefreshToken($token->getRefreshToken())
-            ->setExpiresAt($expires);
+        $result = new TokenPair();
+        $result->accessToken = $token->getAccessToken();
+        $result->refreshToken = $token->getRefreshToken();
+        $result->expiresAt = $expires;
+
+        return $result;
     }
 }

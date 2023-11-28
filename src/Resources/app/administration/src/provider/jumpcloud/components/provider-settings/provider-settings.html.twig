@@ -1,0 +1,29 @@
+{% block heptacom_admin_open_auth_provider_jumpcloud_settings %}
+    {% block heptacom_admin_open_auth_provider_jumpcloud_settings_idp %}
+        <sw-card
+            :title="$t('heptacomAdminOpenAuthClient.providerFields.saml2.identityProviderCardTitle')"
+            position-identifier="heptacom-admin-open-auth-provider-jumpcloud-settings-idp"
+        >
+            <!-- auto config -->
+            <sw-textarea-field
+                :disabled="!!item.config.identityProviderMetadataUrl"
+                :label="$t('heptacomAdminOpenAuthClient.providerFields.jumpcloud.identityProviderMetadataXml')"
+                v-model="item.config.identityProviderMetadataXml"
+            ></sw-textarea-field>
+        </sw-card>
+    {% endblock %}
+
+    {% block heptacom_admin_open_auth_provider_jumpcloud_settings_attribute_mapping %}
+        <sw-card
+            :title="$t('heptacomAdminOpenAuthClient.providerFields.saml2.attributeMapping.cardTitle')"
+            position-identifier="heptacom-admin-open-auth-provider-jumpcloud-settings-attribute-mapping"
+        >
+            {% block heptacom_admin_open_auth_provider_jumpcloud_settings_attribute_mapping_inner %}
+                <sw-text-field v-for="mappedProperty of availableProperties"
+                               :label="$t('heptacomAdminOpenAuthClient.providerFields.saml2.attributeMapping.field.' + mappedProperty)"
+                               v-model="item.config.attributeMapping[mappedProperty]"
+                ></sw-text-field>
+            {% endblock %}
+        </sw-card>
+    {% endblock %}
+{% endblock %}

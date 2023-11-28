@@ -33,7 +33,7 @@ class OpenIdConnectRequestHelper
             );
         }
 
-        if (substr($response->getHeaderLine('Content-Type'), 0, 16) !== 'application/json') {
+        if (!str_starts_with($response->getHeaderLine('Content-Type'), 'application/json')) {
             throw new RequestException(
                 'Expected content type to be of type application/json, received ' . $response->getHeaderLine(
                     'Content-Type'

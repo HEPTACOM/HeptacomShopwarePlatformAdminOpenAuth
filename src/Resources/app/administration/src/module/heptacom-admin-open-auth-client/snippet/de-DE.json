@@ -1,16 +1,9 @@
 {
-    "sw-privileges": {
-        "permissions": {
-            "heptacom_admin_open_auth_client": {
-              "label": "OAuth Anmeldung Administration"
-            }
-        }
-    },
     "heptacom-admin-open-auth-client": {
         "module": {
-            "description": "Erlaubt die Anmeldung über OAuth Anbieter",
+            "description": "Erlaubt die Anmeldung über SSO Anbieter",
             "name": "HEPTACOM Open Authentication Login",
-            "title": "OAuth Anmeldung"
+            "title": "SSO Anmeldung"
         },
         "pages": {
             "create": {
@@ -19,24 +12,24 @@
                 }
             },
             "edit": {
-                "title": "Anbieter bearbeiter",
                 "actions": {
                     "cancel": "Abbrechen",
                     "delete": "Löschen",
-                    "save": "Speichern",
-                    "help": "Hilfe"
+                    "help": "Hilfe",
+                    "save": "Speichern"
                 },
                 "fields": {
-                    "name": "Name",
                     "active": "Aktiv",
-                    "login": "Als Anmeldung verwenden",
                     "connect": "Zum Verknüpfen verwenden",
-                    "storeUserToken": "Benutzerberechtigungsschlüssel speichern",
-                    "userBecomeAdmin": "Benutzer als Administrator anlegen",
                     "defaultAclRoles": "Rollen für neue Benutzer",
+                    "downloadMetadata": "Metadaten-Datei herunterladen",
                     "keepUserUpdated": "Benutzer automatisch aktualisieren",
+                    "login": "Als Anmeldung verwenden",
+                    "metadataUri": "Metadaten-URL",
+                    "name": "Name",
                     "redirectUri": "Rücksende-URL",
-                    "metadataUri": "Metadaten-URL"
+                    "storeUserToken": "Benutzerberechtigungsschlüssel speichern",
+                    "userBecomeAdmin": "Benutzer als Administrator anlegen"
                 },
                 "modals": {
                     "delete": {
@@ -46,7 +39,8 @@
                         "title": "Anbieter löschen",
                         "warning": "Sind Sie sich sicher, dass Sie diese Anbieterkonfiguration löschen wollen?"
                     }
-                }
+                },
+                "title": "Anbieter bearbeiter"
             },
             "listing": {
                 "actions": {
@@ -60,6 +54,13 @@
                     "provider": "Anbieter",
                     "users": "Benutzer"
                 }
+            }
+        }
+    },
+    "sw-privileges": {
+        "permissions": {
+            "heptacom_admin_open_auth_client": {
+                "label": "SSO Anmeldung Administration"
             }
         }
     }

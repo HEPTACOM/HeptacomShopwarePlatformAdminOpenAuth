@@ -1,16 +1,9 @@
 {
-    "sw-privileges": {
-        "permissions": {
-            "heptacom_admin_open_auth_client": {
-                "label": "OAuth Login Administration"
-            }
-        }
-    },
     "heptacom-admin-open-auth-client": {
         "module": {
-            "description": "Allow OAuth providers to provide admin logins",
+            "description": "Allow SSO providers to provide admin logins",
             "name": "HEPTACOM Open Authentication Login",
-            "title": "OAuth Login"
+            "title": "SSO Login"
         },
         "pages": {
             "create": {
@@ -19,24 +12,24 @@
                 }
             },
             "edit": {
-                "title": "Edit provider",
                 "actions": {
                     "cancel": "Cancel",
                     "delete": "Delete",
-                    "save": "Save",
-                    "help": "Help"
+                    "help": "Help",
+                    "save": "Save"
                 },
                 "fields": {
-                    "name": "Name",
                     "active": "Active",
-                    "login": "Use as login",
                     "connect": "Use to connect",
-                    "storeUserToken": "Store user access keys",
-                    "userBecomeAdmin": "Make user to admin on creation",
                     "defaultAclRoles": "Roles assigned to new users",
+                    "downloadMetadata": "Download metadata file",
                     "keepUserUpdated": "Automatically update user info",
+                    "login": "Use as login",
+                    "metadataUri": "Metadata URL",
+                    "name": "Name",
                     "redirectUri": "Redirect URL",
-                    "metadataUri": "Metadata URL"
+                    "storeUserToken": "Store user access keys",
+                    "userBecomeAdmin": "Make user to admin on creation"
                 },
                 "modals": {
                     "delete": {
@@ -46,7 +39,8 @@
                         "title": "Delete provider",
                         "warning": "Are you sure you want to delete this provider?"
                     }
-                }
+                },
+                "title": "Edit provider"
             },
             "listing": {
                 "actions": {
@@ -60,6 +54,13 @@
                     "provider": "Provider",
                     "users": "Users"
                 }
+            }
+        }
+    },
+    "sw-privileges": {
+        "permissions": {
+            "heptacom_admin_open_auth_client": {
+                "label": "SSO Login Administration"
             }
         }
     }
