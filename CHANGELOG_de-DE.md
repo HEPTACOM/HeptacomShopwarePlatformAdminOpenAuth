@@ -1,5 +1,7 @@
 # Unreleased
 
+# 5.0.0
+
 **Hinzufügen**
 
 * Kompatibilität mit Shopware 6.5 und zugehörigen Abhängigkeiten hinzugefügt

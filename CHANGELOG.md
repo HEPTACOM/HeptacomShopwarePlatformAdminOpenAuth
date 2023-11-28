@@ -1,5 +1,7 @@
 # Unreleased
 
+# 5.0.0
+
 **Added**
 
 * Added Shopware 6.5 compatibility with related dependencies

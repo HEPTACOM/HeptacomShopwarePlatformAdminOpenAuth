@@ -3,7 +3,7 @@
     "description": "Shopware plugin to allow OAuth providers to provide admin logins",
     "license": "Apache-2.0",
     "type": "shopware-platform-plugin",
-    "version": "5.0.0-beta.5",
+    "version": "5.0.0",
     "keywords": [
         "ecommerce",
         "shopware",
@@ -71,7 +71,6 @@
     "require-dev": {
         "shopware/administration": "~6.5.0"
     },
-    "minimum-stability": "beta",
     "autoload": {
         "psr-4": {
             "Heptacom\\AdminOpenAuth\\": "src/"
