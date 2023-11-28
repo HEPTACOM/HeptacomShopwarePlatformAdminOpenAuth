@@ -1,8 +1,36 @@
 # Unreleased
 
+**Hinzufügen**
+
+* Kompatibilität mit Shopware 6.5 und zugehörigen Abhängigkeiten hinzugefügt
+* Schaltfläche zum Herunterladen von Metadaten zur Komponente `heptacom-admin-open-auth-client-edit-page` hinzugefügt
+* Konfigurationsoption `requestedAuthnContext` zum SAML2-Anbieter hinzugefügt
+* Plugin-Konfigurationsoption `denyPasswordLogin` hinzugefügt, um Passwort-Login zu deaktivieren #14
+* Popup-Block-Check für Benutzer-Bestätigungs-Modale hinzugefügt, der einen nahtloseren Bestätigungsfluss ermöglicht
+
+**Geändert**
+
+* Anbieter-Einstellungen wurden geändert, um eine eigene Komponente zu haben, anstatt `heptacom-admin-open-auth-client-edit-page` zu überschreiben
+* `view/administration/index-js.html.twig` wurde so geändert, dass nur noch auf relevante Routenübereinstimmungen geprüft wird
+* Änderung von `view/administration/index-js.html.twig`, um Login in `sw-inactivity-login` zu ermöglichen
+* Login-Payload wurde geändert, um die angeforderte Redirect-URL zu speichern
+* Das Laden von benutzerdefinierten Admin Vue-Komponenten wurde auf asynchrones Laden umgestellt
+* SAML-Provider wurde geändert, um den angeforderten Authn-Kontext standardmäßig zu deaktivieren
+
+**Entfernt**
+
+* Shopware 6.4 Kompatibilität wurde entfernt
+* Die Abhängigkeit `heptacom/open-auth` wurde entfernt und die Komponenten mit dem Plugin ausgeliefert
+* Microsoft Azure (nicht OIDC) und die erforderliche Abhängigkeit `thenetworg/oauth2-azure` entfernt
+* `Heptacom\AdminOpenAuth\Contract\TokenRefresherInterface` und Implementierung `Heptacom\AdminOpenAuth\Service\TokenRefresher` wurden entfernt
+
+**Sicherheit**
+
+* Kontobestätigungen können nicht mehr von anderen zulässigen Personen des selben Identitätsanbieters genutzt werden und somit Folgeaktionen auslösen
+
 # 4.3.0-beta.2
 
-**Fixed**
+**Behoben**
 
 * `administration.heptacom.admin_open_auth.confirm` Route gefixt, indem ein Standardwert für `expiresAt` gesetzt wurde
 
