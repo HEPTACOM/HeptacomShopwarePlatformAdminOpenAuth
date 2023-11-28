@@ -24,6 +24,10 @@
 * Removed Microsoft Azure (non OIDC) and the required dependency `thenetworg/oauth2-azure`
 * Removed `\Heptacom\AdminOpenAuth\Contract\TokenRefresherInterface` and implementation `\Heptacom\AdminOpenAuth\Service\TokenRefresher`
 
+**Security**
+
+* Prevent confirmation of another allowed user of the same identity provider, that is not the same user as the currently logged in one, and therefore prevent follow up confirmation and actions
+
 # 4.3.0-beta.2
 
 **Fixed**

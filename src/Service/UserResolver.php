@@ -13,6 +13,7 @@ use Heptacom\AdminOpenAuth\Contract\UserEmailInterface;
 use Heptacom\AdminOpenAuth\Contract\UserKeyInterface;
 use Heptacom\AdminOpenAuth\Contract\UserResolverInterface;
 use Heptacom\AdminOpenAuth\Contract\UserTokenInterface;
+use Heptacom\AdminOpenAuth\Exception\UserMismatchException;
 use Heptacom\AdminOpenAuth\OpenAuth\Struct\UserStructExtension;
 use Shopware\Core\Defaults;
 use Shopware\Core\Framework\Api\Acl\Role\AclUserRoleDefinition;
@@ -45,18 +46,23 @@ final class UserResolver implements UserResolverInterface
 
     public function resolve(User $user, string $state, string $clientId, Context $context): void
     {
-        $userId = $this->login->getUser($state, $context) ?? $this->findUserId($user, $clientId, $context);
+        $userId = $this->login->getUser($state, $context);
+        $mappedUserId = $this->findUserId($user, $clientId, $context);
         $isNew = false;
 
-        if ($userId === null) {
+        if ($userId !== null && $mappedUserId !== null && $userId !== $mappedUserId) {
+            throw new UserMismatchException();
+        }
+
+        if ($mappedUserId === null) {
             $isNew = true;
             $password = Random::getAlphanumericString(254);
             $this->userProvisioner->provision($user->primaryEmail, $password, ['email' => $user->primaryEmail]);
 
-            $userId = $this->findUserId($user, $clientId, $context);
+            $mappedUserId = $this->findUserId($user, $clientId, $context);
         }
 
-        $this->postUpdates($user, $userId, $state, $isNew, $clientId, $context);
+        $this->postUpdates($user, $mappedUserId, $state, $isNew, $clientId, $context);
     }
 
     protected function postUpdates(
