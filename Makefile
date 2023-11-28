@@ -44,7 +44,7 @@ it: cs-fix cs ## Fix code style
 cs: cs-ecs cs-soft-require cs-composer-unused cs-composer-normalize cs-json ## Run every code style check target
 
 releasecheck: $(FROSH_PLUGIN_UPLOAD_FILE) ## Builds a community store ready zip file and validates it
-	[[ -d .build/store-build ]] || mkdir .build/store-build
+	[[ -d .build/store-build ]] || mkdir -p .build/store-build
 	git archive --format=tar HEAD | (cd .build/store-build && tar xf -)
 	[[ ! -d .build/store-build/.git ]] || rm -rf .build/store-build/.git
 	cp -a .git/ .build/store-build/.git/
