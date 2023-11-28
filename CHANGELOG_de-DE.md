@@ -1,5 +1,9 @@
 # Unreleased
 
+**Sicherheit**
+
+* Kontobestätigungen können nicht mehr von anderen zulässigen Personen des selben Identitätsanbieters genutzt werden und somit Folgeaktionen auslösen
+
 # 4.3.0-beta.2
 
 **Fixed**
