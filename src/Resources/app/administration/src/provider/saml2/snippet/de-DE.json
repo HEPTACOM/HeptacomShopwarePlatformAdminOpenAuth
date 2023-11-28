@@ -43,7 +43,7 @@
         },
         "providers": {
             "saml2": {
-                "helpUrl": "",
+                "helpUrl": "#",
                 "label": "SAML 2.0",
                 "logoFile": "saml2_logo.svg"
             }
