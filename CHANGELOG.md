@@ -1,5 +1,7 @@
 # Unreleased
 
+# 4.3.0
+
 **Security**
 
 * Prevent confirmation of another allowed user of the same identity provider, that is not the same user as the currently logged in one, and therefore prevent follow up confirmation and actions
