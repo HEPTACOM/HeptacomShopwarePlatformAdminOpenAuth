@@ -34,8 +34,9 @@ final class KeycloakProvider extends ClientProviderContract
                 'id',
                 'keycloakOidcJson',
                 'scopes',
-                // TODO remove in v5
+                // TODO remove in v6
                 'redirectUri',
+                'roleAssignment',
             ])->setRequired([
                 'keycloakOidcJson',
             ])->setDefaults([

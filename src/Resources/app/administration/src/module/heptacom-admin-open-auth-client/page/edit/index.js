@@ -51,16 +51,44 @@ export default {
 
         clientCriteria() {
             const criteria = new Criteria();
+            criteria.addAssociation('rules.aclRoles');
+            criteria.addAssociation('rules.conditions');
             criteria.addAssociation('defaultAclRoles');
 
             return criteria;
         },
 
-        providerSettingsComponent() {
-            let provider = (this.item && this.item.provider ? this.item.provider : '')
+        providerSlug() {
+            return (this.item && this.item.provider ? this.item.provider : '')
                 .replace(/_/g, '-');
+        },
 
-            return `heptacom-admin-open-auth-provider-${provider}-settings`;
+        roleAssignmentTypes() {
+            return [
+                {
+                    label: this.$tc('heptacom-admin-open-auth-client.pages.edit.roleAssignmentType.static'),
+                    value: 'static',
+                },
+                {
+                    label: this.$tc('heptacom-admin-open-auth-client.pages.edit.roleAssignmentType.dynamic'),
+                    value: 'dynamic',
+                },
+            ];
+        },
+
+        providerRoleAssignmentComponent() {
+            return `heptacom-admin-open-auth-provider-${this.providerSlug}-role-assignment`;
+        },
+
+        providerRoleAssignmentProps() {
+            return {
+                isLoading: this.isLoading,
+                item: this.item,
+            };
+        },
+
+        providerSettingsComponent() {
+            return `heptacom-admin-open-auth-provider-${this.providerSlug}-settings`;
         },
 
         providerSettingsProps() {

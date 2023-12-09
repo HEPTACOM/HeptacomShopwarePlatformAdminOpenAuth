@@ -4,19 +4,27 @@ declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\Http\Route\Support;
 
+use Heptacom\AdminOpenAuth\Contract\Client\ClientContract;
 use Heptacom\AdminOpenAuth\Contract\Client\ClientFactoryContract;
+use Heptacom\AdminOpenAuth\Contract\OAuthRuleScope;
 use Heptacom\AdminOpenAuth\Contract\RedirectBehaviour;
+use Heptacom\AdminOpenAuth\Contract\RoleAssignment;
 use Heptacom\AdminOpenAuth\Contract\Route\Exception\RedirectReceiveException;
 use Heptacom\AdminOpenAuth\Contract\Route\Exception\RedirectReceiveMissingStateException;
 use Heptacom\AdminOpenAuth\Contract\User;
+use Heptacom\AdminOpenAuth\Database\ClientEntity;
+use Heptacom\AdminOpenAuth\Database\ClientRuleCollection;
+use Heptacom\AdminOpenAuth\Service\ClientRuleValidator;
 use Psr\Http\Message\RequestInterface;
+use Shopware\Core\Framework\Context;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class RedirectReceiveRoute
 {
     public function __construct(
         private readonly ClientFactoryContract $clientFactory,
-        private readonly EventDispatcherInterface $eventDispatcher
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly ClientRuleValidator $clientRuleValidator
     ) {
     }
 
@@ -27,7 +35,8 @@ class RedirectReceiveRoute
         RequestInterface $request,
         string $providerKey,
         array $configuration,
-        RedirectBehaviour $behaviour
+        RedirectBehaviour $behaviour,
+        ClientRuleCollection $rules,
     ): User {
         \parse_str($request->getUri()->getQuery(), $getParams);
 
@@ -51,8 +60,35 @@ class RedirectReceiveRoute
             'requestState' => $state,
         ]);
 
+        $this->discoverRoleAssignment($rules, $user, $client, $configuration);
+
         $this->eventDispatcher->dispatch(new UserRedirectReceivedEvent($user, $request, $behaviour));
 
         return $user;
+    }
+
+    private function discoverRoleAssignment(ClientRuleCollection $rules, User $user, ClientContract $client, array $configuration): void
+    {
+        $roleAssignmentType = $configuration['roleAssignment'] ?? 'static';
+
+        if ($roleAssignmentType !== 'dynamic') {
+            return;
+        }
+
+        $ruleScope = new OAuthRuleScope($user, $client, $configuration, Context::createDefaultContext());
+        $client->prepareOAuthRuleScope($ruleScope);
+
+        foreach ($rules->getElements() as $rule) {
+            if ($this->clientRuleValidator->isValid($rule->getId(), $ruleScope)) {
+                $roleAssignment = new RoleAssignment();
+                $user->addExtension('roleAssignment', $roleAssignment);
+
+                $roleAssignment->isAdministrator = $rule->isUserBecomeAdmin();
+                $roleAssignment->rules = $rule->getAclRoles()->getIds();
+
+                break;
+            }
+        }
+
     }
 }

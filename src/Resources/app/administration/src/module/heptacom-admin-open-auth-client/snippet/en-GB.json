@@ -5,6 +5,11 @@
             "name": "HEPTACOM Open Authentication Login",
             "title": "SSO Login"
         },
+        "components": {
+            "rule-item": {
+                "title": "Rule {n}"
+            }
+        },
         "pages": {
             "create": {
                 "actions": {
@@ -21,7 +26,6 @@
                 "fields": {
                     "active": "Active",
                     "connect": "Use to connect",
-                    "defaultAclRoles": "Roles assigned to new users",
                     "downloadMetadata": "Download metadata file",
                     "keepUserUpdated": "Automatically update user info",
                     "login": "Use as login",
@@ -29,6 +33,9 @@
                     "name": "Name",
                     "redirectUri": "Redirect URL",
                     "storeUserToken": "Store user access keys",
+
+                    "defaultAclRoles": "Roles assigned to new users",
+                    "roleAssignmentType": "Role assignment",
                     "userBecomeAdmin": "Make user to admin on creation"
                 },
                 "modals": {
@@ -40,7 +47,12 @@
                         "warning": "Are you sure you want to delete this provider?"
                     }
                 },
-                "title": "Edit provider"
+                "title": "Edit provider",
+
+                "roleAssignmentType": {
+                    "static": "static",
+                    "dynamic": "dynamic"
+                }
             },
             "listing": {
                 "actions": {

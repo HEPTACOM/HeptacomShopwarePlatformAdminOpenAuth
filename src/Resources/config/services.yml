@@ -19,6 +19,9 @@ services:
         Heptacom\AdminOpenAuth\Contract\ClientProvider\ClientProviderContract:
             tags:
                 - 'heptacom_open_auth.client_provider'
+        Heptacom\AdminOpenAuth\Contract\RuleContract:
+            tags:
+                - { name: 'shopware.rule.definition' }
         Shopware\Core\Framework\DataAbstractionLayer\EntityExtension:
             tags:
                 - 'shopware.entity.extension'

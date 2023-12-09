@@ -1,8 +1,12 @@
 # Unreleased
 
+**Hinzugefügt**
+
+* Dynamische Rollenzuweisung mithilfe konfigurierbarer Regeln in Clients
+
 # 5.0.0
 
-**Hinzufügen**
+**Hinzugefügt**
 
 * Kompatibilität mit Shopware 6.5 und zugehörigen Abhängigkeiten hinzugefügt
 * Schaltfläche zum Herunterladen von Metadaten zur Komponente `heptacom-admin-open-auth-client-edit-page` hinzugefügt

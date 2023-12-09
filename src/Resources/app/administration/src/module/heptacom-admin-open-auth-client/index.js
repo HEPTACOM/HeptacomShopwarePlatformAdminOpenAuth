@@ -2,6 +2,9 @@ const { Component, Module } = Shopware;
 
 import './acl';
 
+Component.register('heptacom-admin-open-auth-client-rule-container', () => import ('./component/rule-container'));
+Component.register('heptacom-admin-open-auth-client-rule-item', () => import ('./component/rule-item'));
+
 Component.register('heptacom-admin-open-auth-client-create-page', () => import ('./page/create'));
 Component.register('heptacom-admin-open-auth-client-edit-page', () => import ('./page/edit'));
 Component.register('heptacom-admin-open-auth-client-listing-page', () => import ('./page/listing'));

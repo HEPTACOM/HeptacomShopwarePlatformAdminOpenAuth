@@ -46,8 +46,9 @@ class Saml2ServiceProvider extends ClientProviderContract implements Configurati
                 'serviceProviderPublicKey',
                 'requestedAuthnContext',
                 'attributeMapping',
-                // TODO remove in v5
+                // TODO remove in v6
                 'redirectUri',
+                'roleAssignment',
             ])->setRequired([
                 'identityProviderMetadataUrl',
                 'identityProviderMetadataXml',

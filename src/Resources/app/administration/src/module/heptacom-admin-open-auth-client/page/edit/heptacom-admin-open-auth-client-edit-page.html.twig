@@ -95,22 +95,6 @@
                                             v-model="item.connect"
                                         ></sw-switch-field>
                                     {% endblock %}
-                                    {% block heptacom_admin_open_auth_client_edit_page_content_base_settings_inner_user_become_admin %}
-                                        <sw-switch-field
-                                            :disabled="!item.active"
-                                            :label="$t('heptacom-admin-open-auth-client.pages.edit.fields.userBecomeAdmin')"
-                                            v-model="item.userBecomeAdmin"
-                                        ></sw-switch-field>
-                                    {% endblock %}
-                                    {% block heptacom_admin_open_auth_client_edit_page_content_base_settings_inner_default_acl_roles %}
-                                        <sw-entity-multi-select
-                                            v-if="!item.userBecomeAdmin"
-                                            :disabled="!item.active"
-                                            v-model="item.defaultAclRoles"
-                                            :label="$t('heptacom-admin-open-auth-client.pages.edit.fields.defaultAclRoles')"
-                                            entityName="acl_role"
-                                        ></sw-entity-multi-select>
-                                    {% endblock %}
                                     {% block heptacom_admin_open_auth_client_edit_page_content_base_settings_inner_store_user_token %}
                                         <sw-switch-field
                                             :disabled="!item.active"
@@ -156,6 +140,62 @@
                                         </sw-button>
                                     {% endblock %}
                                 {% endblock %}
+                            </template>
+                        </sw-card>
+                    {% endblock %}
+
+                    {% block heptacom_admin_open_auth_client_edit_page_content_role_assignment %}
+                        <sw-card
+                            :isLoading="isLoading"
+                            position-identifier="heptacom-admin-open-auth-client-edit-page-role-assignment"
+                        >
+                            <template v-if="item">
+                                <!-- select role assignment type (only for backwards compatibility) -->
+                                <sw-single-select
+                                    :label="$t('heptacom-admin-open-auth-client.pages.edit.fields.roleAssignmentType')"
+                                    :options="roleAssignmentTypes"
+                                    v-model="item.config.roleAssignment"
+                                />
+
+                                <!-- if static role assignment; allow role multi select or admin -->
+                                <template v-if="item.config.roleAssignment === 'static'">
+                                    {% block heptacom_admin_open_auth_client_edit_page_content_role_assignment_static %}
+                                        {% block heptacom_admin_open_auth_client_edit_page_content_role_assignment_static_user_become_admin %}
+                                            <sw-switch-field
+                                                    :disabled="!item.active"
+                                                    :label="$t('heptacom-admin-open-auth-client.pages.edit.fields.userBecomeAdmin')"
+                                                    v-model="item.userBecomeAdmin"
+                                            ></sw-switch-field>
+                                        {% endblock %}
+                                        {% block heptacom_admin_open_auth_client_edit_page_content_role_assignment_static_default_acl_roles %}
+                                            <sw-entity-multi-select
+                                                    v-if="!item.userBecomeAdmin"
+                                                    :disabled="!item.active"
+                                                    v-model="item.defaultAclRoles"
+                                                    :label="$t('heptacom-admin-open-auth-client.pages.edit.fields.defaultAclRoles')"
+                                                    entityName="acl_role"
+                                            ></sw-entity-multi-select>
+                                        {% endblock %}
+                                    {% endblock %}
+                                </template>
+
+                                <!-- if dynamic role assignment; allow configuration -->
+                                <template v-else>
+                                    {% block heptacom_admin_open_auth_client_edit_page_content_role_assignment_dynamic %}
+                                        {% block heptacom_admin_open_auth_client_edit_page_content_role_assignment_dynamic_provider_settings %}
+                                            <component
+                                                :is="providerRoleAssignmentComponent"
+                                                v-bind="providerRoleAssignmentProps"
+                                            ></component>
+                                        {% endblock %}
+
+                                        {% block heptacom_admin_open_auth_client_edit_page_content_role_assignment_dynamic_rules %}
+                                            <heptacom-admin-open-auth-client-rule-container
+                                                :client="item"
+                                            ></heptacom-admin-open-auth-client-rule-container>
+                                        {% endblock %}
+                                    {% endblock %}
+                                </template>
                             </template>
                         </sw-card>
                     {% endblock %}

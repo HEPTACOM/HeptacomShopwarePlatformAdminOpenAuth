@@ -8,6 +8,7 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;
 use Heptacom\AdminOpenAuth\Contract\ClientFeatureCheckerInterface;
 use Heptacom\AdminOpenAuth\Contract\LoginInterface;
+use Heptacom\AdminOpenAuth\Contract\RoleAssignment;
 use Heptacom\AdminOpenAuth\Contract\User;
 use Heptacom\AdminOpenAuth\Contract\UserEmailInterface;
 use Heptacom\AdminOpenAuth\Contract\UserKeyInterface;
@@ -94,17 +95,17 @@ final class UserResolver implements UserResolverInterface
         $aclRoles = null;
 
         if ($isNew) {
-            /** @var UserStructExtension|null $userExtension */
-            $userExtension = $user->getExtensionOfType(UserStructExtension::class, UserStructExtension::class);
+            /** @var RoleAssignment|null $roleAssignment */
+            $roleAssignment = $user->getExtensionOfType('roleAssignment', RoleAssignment::class);
 
-            if (!$userExtension) {
+            if ($roleAssignment === null) {
                 return;
             }
 
-            $userChangeSet['admin'] = $userExtension->isAdmin();
+            $userChangeSet['admin'] = $roleAssignment->isAdministrator;
 
-            if (!$userExtension->isAdmin()) {
-                $aclRoles = $userExtension->getAclRoleIds();
+            if (!$roleAssignment->isAdministrator) {
+                $aclRoles = $roleAssignment->roleIds;
             }
         }
 

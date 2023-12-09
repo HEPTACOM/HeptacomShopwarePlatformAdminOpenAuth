@@ -6,6 +6,7 @@ namespace Heptacom\AdminOpenAuth\Http\Route;
 
 use Heptacom\AdminOpenAuth\Contract\OpenAuthenticationFlowInterface;
 use Heptacom\AdminOpenAuth\Contract\RedirectBehaviourFactoryInterface;
+use Heptacom\AdminOpenAuth\Contract\RoleAssignment;
 use Heptacom\AdminOpenAuth\Database\ClientEntity;
 use Heptacom\AdminOpenAuth\Http\Route\Support\RedirectReceiveRoute;
 use Heptacom\AdminOpenAuth\OpenAuth\Struct\UserStructExtension;
@@ -50,6 +51,7 @@ final class ClientRedirectRoute extends AbstractController
         $psrHttpFactory = new PsrHttpFactory($psr17Factory, $psr17Factory, $psr17Factory, $psr17Factory);
 
         $clientCriteria = new Criteria([$clientId]);
+        $clientCriteria->addAssociation('rules.aclRoles');
         $clientCriteria->addAssociation('defaultAclRoles');
         /** @var ClientEntity|null $client */
         $client = $this->clientsRepository->search($clientCriteria, $context)->first();
@@ -63,14 +65,18 @@ final class ClientRedirectRoute extends AbstractController
                 $psrHttpFactory->createRequest($request),
                 $client->provider,
                 $client->config,
-                $this->redirectBehaviourFactory->createRedirectBehaviour($clientId, $context)
+                $this->redirectBehaviourFactory->createRedirectBehaviour($clientId, $context),
+                $client->rules
             );
         $requestState = (string) $user->getExtensionOfType('requestState', ArrayStruct::class)['requestState'];
 
-        $userExtension = $user->getExtensionOfType(UserStructExtension::class, UserStructExtension::class) ?? new UserStructExtension();
-        $userExtension->setIsAdmin($client->userBecomeAdmin ?? false);
-        $userExtension->setAclRoleIds($client->defaultAclRoles?->getIds() ?? []);
-        $user->addExtension(UserStructExtension::class, $userExtension);
+        if (!$user->hasExtensionOfType('roleAssignment', RoleAssignment::class)) {
+            $roleAssignment = new RoleAssignment();
+            $roleAssignment->isAdministrator = $client->userBecomeAdmin ?? false;
+            $roleAssignment->roleIds = $client->defaultAclRoles?->getIds() ?? [];
+
+            $user->addExtension('roleAssignment', $roleAssignment);
+        }
 
         $this->flow->upsertUser($user, $clientId, $requestState, $context);
 

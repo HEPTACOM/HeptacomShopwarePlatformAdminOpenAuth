@@ -36,8 +36,9 @@ final class MicrosoftAzureOidcProvider extends ClientProviderContract
                 'clientId',
                 'clientSecret',
                 'scopes',
-                // TODO remove in v5
+                // TODO remove in v6
                 'redirectUri',
+                'roleAssignment',
             ])->setRequired([
                 'tenantId',
                 'clientId',
