@@ -6,7 +6,6 @@ namespace Heptacom\AdminOpenAuth\Contract\Client;
 
 use Heptacom\AdminOpenAuth\Contract\OAuthRuleScope;
 use Heptacom\AdminOpenAuth\Contract\RedirectBehaviour;
-use Heptacom\AdminOpenAuth\Contract\RoleAssignment;
 use Heptacom\AdminOpenAuth\Contract\TokenPair;
 use Heptacom\AdminOpenAuth\Contract\User;
 use Psr\Http\Message\RequestInterface;

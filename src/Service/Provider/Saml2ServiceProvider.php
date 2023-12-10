@@ -49,7 +49,7 @@ class Saml2ServiceProvider extends ClientProviderContract implements Configurati
                 // TODO remove in v6
                 'redirectUri',
                 'roleAssignment',
-                'rolesAttributeName'
+                'rolesAttributeName',
             ])->setRequired([
                 'identityProviderMetadataUrl',
                 'identityProviderMetadataXml',

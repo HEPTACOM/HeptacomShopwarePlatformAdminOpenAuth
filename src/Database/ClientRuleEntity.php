@@ -13,9 +13,13 @@ class ClientRuleEntity extends Entity
     use EntityIdTrait;
 
     protected string $clientId;
+
     protected bool $userBecomeAdmin;
+
     protected ?ClientEntity $client = null;
+
     protected ?ClientRuleConditionCollection $conditions = null;
+
     protected ?AclRoleCollection $aclRoles = null;
 
     public function getClientId(): string

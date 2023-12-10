@@ -6,7 +6,6 @@ namespace Heptacom\AdminOpenAuth\Database;
 
 use Heptacom\AdminOpenAuth\Database\Aggregate\ClientAclRoleDefinition;
 use Heptacom\AdminOpenAuth\Database\Aggregate\ClientRuleRoleDefinition;
-use Heptacom\AdminOpenAuth\Database\ClientRuleDefinition;
 use Shopware\Core\Framework\Api\Acl\Role\AclRoleDefinition;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityExtension;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\Flag\CascadeDelete;

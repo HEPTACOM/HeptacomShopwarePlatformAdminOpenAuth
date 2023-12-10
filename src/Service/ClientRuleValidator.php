@@ -23,14 +23,12 @@ class ClientRuleValidator
     ) {
     }
 
-
     public function isValid(string $clientRuleId, OAuthRuleScope $scope): bool
     {
         $rule = $this->buildRule($clientRuleId);
 
         return $rule->match($scope);
     }
-
 
     public function buildRule(string $clientRuleId): Rule
     {
@@ -49,6 +47,7 @@ class ClientRuleValidator
 
     /**
      * Mostly copied from Shopware
+     *
      * @see \Shopware\Core\Content\Rule\DataAbstractionLayer\RulePayloadUpdater::buildNested()
      */
     private function buildNested(array $rules, ?string $parentId): array

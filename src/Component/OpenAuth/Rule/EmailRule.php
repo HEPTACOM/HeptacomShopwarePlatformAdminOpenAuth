@@ -29,7 +29,7 @@ class EmailRule extends RuleContract
             'strtolower',
             \array_filter([
                 $user->primaryEmail,
-                ...$user->emails
+                ...$user->emails,
             ])
         );
 
@@ -58,5 +58,4 @@ class EmailRule extends RuleContract
             ->operatorSet(RuleConfig::OPERATOR_SET_STRING, false, true)
             ->taggedField('emails');
     }
-
 }

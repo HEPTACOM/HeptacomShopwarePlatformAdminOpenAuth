@@ -12,7 +12,6 @@ use Heptacom\AdminOpenAuth\Contract\RoleAssignment;
 use Heptacom\AdminOpenAuth\Contract\Route\Exception\RedirectReceiveException;
 use Heptacom\AdminOpenAuth\Contract\Route\Exception\RedirectReceiveMissingStateException;
 use Heptacom\AdminOpenAuth\Contract\User;
-use Heptacom\AdminOpenAuth\Database\ClientEntity;
 use Heptacom\AdminOpenAuth\Database\ClientRuleCollection;
 use Heptacom\AdminOpenAuth\Service\ClientRuleValidator;
 use Psr\Http\Message\RequestInterface;
@@ -89,6 +88,5 @@ class RedirectReceiveRoute
                 break;
             }
         }
-
     }
 }

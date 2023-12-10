@@ -16,7 +16,7 @@ class OAuthRuleScope extends RuleScope
         private readonly ClientContract $client,
         private readonly array $clientConfiguration,
         private readonly Context $context,
-    ){
+    ) {
     }
 
     public function getContext(): Context
@@ -26,6 +26,7 @@ class OAuthRuleScope extends RuleScope
 
     /**
      * This method is not available in the OAuth scope!
+     *
      * @throws \RuntimeException
      */
     public function getSalesChannelContext(): SalesChannelContext

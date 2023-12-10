@@ -61,5 +61,4 @@ class Saml2RoleRule extends RuleContract
             ->operatorSet(RuleConfig::OPERATOR_SET_STRING, false, true)
             ->taggedField('roles');
     }
-
 }

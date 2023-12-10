@@ -12,12 +12,19 @@ class ClientRuleConditionEntity extends Entity
     use EntityIdTrait;
 
     protected string $type;
+
     protected string $clientRuleId;
+
     protected ?ClientRuleDefinition $clientRule = null;
+
     protected ?string $parentId = null;
+
     protected ?ClientRuleConditionEntity $parent = null;
+
     protected ?ClientRuleConditionCollection $children = null;
+
     protected ?array $value = null;
+
     protected int $position;
 
     public function getType(): string

@@ -46,5 +46,4 @@ class TimeZoneRule extends RuleContract
             ->operatorSet(RuleConfig::OPERATOR_SET_STRING, false, true)
             ->taggedField('timeZones');
     }
-
 }

@@ -15,7 +15,6 @@ use Heptacom\AdminOpenAuth\Contract\UserKeyInterface;
 use Heptacom\AdminOpenAuth\Contract\UserResolverInterface;
 use Heptacom\AdminOpenAuth\Contract\UserTokenInterface;
 use Heptacom\AdminOpenAuth\Exception\UserMismatchException;
-use Heptacom\AdminOpenAuth\OpenAuth\Struct\UserStructExtension;
 use Shopware\Core\Defaults;
 use Shopware\Core\Framework\Api\Acl\Role\AclUserRoleDefinition;
 use Shopware\Core\Framework\Context;

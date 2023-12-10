@@ -9,7 +9,6 @@ use Heptacom\AdminOpenAuth\Contract\RedirectBehaviourFactoryInterface;
 use Heptacom\AdminOpenAuth\Contract\RoleAssignment;
 use Heptacom\AdminOpenAuth\Database\ClientEntity;
 use Heptacom\AdminOpenAuth\Http\Route\Support\RedirectReceiveRoute;
-use Heptacom\AdminOpenAuth\OpenAuth\Struct\UserStructExtension;
 use Heptacom\AdminOpenAuth\Service\StateResolver;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Shopware\Core\Framework\Context;

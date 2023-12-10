@@ -46,5 +46,4 @@ class PrimaryKeyRule extends RuleContract
             ->operatorSet(RuleConfig::OPERATOR_SET_STRING, false, true)
             ->taggedField('primaryKeys');
     }
-
 }
