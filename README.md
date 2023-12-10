@@ -26,6 +26,7 @@ This Shopware 6 plugin allows to add "Login with" functionality into the Shopwar
 * support for third-party IDPs supporting SAML2
   * easy setup using the provider's metadata xml
 * promote users automatically to administrators
+* set roles and permissions based on rules
 
 ## Security
 

@@ -10,13 +10,13 @@ use Shopware\Core\Framework\Rule\RuleComparison;
 use Shopware\Core\Framework\Rule\RuleConfig;
 use Shopware\Core\Framework\Rule\RuleConstraints;
 
-class DisplayNameRule extends RuleContract
+class PrimaryKeyRule extends RuleContract
 {
-    public const RULE_NAME = 'heptacomAdminOpenAuthDisplayName';
+    public const RULE_NAME = 'heptacomAdminOpenAuthPrimaryKey';
 
     public function __construct(
         protected string $operator = self::OPERATOR_EQ,
-        protected ?string $displayName = null
+        protected ?string $primaryKey = null
     ) {
         parent::__construct();
     }
@@ -25,7 +25,7 @@ class DisplayNameRule extends RuleContract
     {
         $user = $scope->getUser();
 
-        return RuleComparison::string($user->displayName, $this->displayName ?? '', $this->operator);
+        return RuleComparison::string($user->primaryKey, $this->primaryKey ?? '', $this->operator);
     }
 
     public function getConstraints(): array
@@ -38,7 +38,7 @@ class DisplayNameRule extends RuleContract
             return $constraints;
         }
 
-        $constraints['displayName'] = RuleConstraints::string();
+        $constraints['primaryKey'] = RuleConstraints::string();
 
         return $constraints;
     }
@@ -47,7 +47,7 @@ class DisplayNameRule extends RuleContract
     {
         return (new RuleConfig())
             ->operatorSet(RuleConfig::OPERATOR_SET_STRING)
-            ->stringField('displayName');
+            ->stringField('primaryKey');
     }
 
 }

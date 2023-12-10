@@ -1,0 +1,32 @@
+{% block heptacom_admin_open_auth_client_rule_item %}
+    <sw-card
+        :title="$tc('heptacom-admin-open-auth-client.components.rule-item.title', position)"
+        :positionIdentifier="'heptacom-admin-open-auth-client-rule-item-' + rule.id"
+    >
+        <sw-condition-tree
+                v-if="rule && conditionRepository"
+                class="heptacom-admin-open-auth-rule-item--condition-tree"
+                association-field="clientRuleId" {# the field that is used for assigning the rule to its parent #}
+                :scopes="scopes"
+                :initial-conditions="rule.conditions"
+                :condition-repository="conditionRepository" {# any entity repository that has children and  the above specified association field #}
+                :condition-data-provider-service="heptacomOauthRuleDataProvider"
+                :association-value="rule.id" {# the association id (so in this case the ruleId) #}
+                {#            :association-entity="rule"#}
+                :root-condition="null"
+                {#            @conditions-changed="onConditionsChanged"#}
+        />
+
+        <sw-switch-field
+                :label="$t('heptacom-admin-open-auth-client.pages.edit.fields.userBecomeAdmin')"
+                v-model="rule.userBecomeAdmin"
+        ></sw-switch-field>
+
+        <sw-entity-multi-select
+                v-if="!rule.userBecomeAdmin"
+                v-model="rule.aclRoles"
+                :label="$t('heptacom-admin-open-auth-client.pages.edit.fields.defaultAclRoles')"
+                entityName="acl_role"
+        ></sw-entity-multi-select>
+    </sw-card>
+{% endblock %}

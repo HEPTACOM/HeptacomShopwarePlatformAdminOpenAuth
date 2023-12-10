@@ -1,0 +1,20 @@
+{% block heptacom_admin_open_auth_client_rule_container %}
+    <div>
+        <sw-loader v-if="isLoading"></sw-loader>
+
+        <template v-else>
+            <heptacom-admin-open-auth-client-rule-item
+                v-for="(rule, index) in client.rules"
+                :position="index + 1"
+                :rule="rule"
+                :client="client"
+            ></heptacom-admin-open-auth-client-rule-item>
+
+            <sw-button
+                @click="addRule"
+            >
+                Add rule
+            </sw-button>
+        </template>
+    </div>
+{% endblock %}

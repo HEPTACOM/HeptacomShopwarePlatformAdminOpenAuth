@@ -10,8 +10,7 @@
                 "firstName": "First name",
                 "lastName": "Last name",
                 "displayName": "Display name",
-                "emails": "Email addresses",
-                "primaryEmail": "Primary email address",
+                "email": "Email address",
                 "timeZone": "Time zone",
                 "locale": "Locale",
                 "primaryKey": "Primary key"

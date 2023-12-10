@@ -10,8 +10,7 @@
                 "firstName": "Vorname",
                 "lastName": "Nachname",
                 "displayName": "Anzeigename",
-                "emails": "E-Mail-Adressen",
-                "primaryEmail": "Primäre E-Mail-Adresse",
+                "email": "E-Mail-Adresse",
                 "timeZone": "Zeitzone",
                 "locale": "Sprache",
                 "primaryKey": "Primärschlüssel"

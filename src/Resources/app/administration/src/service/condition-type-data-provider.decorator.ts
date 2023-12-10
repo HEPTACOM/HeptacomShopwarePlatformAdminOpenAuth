@@ -20,49 +20,43 @@ export default (ruleConditionService: HeptacomOauthRuleDataProviderService) => {
         group: 'general',
     });
 
-    ruleConditionService.addCondition('heptacomAdminOpenAuth.displayName', {
+    ruleConditionService.addCondition('heptacomAdminOpenAuthDisplayName', {
         component: 'sw-condition-generic',
         label: 'heptacom-admin-open-auth.condition.rule.displayName',
         scopes: ['global'],
         group: 'user',
     });
-    ruleConditionService.addCondition('heptacomAdminOpenAuth.firstName', {
+    ruleConditionService.addCondition('heptacomAdminOpenAuthFirstName', {
         component: 'sw-condition-generic',
         label: 'heptacom-admin-open-auth.condition.rule.firstName',
         scopes: ['global'],
         group: 'user',
     });
-    ruleConditionService.addCondition('heptacomAdminOpenAuth.lastName', {
+    ruleConditionService.addCondition('heptacomAdminOpenAuthLastName', {
         component: 'sw-condition-generic',
         label: 'heptacom-admin-open-auth.condition.rule.lastName',
         scopes: ['global'],
         group: 'user',
     });
-    ruleConditionService.addCondition('heptacomAdminOpenAuth.emails', {
+    ruleConditionService.addCondition('heptacomAdminOpenAuthEmail', {
         component: 'sw-condition-generic',
-        label: 'heptacom-admin-open-auth.condition.rule.emails',
+        label: 'heptacom-admin-open-auth.condition.rule.email',
         scopes: ['global'],
         group: 'user',
     });
-    ruleConditionService.addCondition('heptacomAdminOpenAuth.primaryEmail', {
-        component: 'sw-condition-generic',
-        label: 'heptacom-admin-open-auth.condition.rule.primaryEmail',
-        scopes: ['global'],
-        group: 'user',
-    });
-    ruleConditionService.addCondition('heptacomAdminOpenAuth.timeZone', {
+    ruleConditionService.addCondition('heptacomAdminOpenAuthTimeZone', {
         component: 'sw-condition-generic',
         label: 'heptacom-admin-open-auth.condition.rule.timeZone',
         scopes: ['global'],
         group: 'user',
     });
-    ruleConditionService.addCondition('heptacomAdminOpenAuth.locale', {
+    ruleConditionService.addCondition('heptacomAdminOpenAuthLocale', {
         component: 'sw-condition-generic',
         label: 'heptacom-admin-open-auth.condition.rule.locale',
         scopes: ['global'],
         group: 'user',
     });
-    ruleConditionService.addCondition('heptacomAdminOpenAuth.primaryKey', {
+    ruleConditionService.addCondition('heptacomAdminOpenAuthPrimaryKey', {
         component: 'sw-condition-generic',
         label: 'heptacom-admin-open-auth.condition.rule.primaryKey',
         scopes: ['global'],
