@@ -16,7 +16,7 @@ class PrimaryKeyRule extends RuleContract
 
     public function __construct(
         protected string $operator = self::OPERATOR_EQ,
-        protected ?string $primaryKey = null
+        protected ?array $primaryKeys = null
     ) {
         parent::__construct();
     }
@@ -25,29 +25,26 @@ class PrimaryKeyRule extends RuleContract
     {
         $user = $scope->getUser();
 
-        return RuleComparison::string($user->primaryKey, $this->primaryKey ?? '', $this->operator);
+        return RuleComparison::stringArray(
+            $user->primaryKey,
+            $this->primaryKeys ?? [],
+            $this->operator
+        );
     }
 
     public function getConstraints(): array
     {
-        $constraints = [
-            'operator' => RuleConstraints::stringOperators(),
+        return [
+            'operator' => RuleConstraints::stringOperators(false),
+            'primaryKeys' => RuleConstraints::stringArray(),
         ];
-
-        if ($this->operator === self::OPERATOR_EMPTY) {
-            return $constraints;
-        }
-
-        $constraints['primaryKey'] = RuleConstraints::string();
-
-        return $constraints;
     }
 
     public function getConfig(): ?RuleConfig
     {
         return (new RuleConfig())
-            ->operatorSet(RuleConfig::OPERATOR_SET_STRING)
-            ->stringField('primaryKey');
+            ->operatorSet(RuleConfig::OPERATOR_SET_STRING, false, true)
+            ->taggedField('primaryKeys');
     }
 
 }

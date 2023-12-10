@@ -83,7 +83,7 @@ export default {
         providerRoleAssignmentProps() {
             return {
                 isLoading: this.isLoading,
-                item: this.item,
+                client: this.item,
             };
         },
 

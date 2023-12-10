@@ -16,7 +16,7 @@ class TimeZoneRule extends RuleContract
 
     public function __construct(
         protected string $operator = self::OPERATOR_EQ,
-        protected ?string $timeZone = null
+        protected ?array $timeZones = null
     ) {
         parent::__construct();
     }
@@ -25,29 +25,26 @@ class TimeZoneRule extends RuleContract
     {
         $user = $scope->getUser();
 
-        return RuleComparison::string($user->timeZone, $this->timeZone ?? '', $this->operator);
+        return RuleComparison::stringArray(
+            \strtolower($user->timezone ?? ''),
+            \array_map('strtolower', $this->timeZones ?? []),
+            $this->operator
+        );
     }
 
     public function getConstraints(): array
     {
-        $constraints = [
-            'operator' => RuleConstraints::stringOperators(),
+        return [
+            'operator' => RuleConstraints::stringOperators(false),
+            'timeZones' => RuleConstraints::stringArray(),
         ];
-
-        if ($this->operator === self::OPERATOR_EMPTY) {
-            return $constraints;
-        }
-
-        $constraints['timeZone'] = RuleConstraints::string();
-
-        return $constraints;
     }
 
     public function getConfig(): ?RuleConfig
     {
         return (new RuleConfig())
-            ->operatorSet(RuleConfig::OPERATOR_SET_STRING)
-            ->stringField('timeZone');
+            ->operatorSet(RuleConfig::OPERATOR_SET_STRING, false, true)
+            ->taggedField('timeZones');
     }
 
 }

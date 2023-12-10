@@ -16,7 +16,7 @@ class LocaleRule extends RuleContract
 
     public function __construct(
         protected string $operator = self::OPERATOR_EQ,
-        protected ?string $locale = null
+        protected ?array $locales = null
     ) {
         parent::__construct();
     }
@@ -25,29 +25,26 @@ class LocaleRule extends RuleContract
     {
         $user = $scope->getUser();
 
-        return RuleComparison::string($user->locale, $this->locale ?? '', $this->operator);
+        return RuleComparison::stringArray(
+            \strtolower($user->locale ?? ''),
+            \array_map('strtolower', $this->locales ?? []),
+            $this->operator
+        );
     }
 
     public function getConstraints(): array
     {
-        $constraints = [
-            'operator' => RuleConstraints::stringOperators(),
+        return [
+            'locales' => RuleConstraints::stringArray(),
+            'operator' => RuleConstraints::stringOperators(false),
         ];
-
-        if ($this->operator === self::OPERATOR_EMPTY) {
-            return $constraints;
-        }
-
-        $constraints['locale'] = RuleConstraints::string();
-
-        return $constraints;
     }
 
     public function getConfig(): ?RuleConfig
     {
         return (new RuleConfig())
-            ->operatorSet(RuleConfig::OPERATOR_SET_STRING)
-            ->stringField('locale');
+            ->operatorSet(RuleConfig::OPERATOR_SET_STRING, false, true)
+            ->taggedField('locales');
     }
 
 }

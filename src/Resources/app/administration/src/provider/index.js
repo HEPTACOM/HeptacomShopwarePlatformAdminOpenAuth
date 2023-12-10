@@ -1,4 +1,6 @@
-const { Component } = Shopware;
+import saml2DataProvider from './saml2/decorator/condition-type-data-provider.decorator';
+
+const { Application, Component } = Shopware;
 
 // Cidaas
 Component.register('heptacom-admin-open-auth-provider-cidaas-settings', () => import ('./cidaas/components/provider-settings'));
@@ -13,7 +15,6 @@ Component.register('heptacom-admin-open-auth-provider-jira-settings', () => impo
 
 // Jumpcloud
 Component.register('heptacom-admin-open-auth-provider-jumpcloud-settings', () => import ('./jumpcloud/components/provider-settings'));
-Component.extend('heptacom-admin-open-auth-provider-jumpcloud-role-assignment', 'heptacom-admin-open-auth-provider-saml2-role-assignment', {});
 
 // Keycloak
 Component.register('heptacom-admin-open-auth-provider-keycloak-settings', () => import ('./keycloak/components/provider-settings'));
@@ -37,7 +38,7 @@ Component.register('heptacom-admin-open-auth-provider-open-id-connect-role-assig
 
 // SAML2
 Component.register('heptacom-admin-open-auth-provider-saml2-settings', () => import ('./saml2/components/provider-settings'));
-Component.register('heptacom-admin-open-auth-provider-saml2-role-assignment', () => import ('./saml2/components/role-assignment'));
+Application.addServiceProviderDecorator('heptacomOauthRuleDataProvider', saml2DataProvider);
 
 import './jumpcloud/overrides/heptacom-admin-open-auth-client-edit-page';
 import './saml2/overrides/heptacom-admin-open-auth-client-edit-page';

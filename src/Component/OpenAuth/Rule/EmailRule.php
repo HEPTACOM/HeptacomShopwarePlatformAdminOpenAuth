@@ -16,7 +16,7 @@ class EmailRule extends RuleContract
 
     public function __construct(
         protected string $operator = self::OPERATOR_EQ,
-        protected ?string $email = null
+        protected ?string $emails = null
     ) {
         parent::__construct();
     }
@@ -25,13 +25,18 @@ class EmailRule extends RuleContract
     {
         $user = $scope->getUser();
 
-        $emails = \array_filter([
-            $user->primaryEmail,
-            ...$user->emails
-        ]);
+        $emails = \array_map(
+            'strtolower',
+            \array_filter([
+                $user->primaryEmail,
+                ...$user->emails
+            ])
+        );
+
+        $allowedEmails = \array_map('strtolower', $this->emails ?? []);
 
         foreach ($emails as $email) {
-            if (RuleComparison::string($email, $this->email ?? '', $this->operator)) {
+            if (RuleComparison::stringArray($email, $allowedEmails, $this->operator)) {
                 return true;
             }
         }
@@ -41,24 +46,17 @@ class EmailRule extends RuleContract
 
     public function getConstraints(): array
     {
-        $constraints = [
-            'operator' => RuleConstraints::stringOperators(),
+        return [
+            'emails' => RuleConstraints::stringArray(),
+            'operator' => RuleConstraints::stringOperators(false),
         ];
-
-        if ($this->operator === self::OPERATOR_EMPTY) {
-            return $constraints;
-        }
-
-        $constraints['email'] = RuleConstraints::string();
-
-        return $constraints;
     }
 
     public function getConfig(): ?RuleConfig
     {
         return (new RuleConfig())
-            ->operatorSet(RuleConfig::OPERATOR_SET_STRING)
-            ->stringField('email');
+            ->operatorSet(RuleConfig::OPERATOR_SET_STRING, false, true)
+            ->taggedField('emails');
     }
 
 }
