@@ -9,7 +9,8 @@
                         "firstName": "First name",
                         "lastName": "Last name",
                         "locale": "Locale",
-                        "timezone": "Timezone"
+                        "timezone": "Timezone",
+                        "roles": "Rollen/Gruppen"
                     },
                     "template": {
                         "azure": "Azure AD",
@@ -19,6 +20,11 @@
                     "templateApply": "Apply template",
                     "templateSelect": "Template",
                     "templateSelect-placeholder": "Select the template for your identity provider"
+                },
+                "condition": {
+                    "rule": {
+                        "roles": "Roles/Groups"
+                    }
                 },
                 "identityProviderCardTitle": "Identity provider settings",
                 "identityProviderCertificate": "Certificate (PEM)",

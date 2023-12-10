@@ -49,6 +49,7 @@ class Saml2ServiceProvider extends ClientProviderContract implements Configurati
                 // TODO remove in v6
                 'redirectUri',
                 'roleAssignment',
+                'rolesAttributeName'
             ])->setRequired([
                 'identityProviderMetadataUrl',
                 'identityProviderMetadataXml',
@@ -74,6 +75,7 @@ class Saml2ServiceProvider extends ClientProviderContract implements Configurati
             ->setAllowedTypes('serviceProviderPrivateKey', 'string')
             ->setAllowedTypes('serviceProviderPublicKey', 'string')
             ->setAllowedTypes('requestedAuthnContext', 'array')
+            ->setAllowedTypes('rolesAttributeName', 'string')
             ->setAllowedTypes('attributeMapping', 'array')
             ->setDeprecated(
                 'redirectUri',

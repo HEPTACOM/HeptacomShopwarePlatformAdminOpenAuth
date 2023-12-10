@@ -17,7 +17,8 @@ export default {
                 'lastName',
                 'email',
                 'timezone',
-                'locale'
+                'locale',
+                'roles',
             ],
             availableAuthnContexts: [
                 'urn:oasis:names:tc:SAML:2.0:ac:classes:unspecified',
@@ -49,6 +50,7 @@ export default {
                     firstName: 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname',
                     lastName: 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname',
                     email: 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress',
+                    roles: 'http://schemas.microsoft.com/ws/2008/06/identity/claims/role',
                 },
             }
         };
