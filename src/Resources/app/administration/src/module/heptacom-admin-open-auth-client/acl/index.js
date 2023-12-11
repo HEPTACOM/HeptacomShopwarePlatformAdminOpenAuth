@@ -8,12 +8,20 @@ Shopware.Service('privileges')
                 privileges: [
                     'heptacom_admin_open_auth_client:read',
                     'heptacom_admin_open_auth_user_key:read',
+                    'heptacom_admin_open_auth_client_rule:read',
+                    'heptacom_admin_open_auth_client_rule_condition:read',
                 ],
                 dependencies: []
             },
             editor: {
                 privileges: [
                     'heptacom_admin_open_auth_client:update',
+                    'heptacom_admin_open_auth_client_rule:create',
+                    'heptacom_admin_open_auth_client_rule:update',
+                    'heptacom_admin_open_auth_client_rule:delete',
+                    'heptacom_admin_open_auth_client_rule_condition:create',
+                    'heptacom_admin_open_auth_client_rule_condition:update',
+                    'heptacom_admin_open_auth_client_rule_condition:delete',
                 ],
                 dependencies: [
                     'heptacom_admin_open_auth_client.viewer',
