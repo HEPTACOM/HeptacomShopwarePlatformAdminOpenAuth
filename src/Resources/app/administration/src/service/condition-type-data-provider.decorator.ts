@@ -20,24 +20,6 @@ export default (ruleConditionService: HeptacomOauthRuleDataProviderService) => {
         group: 'general',
     });
 
-    ruleConditionService.addCondition('heptacomAdminOpenAuthDisplayName', {
-        component: 'sw-condition-generic',
-        label: 'heptacom-admin-open-auth.condition.rule.displayName',
-        scopes: ['global'],
-        group: 'user',
-    });
-    ruleConditionService.addCondition('heptacomAdminOpenAuthFirstName', {
-        component: 'sw-condition-generic',
-        label: 'heptacom-admin-open-auth.condition.rule.firstName',
-        scopes: ['global'],
-        group: 'user',
-    });
-    ruleConditionService.addCondition('heptacomAdminOpenAuthLastName', {
-        component: 'sw-condition-generic',
-        label: 'heptacom-admin-open-auth.condition.rule.lastName',
-        scopes: ['global'],
-        group: 'user',
-    });
     ruleConditionService.addCondition('heptacomAdminOpenAuthEmail', {
         component: 'sw-condition-generic',
         label: 'heptacom-admin-open-auth.condition.rule.email',
