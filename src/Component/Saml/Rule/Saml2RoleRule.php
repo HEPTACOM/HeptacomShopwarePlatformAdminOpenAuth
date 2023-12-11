@@ -17,7 +17,7 @@ class Saml2RoleRule extends RuleContract
 
     public function __construct(
         protected string $operator = self::OPERATOR_EQ,
-        protected ?string $role = null
+        protected ?array $roles = null
     ) {
         parent::__construct();
     }

@@ -16,7 +16,7 @@ class EmailRule extends RuleContract
 
     public function __construct(
         protected string $operator = self::OPERATOR_EQ,
-        protected ?string $emails = null
+        protected ?array $emails = null
     ) {
         parent::__construct();
     }
