@@ -8,6 +8,7 @@
                 :key="rule.id"
                 :rule="rule"
                 :client="client"
+                @conditions-deleted="conditionsDeleted"
                 @move-up="moveRuleUp(rule)"
                 @move-down="moveRuleDown(rule)"
                 @delete="deleteRule(rule)"

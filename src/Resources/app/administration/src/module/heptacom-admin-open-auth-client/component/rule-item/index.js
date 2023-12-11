@@ -39,6 +39,12 @@ export default {
     },
 
     methods: {
+        onConditionsChanged({ deletedIds }) {
+            if (deletedIds.length > 0) {
+                this.$emit('conditions-deleted', deletedIds);
+            }
+        },
+
         onMoveUp() {
             this.$emit('move-up', {});
         },

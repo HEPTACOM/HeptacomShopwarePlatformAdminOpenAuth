@@ -56,6 +56,10 @@ export default {
             this.client.rules.add(rule);
         },
 
+        conditionsDeleted(deletedIds) {
+            this.$emit('conditions-deleted', deletedIds);
+        },
+
         moveRuleUp(rule) {
             this.swapRules(rule.position, rule.position - 1);
         },
@@ -65,7 +69,14 @@ export default {
         },
 
         deleteRule(rule) {
+            this.$emit('rule-deleted', rule.id);
             this.client.rules.remove(rule.id);
+
+            let position = 0;
+            for (const rule of this.sortedRules) {
+                rule.position = position;
+                position++;
+            }
         },
 
         swapRules(positionA, positionB) {

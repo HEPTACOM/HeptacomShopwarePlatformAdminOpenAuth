@@ -39,7 +39,7 @@
                     :association-value="rule.id" {# the association id (so in this case the ruleId) #}
                     {#            :association-entity="rule"#}
                     :root-condition="null"
-                    {#            @conditions-changed="onConditionsChanged"#}
+                    @conditions-changed="onConditionsChanged"
             />
 
             <sw-switch-field
