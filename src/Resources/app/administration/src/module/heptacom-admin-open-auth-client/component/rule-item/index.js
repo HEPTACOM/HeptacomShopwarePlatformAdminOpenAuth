@@ -15,10 +15,6 @@ export default {
             type: Boolean,
             default: false,
         },
-        position: {
-            required: true,
-            type: Number,
-        },
         client: {
             required: true,
             type: Object,
@@ -40,5 +36,19 @@ export default {
                 this.client.provider
             ];
         }
-    }
+    },
+
+    methods: {
+        onMoveUp() {
+            this.$emit('move-up', {});
+        },
+
+        onMoveDown() {
+            this.$emit('move-down', {});
+        },
+
+        onDelete() {
+            this.$emit('delete', {});
+        },
+    },
 }

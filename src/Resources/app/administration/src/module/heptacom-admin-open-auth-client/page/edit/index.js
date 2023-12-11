@@ -51,6 +51,7 @@ export default {
 
         clientCriteria() {
             const criteria = new Criteria();
+            criteria.getAssociation('rules').addSorting(Criteria.sort('position', 'ASC'));
             criteria.addAssociation('rules.aclRoles');
             criteria.addAssociation('rules.conditions');
             criteria.addAssociation('defaultAclRoles');

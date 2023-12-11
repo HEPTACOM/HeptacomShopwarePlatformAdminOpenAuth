@@ -21,6 +21,7 @@ CREATE TABLE IF NOT EXISTS `heptacom_admin_open_auth_client_rule` (
     `id` BINARY(16) NOT NULL PRIMARY KEY,
     `client_id` BINARY(16) NOT NULL,
     `user_become_admin` BOOLEAN NOT NULL DEFAULT FALSE,
+    `position` INT(11) DEFAULT 0 NOT NULL,
     `created_at` DATETIME(3) NOT NULL,
     `updated_at` DATETIME(3) NULL,
     CONSTRAINT `fk.heptacom_admin_open_auth_client_rule.client_id` FOREIGN KEY (`client_id`)

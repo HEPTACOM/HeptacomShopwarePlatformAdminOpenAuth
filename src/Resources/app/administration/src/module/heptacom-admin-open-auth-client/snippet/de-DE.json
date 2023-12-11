@@ -7,7 +7,9 @@
         },
         "components": {
             "rule-item": {
-                "title": "Regel {n}"
+                "title": "Regel {n}",
+                "moveUp": "Nach oben verschieben",
+                "moveDown": "Nach unten verschieben"
             }
         },
         "pages": {

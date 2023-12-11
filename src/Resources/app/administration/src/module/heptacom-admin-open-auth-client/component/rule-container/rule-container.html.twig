@@ -4,13 +4,18 @@
 
         <template v-else>
             <heptacom-admin-open-auth-client-rule-item
-                v-for="(rule, index) in client.rules"
-                :position="index + 1"
+                v-for="rule in sortedRules"
+                :key="rule.id"
                 :rule="rule"
                 :client="client"
+                @move-up="moveRuleUp(rule)"
+                @move-down="moveRuleDown(rule)"
+                @delete="deleteRule(rule)"
             ></heptacom-admin-open-auth-client-rule-item>
 
             <sw-button
+                variant="ghost"
+                block
                 @click="addRule"
             >
                 Add rule

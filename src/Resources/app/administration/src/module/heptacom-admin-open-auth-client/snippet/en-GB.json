@@ -7,7 +7,9 @@
         },
         "components": {
             "rule-item": {
-                "title": "Rule {n}"
+                "title": "Rule {n}",
+                "moveUp": "Move up",
+                "moveDown": "Move down"
             }
         },
         "pages": {

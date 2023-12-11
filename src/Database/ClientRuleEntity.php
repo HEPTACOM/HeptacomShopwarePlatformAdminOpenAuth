@@ -21,6 +21,7 @@ class ClientRuleEntity extends Entity
     protected ?ClientRuleConditionCollection $conditions = null;
 
     protected ?AclRoleCollection $aclRoles = null;
+    protected int $position;
 
     public function getClientId(): string
     {
@@ -45,5 +46,10 @@ class ClientRuleEntity extends Entity
     public function getAclRoles(): ?AclRoleCollection
     {
         return $this->aclRoles;
+    }
+
+    public function getPosition(): int
+    {
+        return $this->position;
     }
 }

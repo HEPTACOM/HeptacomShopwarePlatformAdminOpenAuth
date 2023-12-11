@@ -14,6 +14,7 @@ use Nyholm\Psr7\Factory\Psr17Factory;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
+use Shopware\Core\Framework\DataAbstractionLayer\Search\Sorting\FieldSorting;
 use Shopware\Core\Framework\Struct\ArrayStruct;
 use Symfony\Bridge\PsrHttpMessage\Factory\PsrHttpFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -50,6 +51,7 @@ final class ClientRedirectRoute extends AbstractController
         $psrHttpFactory = new PsrHttpFactory($psr17Factory, $psr17Factory, $psr17Factory, $psr17Factory);
 
         $clientCriteria = new Criteria([$clientId]);
+        $clientCriteria->getAssociation('rules')->addSorting(new FieldSorting('position', FieldSorting::ASCENDING));
         $clientCriteria->addAssociation('rules.aclRoles');
         $clientCriteria->addAssociation('defaultAclRoles');
         /** @var ClientEntity|null $client */

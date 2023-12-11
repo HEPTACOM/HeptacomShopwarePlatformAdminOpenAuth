@@ -1,5 +1,42 @@
-.heptacom-admin-open-auth-rule-item--condition-tree {
+.heptacom-admin-open-auth-rule-item__collapse {
+  border: 1px solid #000000;
+  border-radius: 4px;
+  padding: 1em;
+  margin-bottom: 1em;
+}
+
+.heptacom-admin-open-auth-rule-item__collapse-header {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  cursor: pointer;
+  padding-bottom: 16px;
+
+  &-title {
+    flex-grow: 1;
+    margin-bottom: 0;
+  }
+}
+
+.heptacom-admin-open-auth-rule-item__condition-tree {
   & > .sw-condition-or-container {
     padding: 0;
+  }
+}
+
+.heptacom-admin-open-auth-rule-item__collapse-footer {
+  display: flex;
+  flex-direction: row;
+  gap: 1em;
+
+  & > * {
+    flex-grow: 1;
+  }
+
+  .sw-button__content {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
   }
 }
