@@ -91,24 +91,8 @@ final class UserResolver implements UserResolverInterface
         $this->login->setCredentials($state, $userId, $context);
 
         $userChangeSet = $this->getUserInfoChangeSet($user, $isNew, $clientId, $context);
-        $aclRoles = null;
 
-        if ($isNew) {
-            /** @var RoleAssignment|null $roleAssignment */
-            $roleAssignment = $user->getExtensionOfType('roleAssignment', RoleAssignment::class);
-
-            if ($roleAssignment === null) {
-                return;
-            }
-
-            $userChangeSet['admin'] = $roleAssignment->isAdministrator;
-
-            if (!$roleAssignment->isAdministrator) {
-                $aclRoles = $roleAssignment->roleIds;
-            }
-        }
-
-        $this->updateUser($userId, $userChangeSet, $aclRoles, $isNew);
+        $this->updateUser($userId, $userChangeSet, $isNew);
     }
 
     protected function findUserId(User $user, string $clientId, Context $context): ?string
@@ -179,14 +163,26 @@ final class UserResolver implements UserResolverInterface
         $userChangeSet['time_zone'] = $user->timezone;
         $userChangeSet['locale_id'] = $this->findLocaleId($user->locale ?? '', $context);
 
+        $roleAssignment = $user->getExtensionOfType('roleAssignment', RoleAssignment::class);
+        if ($roleAssignment instanceof RoleAssignment) {
+            $userChangeSet['admin'] = $roleAssignment->isAdministrator;
+
+            if (!$roleAssignment->isAdministrator) {
+                $userChangeSet['aclRoles'] = $roleAssignment->roleIds;
+            }
+        }
+
         return \array_filter($userChangeSet, static fn ($value) => $value !== null);
     }
 
-    protected function updateUser(string $userId, array $userChangeSet, ?array $aclRoles, bool $isNew): void
+    protected function updateUser(string $userId, array $userChangeSet, bool $isNew): void
     {
         if (\count($userChangeSet) < 1) {
             return;
         }
+
+        $aclRoles = $userChangeSet['aclRoles'] ?? null;
+        unset($userChangeSet['aclRoles']);
 
         foreach ($userChangeSet as $key => $newValue) {
             if (str_ends_with($key, '_id')) {
@@ -244,7 +240,7 @@ final class UserResolver implements UserResolverInterface
             ->where('user_id = :userId')
             ->setParameter('userId', $binUserId)
             ->execute()
-            ->fetchAssociative();
+            ->fetchAllAssociative();
 
         if ($currentAclRoleIds === false) {
             $currentAclRoleIds = [];
@@ -255,12 +251,13 @@ final class UserResolver implements UserResolverInterface
         // delete old
         $toDelete = array_diff($currentAclRoleIds, $newAclRoles);
         if (\count($toDelete) > 0) {
+            $binToDelete = Uuid::fromHexToBytesList($toDelete);
             $this->connection->createQueryBuilder()
                 ->delete(AclUserRoleDefinition::ENTITY_NAME)
                 ->where('user_id = :userId')
                 ->andWhere('acl_role_id IN (:aclRoleIds)')
                 ->setParameter('userId', $binUserId)
-                ->setParameter('aclRoleIds', $toDelete, Connection::PARAM_STR_ARRAY)
+                ->setParameter('aclRoleIds', $binToDelete, Connection::PARAM_STR_ARRAY)
                 ->execute();
         }
 

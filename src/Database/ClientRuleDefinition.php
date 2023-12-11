@@ -40,6 +40,13 @@ class ClientRuleDefinition extends EntityDefinition
         return ClientRuleCollection::class;
     }
 
+    public function getDefaults(): array
+    {
+        return [
+            'userBecomeAdmin' => false,
+        ];
+    }
+
     protected function defineFields(): FieldCollection
     {
         return new FieldCollection([

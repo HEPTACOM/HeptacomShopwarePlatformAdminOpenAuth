@@ -83,7 +83,7 @@ class RedirectReceiveRoute
                 $user->addExtension('roleAssignment', $roleAssignment);
 
                 $roleAssignment->isAdministrator = $rule->isUserBecomeAdmin();
-                $roleAssignment->rules = $rule->getAclRoles()->getIds();
+                $roleAssignment->roleIds = $rule->getAclRoles()->getIds();
 
                 break;
             }

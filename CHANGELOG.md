@@ -4,6 +4,10 @@
 
 * Added dynamic role assignment using configurable rules for clients
 
+**Fixed**
+
+* Fixed update of assigned roles when "keepUserUpdated" is active
+
 # 5.0.0
 
 **Added**
