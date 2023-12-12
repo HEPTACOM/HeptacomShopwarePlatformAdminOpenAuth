@@ -106,6 +106,7 @@
                                         <sw-switch-field
                                             :disabled="!item.active"
                                             :label="$t('heptacom-admin-open-auth-client.pages.edit.fields.keepUserUpdated')"
+                                            :helpText="$t('heptacom-admin-open-auth-client.pages.edit.fields.keepUserUpdatedHelpText')"
                                             v-model="item.keepUserUpdated"
                                         ></sw-switch-field>
                                     {% endblock %}
@@ -147,6 +148,7 @@
                     {% block heptacom_admin_open_auth_client_edit_page_content_role_assignment %}
                         <sw-card
                             :isLoading="isLoading"
+                            :title="$t('heptacom-admin-open-auth-client.pages.edit.roleAssignment.title')"
                             position-identifier="heptacom-admin-open-auth-client-edit-page-role-assignment"
                         >
                             <template v-if="item">

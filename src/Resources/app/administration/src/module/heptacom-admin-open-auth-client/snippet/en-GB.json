@@ -6,10 +6,16 @@
             "title": "SSO Login"
         },
         "components": {
+            "rule-container": {
+                "add": "Add rule",
+                "warningEmpty": "There are no rules. Please add a rule. Without rules the user will not be assigned to any role."
+            },
             "rule-item": {
                 "title": "Rule {n}",
                 "moveUp": "Move up",
-                "moveDown": "Move down"
+                "moveDown": "Move down",
+                "defaultAclRoles": "Roles assigned to new users",
+                "userBecomeAdmin": "Make user to admin on creation"
             }
         },
         "pages": {
@@ -30,15 +36,12 @@
                     "connect": "Use to connect",
                     "downloadMetadata": "Download metadata file",
                     "keepUserUpdated": "Automatically update user info",
+                    "keepUserUpdatedHelpText": "If enabled, changes to the user (e.g. name or email) are automatically updated on login. Also the role assignments will be updated on every login.",
                     "login": "Use as login",
                     "metadataUri": "Metadata URL",
                     "name": "Name",
                     "redirectUri": "Redirect URL",
-                    "storeUserToken": "Store user access keys",
-
-                    "defaultAclRoles": "Roles assigned to new users",
-                    "roleAssignmentType": "Role assignment",
-                    "userBecomeAdmin": "Make user to admin on creation"
+                    "storeUserToken": "Store user access keys"
                 },
                 "modals": {
                     "delete": {
@@ -49,12 +52,10 @@
                         "warning": "Are you sure you want to delete this provider?"
                     }
                 },
+                "roleAssignment": {
+                    "title": "Rollenzuweisung"
+                },
                 "title": "Edit provider",
-
-                "roleAssignmentType": {
-                    "static": "static",
-                    "dynamic": "dynamic"
-                }
             },
             "listing": {
                 "actions": {

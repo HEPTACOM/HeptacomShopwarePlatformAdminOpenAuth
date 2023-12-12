@@ -14,12 +14,19 @@
                 @delete="deleteRule(rule)"
             ></heptacom-admin-open-auth-client-rule-item>
 
+            <sw-alert
+                v-if="sortedRules.length === 0"
+                variant="warning"
+            >
+                {{ $t('heptacom-admin-open-auth-client.components.rule-container.warningEmpty') }}
+            </sw-alert>
+
             <sw-button
                 variant="ghost"
                 block
                 @click="addRule"
             >
-                Add rule
+                {{ $t('heptacom-admin-open-auth-client.components.rule-container.add') }}
             </sw-button>
         </template>
     </div>

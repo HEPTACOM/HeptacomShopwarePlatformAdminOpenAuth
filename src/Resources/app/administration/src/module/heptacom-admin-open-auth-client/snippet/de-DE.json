@@ -6,10 +6,16 @@
             "title": "SSO Anmeldung"
         },
         "components": {
+            "rule-container": {
+                "add": "Neue Regel",
+                "warningEmpty": "Es sind keine Regeln vorhanden. Bitte fügen Sie eine Regel hinzu. Ohne Regeln wird der Nutzer keiner Rolle zugewiesen."
+            },
             "rule-item": {
                 "title": "Regel {n}",
                 "moveUp": "Nach oben verschieben",
-                "moveDown": "Nach unten verschieben"
+                "moveDown": "Nach unten verschieben",
+                "defaultAclRoles": "Rollen für neue Benutzer",
+                "userBecomeAdmin": "Benutzer als Administrator anlegen"
             }
         },
         "pages": {
@@ -30,15 +36,12 @@
                     "connect": "Zum Verknüpfen verwenden",
                     "downloadMetadata": "Metadaten-Datei herunterladen",
                     "keepUserUpdated": "Benutzer automatisch aktualisieren",
+                    "keepUserUpdatedHelpText": "Wenn aktiviert, werden Änderungen am Nutzer (bspw. Name oder E-Mail) automatisch beim Login aktualisiert. Auch die Rollenzuweisungen werden bei jedem Login aktualisiert.",
                     "login": "Als Anmeldung verwenden",
                     "metadataUri": "Metadaten-URL",
                     "name": "Name",
                     "redirectUri": "Rücksende-URL",
-                    "storeUserToken": "Benutzerberechtigungsschlüssel speichern",
-
-                    "defaultAclRoles": "Rollen für neue Benutzer",
-                    "roleAssignmentType": "Rollenzuweisung",
-                    "userBecomeAdmin": "Benutzer als Administrator anlegen"
+                    "storeUserToken": "Benutzerberechtigungsschlüssel speichern"
                 },
                 "modals": {
                     "delete": {
@@ -49,12 +52,10 @@
                         "warning": "Sind Sie sich sicher, dass Sie diese Anbieterkonfiguration löschen wollen?"
                     }
                 },
-                "title": "Anbieter bearbeiter",
-
-                "roleAssignmentType": {
-                    "static": "statisch",
-                    "dynamic": "dynamisch"
-                }
+                "roleAssignment": {
+                    "title": "Rollenzuweisung"
+                },
+                "title": "Anbieter bearbeiter"
             },
             "listing": {
                 "actions": {
