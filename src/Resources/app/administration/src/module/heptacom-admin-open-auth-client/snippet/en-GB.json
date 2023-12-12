@@ -1,22 +1,22 @@
 {
     "heptacom-admin-open-auth-client": {
-        "module": {
-            "description": "Allow SSO providers to provide admin logins",
-            "name": "HEPTACOM Open Authentication Login",
-            "title": "SSO Login"
-        },
         "components": {
             "rule-container": {
                 "add": "Add rule",
                 "warningEmpty": "There are no rules. Please add a rule. Without rules the user will not be assigned to any role."
             },
             "rule-item": {
-                "title": "Rule {n}",
-                "moveUp": "Move up",
-                "moveDown": "Move down",
                 "defaultAclRoles": "Roles assigned to new users",
+                "moveDown": "Move down",
+                "moveUp": "Move up",
+                "title": "Rule {n}",
                 "userBecomeAdmin": "Make user to admin on creation"
             }
+        },
+        "module": {
+            "description": "Allow SSO providers to provide admin logins",
+            "name": "HEPTACOM Open Authentication Login",
+            "title": "SSO Login"
         },
         "pages": {
             "create": {
@@ -55,7 +55,7 @@
                 "roleAssignment": {
                     "title": "Rollenzuweisung"
                 },
-                "title": "Edit provider",
+                "title": "Edit provider"
             },
             "listing": {
                 "actions": {

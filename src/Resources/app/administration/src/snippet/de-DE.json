@@ -6,17 +6,14 @@
     },
     "heptacom-admin-open-auth": {
         "condition": {
-            "rule": {
-                "firstName": "Vorname",
-                "lastName": "Nachname",
-                "displayName": "Anzeigename",
-                "email": "E-Mail-Adresse",
-                "timeZone": "Zeitzone",
-                "locale": "Sprache",
-                "primaryKey": "Primärschlüssel"
-            },
             "group": {
                 "user": "Benutzer"
+            },
+            "rule": {
+                "email": "E-Mail-Adresse",
+                "locale": "Sprache",
+                "primaryKey": "Primärschlüssel",
+                "timeZone": "Zeitzone"
             }
         }
     }

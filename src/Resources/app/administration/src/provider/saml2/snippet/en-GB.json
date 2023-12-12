@@ -9,8 +9,8 @@
                         "firstName": "First name",
                         "lastName": "Last name",
                         "locale": "Locale",
-                        "timezone": "Timezone",
-                        "roles": "Rollen/Gruppen"
+                        "roles": "Roles/Groups",
+                        "timezone": "Timezone"
                     },
                     "template": {
                         "azure": "Azure AD",

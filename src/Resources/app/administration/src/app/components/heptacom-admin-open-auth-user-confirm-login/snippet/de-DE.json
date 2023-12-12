@@ -1,6 +1,6 @@
 {
     "heptacom-admin-open-auth-user-confirm-login": {
-        "popupsBlocked": "Es scheint als wurde das Bestätigungs-Popup vom Browser blockiert. Stellen Sie sicher, dass Popups erlaubt sind und versuchen Sie den Bestätigungsprozess erneut.",
-        "confirmWith": "Identität bestätigen mit {clientName}"
+        "confirmWith": "Identität bestätigen mit {clientName}",
+        "popupsBlocked": "Es scheint als wurde das Bestätigungs-Popup vom Browser blockiert. Stellen Sie sicher, dass Popups erlaubt sind und versuchen Sie den Bestätigungsprozess erneut."
     }
 }

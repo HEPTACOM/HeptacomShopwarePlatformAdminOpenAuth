@@ -1,22 +1,22 @@
 {
     "heptacom-admin-open-auth-client": {
-        "module": {
-            "description": "Erlaubt die Anmeldung über SSO Anbieter",
-            "name": "HEPTACOM Open Authentication Login",
-            "title": "SSO Anmeldung"
-        },
         "components": {
             "rule-container": {
                 "add": "Neue Regel",
                 "warningEmpty": "Es sind keine Regeln vorhanden. Bitte fügen Sie eine Regel hinzu. Ohne Regeln wird der Nutzer keiner Rolle zugewiesen."
             },
             "rule-item": {
-                "title": "Regel {n}",
-                "moveUp": "Nach oben verschieben",
-                "moveDown": "Nach unten verschieben",
                 "defaultAclRoles": "Rollen für neue Benutzer",
+                "moveDown": "Nach unten verschieben",
+                "moveUp": "Nach oben verschieben",
+                "title": "Regel {n}",
                 "userBecomeAdmin": "Benutzer als Administrator anlegen"
             }
+        },
+        "module": {
+            "description": "Erlaubt die Anmeldung über SSO Anbieter",
+            "name": "HEPTACOM Open Authentication Login",
+            "title": "SSO Anmeldung"
         },
         "pages": {
             "create": {
