@@ -98,7 +98,7 @@ class Saml2ServiceProvider extends ClientProviderContract implements Configurati
             array_fill(0, \count(Saml2ServiceProviderClient::AVAILABLE_USER_PROPERTIES), '')
         );
 
-        // TODO: tag:v5.0.0 make generation configurable and dynamic per client in administration
+        // TODO: tag:v6.1.0 make generation configurable and dynamic per client in administration
 
         return $this->createCertificate($result);
     }

@@ -1,5 +1,7 @@
 # Unreleased
 
+# 6.0.0
+
 **Added**
 
 * Added dynamic role assignment using configurable rules for clients
