@@ -46,8 +46,6 @@ class Saml2ServiceProvider extends ClientProviderContract implements Configurati
                 'serviceProviderPublicKey',
                 'requestedAuthnContext',
                 'attributeMapping',
-                // TODO remove in v6
-                'redirectUri',
             ])->setRequired([
                 'identityProviderMetadataUrl',
                 'identityProviderMetadataXml',
@@ -61,7 +59,6 @@ class Saml2ServiceProvider extends ClientProviderContract implements Configurati
             ])->setDefaults([
                 'requestedAuthnContext' => [],
                 'attributeMapping' => [],
-                'redirectUri' => null,
             ])
             ->setAllowedTypes('identityProviderMetadataUrl', 'string')
             ->setAllowedTypes('identityProviderMetadataXml', 'string')
@@ -74,13 +71,7 @@ class Saml2ServiceProvider extends ClientProviderContract implements Configurati
             ->setAllowedTypes('serviceProviderPublicKey', 'string')
             ->setAllowedTypes('requestedAuthnContext', 'array')
             ->setAllowedTypes('rolesAttributeName', 'string')
-            ->setAllowedTypes('attributeMapping', 'array')
-            ->setDeprecated(
-                'redirectUri',
-                'heptacom/shopware-platform-admin-open-auth',
-                '*',
-                'Use route api.heptacom.admin_open_auth.provider.redirect-url instead to live generate redirectUri'
-            );
+            ->setAllowedTypes('attributeMapping', 'array');
     }
 
     public function getInitialConfiguration(): array

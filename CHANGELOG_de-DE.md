@@ -4,6 +4,15 @@
 
 * Dynamische Rollenzuweisung mithilfe konfigurierbarer Regeln in Clients
 
+**Entfernt**
+
+* Statische Rollenzuweisung für Clients entfernt. Die statische Zuweisung wird automatisch zu einer Regel für die dynamische Zuweisung migriert.
+* Die Konfigurationsoption `redirectUri`, die seit [v3.0.2](#302) abgekündigt ist und für die Löschung in [v5.0.0](#500) geplant war, wurde entfernt.
+
+**Behoben**
+
+* Fehler behoben, der Aktualisieren von Rollenzuweisungen verhinderte, obwohl `keepUserUpdated` aktiviert war
+
 # 5.0.0
 
 **Hinzugefügt**
