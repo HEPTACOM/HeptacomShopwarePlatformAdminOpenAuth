@@ -41,7 +41,6 @@ final class OpenIdConnectProvider extends ClientProviderContract
                 'scopes',
                 // TODO remove in v6
                 'redirectUri',
-                'roleAssignment',
             ])->setRequired([
                 'discoveryDocumentUrl',
                 'authorization_endpoint',

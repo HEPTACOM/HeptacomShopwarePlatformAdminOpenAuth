@@ -39,7 +39,6 @@ final class OktaProvider extends ClientProviderContract
                 'scopes',
                 // TODO remove in v6
                 'redirectUri',
-                'roleAssignment',
             ])->setRequired([
                 'organizationUrl',
                 'clientId',

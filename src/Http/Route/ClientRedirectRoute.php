@@ -71,14 +71,6 @@ final class ClientRedirectRoute extends AbstractController
             );
         $requestState = (string) $user->getExtensionOfType('requestState', ArrayStruct::class)['requestState'];
 
-        if (!$user->hasExtensionOfType('roleAssignment', RoleAssignment::class)) {
-            $roleAssignment = new RoleAssignment();
-            $roleAssignment->isAdministrator = $client->userBecomeAdmin ?? false;
-            $roleAssignment->roleIds = $client->defaultAclRoles?->getIds() ?? [];
-
-            $user->addExtension('roleAssignment', $roleAssignment);
-        }
-
         $this->flow->upsertUser($user, $clientId, $requestState, $context);
 
         $statePayload = $this->stateResolver->getPayload($requestState, $context);

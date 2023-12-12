@@ -48,8 +48,6 @@ class Saml2ServiceProvider extends ClientProviderContract implements Configurati
                 'attributeMapping',
                 // TODO remove in v6
                 'redirectUri',
-                'roleAssignment',
-                'rolesAttributeName',
             ])->setRequired([
                 'identityProviderMetadataUrl',
                 'identityProviderMetadataXml',

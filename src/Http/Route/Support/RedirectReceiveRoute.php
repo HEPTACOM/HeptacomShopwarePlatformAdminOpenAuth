@@ -66,14 +66,12 @@ class RedirectReceiveRoute
         return $user;
     }
 
-    private function discoverRoleAssignment(ClientRuleCollection $rules, User $user, ClientContract $client, array $configuration): void
-    {
-        $roleAssignmentType = $configuration['roleAssignment'] ?? 'static';
-
-        if ($roleAssignmentType !== 'dynamic') {
-            return;
-        }
-
+    private function discoverRoleAssignment(
+        ClientRuleCollection $rules,
+        User $user,
+        ClientContract $client,
+        array $configuration
+    ): void {
         $ruleScope = new OAuthRuleScope($user, $client, $configuration, Context::createDefaultContext());
         $client->prepareOAuthRuleScope($ruleScope);
 

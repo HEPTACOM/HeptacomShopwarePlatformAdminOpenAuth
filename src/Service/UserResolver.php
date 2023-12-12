@@ -170,6 +170,9 @@ final class UserResolver implements UserResolverInterface
             if (!$roleAssignment->isAdministrator) {
                 $userChangeSet['aclRoles'] = $roleAssignment->roleIds;
             }
+        } else {
+            $userChangeSet['admin'] = false;
+            $userChangeSet['aclRoles'] = [];
         }
 
         return \array_filter($userChangeSet, static fn ($value) => $value !== null);

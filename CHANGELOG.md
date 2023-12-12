@@ -4,6 +4,10 @@
 
 * Added dynamic role assignment using configurable rules for clients
 
+**Removed**
+
+* Removed the static role assignment for clients. The static assignment will be automatically migrated to a rule for the dynamic assignment.
+
 **Fixed**
 
 * Fixed update of assigned roles when "keepUserUpdated" is active

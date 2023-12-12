@@ -74,19 +74,6 @@ export default {
                 .replace(/_/g, '-');
         },
 
-        roleAssignmentTypes() {
-            return [
-                {
-                    label: this.$tc('heptacom-admin-open-auth-client.pages.edit.roleAssignmentType.static'),
-                    value: 'static',
-                },
-                {
-                    label: this.$tc('heptacom-admin-open-auth-client.pages.edit.roleAssignmentType.dynamic'),
-                    value: 'dynamic',
-                },
-            ];
-        },
-
         providerRoleAssignmentComponent() {
             return `heptacom-admin-open-auth-provider-${this.providerSlug}-role-assignment`;
         },
