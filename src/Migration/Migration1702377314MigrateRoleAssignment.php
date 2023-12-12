@@ -34,6 +34,7 @@ SQL)->fetchAllAssociative();
                 $connection->commit();
             } catch (\Throwable $e) {
                 $connection->rollBack();
+
                 throw $e;
             }
         }
@@ -52,7 +53,8 @@ SQL);
 SQL);
     }
 
-    private function migrateClient(array $client, Connection $connection): void {
+    private function migrateClient(array $client, Connection $connection): void
+    {
         $inserts = [
             'heptacom_admin_open_auth_client_rule' => [],
             'heptacom_admin_open_auth_client_rule_condition' => [],

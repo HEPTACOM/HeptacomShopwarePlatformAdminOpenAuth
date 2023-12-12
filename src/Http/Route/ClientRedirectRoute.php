@@ -6,7 +6,6 @@ namespace Heptacom\AdminOpenAuth\Http\Route;
 
 use Heptacom\AdminOpenAuth\Contract\OpenAuthenticationFlowInterface;
 use Heptacom\AdminOpenAuth\Contract\RedirectBehaviourFactoryInterface;
-use Heptacom\AdminOpenAuth\Contract\RoleAssignment;
 use Heptacom\AdminOpenAuth\Database\ClientEntity;
 use Heptacom\AdminOpenAuth\Http\Route\Support\RedirectReceiveRoute;
 use Heptacom\AdminOpenAuth\Service\StateResolver;
