@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Heptacom\AdminOpenAuth\Migration;
 
 use Doctrine\DBAL\Connection;
-use Ramsey\Uuid\Uuid;
+use Shopware\Core\Framework\Uuid\Uuid;
 use Shopware\Core\Defaults;
 use Shopware\Core\Framework\Migration\MigrationStep;
 
@@ -63,7 +63,7 @@ SQL);
 
         // rules
 
-        $ruleId = (string) Uuid::uuid4()->getBytes();
+        $ruleId = Uuid::randomBytes();
         $inserts['heptacom_admin_open_auth_client_rule'][] = [
             'id' => $ruleId,
             'client_id' => $client['id'],
@@ -74,9 +74,9 @@ SQL);
 
         // rule conditions
 
-        $ruleConditionOrContainerId = (string) Uuid::uuid4()->getBytes();
-        $ruleConditionAndContainerId = (string) Uuid::uuid4()->getBytes();
-        $ruleConditionAlwaysValidId = (string) Uuid::uuid4()->getBytes();
+        $ruleConditionOrContainerId = Uuid::randomBytes();
+        $ruleConditionAndContainerId = Uuid::randomBytes();
+        $ruleConditionAlwaysValidId = Uuid::randomBytes();
 
         $inserts['heptacom_admin_open_auth_client_rule_condition'][] = [
             'id' => $ruleConditionOrContainerId,
