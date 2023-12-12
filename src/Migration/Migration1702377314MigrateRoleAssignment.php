@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Heptacom\AdminOpenAuth\Migration;
 
 use Doctrine\DBAL\Connection;
-use Shopware\Core\Framework\Uuid\Uuid;
 use Shopware\Core\Defaults;
 use Shopware\Core\Framework\Migration\MigrationStep;
+use Shopware\Core\Framework\Uuid\Uuid;
 
 final class Migration1702377314MigrateRoleAssignment extends MigrationStep
 {
