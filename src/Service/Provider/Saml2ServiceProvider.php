@@ -70,7 +70,6 @@ class Saml2ServiceProvider extends ClientProviderContract implements Configurati
             ->setAllowedTypes('serviceProviderPrivateKey', 'string')
             ->setAllowedTypes('serviceProviderPublicKey', 'string')
             ->setAllowedTypes('requestedAuthnContext', 'array')
-            ->setAllowedTypes('rolesAttributeName', 'string')
             ->setAllowedTypes('attributeMapping', 'array');
     }
 
