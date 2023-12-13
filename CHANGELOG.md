@@ -1,5 +1,16 @@
 # Unreleased
 
+# 6.0.0-beta.2
+
+**Added**
+
+* Added default role attribute name for SAML2 attribute mapping templates friendlyNames and X500
+* Added roles to attribute mapping in JumpCloud provider
+
+**Fixed**
+
+* Fixed creation of new SAML2 providers
+
 # 6.0.0-beta.1
 
 **Added**

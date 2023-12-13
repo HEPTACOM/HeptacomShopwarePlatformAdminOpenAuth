@@ -1,5 +1,16 @@
 # Unreleased
 
+# # 6.0.0-beta.2
+
+**Hinzugefügt**
+
+* SAML2 Attributszuordnung für Rollen in Templates friendlyNames und X500 hinzugefügt
+* Rollen/Gruppen zu Attributszuordnung im JumpCloud Provider hinzugefügt
+
+**Behoben**
+
+* Fehler behoben, der das Erstellen von SAML2 Clients verhinderte
+
 # 6.0.0-beta.1
 
 **Hinzugefügt**
