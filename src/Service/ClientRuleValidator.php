@@ -81,6 +81,13 @@ class ClientRuleValidator
                 }
             }
 
+            // BEGIN HEPTACOM CHANGE
+            // try to wake up the object, as some rules only then deserialize all data
+            if (method_exists($object, '__wakeup')) {
+                $object->__wakeup();
+            }
+            // END HEPTACOM CHANGE
+
             $nested[] = $object;
         }
 

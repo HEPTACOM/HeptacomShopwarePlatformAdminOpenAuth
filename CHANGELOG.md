@@ -5,6 +5,7 @@
 **Fixed**
 
 * Fixed issues with not found entity definitions
+* Fixed issues for rules expecting to get a call on the `__wakeup` method
 
 # 6.0.0-beta.2
 

@@ -5,6 +5,7 @@
 **Behoben**
 
 * Fehler behoben, der für nicht gefundene EntityDefinitions verantwortlich war
+* Fehler bei Regeln behoben, die vor Ausführung `__wakeup()` erwarteten
 
 # 6.0.0-beta.2
 
