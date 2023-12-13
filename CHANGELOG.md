@@ -1,5 +1,11 @@
 # Unreleased
 
+# 6.0.0-beta.3
+
+**Fixed**
+
+* Fixed issues with not found entity definitions
+
 # 6.0.0-beta.2
 
 **Added**
