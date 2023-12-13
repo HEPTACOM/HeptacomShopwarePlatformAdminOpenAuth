@@ -31,7 +31,7 @@ final class JumpCloudServiceProvider extends Saml2ServiceProvider
             'firstName' => 'firstname',
             'lastName' => 'lastname',
             'email' => 'email',
-            'roles' => 'memberOf'
+            'roles' => 'memberOf',
         ]);
 
         return $config;
