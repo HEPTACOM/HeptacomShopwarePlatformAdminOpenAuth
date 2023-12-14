@@ -160,17 +160,22 @@ class AuthenticatedRequestRule extends RuleContract
                 json_decode($response, true, 512, \JSON_THROW_ON_ERROR)
             );
 
-            return match (gettype($evaluatedExpression)) {
-                'NULL' => false,
-                'boolean' => $evaluatedExpression,
-                'integer' => $evaluatedExpression !== 0,
-                'double' => $evaluatedExpression !== 0.0,
-                'string' => $evaluatedExpression !== '',
-                'array' => count($evaluatedExpression) > 0,
-                default => false,
-            };
+            return $this->validateExpressionResult($evaluatedExpression);
         } catch (\Throwable $e) {
             return false;
         }
+    }
+
+    protected function validateExpressionResult($evaluatedExpression): bool
+    {
+        return match (gettype($evaluatedExpression)) {
+            'NULL' => false,
+            'boolean' => $evaluatedExpression,
+            'integer' => $evaluatedExpression !== 0,
+            'double' => $evaluatedExpression !== 0.0,
+            'string' => $evaluatedExpression !== '',
+            'array' => count($evaluatedExpression) > 0,
+            default => false,
+        };
     }
 }

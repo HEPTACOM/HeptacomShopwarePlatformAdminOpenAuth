@@ -1,3 +1,4 @@
+import microsoftAzureOidcDataProvider from './microsoft_azure_oidc/decorator/condition-type-data-provider.decorator';
 import oidcDataProvider from './open_id_connect/decorator/condition-type-data-provider.decorator';
 import saml2DataProvider from './saml2/decorator/condition-type-data-provider.decorator';
 
@@ -24,6 +25,7 @@ Component.extend('heptacom-admin-open-auth-provider-keycloak-role-assignment', '
 // Microsoft Azure
 Component.register('heptacom-admin-open-auth-provider-microsoft-azure-oidc-settings', () => import ('./microsoft_azure_oidc/components/provider-settings'));
 Component.extend('heptacom-admin-open-auth-provider-okta-role-assignment', 'heptacom-admin-open-auth-provider-open-id-connect-role-assignment', {});
+Application.addServiceProviderDecorator('heptacomOauthRuleDataProvider', microsoftAzureOidcDataProvider);
 
 // Okta
 Component.register('heptacom-admin-open-auth-provider-okta-settings', () => import ('./okta/components/provider-settings'));

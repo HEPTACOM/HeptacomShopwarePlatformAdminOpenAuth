@@ -5,6 +5,7 @@
 **Hinzugefügt**
 
 * Authentifizierter Request bedingung für OpenID Connect basierte Provider hinzugefügt
+* Gruppen IDs Bedingung zum Microsoft Azure OIDC Provider hinzugefügt
 
 **Geändert**
 
