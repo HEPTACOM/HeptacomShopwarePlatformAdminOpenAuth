@@ -29,13 +29,13 @@ export default (ruleConditionService: HeptacomOauthRuleDataProviderService) => {
     ruleConditionService.addCondition('heptacomAdminOpenAuthTimeZone', {
         component: 'sw-condition-generic',
         label: 'heptacom-admin-open-auth.condition.rule.timeZone',
-        scopes: ['global'],
+        scopes: ['jira', 'jumpcloud', 'keycloak', 'okta', 'open_id_connect', 'saml2'],
         group: 'user',
     });
     ruleConditionService.addCondition('heptacomAdminOpenAuthLocale', {
         component: 'sw-condition-generic',
         label: 'heptacom-admin-open-auth.condition.rule.locale',
-        scopes: ['global'],
+        scopes: ['google_cloud', 'jumpcloud', 'keycloak', 'okta', 'onelogin', 'open_id_connect', 'saml2'],
         group: 'user',
     });
     ruleConditionService.addCondition('heptacomAdminOpenAuthPrimaryKey', {

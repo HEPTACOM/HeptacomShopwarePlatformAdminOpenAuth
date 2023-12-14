@@ -1,5 +1,11 @@
 # Unreleased
 
+# 6.0.0-rc.1
+
+**Geändert**
+
+* Sichtbarkeit der Regeln für Zeitzone und Locale auf Provider eingeschränkt, die diese Werte unterstützen.
+
 # 6.0.0-beta.3
 
 **Behoben**

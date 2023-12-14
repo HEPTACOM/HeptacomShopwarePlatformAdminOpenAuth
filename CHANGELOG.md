@@ -1,5 +1,11 @@
 # Unreleased
 
+# 6.0.0-rc.1
+
+**Changed**
+
+* Changed the availability of timezone and locale rules to providers that support it
+
 # 6.0.0-beta.3
 
 **Fixed**
