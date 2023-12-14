@@ -2,6 +2,10 @@
 
 # 6.0.0-rc.1
 
+**Hinzugefügt**
+
+* Authentifizierter Request bedingung für OpenID Connect basierte Provider hinzugefügt
+
 **Geändert**
 
 * Sichtbarkeit der Regeln für Zeitzone und Locale auf Provider eingeschränkt, die diese Werte unterstützen.

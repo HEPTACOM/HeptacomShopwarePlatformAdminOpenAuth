@@ -2,6 +2,10 @@
 
 # 6.0.0-rc.1
 
+**Added**
+
+* Added authenticated request condition for OpenID Connect based providers
+
 **Changed**
 
 * Changed the availability of timezone and locale rules to providers that support it

@@ -6,6 +6,11 @@
                 "authorization_endpoint": "Autorisierungs-Endpunkt",
                 "clientId": "Client-ID",
                 "clientSecret": "Clientschlüssel",
+                "condition": {
+                    "rule": {
+                        "authenticatedRequest": "Authentifizierter HTTP Request"
+                    }
+                },
                 "discoveryDocumentUrl": "OpenID Connect Konfiguration",
                 "discoveryDocumentUrl-help": "Sofern angegeben, wird die weitere Konfiguration automatisch geladen.",
                 "discoveryDocumentUrl-placeholder": "https://accounts.google.com/.well-known/openid-configuration",

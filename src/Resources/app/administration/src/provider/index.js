@@ -1,3 +1,4 @@
+import oidcDataProvider from './open_id_connect/decorator/condition-type-data-provider.decorator';
 import saml2DataProvider from './saml2/decorator/condition-type-data-provider.decorator';
 
 const { Application, Component } = Shopware;
@@ -33,8 +34,10 @@ Component.register('heptacom-admin-open-auth-provider-onelogin-settings', () => 
 Component.extend('heptacom-admin-open-auth-provider-onelogin-role-assignment', 'heptacom-admin-open-auth-provider-open-id-connect-role-assignment', {});
 
 // OpenID Connect
+Component.extend('heptacom-admin-open-auth-condition-authenticated-request', 'sw-condition-base', () => import ('./open_id_connect/components/condition-authenticated-request'));
 Component.register('heptacom-admin-open-auth-provider-open-id-connect-settings', () => import ('./open_id_connect/components/provider-settings'));
 Component.register('heptacom-admin-open-auth-provider-open-id-connect-role-assignment', () => import ('./open_id_connect/components/provider-settings'));
+Application.addServiceProviderDecorator('heptacomOauthRuleDataProvider', oidcDataProvider);
 
 // SAML2
 Component.register('heptacom-admin-open-auth-provider-saml2-settings', () => import ('./saml2/components/provider-settings'));

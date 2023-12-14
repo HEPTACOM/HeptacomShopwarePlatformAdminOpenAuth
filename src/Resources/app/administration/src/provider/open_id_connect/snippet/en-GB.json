@@ -6,6 +6,11 @@
                 "authorization_endpoint": "Authorization endpoint",
                 "clientId": "Client ID",
                 "clientSecret": "Client secret",
+                "condition": {
+                    "rule": {
+                        "authenticatedRequest": "Authenticated HTTP request"
+                    }
+                },
                 "discoveryDocumentUrl": "OpenID Connect metadata document",
                 "discoveryDocumentUrl-help": "If given, the configuration will be discovered automatically.",
                 "discoveryDocumentUrl-placeholder": "https://accounts.google.com/.well-known/openid-configuration",

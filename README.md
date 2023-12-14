@@ -66,6 +66,50 @@ In case you want to use a SAML2 provider, your IdP must meet the following requi
 - support HTTP-POST binding for the Assertion Consumer Service (ACS)
 - return the user's email address as attribute (all other attributes are optional)
 
+### OpenID Connect - Authenticated request rule
+
+When using an OpenID Connect based provider, you can assign roles that depend on an authenticated GET request, done with the user's access token.
+This way you can get any further information from the IDP, that is relevant for your specific case.
+For some providers a preset for retrieving the user's groups is already available.
+
+In case you want to create more complex rules, you can build your own queries within the rule builder.
+The queries get the JSON, returned by the specified endpoint, as input.
+
+#### Authenticated request
+
+Your specified endpoint will be called as follows:
+```http request
+GET https://my-company.idp.com/api/groups
+Authorization: Bearer <access_token>
+Accept: application/json
+```
+
+The request must be encrypted (HTTPS) and will timeout after 5 seconds. In case of a timeout or a none successful response code, the condition will be evaluated as `false`.
+
+In case you have multiple conditions, depending on the same endpoint, the request will only be done once.
+The response is cached in memory for the duration of the rule evaluation.
+
+#### Processing the response
+
+You can then use a [JMESPath](https://jmespath.org/) query to validate if the input JSON matches your rule.
+
+It is recommended that your query results in a boolean.
+In case it results in a different type, the condition will be validated as follows:
+
+| Output type | Output value    | Validation result |
+|-------------|-----------------|-------------------|
+| `boolean`   | `true`          | `true` |
+| `boolean`   | `false`         | `false` |
+| `string`    | empty           | `false` |
+| `string`    | non-empty       | `true` |
+| `number`    | `0`             | `false` |
+| `number`    | `1` (or grater) | `true` |
+| `array`     | empty           | `false` |
+| `array`     | non-empty       | `true` |
+| `object`    | empty           | `false` |
+| `object`    | non-empty       | `true` |
+| `null`      | `null`          | `false` |
+
 ## Changes
 
 View the [CHANGELOG](./CHANGELOG.md) file attached to this project.
