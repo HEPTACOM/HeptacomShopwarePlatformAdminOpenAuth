@@ -4,10 +4,6 @@ declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\Component\OpenIdConnect\Rule;
 
-use Heptacom\AdminOpenAuth\Component\Saml\Saml2UserData;
-use Heptacom\AdminOpenAuth\Contract\OAuthRuleScope;
-use Heptacom\AdminOpenAuth\Contract\RuleContract;
-use JmesPath\Env as JmesPath;
 use Shopware\Core\Framework\Rule\RuleComparison;
 use Shopware\Core\Framework\Rule\RuleConfig;
 use Shopware\Core\Framework\Rule\RuleConstraints;

@@ -66,6 +66,19 @@ class AuthenticatedRequestRule extends RuleContract
             ->stringField('jmesPathExpression');
     }
 
+    protected function validateExpressionResult($evaluatedExpression): bool
+    {
+        return match (\gettype($evaluatedExpression)) {
+            'NULL' => false,
+            'boolean' => $evaluatedExpression,
+            'integer' => $evaluatedExpression !== 0,
+            'double' => $evaluatedExpression !== 0.0,
+            'string' => $evaluatedExpression !== '',
+            'array' => \count($evaluatedExpression) > 0,
+            default => false,
+        };
+    }
+
     private function getHttpClient(): ClientInterface
     {
         if (self::$httpClient === null) {
@@ -74,7 +87,7 @@ class AuthenticatedRequestRule extends RuleContract
                 'verify' => true,
                 'timeout' => self::REQUEST_TIMEOUT,
                 'headers' => [
-                    'Accept' => 'application/json'
+                    'Accept' => 'application/json',
                 ],
             ]);
         }
@@ -118,7 +131,6 @@ class AuthenticatedRequestRule extends RuleContract
         $this->cacheResponse($user, $requestUrl, $response);
 
         return $response;
-
     }
 
     private function getCachedResponse(User $user, string $requestUrl): ?string
@@ -128,7 +140,7 @@ class AuthenticatedRequestRule extends RuleContract
             ?? new ArrayStruct();
         $cachedRequests = $userExtension->get('requests') ?? [];
 
-        if (array_key_exists($requestUrl, $cachedRequests)) {
+        if (\array_key_exists($requestUrl, $cachedRequests)) {
             return $cachedRequests[$requestUrl];
         }
 
@@ -164,18 +176,5 @@ class AuthenticatedRequestRule extends RuleContract
         } catch (\Throwable $e) {
             return false;
         }
-    }
-
-    protected function validateExpressionResult($evaluatedExpression): bool
-    {
-        return match (gettype($evaluatedExpression)) {
-            'NULL' => false,
-            'boolean' => $evaluatedExpression,
-            'integer' => $evaluatedExpression !== 0,
-            'double' => $evaluatedExpression !== 0.0,
-            'string' => $evaluatedExpression !== '',
-            'array' => count($evaluatedExpression) > 0,
-            default => false,
-        };
     }
 }
