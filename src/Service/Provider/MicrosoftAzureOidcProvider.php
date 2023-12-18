@@ -66,6 +66,10 @@ final class MicrosoftAzureOidcProvider extends ClientProviderContract
         $config->assign($resolvedConfig);
         $config->setDiscoveryDocumentUrl('https://login.microsoftonline.com/' . $resolvedConfig['tenantId'] . '/v2.0/.well-known/openid-configuration');
 
+        $scopes = $config->getScopes();
+        array_push($scopes, 'User.Read');
+        $config->setScopes(array_unique($scopes));
+
         $service = $this->openIdConnectService->createWithConfig($config);
         $service->discoverWellKnown();
 

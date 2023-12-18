@@ -7,6 +7,7 @@
 * Added authenticated request condition for OpenID Connect based providers
 * Added group ids condition to Microsoft Azure OIDC provider
 * Added flag `stopOnMatch` to stop further rule executions when the current rule matches
+* Added `User.Read` scope to Microsoft Azure OIDC provider. This is required for the group ids condition to work.
 
 **Changed**
 
