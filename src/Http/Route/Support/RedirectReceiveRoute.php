@@ -86,7 +86,7 @@ class RedirectReceiveRoute
 
                 $roleAssignment->roleIds = [
                     ...$roleAssignment->roleIds,
-                    ...$rule->getAclRoles()->getIds()
+                    ...$rule->getAclRoles()->getIds(),
                 ];
 
                 if ($rule->isStopOnMatch()) {
