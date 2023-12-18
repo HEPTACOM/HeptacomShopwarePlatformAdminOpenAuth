@@ -18,12 +18,12 @@ final class Migration1693915434MigrateSamlConfigRequestedAuthnContext extends Mi
     {
         $connection->executeStatement(<<<'SQL'
 UPDATE `heptacom_admin_open_auth_client`
-SET `config` = JSON_SET(`config`, '$.requestedAuthnContext', CAST('["urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport"]' as json))
+SET `config` = JSON_SET(`config`, '$.requestedAuthnContext', '["urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport"]')
 WHERE
     `provider` IN ('saml2', 'jumpcloud')
     AND (
         JSON_EXTRACT(`config`, '$.requestedAuthnContext') IS NULL
-        OR JSON_EXTRACT(`config`, '$.requestedAuthnContext') = CAST('[]' as json)
+        OR JSON_EXTRACT(`config`, '$.requestedAuthnContext') = '[]'
     );
 SQL);
     }

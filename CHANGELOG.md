@@ -11,6 +11,10 @@
 
 * Changed the availability of timezone and locale rules to providers that support it
 
+**Fixed**
+
+* Fixed issue in migration `Migration1685517455SetExpiredAndTypeToRequiredFields` causing issues in MariaDB installations
+
 # 6.0.0-beta.3
 
 **Fixed**

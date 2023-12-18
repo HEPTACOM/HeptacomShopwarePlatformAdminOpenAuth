@@ -11,6 +11,10 @@
 
 * Sichtbarkeit der Regeln für Zeitzone und Locale auf Provider eingeschränkt, die diese Werte unterstützen.
 
+**Behoben**
+
+* Fehler in Migration `Migration1685517455SetExpiredAndTypeToRequiredFields` behoben der bei MariaDB Installationen für Probleme sorgte
+
 # 6.0.0-beta.3
 
 **Behoben**
