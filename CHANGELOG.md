@@ -6,6 +6,7 @@
 
 * Added authenticated request condition for OpenID Connect based providers
 * Added group ids condition to Microsoft Azure OIDC provider
+* Added flag `stopOnMatch` to stop further rule executions when the current rule matches
 
 **Changed**
 

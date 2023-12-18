@@ -16,6 +16,8 @@ class ClientRuleEntity extends Entity
 
     protected bool $userBecomeAdmin;
 
+    protected bool $stopOnMatch;
+
     protected ?ClientEntity $client = null;
 
     protected ?ClientRuleConditionCollection $conditions = null;
@@ -32,6 +34,11 @@ class ClientRuleEntity extends Entity
     public function isUserBecomeAdmin(): bool
     {
         return $this->userBecomeAdmin;
+    }
+
+    public function isStopOnMatch(): bool
+    {
+        return $this->stopOnMatch;
     }
 
     public function getClient(): ?ClientEntity

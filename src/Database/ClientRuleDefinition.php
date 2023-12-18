@@ -44,6 +44,7 @@ class ClientRuleDefinition extends EntityDefinition
     {
         return [
             'userBecomeAdmin' => false,
+            'stopOnMatch' => false,
         ];
     }
 
@@ -53,6 +54,7 @@ class ClientRuleDefinition extends EntityDefinition
             (new IdField('id', 'id'))->addFlags(new PrimaryKey(), new Required()),
             (new FkField('client_id', 'clientId', ClientDefinition::class))->addFlags(new Required()),
             (new BoolField('user_become_admin', 'userBecomeAdmin'))->addFlags(new Required()),
+            (new BoolField('stop_on_match', 'stopOnMatch'))->addFlags(new Required()),
             new IntField('position', 'position'),
             new CreatedAtField(),
             new UpdatedAtField(),

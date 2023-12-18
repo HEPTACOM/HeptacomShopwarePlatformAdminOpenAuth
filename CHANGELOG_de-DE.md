@@ -6,6 +6,7 @@
 
 * Authentifizierter Request bedingung für OpenID Connect basierte Provider hinzugefügt
 * Gruppen IDs Bedingung zum Microsoft Azure OIDC Provider hinzugefügt
+* Flag `stopOnMatch` hinzugefügt, um die Ausführung weiterer Regeln zu stoppen, wenn die aktuelle Regel zutrifft
 
 **Geändert**
 

@@ -42,6 +42,11 @@
             />
 
             <sw-switch-field
+                    :label="$t('heptacom-admin-open-auth-client.components.rule-item.stopOnMatch')"
+                    v-model="rule.stopOnMatch"
+            ></sw-switch-field>
+
+            <sw-switch-field
                     :label="$t('heptacom-admin-open-auth-client.components.rule-item.userBecomeAdmin')"
                     v-model="rule.userBecomeAdmin"
             ></sw-switch-field>

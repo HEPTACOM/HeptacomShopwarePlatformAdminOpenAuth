@@ -9,6 +9,8 @@
                 "defaultAclRoles": "Rollen für neue Benutzer",
                 "moveDown": "Nach unten verschieben",
                 "moveUp": "Nach oben verschieben",
+                "stopOnMatch": "Bei Treffer abbrechen",
+                "stopOnMatchHelpText": "Wenn aktiviert, wird die Auswertung weiterer Regeln abgebrochen, sofern diese Regel zutrifft.",
                 "title": "Regel {n}",
                 "userBecomeAdmin": "Benutzer als Administrator anlegen"
             }

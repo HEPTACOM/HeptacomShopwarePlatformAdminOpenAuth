@@ -75,15 +75,23 @@ class RedirectReceiveRoute
         $ruleScope = new OAuthRuleScope($user, $client, $configuration, Context::createDefaultContext());
         $client->prepareOAuthRuleScope($ruleScope);
 
+        $roleAssignment = new RoleAssignment();
+        $user->addExtension('roleAssignment', $roleAssignment);
+
         foreach ($rules->getElements() as $rule) {
             if ($this->clientRuleValidator->isValid($rule->getId(), $ruleScope)) {
-                $roleAssignment = new RoleAssignment();
-                $user->addExtension('roleAssignment', $roleAssignment);
+                if (!$roleAssignment->isAdministrator) {
+                    $roleAssignment->isAdministrator = $rule->isUserBecomeAdmin();
+                }
 
-                $roleAssignment->isAdministrator = $rule->isUserBecomeAdmin();
-                $roleAssignment->roleIds = $rule->getAclRoles()->getIds();
+                $roleAssignment->roleIds = [
+                    ...$roleAssignment->roleIds,
+                    ...$rule->getAclRoles()->getIds()
+                ];
 
-                break;
+                if ($rule->isStopOnMatch()) {
+                    break;
+                }
             }
         }
     }
