@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\Component\OpenIdConnect\Rule;
 
-use JetBrains\PhpStorm\Pure;
-
 class CachedRequestNotFoundException extends \Exception
 {
     public function __construct(string $requestId)
@@ -15,5 +13,4 @@ class CachedRequestNotFoundException extends \Exception
             1702992544
         );
     }
-
 }

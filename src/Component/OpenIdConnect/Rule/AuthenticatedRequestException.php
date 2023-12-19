@@ -13,5 +13,4 @@ class AuthenticatedRequestException extends \Exception
             $code
         );
     }
-
 }
