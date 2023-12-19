@@ -43,9 +43,9 @@ class MicrosoftAzureOidcGroupsRule extends AuthenticatedRequestRule
             return false;
         }
 
-        $groupIds = \array_map('strtolower', $evaluatedExpression);
+        $groupIds = \array_map('mb_strtolower', $evaluatedExpression);
 
-        $expectedGroupIds = \array_map('strtolower', $this->groupIds);
+        $expectedGroupIds = \array_map('mb_strtolower', $this->groupIds);
 
         foreach ($groupIds as $groupId) {
             if (RuleComparison::stringArray($groupId, $expectedGroupIds, $this->operator)) {

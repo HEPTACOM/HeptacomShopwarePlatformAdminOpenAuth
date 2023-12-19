@@ -32,11 +32,11 @@ class Saml2RoleRule extends RuleContract
         }
 
         $roles = \array_map(
-            'strtolower',
+            'mb_strtolower',
             \array_filter($userData->roles)
         );
 
-        $expectedRoles = \array_map('strtolower', $this->roles ?? []);
+        $expectedRoles = \array_map('mb_strtolower', $this->roles ?? []);
 
         foreach ($roles as $role) {
             if (RuleComparison::stringArray($role, $expectedRoles, $this->operator)) {

@@ -26,14 +26,14 @@ class EmailRule extends RuleContract
         $user = $scope->getUser();
 
         $emails = \array_map(
-            'strtolower',
+            'mb_strtolower',
             \array_filter([
                 $user->primaryEmail,
                 ...$user->emails,
             ])
         );
 
-        $allowedEmails = \array_map('strtolower', $this->emails ?? []);
+        $allowedEmails = \array_map('mb_strtolower', $this->emails ?? []);
 
         foreach ($emails as $email) {
             if (RuleComparison::stringArray($email, $allowedEmails, $this->operator)) {

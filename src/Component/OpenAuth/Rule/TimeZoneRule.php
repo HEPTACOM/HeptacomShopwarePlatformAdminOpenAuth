@@ -26,8 +26,8 @@ class TimeZoneRule extends RuleContract
         $user = $scope->getUser();
 
         return RuleComparison::stringArray(
-            \strtolower($user->timezone ?? ''),
-            \array_map('strtolower', $this->timeZones ?? []),
+            \mb_strtolower($user->timezone ?? ''),
+            \array_map('mb_strtolower', $this->timeZones ?? []),
             $this->operator
         );
     }

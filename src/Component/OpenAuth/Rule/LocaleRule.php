@@ -26,8 +26,8 @@ class LocaleRule extends RuleContract
         $user = $scope->getUser();
 
         return RuleComparison::stringArray(
-            \strtolower($user->locale ?? ''),
-            \array_map('strtolower', $this->locales ?? []),
+            \mb_strtolower($user->locale ?? ''),
+            \array_map('mb_strtolower', $this->locales ?? []),
             $this->operator
         );
     }
