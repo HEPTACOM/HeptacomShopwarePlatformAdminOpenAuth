@@ -10,7 +10,6 @@ services:
       - "9999:9999"
       - "9998:9998"
     volumes:
-        - "../heptacom-storefront-open-auth:/var/www/html/custom/plugins/HeptacomShopwarePlatformStorefrontOpenAuth"
         - ".:/var/www/html/custom/plugins/KskHeptacomAdminOpenAuth"
         # exclude by using anonymous volumes
         - "/var/www/html/custom/plugins/KskHeptacomAdminOpenAuth/.git/"
