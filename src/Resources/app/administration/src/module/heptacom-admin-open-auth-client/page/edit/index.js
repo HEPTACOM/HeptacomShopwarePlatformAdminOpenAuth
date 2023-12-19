@@ -74,17 +74,6 @@ export default {
                 .replace(/_/g, '-');
         },
 
-        providerRoleAssignmentComponent() {
-            return `heptacom-admin-open-auth-provider-${this.providerSlug}-role-assignment`;
-        },
-
-        providerRoleAssignmentProps() {
-            return {
-                isLoading: this.isLoading,
-                client: this.item,
-            };
-        },
-
         providerSettingsComponent() {
             return `heptacom-admin-open-auth-provider-${this.providerSlug}-settings`;
         },
