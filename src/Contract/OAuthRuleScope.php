@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Heptacom\AdminOpenAuth\Contract;
 
 use Heptacom\AdminOpenAuth\Contract\Client\ClientContract;
+use Psr\Log\LoggerInterface;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\Rule\RuleScope;
 use Shopware\Core\System\SalesChannel\SalesChannelContext;
@@ -16,6 +17,7 @@ class OAuthRuleScope extends RuleScope
         private readonly ClientContract $client,
         private readonly array $clientConfiguration,
         private readonly Context $context,
+        private readonly LoggerInterface $logger,
     ) {
     }
 
@@ -47,5 +49,10 @@ class OAuthRuleScope extends RuleScope
     public function getClientConfiguration(): array
     {
         return $this->clientConfiguration;
+    }
+
+    public function getLogger(): LoggerInterface
+    {
+        return $this->logger;
     }
 }

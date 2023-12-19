@@ -14,6 +14,7 @@ use Heptacom\AdminOpenAuth\Contract\RuleContract;
 use Heptacom\AdminOpenAuth\Contract\User;
 use JmesPath\Env as JmesPath;
 use Psr\Http\Client\ClientInterface;
+use Psr\Log\LoggerInterface;
 use Shopware\Core\Framework\Rule\RuleConfig;
 use Shopware\Core\Framework\Rule\RuleConstraints;
 use Shopware\Core\Framework\Struct\ArrayStruct;
@@ -46,7 +47,7 @@ class AuthenticatedRequestRule extends RuleContract
             return false;
         }
 
-        $response = $this->performRequest($client, $user);
+        $response = $this->performRequest($client, $user, $scope->getLogger());
 
         return $this->validateResponse($response);
     }
@@ -95,27 +96,28 @@ class AuthenticatedRequestRule extends RuleContract
         return self::$httpClient;
     }
 
-    private function performRequest(OpenIdConnectClient $client, User $user): ?string
+    private function performRequest(OpenIdConnectClient $client, User $user, LoggerInterface $logger): ?string
     {
         $requestUrl = (string) $this->requestUrl;
 
         try {
             return $this->getCachedResponse($user, $requestUrl);
-        } catch (\Throwable $e) {
+        } catch (CachedRequestNotFoundException $e) {
             // ignore
         }
 
         // perform request
         try {
-            $uri = new Uri((string) $this->requestUrl);
+            $requestUrl = (string) $this->requestUrl;
+            $uri = new Uri($requestUrl);
 
             if ($uri->getScheme() !== 'https') {
-                throw new \Exception('Only HTTPS requests are allowed');
+                throw new AuthenticatedRequestException($requestUrl, 'Only HTTPS requests are allowed', 1702992682);
             }
 
             $token = $user->tokenPair;
             if ($token === null) {
-                throw new \Exception('No token found');
+                throw new AuthenticatedRequestException($requestUrl, 'No token found', 1702992684);
             }
 
             $request = $client->authorizeRequest(new Request('GET', $uri), $token);
@@ -125,6 +127,17 @@ class AuthenticatedRequestRule extends RuleContract
 
             $response = (string) $response->getBody();
         } catch (\Throwable $e) {
+            $logger->error(
+                'Failed to perform authenticated request',
+                [
+                    'log_code' => 1702993083,
+                    'request_url' => $requestUrl,
+                    'user' => $user->primaryKey,
+                    'exception' => $e->getMessage(),
+                    'exception_code' => $e->getCode(),
+                ]
+            );
+
             $response = null;
         }
 
@@ -144,7 +157,7 @@ class AuthenticatedRequestRule extends RuleContract
             return $cachedRequests[$requestUrl];
         }
 
-        throw new \Exception('No cached response found');
+        throw new CachedRequestNotFoundException($requestUrl);
     }
 
     private function cacheResponse(User $user, string $requestUrl, ?string $response): void

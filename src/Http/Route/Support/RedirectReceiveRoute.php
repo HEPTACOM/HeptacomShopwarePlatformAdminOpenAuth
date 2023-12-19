@@ -15,6 +15,7 @@ use Heptacom\AdminOpenAuth\Contract\User;
 use Heptacom\AdminOpenAuth\Database\ClientRuleCollection;
 use Heptacom\AdminOpenAuth\Service\ClientRuleValidator;
 use Psr\Http\Message\RequestInterface;
+use Psr\Log\LoggerInterface;
 use Shopware\Core\Framework\Context;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -23,7 +24,8 @@ class RedirectReceiveRoute
     public function __construct(
         private readonly ClientFactoryContract $clientFactory,
         private readonly EventDispatcherInterface $eventDispatcher,
-        private readonly ClientRuleValidator $clientRuleValidator
+        private readonly ClientRuleValidator $clientRuleValidator,
+        private readonly LoggerInterface $logger,
     ) {
     }
 
@@ -72,7 +74,7 @@ class RedirectReceiveRoute
         ClientContract $client,
         array $configuration
     ): void {
-        $ruleScope = new OAuthRuleScope($user, $client, $configuration, Context::createDefaultContext());
+        $ruleScope = new OAuthRuleScope($user, $client, $configuration, Context::createDefaultContext(), $this->logger);
         $client->prepareOAuthRuleScope($ruleScope);
 
         $roleAssignment = new RoleAssignment();
