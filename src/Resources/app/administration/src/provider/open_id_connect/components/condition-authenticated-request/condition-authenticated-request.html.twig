@@ -19,6 +19,12 @@
                 required
                 :disabled="disabled"
             />
+            <sw-external-link
+                small
+                class="heptacom-admin-open-auth-condition-authenticated-request--documentation-link"
+                href="https://jmespath.org/">
+                {{ $tc('heptacomAdminOpenAuthClient.providerFields.open_id_connect.condition.rule.jmesPathDocumentation') }}
+            </sw-external-link>
         {% endblock %}
     </div>
 {% endblock %}

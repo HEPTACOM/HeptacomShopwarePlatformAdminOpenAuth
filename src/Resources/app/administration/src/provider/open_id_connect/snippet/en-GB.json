@@ -8,7 +8,8 @@
                 "clientSecret": "Client secret",
                 "condition": {
                     "rule": {
-                        "authenticatedRequest": "Authenticated HTTP request"
+                        "authenticatedRequest": "Authenticated HTTP request",
+                        "jmesPathDocumentation": "JMESPath documentation"
                     }
                 },
                 "discoveryDocumentUrl": "OpenID Connect metadata document",
