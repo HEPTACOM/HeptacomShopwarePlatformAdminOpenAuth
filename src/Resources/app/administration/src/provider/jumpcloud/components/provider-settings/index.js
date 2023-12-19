@@ -16,7 +16,8 @@ export default {
                 'lastName',
                 'email',
                 'timezone',
-                'locale'
+                'locale',
+                'roles'
             ],
         };
     },

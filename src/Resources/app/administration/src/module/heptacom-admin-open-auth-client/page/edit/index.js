@@ -32,7 +32,9 @@ export default {
             item: null,
             showDeleteModal: false,
             redirectUri: null,
-            metadataUri: null
+            metadataUri: null,
+            deletedRuleIds: [],
+            deletedConditionIds: [],
         }
     },
 
@@ -49,18 +51,31 @@ export default {
             return this.repositoryFactory.create('heptacom_admin_open_auth_client');
         },
 
+        ruleRepository() {
+            return this.repositoryFactory.create('heptacom_admin_open_auth_client_rule');
+        },
+
+        ruleConditionRepository() {
+            return this.repositoryFactory.create('heptacom_admin_open_auth_client_rule_condition');
+        },
+
         clientCriteria() {
             const criteria = new Criteria();
+            criteria.getAssociation('rules').addSorting(Criteria.sort('position', 'ASC'));
+            criteria.addAssociation('rules.aclRoles');
+            criteria.addAssociation('rules.conditions');
             criteria.addAssociation('defaultAclRoles');
 
             return criteria;
         },
 
-        providerSettingsComponent() {
-            let provider = (this.item && this.item.provider ? this.item.provider : '')
+        providerSlug() {
+            return (this.item && this.item.provider ? this.item.provider : '')
                 .replace(/_/g, '-');
+        },
 
-            return `heptacom-admin-open-auth-provider-${provider}-settings`;
+        providerSettingsComponent() {
+            return `heptacom-admin-open-auth-provider-${this.providerSlug}-settings`;
         },
 
         providerSettingsProps() {
@@ -94,8 +109,9 @@ export default {
         saveItem() {
             this.isLoading = true;
 
-            this.clientRepository
-                .save(this.item, Context.api)
+            this.saveClient()
+                .then(this.syncDeletedConditions)
+                .then(this.syncDeletedRules)
                 .then(() => {
                     this.isSaveSuccessful = true;
 
@@ -115,6 +131,34 @@ export default {
                 .finally(() => {
                     this.isLoading = false;
                 });
+        },
+
+        saveClient() {
+            return this.clientRepository.save(this.item, Context.api);
+        },
+
+        syncDeletedRules() {
+            if (this.deletedRuleIds.length > 0) {
+                return this.ruleRepository.syncDeleted(this.deletedRuleIds, Context.api).then(() => {
+                    this.deletedRuleIds = [];
+                });
+            }
+        },
+
+        syncDeletedConditions() {
+            if (this.deletedConditionIds.length > 0) {
+                return this.ruleConditionRepository.syncDeleted(this.deletedConditionIds, Context.api).then(() => {
+                    this.deletedConditionIds = [];
+                });
+            }
+        },
+
+        onRuleDeleted(deletedId) {
+            this.deletedRuleIds.push(deletedId);
+        },
+
+        onConditionsDeleted(deletedIds) {
+            this.deletedConditionIds = [...this.deletedConditionIds, ...deletedIds];
         },
 
         onConfirmDelete() {

@@ -1,0 +1,93 @@
+{% block heptacom_admin_open_auth_client_rule_item %}
+    <sw-collapse
+        expand-on-loading
+        class="heptacom-admin-open-auth-rule-item__collapse"
+    >
+        <template #header="{ expanded }">
+            <div class="heptacom-admin-open-auth-rule-item__collapse-header">
+                <h4
+                    class="heptacom-admin-open-auth-rule-item__collapse-header-title"
+                >
+                    {{ $tc('heptacom-admin-open-auth-client.components.rule-item.title', rule.position + 1) }}
+                </h4>
+
+                <sw-icon
+                    v-if="expanded"
+                    class="heptacom-admin-open-auth-rule-item__collapse-header-collapsed-indicator"
+                    name="regular-chevron-down-xxs"
+                    size="12px"
+                />
+
+                <sw-icon
+                    v-else
+                    class="heptacom-admin-open-auth-rule-item__collapse-header-collapsed-indicator"
+                    name="regular-chevron-right-xxs"
+                    size="12px"
+                />
+            </div>
+        </template>
+
+        <template #content>
+            <sw-condition-tree
+                    v-if="rule && conditionRepository"
+                    class="heptacom-admin-open-auth-rule-item__condition-tree"
+                    association-field="clientRuleId" {# the field that is used for assigning the rule to its parent #}
+                    :scopes="scopes"
+                    :initial-conditions="rule.conditions"
+                    :condition-repository="conditionRepository" {# any entity repository that has children and  the above specified association field #}
+                    :condition-data-provider-service="heptacomOauthRuleDataProvider"
+                    :association-value="rule.id" {# the association id (so in this case the ruleId) #}
+                    :root-condition="null"
+                    @conditions-changed="onConditionsChanged"
+            />
+
+            <sw-switch-field
+                    :label="$t('heptacom-admin-open-auth-client.components.rule-item.stopOnMatch')"
+                    v-model="rule.stopOnMatch"
+            ></sw-switch-field>
+
+            <sw-switch-field
+                    :label="$t('heptacom-admin-open-auth-client.components.rule-item.userBecomeAdmin')"
+                    v-model="rule.userBecomeAdmin"
+            ></sw-switch-field>
+
+            <sw-entity-multi-select
+                    v-if="!rule.userBecomeAdmin"
+                    v-model="rule.aclRoles"
+                    :label="$t('heptacom-admin-open-auth-client.components.rule-item.defaultAclRoles')"
+                    entityName="acl_role"
+            ></sw-entity-multi-select>
+
+            <div class="heptacom-admin-open-auth-rule-item__collapse-footer">
+                <sw-button
+                    variant="ghost"
+                    @click="onMoveUp"
+                >
+                    <sw-icon
+                        name="regular-chevron-up-xxs"
+                        size="12px"
+                    />
+                    {{ $tc('heptacom-admin-open-auth-client.components.rule-item.moveUp') }}
+                </sw-button>
+
+                <sw-button
+                    variant="danger"
+                    @click="onDelete"
+                >
+                    {{ $tc('global.default.delete') }}
+                </sw-button>
+
+                <sw-button
+                    variant="ghost"
+                    @click="onMoveDown"
+                >
+                    {{ $tc('heptacom-admin-open-auth-client.components.rule-item.moveDown') }}
+                    <sw-icon
+                        name="regular-chevron-down-xxs"
+                        size="12px"
+                    />
+                </sw-button>
+            </div>
+        </template>
+    </sw-collapse>
+{% endblock %}

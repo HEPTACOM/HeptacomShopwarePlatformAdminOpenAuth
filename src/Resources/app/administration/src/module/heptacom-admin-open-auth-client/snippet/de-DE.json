@@ -1,5 +1,19 @@
 {
     "heptacom-admin-open-auth-client": {
+        "components": {
+            "rule-container": {
+                "warningEmpty": "Es sind keine Regeln vorhanden. Bitte fügen Sie eine Regel hinzu. Ohne Regeln wird der Nutzer keiner Rolle zugewiesen."
+            },
+            "rule-item": {
+                "defaultAclRoles": "Rollen für neue Benutzer",
+                "moveDown": "Nach unten verschieben",
+                "moveUp": "Nach oben verschieben",
+                "stopOnMatch": "Bei Treffer abbrechen",
+                "stopOnMatchHelpText": "Wenn aktiviert, wird die Auswertung weiterer Regeln abgebrochen, sofern diese Regel zutrifft.",
+                "title": "Regel {n}",
+                "userBecomeAdmin": "Benutzer als Administrator anlegen"
+            }
+        },
         "module": {
             "description": "Erlaubt die Anmeldung über SSO Anbieter",
             "name": "HEPTACOM Open Authentication Login",
@@ -21,15 +35,14 @@
                 "fields": {
                     "active": "Aktiv",
                     "connect": "Zum Verknüpfen verwenden",
-                    "defaultAclRoles": "Rollen für neue Benutzer",
                     "downloadMetadata": "Metadaten-Datei herunterladen",
                     "keepUserUpdated": "Benutzer automatisch aktualisieren",
+                    "keepUserUpdatedHelpText": "Wenn aktiviert, werden Änderungen am Nutzer (bspw. Name oder E-Mail) automatisch beim Login aktualisiert. Auch die Rollenzuweisungen werden bei jedem Login aktualisiert.",
                     "login": "Als Anmeldung verwenden",
                     "metadataUri": "Metadaten-URL",
                     "name": "Name",
                     "redirectUri": "Rücksende-URL",
-                    "storeUserToken": "Benutzerberechtigungsschlüssel speichern",
-                    "userBecomeAdmin": "Benutzer als Administrator anlegen"
+                    "storeUserToken": "Benutzerberechtigungsschlüssel speichern"
                 },
                 "modals": {
                     "delete": {
@@ -39,6 +52,9 @@
                         "title": "Anbieter löschen",
                         "warning": "Sind Sie sich sicher, dass Sie diese Anbieterkonfiguration löschen wollen?"
                     }
+                },
+                "roleAssignment": {
+                    "title": "Rollenzuweisung"
                 },
                 "title": "Anbieter bearbeiter"
             },

@@ -9,6 +9,7 @@
                         "firstName": "Vorname",
                         "lastName": "Nachname",
                         "locale": "Lokalität",
+                        "roles": "Rollen/Gruppen",
                         "timezone": "Zeitzone"
                     },
                     "template": {
@@ -19,6 +20,11 @@
                     "templateApply": "Vorlage anwenden",
                     "templateSelect": "Vorlage auswählen",
                     "templateSelect-placeholder": "Wählen Sie hier Ihren Identitätsanbieter aus"
+                },
+                "condition": {
+                    "rule": {
+                        "roles": "Rolle/Gruppe"
+                    }
                 },
                 "identityProviderCardTitle": "Identitätsanbieter Einstellungen",
                 "identityProviderCertificate": "Zertifikat (PEM)",

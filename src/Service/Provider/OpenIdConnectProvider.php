@@ -39,8 +39,6 @@ final class OpenIdConnectProvider extends ClientProviderContract
                 'clientId',
                 'clientSecret',
                 'scopes',
-                // TODO remove in v5
-                'redirectUri',
             ])->setRequired([
                 'discoveryDocumentUrl',
                 'authorization_endpoint',
@@ -50,7 +48,6 @@ final class OpenIdConnectProvider extends ClientProviderContract
                 'clientSecret',
             ])->setDefaults([
                 'scopes' => [],
-                'redirectUri' => null,
             ])
             ->setAllowedTypes('discoveryDocumentUrl', 'string')
             ->setAllowedTypes('authorization_endpoint', 'string')
@@ -58,13 +55,7 @@ final class OpenIdConnectProvider extends ClientProviderContract
             ->setAllowedTypes('userinfo_endpoint', 'string')
             ->setAllowedTypes('clientId', 'string')
             ->setAllowedTypes('clientSecret', 'string')
-            ->setAllowedTypes('scopes', 'array')
-            ->setDeprecated(
-                'redirectUri',
-                'heptacom/shopware-platform-admin-open-auth',
-                '*',
-                'Use route api.heptacom.admin_open_auth.provider.redirect-url instead to live generate redirectUri'
-            );
+            ->setAllowedTypes('scopes', 'array');
     }
 
     public function getInitialConfiguration(): array

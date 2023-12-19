@@ -46,8 +46,6 @@ class Saml2ServiceProvider extends ClientProviderContract implements Configurati
                 'serviceProviderPublicKey',
                 'requestedAuthnContext',
                 'attributeMapping',
-                // TODO remove in v5
-                'redirectUri',
             ])->setRequired([
                 'identityProviderMetadataUrl',
                 'identityProviderMetadataXml',
@@ -61,7 +59,6 @@ class Saml2ServiceProvider extends ClientProviderContract implements Configurati
             ])->setDefaults([
                 'requestedAuthnContext' => [],
                 'attributeMapping' => [],
-                'redirectUri' => null,
             ])
             ->setAllowedTypes('identityProviderMetadataUrl', 'string')
             ->setAllowedTypes('identityProviderMetadataXml', 'string')
@@ -73,13 +70,7 @@ class Saml2ServiceProvider extends ClientProviderContract implements Configurati
             ->setAllowedTypes('serviceProviderPrivateKey', 'string')
             ->setAllowedTypes('serviceProviderPublicKey', 'string')
             ->setAllowedTypes('requestedAuthnContext', 'array')
-            ->setAllowedTypes('attributeMapping', 'array')
-            ->setDeprecated(
-                'redirectUri',
-                'heptacom/shopware-platform-admin-open-auth',
-                '*',
-                'Use route api.heptacom.admin_open_auth.provider.redirect-url instead to live generate redirectUri'
-            );
+            ->setAllowedTypes('attributeMapping', 'array');
     }
 
     public function getInitialConfiguration(): array
@@ -97,7 +88,7 @@ class Saml2ServiceProvider extends ClientProviderContract implements Configurati
             array_fill(0, \count(Saml2ServiceProviderClient::AVAILABLE_USER_PROPERTIES), '')
         );
 
-        // TODO: tag:v5.0.0 make generation configurable and dynamic per client in administration
+        // TODO: tag:v6.1.0 make generation configurable and dynamic per client in administration
 
         return $this->createCertificate($result);
     }

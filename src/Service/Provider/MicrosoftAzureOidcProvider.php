@@ -36,26 +36,17 @@ final class MicrosoftAzureOidcProvider extends ClientProviderContract
                 'clientId',
                 'clientSecret',
                 'scopes',
-                // TODO remove in v5
-                'redirectUri',
             ])->setRequired([
                 'tenantId',
                 'clientId',
                 'clientSecret',
             ])->setDefaults([
                 'scopes' => [],
-                'redirectUri' => null,
             ])
             ->setAllowedTypes('tenantId', 'string')
             ->setAllowedTypes('clientId', 'string')
             ->setAllowedTypes('clientSecret', 'string')
-            ->setAllowedTypes('scopes', 'array')
-            ->setDeprecated(
-                'redirectUri',
-                'heptacom/shopware-platform-admin-open-auth',
-                '*',
-                'Use route api.heptacom.admin_open_auth.provider.redirect-url instead to live generate redirectUri'
-            );
+            ->setAllowedTypes('scopes', 'array');
     }
 
     public function getInitialConfiguration(): array
@@ -74,6 +65,10 @@ final class MicrosoftAzureOidcProvider extends ClientProviderContract
         $config = new OpenIdConnectConfiguration();
         $config->assign($resolvedConfig);
         $config->setDiscoveryDocumentUrl('https://login.microsoftonline.com/' . $resolvedConfig['tenantId'] . '/v2.0/.well-known/openid-configuration');
+
+        $scopes = $config->getScopes();
+        array_push($scopes, 'User.Read');
+        $config->setScopes(array_unique($scopes));
 
         $service = $this->openIdConnectService->createWithConfig($config);
         $service->discoverWellKnown();

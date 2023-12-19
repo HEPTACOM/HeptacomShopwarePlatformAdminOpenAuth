@@ -1,0 +1,33 @@
+{% block heptacom_admin_open_auth_client_rule_container %}
+    <div>
+        <sw-loader v-if="isLoading"></sw-loader>
+
+        <template v-else>
+            <heptacom-admin-open-auth-client-rule-item
+                v-for="rule in sortedRules"
+                :key="rule.id"
+                :rule="rule"
+                :client="client"
+                @conditions-deleted="conditionsDeleted"
+                @move-up="moveRuleUp(rule)"
+                @move-down="moveRuleDown(rule)"
+                @delete="deleteRule(rule)"
+            ></heptacom-admin-open-auth-client-rule-item>
+
+            <sw-alert
+                v-if="sortedRules.length === 0"
+                variant="warning"
+            >
+                {{ $t('heptacom-admin-open-auth-client.components.rule-container.warningEmpty') }}
+            </sw-alert>
+
+            <sw-button
+                variant="ghost"
+                block
+                @click="addRule"
+            >
+                {{ $t('global.default.add') }}
+            </sw-button>
+        </template>
+    </div>
+{% endblock %}

@@ -1,5 +1,25 @@
 # Unreleased
 
+# 6.0.0
+
+**Added**
+
+* Added dynamic role assignment using configurable rules for clients
+* Added roles to attribute mapping in SAML2 and JumpCloud provider
+* Added authenticated request condition for OpenID Connect based providers
+* Added group ids condition to Microsoft Azure OIDC provider
+* Added `User.Read` scope to Microsoft Azure OIDC provider. This is required for the group ids condition to work.
+
+**Fixed**
+
+* Fixed issue in migration `Migration1685517455SetExpiredAndTypeToRequiredFields` causing issues in MariaDB installations
+* Fixed update of assigned roles when `keepUserUpdated` is active
+
+**Removed**
+
+* Removed the static role assignment for clients. The static assignment will be automatically migrated to a rule for the dynamic assignment.
+* Removed the config value `redirectUri` that is deprecated since [v3.0.2](#302) and was originally scheduled for removal in [v5.0.0](#500)
+
 # 5.0.0
 
 **Added**

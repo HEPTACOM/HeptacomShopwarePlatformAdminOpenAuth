@@ -1,0 +1,30 @@
+{% block sw_condition_value_content %}
+    <div class="heptacom-admin-open-auth-condition-authenticated-request sw-condition__condition-value">
+        {% block sw_condition_authenticated_request_field_redirect_url %}
+            <sw-url-field
+                v-model="requestUrl"
+                placeholder="my-company.my-idp.com/api/v1/profile/groups"
+                size="medium"
+                omitUrlHash
+                required
+                :disabled="disabled"
+            />
+        {% endblock %}
+
+        {% block sw_condition_authenticated_request_field_jmes_path_expression %}
+            <sw-text-field
+                v-model="jmesPathExpression"
+                placeholder="JMESPath query"
+                size="medium"
+                required
+                :disabled="disabled"
+            />
+            <sw-external-link
+                small
+                class="heptacom-admin-open-auth-condition-authenticated-request--documentation-link"
+                href="https://jmespath.org/">
+                {{ $tc('heptacomAdminOpenAuthClient.providerFields.open_id_connect.condition.rule.jmesPathDocumentation') }}
+            </sw-external-link>
+        {% endblock %}
+    </div>
+{% endblock %}

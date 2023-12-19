@@ -5,6 +5,11 @@
                 "additionalScopes": "Anwendungsberechtigungen",
                 "clientId": "Anwendungsschlüssel",
                 "clientSecret": "Anwendungsgehemnis",
+                "condition": {
+                    "rule": {
+                        "groupIds": "Gruppen-IDs"
+                    }
+                },
                 "tenantId": "Verzeichnis-ID"
             }
         },

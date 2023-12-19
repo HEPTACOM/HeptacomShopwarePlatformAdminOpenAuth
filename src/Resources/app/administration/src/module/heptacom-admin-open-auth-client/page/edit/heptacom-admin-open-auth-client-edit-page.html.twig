@@ -95,22 +95,6 @@
                                             v-model="item.connect"
                                         ></sw-switch-field>
                                     {% endblock %}
-                                    {% block heptacom_admin_open_auth_client_edit_page_content_base_settings_inner_user_become_admin %}
-                                        <sw-switch-field
-                                            :disabled="!item.active"
-                                            :label="$t('heptacom-admin-open-auth-client.pages.edit.fields.userBecomeAdmin')"
-                                            v-model="item.userBecomeAdmin"
-                                        ></sw-switch-field>
-                                    {% endblock %}
-                                    {% block heptacom_admin_open_auth_client_edit_page_content_base_settings_inner_default_acl_roles %}
-                                        <sw-entity-multi-select
-                                            v-if="!item.userBecomeAdmin"
-                                            :disabled="!item.active"
-                                            v-model="item.defaultAclRoles"
-                                            :label="$t('heptacom-admin-open-auth-client.pages.edit.fields.defaultAclRoles')"
-                                            entityName="acl_role"
-                                        ></sw-entity-multi-select>
-                                    {% endblock %}
                                     {% block heptacom_admin_open_auth_client_edit_page_content_base_settings_inner_store_user_token %}
                                         <sw-switch-field
                                             :disabled="!item.active"
@@ -122,6 +106,7 @@
                                         <sw-switch-field
                                             :disabled="!item.active"
                                             :label="$t('heptacom-admin-open-auth-client.pages.edit.fields.keepUserUpdated')"
+                                            :helpText="$t('heptacom-admin-open-auth-client.pages.edit.fields.keepUserUpdatedHelpText')"
                                             v-model="item.keepUserUpdated"
                                         ></sw-switch-field>
                                     {% endblock %}
@@ -155,6 +140,24 @@
                                             {{ $t('heptacom-admin-open-auth-client.pages.edit.fields.downloadMetadata') }}
                                         </sw-button>
                                     {% endblock %}
+                                {% endblock %}
+                            </template>
+                        </sw-card>
+                    {% endblock %}
+
+                    {% block heptacom_admin_open_auth_client_edit_page_content_role_assignment %}
+                        <sw-card
+                            :isLoading="isLoading"
+                            :title="$t('heptacom-admin-open-auth-client.pages.edit.roleAssignment.title')"
+                            position-identifier="heptacom-admin-open-auth-client-edit-page-role-assignment"
+                        >
+                            <template v-if="item">
+                                {% block heptacom_admin_open_auth_client_edit_page_content_role_assignment_inner %}
+                                    <heptacom-admin-open-auth-client-rule-container
+                                        :client="item"
+                                        @rule-deleted="onRuleDeleted"
+                                        @conditions-deleted="onConditionsDeleted"
+                                    ></heptacom-admin-open-auth-client-rule-container>
                                 {% endblock %}
                             </template>
                         </sw-card>

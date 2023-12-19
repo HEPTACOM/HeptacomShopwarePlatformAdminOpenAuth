@@ -5,6 +5,11 @@
                 "additionalScopes": "Application scopes",
                 "clientId": "Application identifier",
                 "clientSecret": "Application secret",
+                "condition": {
+                    "rule": {
+                        "groupIds": "Group IDs"
+                    }
+                },
                 "tenantId": "Tenant identifier"
             }
         },

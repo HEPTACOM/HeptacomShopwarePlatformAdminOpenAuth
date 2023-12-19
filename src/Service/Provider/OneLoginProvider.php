@@ -37,26 +37,17 @@ final class OneLoginProvider extends ClientProviderContract
                 'clientId',
                 'clientSecret',
                 'scopes',
-                // TODO remove in v5
-                'redirectUri',
             ])->setRequired([
                 'organizationUrl',
                 'clientId',
                 'clientSecret',
             ])->setDefaults([
                 'scopes' => [],
-                'redirectUri' => null,
             ])
             ->setAllowedTypes('organizationUrl', 'string')
             ->setAllowedTypes('clientId', 'string')
             ->setAllowedTypes('clientSecret', 'string')
-            ->setAllowedTypes('scopes', 'array')
-            ->setDeprecated(
-                'redirectUri',
-                'heptacom/shopware-platform-admin-open-auth',
-                '*',
-                'Use route api.heptacom.admin_open_auth.provider.redirect-url instead to live generate redirectUri'
-            );
+            ->setAllowedTypes('scopes', 'array');
     }
 
     public function getInitialConfiguration(): array

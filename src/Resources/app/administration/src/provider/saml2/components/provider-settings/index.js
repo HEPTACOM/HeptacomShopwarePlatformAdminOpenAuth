@@ -17,7 +17,8 @@ export default {
                 'lastName',
                 'email',
                 'timezone',
-                'locale'
+                'locale',
+                'roles',
             ],
             availableAuthnContexts: [
                 'urn:oasis:names:tc:SAML:2.0:ac:classes:unspecified',
@@ -39,16 +40,19 @@ export default {
                     firstName: 'givenName',
                     lastName: 'surName',
                     email: 'emailAddress',
+                    roles: 'memberOf'
                 },
                 x500: {
                     firstName: 'urn:oid:2.5.4.42',
                     lastName: 'urn:oid:2.5.4.4',
                     email: 'urn:oid:1.2.840.113549.1.9.1',
+                    roles: 'urn:oid:1.3.6.1.4.1.5923.1.5.1.1'
                 },
                 azure: {
                     firstName: 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname',
                     lastName: 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname',
                     email: 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress',
+                    roles: 'http://schemas.microsoft.com/ws/2008/06/identity/claims/role',
                 },
             }
         };

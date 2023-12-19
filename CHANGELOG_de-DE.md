@@ -1,8 +1,28 @@
 # Unreleased
 
+# 6.0.0
+
+**Hinzugefügt**
+
+* Dynamische Rollenzuweisung mithilfe konfigurierbarer Regeln in Clients
+* Rollen/Gruppen zu Attributszuordnung im SAML2 und JumpCloud Provider hinzugefügt
+* Authentifizierter Request Bedingung für OpenID Connect basierte Provider hinzugefügt
+* Gruppen IDs Bedingung zum Microsoft Azure OIDC Provider hinzugefügt
+* `User.Read` Scope zum Microsoft Azure OIDC Provider hinzugefügt. Dieser ist für die Gruppen IDs Bedingung erforderlich.
+
+**Behoben**
+
+* Fehler in Migration `Migration1685517455SetExpiredAndTypeToRequiredFields` behoben der bei MariaDB Installationen für Probleme sorgte
+* Fehler behoben, der Aktualisieren von Rollenzuweisungen verhinderte, obwohl `keepUserUpdated` aktiviert war
+
+**Entfernt**
+
+* Statische Rollenzuweisung für Clients entfernt. Die statische Zuweisung wird automatisch zu einer Regel für die dynamische Zuweisung migriert.
+* Die Konfigurationsoption `redirectUri`, die seit [v3.0.2](#302) abgekündigt ist und für die Löschung in [v5.0.0](#500) geplant war, wurde entfernt.
+
 # 5.0.0
 
-**Hinzufügen**
+**Hinzugefügt**
 
 * Kompatibilität mit Shopware 6.5 und zugehörigen Abhängigkeiten hinzugefügt
 * Schaltfläche zum Herunterladen von Metadaten zur Komponente `heptacom-admin-open-auth-client-edit-page` hinzugefügt

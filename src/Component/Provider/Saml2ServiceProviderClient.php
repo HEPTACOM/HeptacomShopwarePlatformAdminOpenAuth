@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Heptacom\AdminOpenAuth\Component\Provider;
 
 use Heptacom\AdminOpenAuth\Component\Saml\Saml2ServiceProviderService;
+use Heptacom\AdminOpenAuth\Component\Saml\Saml2UserData;
 use Heptacom\AdminOpenAuth\Contract\Client\ClientContract;
 use Heptacom\AdminOpenAuth\Contract\MetadataClientContract;
 use Heptacom\AdminOpenAuth\Contract\ModifiedRedirectBehaviourClientContract;
@@ -21,6 +22,7 @@ final class Saml2ServiceProviderClient extends ClientContract implements Metadat
         'email',
         'timezone',
         'locale',
+        'roles',
     ];
 
     public function __construct(
@@ -44,6 +46,9 @@ final class Saml2ServiceProviderClient extends ClientContract implements Metadat
 
         $user = new User();
         $user->primaryKey = $auth->getNameId();
+
+        $userData = new Saml2UserData();
+        $user->addExtension(Saml2UserData::class, $userData);
 
         $mapping = $this->getInnerClient()->getConfig()->getAttributeMapping();
         foreach ($mapping as $property => $attributeName) {
@@ -82,6 +87,11 @@ final class Saml2ServiceProviderClient extends ClientContract implements Metadat
 
                 case 'locale':
                     $user->locale = $propertyValue;
+
+                    break;
+
+                case 'roles':
+                    $userData->roles = $propertyValues;
 
                     break;
             }

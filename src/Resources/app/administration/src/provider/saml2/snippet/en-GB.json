@@ -9,6 +9,7 @@
                         "firstName": "First name",
                         "lastName": "Last name",
                         "locale": "Locale",
+                        "roles": "Roles/Groups",
                         "timezone": "Timezone"
                     },
                     "template": {
@@ -19,6 +20,11 @@
                     "templateApply": "Apply template",
                     "templateSelect": "Template",
                     "templateSelect-placeholder": "Select the template for your identity provider"
+                },
+                "condition": {
+                    "rule": {
+                        "roles": "Roles/Groups"
+                    }
                 },
                 "identityProviderCardTitle": "Identity provider settings",
                 "identityProviderCertificate": "Certificate (PEM)",
