@@ -1,3 +1,12 @@
+/**
+ * Copied from Shopware
+ * @see shopware/administration/Resources/app/administration/src/app/service/rule-condition.service.ts
+ *
+ * This file also includes features that are not supported by this plugin.
+ * To improve maintainability, this is not removed from the file.
+ * The features that are not supported are caught in the backend during processing.
+ */
+
 type appScriptCondition = {
     id: string,
     config: unknown
