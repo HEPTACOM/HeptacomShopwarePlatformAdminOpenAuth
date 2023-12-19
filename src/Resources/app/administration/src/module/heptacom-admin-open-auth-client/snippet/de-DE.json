@@ -2,7 +2,6 @@
     "heptacom-admin-open-auth-client": {
         "components": {
             "rule-container": {
-                "add": "Neue Regel",
                 "warningEmpty": "Es sind keine Regeln vorhanden. Bitte fügen Sie eine Regel hinzu. Ohne Regeln wird der Nutzer keiner Rolle zugewiesen."
             },
             "rule-item": {

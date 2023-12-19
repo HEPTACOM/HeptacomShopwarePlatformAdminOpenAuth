@@ -2,7 +2,6 @@
     "heptacom-admin-open-auth-client": {
         "components": {
             "rule-container": {
-                "add": "Add rule",
                 "warningEmpty": "There are no rules. Please add a rule. Without rules the user will not be assigned to any role."
             },
             "rule-item": {
