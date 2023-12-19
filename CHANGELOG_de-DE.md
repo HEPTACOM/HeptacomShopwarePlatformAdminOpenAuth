@@ -1,54 +1,24 @@
 # Unreleased
 
-# 6.0.0-rc.1
-
-**Hinzugefügt**
-
-* Authentifizierter Request bedingung für OpenID Connect basierte Provider hinzugefügt
-* Gruppen IDs Bedingung zum Microsoft Azure OIDC Provider hinzugefügt
-* Flag `stopOnMatch` hinzugefügt, um die Ausführung weiterer Regeln zu stoppen, wenn die aktuelle Regel zutrifft
-* `User.Read` Scope zum Microsoft Azure OIDC Provider hinzugefügt. Dieser ist für die Gruppen IDs Bedingung erforderlich.
-
-**Geändert**
-
-* Sichtbarkeit der Regeln für Zeitzone und Locale auf Provider eingeschränkt, die diese Werte unterstützen.
-
-**Behoben**
-
-* Fehler in Migration `Migration1685517455SetExpiredAndTypeToRequiredFields` behoben der bei MariaDB Installationen für Probleme sorgte
-
-# 6.0.0-beta.3
-
-**Behoben**
-
-* Fehler behoben, der für nicht gefundene EntityDefinitions verantwortlich war
-* Fehler bei Regeln behoben, die vor Ausführung `__wakeup()` erwarteten
-
-# 6.0.0-beta.2
-
-**Hinzugefügt**
-
-* SAML2 Attributszuordnung für Rollen in Templates friendlyNames und X500 hinzugefügt
-* Rollen/Gruppen zu Attributszuordnung im JumpCloud Provider hinzugefügt
-
-**Behoben**
-
-* Fehler behoben, der das Erstellen von SAML2 Clients verhinderte
-
-# 6.0.0-beta.1
+# 6.0.0
 
 **Hinzugefügt**
 
 * Dynamische Rollenzuweisung mithilfe konfigurierbarer Regeln in Clients
+* Rollen/Gruppen zu Attributszuordnung im SAML2 und JumpCloud Provider hinzugefügt
+* Authentifizierter Request Bedingung für OpenID Connect basierte Provider hinzugefügt
+* Gruppen IDs Bedingung zum Microsoft Azure OIDC Provider hinzugefügt
+* `User.Read` Scope zum Microsoft Azure OIDC Provider hinzugefügt. Dieser ist für die Gruppen IDs Bedingung erforderlich.
+
+**Behoben**
+
+* Fehler in Migration `Migration1685517455SetExpiredAndTypeToRequiredFields` behoben der bei MariaDB Installationen für Probleme sorgte
+* Fehler behoben, der Aktualisieren von Rollenzuweisungen verhinderte, obwohl `keepUserUpdated` aktiviert war
 
 **Entfernt**
 
 * Statische Rollenzuweisung für Clients entfernt. Die statische Zuweisung wird automatisch zu einer Regel für die dynamische Zuweisung migriert.
 * Die Konfigurationsoption `redirectUri`, die seit [v3.0.2](#302) abgekündigt ist und für die Löschung in [v5.0.0](#500) geplant war, wurde entfernt.
-
-**Behoben**
-
-* Fehler behoben, der Aktualisieren von Rollenzuweisungen verhinderte, obwohl `keepUserUpdated` aktiviert war
 
 # 5.0.0
 

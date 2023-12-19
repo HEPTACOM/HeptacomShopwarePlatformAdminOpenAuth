@@ -1,54 +1,24 @@
 # Unreleased
 
-# 6.0.0-rc.1
-
-**Added**
-
-* Added authenticated request condition for OpenID Connect based providers
-* Added group ids condition to Microsoft Azure OIDC provider
-* Added flag `stopOnMatch` to stop further rule executions when the current rule matches
-* Added `User.Read` scope to Microsoft Azure OIDC provider. This is required for the group ids condition to work.
-
-**Changed**
-
-* Changed the availability of timezone and locale rules to providers that support it
-
-**Fixed**
-
-* Fixed issue in migration `Migration1685517455SetExpiredAndTypeToRequiredFields` causing issues in MariaDB installations
-
-# 6.0.0-beta.3
-
-**Fixed**
-
-* Fixed issues with not found entity definitions
-* Fixed issues for rules expecting to get a call on the `__wakeup` method
-
-# 6.0.0-beta.2
-
-**Added**
-
-* Added default role attribute name for SAML2 attribute mapping templates friendlyNames and X500
-* Added roles to attribute mapping in JumpCloud provider
-
-**Fixed**
-
-* Fixed creation of new SAML2 providers
-
-# 6.0.0-beta.1
+# 6.0.0
 
 **Added**
 
 * Added dynamic role assignment using configurable rules for clients
+* Added roles to attribute mapping in SAML2 and JumpCloud provider
+* Added authenticated request condition for OpenID Connect based providers
+* Added group ids condition to Microsoft Azure OIDC provider
+* Added `User.Read` scope to Microsoft Azure OIDC provider. This is required for the group ids condition to work.
+
+**Fixed**
+
+* Fixed issue in migration `Migration1685517455SetExpiredAndTypeToRequiredFields` causing issues in MariaDB installations
+* Fixed update of assigned roles when `keepUserUpdated` is active
 
 **Removed**
 
 * Removed the static role assignment for clients. The static assignment will be automatically migrated to a rule for the dynamic assignment.
 * Removed the config value `redirectUri` that is deprecated since [v3.0.2](#302) and was originally scheduled for removal in [v5.0.0](#500)
-
-**Fixed**
-
-* Fixed update of assigned roles when `keepUserUpdated` is active
 
 # 5.0.0
 
