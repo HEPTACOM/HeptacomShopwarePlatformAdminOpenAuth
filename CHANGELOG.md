@@ -19,7 +19,7 @@
 
 * Removed the static role assignment for clients. The static assignment will be automatically migrated to a rule for the dynamic assignment.
 * Removed the config value `redirectUri` that is deprecated since [v3.0.2](#302) and was originally scheduled for removal in [v5.0.0](#500)
-* Removed unnecessary Symfony dependencies in the plugin `composer.json`.
+* Removed Symfony dependencies in the plugin `composer.json`, as these are already included in the Shopware core.
 
 # 5.0.0
 

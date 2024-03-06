@@ -19,7 +19,7 @@
 
 * Statische Rollenzuweisung für Clients entfernt. Die statische Zuweisung wird automatisch zu einer Regel für die dynamische Zuweisung migriert.
 * Die Konfigurationsoption `redirectUri`, die seit [v3.0.2](#302) abgekündigt ist und für die Löschung in [v5.0.0](#500) geplant war, wurde entfernt.
-* Unnötige Abhängigkeiten von Symfony in der Plugin „composer.json“ entfernt.
+* Abhängigkeiten von Symfony in der Plugin „composer.json“ entfernt, da diese bereits im Shopware-Kern enthalten sind.
 
 # 5.0.0
 
