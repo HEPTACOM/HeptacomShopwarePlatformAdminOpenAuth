@@ -1,5 +1,11 @@
 # Unreleased
 
+# 6.0.1-rc.1
+
+**Removed**
+
+* Removed Symfony dependencies in the plugin `composer.json`, as these are already included in the Shopware core.
+
 # 6.0.0
 
 **Added**
