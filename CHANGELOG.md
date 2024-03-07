@@ -1,6 +1,6 @@
 # Unreleased
 
-# 6.0.1-rc.1
+# 6.0.1
 
 **Removed**
 
