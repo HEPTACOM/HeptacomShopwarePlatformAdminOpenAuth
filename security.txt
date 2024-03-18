@@ -1,2 +1,1 @@
-Contact: mailto:security@heptacom.de
-Expires: 2025-04-01T12:00:00.000Z
+Canonical: https://www.heptacom.de/.well-known/security.txt
