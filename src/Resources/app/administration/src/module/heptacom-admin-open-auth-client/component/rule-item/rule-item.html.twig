@@ -43,17 +43,17 @@
 
             <sw-switch-field
                     :label="$t('heptacom-admin-open-auth-client.components.rule-item.stopOnMatch')"
-                    v-model="rule.stopOnMatch"
+                    v-model:value="rule.stopOnMatch"
             ></sw-switch-field>
 
             <sw-switch-field
                     :label="$t('heptacom-admin-open-auth-client.components.rule-item.userBecomeAdmin')"
-                    v-model="rule.userBecomeAdmin"
+                    v-model:value="rule.userBecomeAdmin"
             ></sw-switch-field>
 
             <sw-entity-multi-select
                     v-if="!rule.userBecomeAdmin"
-                    v-model="rule.aclRoles"
+                    v-model:entityCollection="rule.aclRoles"
                     :label="$t('heptacom-admin-open-auth-client.components.rule-item.defaultAclRoles')"
                     entityName="acl_role"
             ></sw-entity-multi-select>

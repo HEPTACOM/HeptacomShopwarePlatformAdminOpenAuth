@@ -19,6 +19,12 @@ export default {
         this.loadData();
     },
 
+    computed: {
+        assetFilter() {
+            return Shopware.Filter.getByName('asset');
+        },
+    },
+
     methods: {
         loadData() {
             this.isLoading = true;

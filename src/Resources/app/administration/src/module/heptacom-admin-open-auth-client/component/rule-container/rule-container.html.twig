@@ -3,16 +3,19 @@
         <sw-loader v-if="isLoading"></sw-loader>
 
         <template v-else>
-            <heptacom-admin-open-auth-client-rule-item
+            <template
                 v-for="rule in sortedRules"
                 :key="rule.id"
-                :rule="rule"
-                :client="client"
-                @conditions-deleted="conditionsDeleted"
-                @move-up="moveRuleUp(rule)"
-                @move-down="moveRuleDown(rule)"
-                @delete="deleteRule(rule)"
-            ></heptacom-admin-open-auth-client-rule-item>
+            >
+                <heptacom-admin-open-auth-client-rule-item
+                    :rule="rule"
+                    :client="client"
+                    @conditions-deleted="conditionsDeleted"
+                    @move-up="moveRuleUp(rule)"
+                    @move-down="moveRuleDown(rule)"
+                    @delete="deleteRule(rule)"
+                ></heptacom-admin-open-auth-client-rule-item>
+            </template>
 
             <sw-alert
                 v-if="sortedRules.length === 0"
