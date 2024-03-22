@@ -13,32 +13,32 @@
                     :label="$t('heptacomAdminOpenAuthClient.providerFields.saml2.identityProviderMetadataUrl')"
                     :help-text="$t('heptacomAdminOpenAuthClient.providerFields.saml2.identityProviderMetadataUrl-help')"
                     :placeholder="$t('heptacomAdminOpenAuthClient.providerFields.saml2.identityProviderMetadataUrl-placeholder')"
-                    v-model="item.config.identityProviderMetadataUrl"
+                    v-model:value="item.config.identityProviderMetadataUrl"
                 ></sw-url-field>
                 <sw-textarea-field
                     :disabled="!!item.config.identityProviderMetadataUrl"
                     :label="$t('heptacomAdminOpenAuthClient.providerFields.saml2.identityProviderMetadataXml')"
                     :help-text="$t('heptacomAdminOpenAuthClient.providerFields.saml2.identityProviderMetadataXml-help')"
-                    v-model="item.config.identityProviderMetadataXml"
+                    v-model:value="item.config.identityProviderMetadataXml"
                 ></sw-textarea-field>
 
                 <!-- manual config -->
                 <sw-text-field
                     :disabled="!!item.config.identityProviderMetadataUrl || !!item.config.identityProviderMetadataXml"
                     :label="$t('heptacomAdminOpenAuthClient.providerFields.saml2.identityProviderEntityId')"
-                    v-model="item.config.identityProviderEntityId"
+                    v-model:value="item.config.identityProviderEntityId"
                 ></sw-text-field>
                 <sw-url-field
                     :omitUrlHash="true"
                     :omitUrlSearch="true"
                     :disabled="!!item.config.identityProviderMetadataUrl || !!item.config.identityProviderMetadataXml"
                     :label="$t('heptacomAdminOpenAuthClient.providerFields.saml2.identityProviderSsoUrl')"
-                    v-model="item.config.identityProviderSsoUrl"
+                    v-model:value="item.config.identityProviderSsoUrl"
                 ></sw-url-field>
                 <sw-textarea-field
                     :disabled="!!item.config.identityProviderMetadataUrl || !!item.config.identityProviderMetadataXml"
                     :label="$t('heptacomAdminOpenAuthClient.providerFields.saml2.identityProviderCertificate')"
-                    v-model="item.config.identityProviderCertificate"
+                    v-model:value="item.config.identityProviderCertificate"
                 ></sw-textarea-field>
             </sw-card>
         {% endblock %}
@@ -52,7 +52,7 @@
                                  :options="availableAuthnContexts"
                                  :help-text="$t('heptacomAdminOpenAuthClient.providerFields.saml2.security.requestedAuthnContextsHelp')"
                                  :placeholder="$t('heptacomAdminOpenAuthClient.providerFields.saml2.security.requestedAuthnContextsPlaceholder')"
-                                 v-model="item.config.requestedAuthnContext"
+                                 v-model:value="item.config.requestedAuthnContext"
                 >
                 </sw-multi-select>
             </sw-card>
@@ -66,11 +66,13 @@
                 {% block heptacom_admin_open_auth_provider_saml2_settings_attribute_mapping_inner %}
                     <sw-select-field :label="$t('heptacomAdminOpenAuthClient.providerFields.saml2.attributeMapping.templateSelect')"
                                      :placeholder="$t('heptacomAdminOpenAuthClient.providerFields.saml2.attributeMapping.templateSelect-placeholder')"
-                                     v-model="selectedMappingTemplate"
+                                     v-model:value="selectedMappingTemplate"
                     >
-                        <option v-for="(mappedAttributes, templateKey) of attributeMappingTemplates" :value="templateKey">
-                            {{ $t('heptacomAdminOpenAuthClient.providerFields.saml2.attributeMapping.template.' + templateKey) }}
-                        </option>
+                        <template v-for="(mappedAttributes, templateKey) of attributeMappingTemplates">
+                            <option :value="templateKey">
+                                {{ $t('heptacomAdminOpenAuthClient.providerFields.saml2.attributeMapping.template.' + templateKey) }}
+                            </option>
+                        </template>
                     </sw-select-field>
 
                     <div class="sw-field">
@@ -85,10 +87,11 @@
                         </sw-button>
                     </div>
 
-                    <sw-text-field v-for="mappedProperty of availableProperties"
-                                   :label="$t('heptacomAdminOpenAuthClient.providerFields.saml2.attributeMapping.field.' + mappedProperty)"
-                                   v-model="item.config.attributeMapping[mappedProperty]"
-                    ></sw-text-field>
+                    <template v-for="mappedProperty of availableProperties">
+                        <sw-text-field :label="$t('heptacomAdminOpenAuthClient.providerFields.saml2.attributeMapping.field.' + mappedProperty)"
+                                       v-model:value="item.config.attributeMapping[mappedProperty]"
+                        ></sw-text-field>
+                    </template>
                 {% endblock %}
             </sw-card>
         {% endblock %}

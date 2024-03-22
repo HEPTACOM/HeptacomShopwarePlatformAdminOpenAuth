@@ -4,11 +4,11 @@
             required
             :label="$t('heptacomAdminOpenAuthClient.providerFields.keycloak.keycloakOidcJson')"
             :placeholder="jsonPlaceholder"
-            v-model="item.config.keycloakOidcJson"
+            v-model:value="item.config.keycloakOidcJson"
         ></sw-textarea-field>
         <heptacom-admin-open-auth-scope-field
             :label="$t('heptacomAdminOpenAuthClient.providerFields.keycloak.additionalScopes')"
-            v-model="item.config.scopes"
+            v-model:value="item.config.scopes"
         ></heptacom-admin-open-auth-scope-field>
     </sw-card>
 {% endblock %}

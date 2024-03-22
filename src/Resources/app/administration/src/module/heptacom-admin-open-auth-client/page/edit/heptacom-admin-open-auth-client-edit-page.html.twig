@@ -50,7 +50,7 @@
                         :disabled="isLoading"
                         :isLoading="isLoading"
                         @click.prevent="saveItem"
-                        v-model="isSaveSuccessful"
+                        v-model:value="isSaveSuccessful"
                         variant="primary"
                     >
                         {{ $t('heptacom-admin-open-auth-client.pages.edit.actions.save') }}
@@ -72,34 +72,34 @@
                                     {% block heptacom_admin_open_auth_client_edit_page_content_base_settings_inner_name %}
                                         <sw-text-field
                                             :label="$t('heptacom-admin-open-auth-client.pages.edit.fields.name')"
-                                            v-model="item.name"
+                                            v-model:value="item.name"
                                         ></sw-text-field>
                                     {% endblock %}
                                     {% block heptacom_admin_open_auth_client_edit_page_content_base_settings_inner_active %}
                                         <sw-switch-field
                                             :label="$t('heptacom-admin-open-auth-client.pages.edit.fields.active')"
-                                            v-model="item.active"
+                                            v-model:value="item.active"
                                         ></sw-switch-field>
                                     {% endblock %}
                                     {% block heptacom_admin_open_auth_client_edit_page_content_base_settings_inner_can_login %}
                                         <sw-switch-field
                                             :disabled="!item.active"
                                             :label="$t('heptacom-admin-open-auth-client.pages.edit.fields.login')"
-                                            v-model="item.login"
+                                            v-model:value="item.login"
                                         ></sw-switch-field>
                                     {% endblock %}
                                     {% block heptacom_admin_open_auth_client_edit_page_content_base_settings_inner_can_connect %}
                                         <sw-switch-field
                                             :disabled="!item.active"
                                             :label="$t('heptacom-admin-open-auth-client.pages.edit.fields.connect')"
-                                            v-model="item.connect"
+                                            v-model:value="item.connect"
                                         ></sw-switch-field>
                                     {% endblock %}
                                     {% block heptacom_admin_open_auth_client_edit_page_content_base_settings_inner_store_user_token %}
                                         <sw-switch-field
                                             :disabled="!item.active"
                                             :label="$t('heptacom-admin-open-auth-client.pages.edit.fields.storeUserToken')"
-                                            v-model="item.storeUserToken"
+                                            v-model:value="item.storeUserToken"
                                         ></sw-switch-field>
                                     {% endblock %}
                                     {% block heptacom_admin_open_auth_client_edit_page_content_base_settings_inner_keep_user_updated %}
@@ -107,7 +107,7 @@
                                             :disabled="!item.active"
                                             :label="$t('heptacom-admin-open-auth-client.pages.edit.fields.keepUserUpdated')"
                                             :helpText="$t('heptacom-admin-open-auth-client.pages.edit.fields.keepUserUpdatedHelpText')"
-                                            v-model="item.keepUserUpdated"
+                                            v-model:value="item.keepUserUpdated"
                                         ></sw-switch-field>
                                     {% endblock %}
                                     {% block heptacom_admin_open_auth_client_edit_page_content_base_settings_inner_redirect_uri %}
