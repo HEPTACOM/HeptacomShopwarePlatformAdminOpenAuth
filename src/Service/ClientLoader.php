@@ -20,12 +20,12 @@ use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\Uuid\Uuid;
 
-final class ClientLoader implements ClientLoaderInterface
+final readonly class ClientLoader implements ClientLoaderInterface
 {
     public function __construct(
-        private readonly ClientProviderRepositoryContract $providers,
-        private readonly EntityRepository $clientsRepository,
-        private readonly ClientFactoryContract $clientFactory
+        private ClientProviderRepositoryContract $providers,
+        private EntityRepository $clientsRepository,
+        private ClientFactoryContract $clientFactory
     ) {
     }
 

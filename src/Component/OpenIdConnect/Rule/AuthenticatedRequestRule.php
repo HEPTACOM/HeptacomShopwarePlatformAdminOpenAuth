@@ -186,7 +186,7 @@ class AuthenticatedRequestRule extends RuleContract
             );
 
             return $this->validateExpressionResult($evaluatedExpression);
-        } catch (\Throwable $e) {
+        } catch (\Throwable) {
             return false;
         }
     }

@@ -12,11 +12,11 @@ use Shopware\Core\Framework\Context;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 
-final class RedirectBehaviourFactoryService implements RedirectBehaviourFactoryInterface
+final readonly class RedirectBehaviourFactoryService implements RedirectBehaviourFactoryInterface
 {
     public function __construct(
-        private readonly ClientLoaderInterface $clientLoader,
-        private readonly RouterInterface $router
+        private ClientLoaderInterface $clientLoader,
+        private RouterInterface $router
     ) {
     }
 

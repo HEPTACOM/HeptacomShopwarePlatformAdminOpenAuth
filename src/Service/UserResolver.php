@@ -29,18 +29,18 @@ use Shopware\Core\Maintenance\User\Service\UserProvisioner;
 use Shopware\Core\System\Language\LanguageEntity;
 use Shopware\Core\System\User\UserDefinition;
 
-final class UserResolver implements UserResolverInterface
+final readonly class UserResolver implements UserResolverInterface
 {
     public function __construct(
-        private readonly EntityRepository $userRepository,
-        private readonly EntityRepository $languageRepository,
-        private readonly Connection $connection,
-        private readonly UserProvisioner $userProvisioner,
-        private readonly LoginInterface $login,
-        private readonly UserEmailInterface $userEmail,
-        private readonly UserKeyInterface $userKey,
-        private readonly UserTokenInterface $userToken,
-        private readonly ClientFeatureCheckerInterface $clientFeatureChecker
+        private EntityRepository $userRepository,
+        private EntityRepository $languageRepository,
+        private Connection $connection,
+        private UserProvisioner $userProvisioner,
+        private LoginInterface $login,
+        private UserEmailInterface $userEmail,
+        private UserKeyInterface $userKey,
+        private UserTokenInterface $userToken,
+        private ClientFeatureCheckerInterface $clientFeatureChecker
     ) {
     }
 
