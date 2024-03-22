@@ -67,6 +67,10 @@ export default {
             }
 
             return result;
+        },
+
+        dateFilter() {
+            return Shopware.Filter.getByName('date');
         }
     },
 
