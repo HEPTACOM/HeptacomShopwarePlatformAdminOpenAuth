@@ -16,10 +16,10 @@ use Shopware\Core\Framework\Uuid\Uuid;
 use Shopware\Core\System\User\UserCollection;
 use Shopware\Core\System\User\UserDefinition;
 
-final class UserEmail implements UserEmailInterface
+final readonly class UserEmail implements UserEmailInterface
 {
     public function __construct(
-        private readonly EntityRepository $userEmailsRepository,
+        private EntityRepository $userEmailsRepository,
     ) {
     }
 

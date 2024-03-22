@@ -17,16 +17,16 @@ use Shopware\Core\Framework\DataAbstractionLayer\Search\Sorting\FieldSorting;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 
-final class OpenAuthenticationFlow implements OpenAuthenticationFlowInterface
+final readonly class OpenAuthenticationFlow implements OpenAuthenticationFlowInterface
 {
     public function __construct(
-        private readonly UserResolverInterface $userResolver,
-        private readonly EntityRepository $clientsRepository,
-        private readonly EntityRepository $loginsRepository,
-        private readonly EntityRepository $userEmailsRepository,
-        private readonly EntityRepository $userKeysRepository,
-        private readonly EntityRepository $userTokensRepository,
-        private readonly RouterInterface $router,
+        private UserResolverInterface $userResolver,
+        private EntityRepository $clientsRepository,
+        private EntityRepository $loginsRepository,
+        private EntityRepository $userEmailsRepository,
+        private EntityRepository $userKeysRepository,
+        private EntityRepository $userTokensRepository,
+        private RouterInterface $router,
     ) {
     }
 

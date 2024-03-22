@@ -16,8 +16,8 @@ class LoginsCleanupTaskHandler extends ScheduledTaskHandler
 {
     public function __construct(
         EntityRepository $scheduledTaskRepository,
-        private EntityRepository $loginsRepository,
-        private LoggerInterface $logger,
+        private readonly EntityRepository $loginsRepository,
+        private readonly LoggerInterface $logger,
     ) {
         parent::__construct($scheduledTaskRepository);
     }

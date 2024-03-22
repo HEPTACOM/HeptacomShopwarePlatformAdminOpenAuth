@@ -15,10 +15,10 @@ use Shopware\Core\Framework\Uuid\Uuid;
 use Shopware\Core\System\User\UserCollection;
 use Shopware\Core\System\User\UserDefinition;
 
-final class UserKey implements UserKeyInterface
+final readonly class UserKey implements UserKeyInterface
 {
     public function __construct(
-        private readonly EntityRepository $userKeysRepository,
+        private EntityRepository $userKeysRepository,
     ) {
     }
 

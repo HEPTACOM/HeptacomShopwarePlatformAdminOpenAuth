@@ -13,12 +13,12 @@ use Shopware\Core\Framework\Uuid\Uuid;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 
-final class ConfirmStateFactory implements ConfirmStateFactoryInterface
+final readonly class ConfirmStateFactory implements ConfirmStateFactoryInterface
 {
     public function __construct(
-        private readonly EntityRepository $loginsRepository,
-        private readonly RouterInterface $router,
-        private readonly ClientFeatureCheckerInterface $clientFeatureChecker,
+        private EntityRepository $loginsRepository,
+        private RouterInterface $router,
+        private ClientFeatureCheckerInterface $clientFeatureChecker,
     ) {
     }
 
