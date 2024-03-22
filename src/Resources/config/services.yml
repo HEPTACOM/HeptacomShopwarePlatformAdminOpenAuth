@@ -34,9 +34,6 @@ services:
         Symfony\Component\EventDispatcher\EventSubscriberInterface:
             tags:
                 - 'kernel.event_subscriber'
-        Symfony\Component\Messenger\Handler\MessageHandlerInterface:
-            tags:
-                - 'messenger.message_handler'
         Symfony\Bundle\FrameworkBundle\Controller\AbstractController:
             public: true
             calls:

@@ -11,7 +11,9 @@ use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\RangeFilter;
 use Shopware\Core\Framework\MessageQueue\ScheduledTask\ScheduledTaskHandler;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
+#[AsMessageHandler(handles: LoginsCleanupTask::class)]
 class LoginsCleanupTaskHandler extends ScheduledTaskHandler
 {
     public function __construct(
@@ -20,11 +22,6 @@ class LoginsCleanupTaskHandler extends ScheduledTaskHandler
         private readonly LoggerInterface $logger,
     ) {
         parent::__construct($scheduledTaskRepository);
-    }
-
-    public static function getHandledMessages(): iterable
-    {
-        return [LoginsCleanupTask::class];
     }
 
     public function run(): void
