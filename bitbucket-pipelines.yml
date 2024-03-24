@@ -59,7 +59,6 @@ definitions:
                 <<: *default-step
                 name: Build and fix (composer.json, Pint, admin)
                 script:
-                    - bash setup-vendor.sh
                     - COMPOSER_EXTRA_ARGS=-vvv make -e cs-fix-composer-normalize
                     - |
                         if [[ $(git add -A -n | wc -l) -ne 0 ]]; then
@@ -124,7 +123,6 @@ definitions:
                 <<: *default-step
                 name: '*.json (Code style)'
                 script:
-                    - bash setup-vendor.sh
                     - COMPOSER_EXTRA_ARGS=-vvv make -e cs-json
         -   step: &test-code-style-translation
                 <<: *default-step
