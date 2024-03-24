@@ -1,0 +1,1 @@
+Canonical: https://www.heptacom.de/.well-known/security.txt
