@@ -38,6 +38,18 @@
             "de-DE": "Plugin name",
             "en-GB": "Plugin name"
         },
-        "shopware-plugin-class": "Heptacom\\ShopwarePlatform\\PluginName\\HeptacomShopwarePlatformPluginName"
+        "description": {
+            "de-DE": "HEPTACOM Shopware 6 Plugin",
+            "en-GB": "HEPTACOM Shopware 6 Plugin"
+        },
+        "shopware-plugin-class": "Heptacom\\ShopwarePlatform\\PluginName\\HeptacomShopwarePlatformPluginName",
+        "manufacturerLink": {
+            "de-DE": "https://www.heptacom.de/",
+            "en-GB": "https://www.heptacom.de/"
+        },
+        "supportLink": {
+            "de-DE": "https://www.heptacom.de/kontakt/",
+            "en-GB": "https://www.heptacom.de/kontakt/"
+        }
     }
 }
