@@ -72,11 +72,11 @@ definitions:
                             git add -A
                             git commit -m "$ make cs-fix-style"
                         fi
-                    - COMPOSER_EXTRA_ARGS=-vvv make -e build-administration
+                    - COMPOSER_EXTRA_ARGS=-vvv make -e build-assets
                     - |
                         if [[ $(git add -A -n | wc -l) -ne 0 ]]; then
                             git add -A
-                            git commit -m "$ make build-administration"
+                            git commit -m "$ make build-assets"
                         fi
                     - |
                         if [[ $(git rev-parse HEAD) != "${BITBUCKET_COMMIT}" ]]; then
@@ -133,12 +133,11 @@ definitions:
                     # delete php74 artifacts
                     - rm -rf composer.lock vendor
                     - PHPUNUHI_EXTRA_ARGS="--report-format=junit --report-output=.build/phpunuhi-report.xml" make -e cs-translation
-        -   step: &test-build-administration
+        -   step: &test-build-assets
                 <<: *default-step
-                name: Check administration is built
+                name: Check assets are built
                 script:
-                    - bash setup-vendor.sh
-                    - COMPOSER_EXTRA_ARGS=-vvv make -e build-administration
+                    - COMPOSER_EXTRA_ARGS=-vvv make -e build-assets
                     - 'test $(git add -A -n | wc -l) -eq 0'
 
 pipelines:
@@ -166,7 +165,7 @@ pipelines:
             -   parallel:
                     -   step: *test-code-style-translation
                     -   step: *test-code-style-composer-normalize
-                    -   step: *test-build-administration
+                    -   step: *test-build-assets
                     -   step: *test-code-style-php
                     -   step: *test-code-style-json
 

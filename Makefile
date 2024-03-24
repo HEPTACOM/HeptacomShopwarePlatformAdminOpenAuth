@@ -1,8 +1,10 @@
 SHELL := /bin/bash
+UNAME := $(shell sh -c 'uname -s 2>/dev/null || echo not')
 PHP := $(shell which php) $(PHP_EXTRA_ARGS) -derror_reporting=0
 COMPOSER := $(PHP) $(shell which composer) $(COMPOSER_EXTRA_ARGS)
 CURL := $(shell which curl)
 JQ := $(shell which jq)
+TAR := $(shell which tar)
 GREP := $(shell which grep)
 JSON_FILES := $(shell find . -name '*.json' -not -path './vendor/*' -not -path './.build/*')
 TRANSLATION_JSON_FILES := $(shell find src -name '*.json' | $(GREP) -v -e '/vendor/' -e '/node_modules/' | $(GREP) -e '/snippet')
@@ -19,6 +21,14 @@ PINT_FILE := dev-ops/bin/pint/vendor/bin/pint
 PHPCHURN_FILE := dev-ops/bin/php-churn/vendor/bin/churn
 PHPUNUHI_DIR := dev-ops/bin/phpunuhi
 PHPUNUHI_FILE := $(PHPUNUHI_DIR)/vendor/bin/phpunuhi
+
+ifeq ($(UNAME),Linux)
+	SHOPWARE_CLI_ARCHIVE := https://github.com/FriendsOfShopware/shopware-cli/releases/download/0.4.29/shopware-cli_Linux_x86_64.tar.gz
+endif
+ifeq ($(UNAME),Darwin)
+	SHOPWARE_CLI_ARCHIVE := https://github.com/FriendsOfShopware/shopware-cli/releases/download/0.4.29/shopware-cli_Darwin_arm64.tar.gz
+endif
+SHOPWARE_CLI_FILE := dev-ops/bin/shopware-cli
 
 .DEFAULT_GOAL := help
 .PHONY: help
@@ -37,15 +47,16 @@ clean: ## Cleans up all ignored files and directories
 	[[ ! -d .build ]] || rm -rf .build
 	[[ ! -f dev-ops/bin/composer-normalize ]] || rm -f dev-ops/bin/composer-normalize
 	[[ ! -f dev-ops/bin/composer-require-checker ]] || rm -f dev-ops/bin/composer-require-checker
+	[[ ! -f $(SHOPWARE_CLI_FILE) ]] || rm -f $(SHOPWARE_CLI_FILE)
 	[[ ! -d dev-ops/bin/composer-unused/vendor ]] || rm -rf dev-ops/bin/composer-unused/vendor
 	[[ ! -d dev-ops/bin/pint/vendor ]] || rm -rf dev-ops/bin/pint/vendor
 	[[ ! -f dev-ops/bin/phpmd ]] || rm -f dev-ops/bin/phpmd
 	[[ ! -d dev-ops/bin/phpstan/vendor ]] || rm -rf dev-ops/bin/phpstan/vendor
 	[[ ! -d dev-ops/bin/php-churn/vendor ]] || rm -rf dev-ops/bin/php-churn/vendor
 
-.PHONY: build-administration
-build-administration: vendor ## Builds any administration js, when administration is used
-	[[ ! -d vendor/shopware/administration ]] || dev-ops/bin/shopware/bin/build-administration
+.PHONY: build-assets
+build-assets: $(SHOPWARE_CLI_FILE) ## Builds assets
+	$(SHOPWARE_CLI_FILE) extension build .
 
 .PHONY: it
 it: cs-fix cs ## Fix code style
@@ -140,6 +151,11 @@ $(PHPUNUHI_FILE): ## Install phpunuhi executable
 
 $(PINT_FILE): ## Install pint executable
 	$(COMPOSER) install -d dev-ops/bin/pint
+
+$(SHOPWARE_CLI_FILE): ## Install shopware-cli executable
+	$(CURL) -L $(SHOPWARE_CLI_ARCHIVE) -o $(SHOPWARE_CLI_FILE).tar.gz
+	cd $(dir $(SHOPWARE_CLI_FILE)) && $(TAR) -xvzf $(notdir $(SHOPWARE_CLI_FILE)).tar.gz shopware-cli
+	rm $(SHOPWARE_CLI_FILE).tar.gz
 
 vendor:
 	[[ -f vendor/autoload.php ]] || $(COMPOSER) install

@@ -7,6 +7,7 @@
 # Ignore tools
 /dev-ops/bin/composer-normalize
 /dev-ops/bin/composer-require-checker
+/dev-ops/bin/shopware-cli
 /dev-ops/bin/composer-unused/vendor/
 /dev-ops/bin/pint/vendor/
 /dev-ops/bin/phpmd
