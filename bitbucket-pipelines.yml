@@ -81,7 +81,7 @@ definitions:
                     - |
                         if [[ $(git rev-parse HEAD) != "${BITBUCKET_COMMIT}" ]]; then
                             echo "Changes get pushed, new pipeline will run later see"
-                            echo "https://bitbucket.org/${BITBUCKET_REPO_FULL_NAME}/commits/" $(git rev-parse HEAD)
+                            echo "https://bitbucket.org/${BITBUCKET_REPO_FULL_NAME}/commits/"$(git rev-parse HEAD)
                             git push
                             exit 1
                         fi
