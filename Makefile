@@ -97,8 +97,9 @@ cs-composer-normalize: vendor $(COMPOSER_NORMALIZE_FILE) ## Run composer-normali
 cs-json: $(JSON_FILES) ## Run jq on every json file to ensure they are parsable and therefore valid
 
 .PHONY: cs-translation
-cs-translation: vendor .build $(PHPUNUHI_FILE) $(TRANSLATION_JSON_FILES__CHECK_TRANSLATION) ## Run phpunuhi for validating translation files
-	$(PHP) $(PHPUNUHI_FILE) $(PHPUNUHI_EXTRA_ARGS) validate --configuration=dev-ops/phpunuhi.xml
+cs-translation: .build $(PHPUNUHI_FILE) $(TRANSLATION_JSON_FILES__CHECK_TRANSLATION) ## Run phpunuhi for validating translation files
+	[[ -z "${CI}" ]] || $(PHP) $(PHPUNUHI_FILE) $(PHPUNUHI_EXTRA_ARGS) validate --configuration=dev-ops/phpunuhi.xml --report-format=junit --report-output=.build/phpunuhi-report.xml
+	[[ -n "${CI}" ]] || $(PHP) $(PHPUNUHI_FILE) $(PHPUNUHI_EXTRA_ARGS) validate --configuration=dev-ops/phpunuhi.xml
 
 .PHONY: cs-phpchurn
 cs-phpchurn: vendor .build $(PHPCHURN_FILE) ## Run php-churn for prediction of refactoring cases
@@ -125,7 +126,7 @@ cs-fix-style: .build $(PINT_FILE) ## Run pint for automatic code style fixes
 	[[ -n "${CI}" ]] || $(PHP) $(PINT_FILE) --config=dev-ops/pint.json
 
 .PHONY: cs-fix-translation
-cs-fix-translation: vendor .build $(PHPUNUHI_FILE) $(TRANSLATION_JSON_FILES__CHECK_TRANSLATION) ## Run phpunuhi add missing entries in translation files
+cs-fix-translation: .build $(PHPUNUHI_FILE) $(TRANSLATION_JSON_FILES__CHECK_TRANSLATION) ## Run phpunuhi add missing entries in translation files
 	$(PHP) $(PHPUNUHI_FILE) fix:structure --configuration=dev-ops/phpunuhi.xml
 
 $(PHPSTAN_FILE): ## Install phpstan executable

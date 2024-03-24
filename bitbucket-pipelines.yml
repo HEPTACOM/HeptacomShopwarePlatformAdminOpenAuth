@@ -128,9 +128,7 @@ definitions:
                 <<: *default-step
                 name: Analyse translations are complete
                 script:
-                    # delete php74 artifacts
-                    - rm -rf composer.lock vendor
-                    - PHPUNUHI_EXTRA_ARGS="--report-format=junit --report-output=.build/phpunuhi-report.xml" make -e cs-translation
+                    - make -e cs-translation
         -   step: &test-build-assets
                 <<: *default-step
                 name: Check assets are built
