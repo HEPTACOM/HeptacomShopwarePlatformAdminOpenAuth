@@ -139,26 +139,27 @@ definitions:
 pipelines:
     branches:
         main:
-            -   step: *keyword-check
-            -   step: *composer-low-install
             -   step: *build-fix-and-commit
             -   parallel:
-                    -   step: *test-code-style-composer-unused
+                    -   step: *keyword-check
                     -   step: *test-code-style-json
                     -   step: *test-code-style-translation
-        '*.*.x':
-            -   step: *tag-check
-            -   step: *keyword-check
             -   step: *composer-low-install
-            -   step: *test-code-style-translation
+            -   step: *test-code-style-composer-unused
+        '*.*.x':
             -   step: *build-fix-and-commit
+            -   parallel:
+                    -   step: *keyword-check
+                    -   step: *test-code-style-translation
+                    -   step: *test-code-style-composer-normalize
+                    -   step: *test-code-style-php
+                    -   step: *test-code-style-json
 
     tags:
         '*':
-            -   step: *tag-check
-            -   step: *keyword-check
-            -   step: *composer-low-install
             -   parallel:
+                    -   step: *tag-check
+                    -   step: *keyword-check
                     -   step: *test-code-style-translation
                     -   step: *test-code-style-composer-normalize
                     -   step: *test-build-assets
@@ -166,13 +167,14 @@ pipelines:
                     -   step: *test-code-style-json
 
     default:
-        -   step: *keyword-check
-        -   step: *composer-low-install
         -   step: *build-fix-and-commit
         -   parallel:
-                -   step: *test-code-style-translation
-                -   step: *test-code-style-composer-unused
+                -   step: *keyword-check
                 -   step: *test-code-style-json
+                -   step: *test-code-style-translation
+        -   step: *composer-low-install
+        -   parallel:
+                -   step: *test-code-style-composer-unused
                 -   step: *test-code-style-soft-require
 
     custom:
