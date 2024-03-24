@@ -1,4 +1,10 @@
+# Ignore OS
+.DS_Store
+
+# Ignore package managers
 /vendor/
+
+# Ignore tools
 /dev-ops/bin/composer-normalize
 /dev-ops/bin/composer-require-checker
 /dev-ops/bin/composer-unused/vendor/
@@ -9,11 +15,18 @@
 /dev-ops/bin/php-churn/vendor/
 /dev-ops/bin/phpunuhi/vendor/
 /dev-ops/bin/shopware/vendor
+
+# Ignore build folder
+/.build
 /setup-vendor.sh
 /composer.lock
 
-/.build
+# Ignore IDEs
 /.idea/*.iml
 /.idea/misc.xml
 /.idea/modules.xml
 /.idea/php.xml
+
+# Ignore non-prod-files
+*.js.map
+*.js.license.txt
