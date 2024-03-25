@@ -57,7 +57,7 @@ definitions:
                     - echo 'mkdir -p vendor; rm -rf vendor; mv .build/vendor-low vendor' > setup-vendor.sh
         -   step: &build-fix-and-commit
                 <<: *default-step
-                name: Build and fix (composer.json, ECS, admin)
+                name: Build and fix (composer.json, Pint, admin)
                 script:
                     - bash setup-vendor.sh
                     - COMPOSER_EXTRA_ARGS=-vvv make -e cs-fix-composer-normalize
@@ -66,11 +66,11 @@ definitions:
                             git add -A
                             git commit -m "$ make cs-fix-composer-normalize"
                         fi
-                    - COMPOSER_EXTRA_ARGS=-vvv make -e cs-fix-ecs
+                    - COMPOSER_EXTRA_ARGS=-vvv make -e cs-fix-style
                     - |
                         if [[ $(git add -A -n | wc -l) -ne 0 ]]; then
                             git add -A
-                            git commit -m "$ make cs-fix-ecs"
+                            git commit -m "$ make cs-fix-style"
                         fi
                     - COMPOSER_EXTRA_ARGS=-vvv make -e build-administration
                     - |
@@ -87,10 +87,9 @@ definitions:
                         fi
         -   step: &test-code-style-php
                 <<: *default-step
-                name: ECS (Code style)
+                name: Pint (Code style)
                 script:
-                    - bash setup-vendor.sh
-                    - COMPOSER_EXTRA_ARGS=-vvv make -e cs-ecs
+                    - COMPOSER_EXTRA_ARGS=-vvv make -e cs-style
         -   step: &test-code-style-phpstan
                 <<: *default-step
                 name: PHPStan (Static code analysis)
