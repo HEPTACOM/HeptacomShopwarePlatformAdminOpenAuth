@@ -62,7 +62,7 @@ class OpenIdConnectTokenVerifier
     {
         try {
             $token = $this->serializerManager->unserialize($idToken);
-            $payload = @json_decode($token->getPayload(), true) ?? [];
+            $payload = @\json_decode($token->getPayload(), true) ?? [];
         } catch (\InvalidArgumentException $e) {
             throw new OpenIdConnectException('Unable to decode id_token: ' . $e->getMessage(), $e);
         }
@@ -97,18 +97,18 @@ class OpenIdConnectTokenVerifier
 
         // try to verify all signatures
         /**
-         * @var int       $signatureIndex
+         * @var int $signatureIndex
          * @var Signature $signature
          */
         foreach ($token->getSignatures() as $signatureIndex => $signature) {
-            $algorithm = array_merge($signature->getProtectedHeader(), $signature->getHeader())['alg'] ?? null;
+            $algorithm = \array_merge($signature->getProtectedHeader(), $signature->getHeader())['alg'] ?? null;
 
             if (!$algorithm) {
                 continue;
             }
 
             if (!$this->verifier->getSignatureAlgorithmManager()->has($algorithm)) {
-                $this->logger->notice(sprintf('Could not verify JWT signature. Algorithm %s is not supported.', $algorithm));
+                $this->logger->notice(\sprintf('Could not verify JWT signature. Algorithm %s is not supported.', $algorithm));
 
                 continue;
             }
@@ -150,7 +150,7 @@ class OpenIdConnectTokenVerifier
 
     protected function verifyValidityTime(array $payload): bool
     {
-        $currentTime = time();
+        $currentTime = \time();
 
         $issuedAt = $payload['iat'] ?? ($currentTime + 1);
         $expiresAt = $payload['exp'] ?? 0;
@@ -166,9 +166,9 @@ class OpenIdConnectTokenVerifier
 
         $jwksUri = $config->getJwksUri();
 
-        $cacheKey = sprintf(
+        $cacheKey = \sprintf(
             'heptacom-admin-open-auth_jwks_%s',
-            md5($jwksUri),
+            \md5($jwksUri),
         );
         $cachedJwks = $this->cache->getItem($cacheKey);
         if (!$cachedJwks->isHit()) {
@@ -185,9 +185,7 @@ class OpenIdConnectTokenVerifier
                 $cachedJwks->expiresAfter(self::CACHE_TTL);
                 $this->cache->save($cachedJwks);
             } catch (ClientExceptionInterface $e) {
-                throw new OpenIdConnectException(
-                    'Retrieving JWK-Set for token signature verification failed: ' . $e->getMessage()
-                );
+                throw new OpenIdConnectException('Retrieving JWK-Set for token signature verification failed: ' . $e->getMessage());
             }
         }
 

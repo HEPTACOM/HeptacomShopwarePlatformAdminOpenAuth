@@ -1,8 +1,10 @@
 SHELL := /bin/bash
+UNAME := $(shell sh -c 'uname -s 2>/dev/null || echo not')
 PHP := $(shell which php) $(PHP_EXTRA_ARGS) -derror_reporting=0
 COMPOSER := $(PHP) $(shell which composer) $(COMPOSER_EXTRA_ARGS)
 CURL := $(shell which curl)
 JQ := $(shell which jq)
+TAR := $(shell which tar)
 GREP := $(shell which grep)
 JSON_FILES := $(shell find . -name '*.json' -not -path './vendor/*' -not -path './.build/*')
 TRANSLATION_JSON_FILES := $(shell find src -name '*.json' | $(GREP) -v -e '/vendor/' -e '/node_modules/' | $(GREP) -e '/snippet')
@@ -14,14 +16,21 @@ COMPOSER_REQUIRE_CHECKER_PHAR := https://github.com/maglnet/ComposerRequireCheck
 COMPOSER_REQUIRE_CHECKER_FILE := dev-ops/bin/composer-require-checker
 PHPMD_PHAR := https://github.com/phpmd/phpmd/releases/download/2.13.0/phpmd.phar
 PHPMD_FILE := dev-ops/bin/phpmd
-PSALM_FILE := dev-ops/bin/psalm/vendor/bin/psalm
 COMPOSER_UNUSED_FILE := dev-ops/bin/composer-unused/vendor/bin/composer-unused
-EASY_CODING_STANDARD_FILE := dev-ops/bin/easy-coding-standard/vendor/bin/ecs
+PINT_FILE := dev-ops/bin/pint/vendor/bin/pint
 PHPCHURN_FILE := dev-ops/bin/php-churn/vendor/bin/churn
 PHPUNUHI_DIR := dev-ops/bin/phpunuhi
 PHPUNUHI_FILE := $(PHPUNUHI_DIR)/vendor/bin/phpunuhi
 FROSH_PLUGIN_UPLOAD_PHAR := https://github.com/FriendsOfShopware/FroshPluginUploader/releases/download/0.3.19/frosh-plugin-upload.phar
 FROSH_PLUGIN_UPLOAD_FILE := dev-ops/bin/frosh-plugin-upload
+
+ifeq ($(UNAME),Linux)
+	SHOPWARE_CLI_ARCHIVE := https://github.com/FriendsOfShopware/shopware-cli/releases/download/0.4.29/shopware-cli_Linux_x86_64.tar.gz
+endif
+ifeq ($(UNAME),Darwin)
+	SHOPWARE_CLI_ARCHIVE := https://github.com/FriendsOfShopware/shopware-cli/releases/download/0.4.29/shopware-cli_Darwin_arm64.tar.gz
+endif
+SHOPWARE_CLI_FILE := dev-ops/bin/shopware-cli
 
 .DEFAULT_GOAL := help
 .PHONY: help
@@ -40,43 +49,38 @@ clean: ## Cleans up all ignored files and directories
 	[[ ! -d .build ]] || rm -rf .build
 	[[ ! -f dev-ops/bin/composer-normalize ]] || rm -f dev-ops/bin/composer-normalize
 	[[ ! -f dev-ops/bin/composer-require-checker ]] || rm -f dev-ops/bin/composer-require-checker
+	[[ ! -f $(SHOPWARE_CLI_FILE) ]] || rm -f $(SHOPWARE_CLI_FILE)
 	[[ ! -d dev-ops/bin/composer-unused/vendor ]] || rm -rf dev-ops/bin/composer-unused/vendor
-	[[ ! -d dev-ops/bin/easy-coding-standard/vendor ]] || rm -rf dev-ops/bin/easy-coding-standard/vendor
+	[[ ! -d dev-ops/bin/pint/vendor ]] || rm -rf dev-ops/bin/pint/vendor
 	[[ ! -f dev-ops/bin/phpmd ]] || rm -f dev-ops/bin/phpmd
 	[[ ! -d dev-ops/bin/phpstan/vendor ]] || rm -rf dev-ops/bin/phpstan/vendor
-	[[ ! -d dev-ops/bin/psalm/vendor ]] || rm -rf dev-ops/bin/psalm/vendor
 	[[ ! -d dev-ops/bin/php-churn/vendor ]] || rm -rf dev-ops/bin/php-churn/vendor
 
-.PHONY: build-administration
-build-administration: vendor ## Builds any administration js, when administration is used
-	[[ ! -d vendor/shopware/administration ]] || dev-ops/bin/shopware/bin/build-administration
+.PHONY: build-assets
+build-assets: $(SHOPWARE_CLI_FILE) ## Builds assets
+	$(SHOPWARE_CLI_FILE) extension build .
 
 .PHONY: it
 it: cs-fix cs ## Fix code style
 
 .PHONY: cs
-cs: cs-ecs cs-phpstan cs-psalm cs-phpmd cs-soft-require cs-composer-unused cs-composer-normalize cs-json cs-phpchurn cs-translation ## Run every code style check target
+cs: cs-style cs-phpstan cs-phpmd cs-soft-require cs-composer-unused cs-composer-normalize cs-json cs-phpchurn cs-translation ## Run every code style check target
 
-releasecheck: $(FROSH_PLUGIN_UPLOAD_FILE) ## Builds a community store ready zip file and validates it
-	[[ -d .build/store-build ]] || mkdir -p .build/store-build
-	git archive --format=tar HEAD | (cd .build/store-build && tar xf -)
-	[[ ! -d .build/store-build/.git ]] || rm -rf .build/store-build/.git
-	cp -a .git/ .build/store-build/.git/
-	(cd .build/store-build && ../../$(FROSH_PLUGIN_UPLOAD_FILE) plugin:zip:dir .)
-	$(FROSH_PLUGIN_UPLOAD_FILE) plugin:validate $(shell pwd)/.build/store-build/*.zip
+releasecheck: .build $(SHOPWARE_CLI_FILE) ## Builds a community store ready zip file and validates it
+	[[ ! -d .build/store-build ]] || rm -rf .build/store-build
+	$(SHOPWARE_CLI_FILE) extension zip . --output-directory=.build/store-build --git-commit=HEAD
+	(cd .build/store-build && unzip *-HEAD.zip)
+	$(SHOPWARE_CLI_FILE) extension validate .build/store-build/*
 
-.PHONY: cs-ecs
-cs-ecs: vendor .build $(EASY_CODING_STANDARD_FILE) ## Run easy-coding-standard for code style analysis
-	$(PHP) $(EASY_CODING_STANDARD_FILE) check --config=dev-ops/ecs.php
+.PHONY: cs-style
+cs-style: .build $(PINT_FILE) ## Run pint for code style analysis
+	[[ -z "${CI}" ]] || $(PHP) $(PINT_FILE) --test --config=dev-ops/pint.json --format=junit > .build/style.junit.xml
+	[[ -n "${CI}" ]] || $(PHP) $(PINT_FILE) --test --config=dev-ops/pint.json
 
 .PHONY: cs-phpstan
 cs-phpstan: vendor .build $(PHPSTAN_FILE) ## Run phpstan for static code analysis
 	[[ -z "${CI}" ]] || $(PHP) $(PHPSTAN_FILE) analyse --level 6 -c dev-ops/phpstan.neon --error-format=junit > .build/phpstan.junit.xml
 	[[ -n "${CI}" ]] || $(PHP) $(PHPSTAN_FILE) analyse --level 6 -c dev-ops/phpstan.neon
-
-.PHONY: cs-psalm
-cs-psalm: vendor .build $(PSALM_FILE) ## Run psalm for static code analysis
-	$(PHP) $(PSALM_FILE) -c $(shell pwd)/dev-ops/psalm.xml
 
 .PHONY: cs-phpmd
 cs-phpmd: vendor .build $(PHPMD_FILE) ## Run php mess detector for static code analysis
@@ -101,8 +105,9 @@ cs-composer-normalize: vendor $(COMPOSER_NORMALIZE_FILE) ## Run composer-normali
 cs-json: $(JSON_FILES) ## Run jq on every json file to ensure they are parsable and therefore valid
 
 .PHONY: cs-translation
-cs-translation: vendor .build $(PHPUNUHI_FILE) $(TRANSLATION_JSON_FILES__CHECK_TRANSLATION) ## Run phpunuhi for validating translation files
-	$(PHP) $(PHPUNUHI_FILE) $(PHPUNUHI_EXTRA_ARGS) validate --configuration=dev-ops/phpunuhi.xml
+cs-translation: .build $(PHPUNUHI_FILE) $(TRANSLATION_JSON_FILES__CHECK_TRANSLATION) ## Run phpunuhi for validating translation files
+	[[ -z "${CI}" ]] || $(PHP) $(PHPUNUHI_FILE) $(PHPUNUHI_EXTRA_ARGS) validate --configuration=dev-ops/phpunuhi.xml --report-format=junit --report-output=.build/phpunuhi-report.xml
+	[[ -n "${CI}" ]] || $(PHP) $(PHPUNUHI_FILE) $(PHPUNUHI_EXTRA_ARGS) validate --configuration=dev-ops/phpunuhi.xml
 
 .PHONY: cs-phpchurn
 cs-phpchurn: vendor .build $(PHPCHURN_FILE) ## Run php-churn for prediction of refactoring cases
@@ -117,18 +122,19 @@ $(TRANSLATION_JSON_FILES__CHECK_TRANSLATION):
 	@$(GREP) -so -e $(subst __CHECK_TRANSLATION,,$@) $(shell pwd)/dev-ops/phpunuhi.xml
 
 .PHONY: cs-fix ## Run all code style fixer that change files
-cs-fix: cs-fix-composer-normalize cs-fix-ecs cs-fix-translation
+cs-fix: cs-fix-composer-normalize cs-fix-style cs-fix-translation
 
 .PHONY: cs-fix-composer-normalize
 cs-fix-composer-normalize: vendor $(COMPOSER_NORMALIZE_FILE) ## Run composer-normalize for automatic composer.json style fixes
 	$(PHP) $(COMPOSER_NORMALIZE_FILE) --diff composer.json
 
-.PHONY: cs-fix-ecs
-cs-fix-ecs: vendor .build $(EASY_CODING_STANDARD_FILE) ## Run easy-coding-standard for automatic code style fixes
-	$(PHP) $(EASY_CODING_STANDARD_FILE) check --config=dev-ops/ecs.php --fix
+.PHONY: cs-fix-style
+cs-fix-style: .build $(PINT_FILE) ## Run pint for automatic code style fixes
+	[[ -z "${CI}" ]] || $(PHP) $(PINT_FILE) --config=dev-ops/pint.json --format=junit > .build/fix-style.junit.xml
+	[[ -n "${CI}" ]] || $(PHP) $(PINT_FILE) --config=dev-ops/pint.json
 
 .PHONY: cs-fix-translation
-cs-fix-translation: vendor .build $(PHPUNUHI_FILE) $(TRANSLATION_JSON_FILES__CHECK_TRANSLATION) ## Run phpunuhi add missing entries in translation files
+cs-fix-translation: .build $(PHPUNUHI_FILE) $(TRANSLATION_JSON_FILES__CHECK_TRANSLATION) ## Run phpunuhi add missing entries in translation files
 	$(PHP) $(PHPUNUHI_FILE) fix:structure --configuration=dev-ops/phpunuhi.xml
 
 $(PHPSTAN_FILE): ## Install phpstan executable
@@ -143,14 +149,8 @@ $(COMPOSER_REQUIRE_CHECKER_FILE): ## Install composer-require-checker executable
 $(PHPMD_FILE): ## Install phpmd executable
 	$(CURL) -L $(PHPMD_PHAR) -o $(PHPMD_FILE)
 
-$(PSALM_FILE): ## Install psalm executable
-	$(COMPOSER) install -d dev-ops/bin/psalm
-
 $(COMPOSER_UNUSED_FILE): ## Install composer-unused executable
 	$(COMPOSER) install -d dev-ops/bin/composer-unused
-
-$(EASY_CODING_STANDARD_FILE): ## Install easy-coding-standard executable
-	$(COMPOSER) install -d dev-ops/bin/easy-coding-standard
 
 $(PHPCHURN_FILE): ## Install php-churn executable
 	$(COMPOSER) install -d dev-ops/bin/php-churn
@@ -158,9 +158,13 @@ $(PHPCHURN_FILE): ## Install php-churn executable
 $(PHPUNUHI_FILE): ## Install phpunuhi executable
 	$(COMPOSER) install -d $(PHPUNUHI_DIR)
 
-$(FROSH_PLUGIN_UPLOAD_FILE): ## Install frosh-plugin-upload executable
-	$(CURL) -L $(FROSH_PLUGIN_UPLOAD_PHAR) -o $(FROSH_PLUGIN_UPLOAD_FILE)
-	[[ -x $(FROSH_PLUGIN_UPLOAD_FILE) ]] || chmod +x $(FROSH_PLUGIN_UPLOAD_FILE)
+$(PINT_FILE): ## Install pint executable
+	$(COMPOSER) install -d dev-ops/bin/pint
+
+$(SHOPWARE_CLI_FILE): ## Install shopware-cli executable
+	$(CURL) -L $(SHOPWARE_CLI_ARCHIVE) -o $(SHOPWARE_CLI_FILE).tar.gz
+	cd $(dir $(SHOPWARE_CLI_FILE)) && $(TAR) -xvzf $(notdir $(SHOPWARE_CLI_FILE)).tar.gz shopware-cli
+	rm $(SHOPWARE_CLI_FILE).tar.gz
 
 vendor:
 	[[ -f vendor/autoload.php ]] || $(COMPOSER) install

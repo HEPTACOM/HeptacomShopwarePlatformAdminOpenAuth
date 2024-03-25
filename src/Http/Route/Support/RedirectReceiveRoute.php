@@ -46,7 +46,7 @@ class RedirectReceiveRoute
             \parse_str((string) $request->getBody(), $postParams);
         }
 
-        $params = array_merge($getParams, $postParams);
+        $params = \array_merge($getParams, $postParams);
 
         $state = (string) ($params[$behaviour->stateKey] ?? '');
         $code = (string) ($params[$behaviour->codeKey] ?? '');

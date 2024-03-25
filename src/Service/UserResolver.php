@@ -119,7 +119,7 @@ final class UserResolver implements UserResolverInterface
 
     protected function findLocaleId(string $localeCode, Context $context): ?string
     {
-        if (empty(trim($localeCode))) {
+        if (empty(\trim($localeCode))) {
             return null;
         }
 
@@ -188,7 +188,7 @@ final class UserResolver implements UserResolverInterface
         unset($userChangeSet['aclRoles']);
 
         foreach ($userChangeSet as $key => $newValue) {
-            if (str_ends_with($key, '_id')) {
+            if (\str_ends_with($key, '_id')) {
                 $userChangeSet[$key] = Uuid::fromHexToBytes($newValue);
             }
         }
@@ -209,7 +209,7 @@ final class UserResolver implements UserResolverInterface
     {
         /** @var array<array-key, mixed>|false $user */
         $user = $this->connection->createQueryBuilder()
-            ->select(array_keys($userChangeSet))
+            ->select(\array_keys($userChangeSet))
             ->from(UserDefinition::ENTITY_NAME)
             ->where('id = :id')
             ->setParameter('id', Uuid::fromHexToBytes($userId))
@@ -221,7 +221,7 @@ final class UserResolver implements UserResolverInterface
         }
 
         foreach ($userChangeSet as $key => $newValue) {
-            if (str_ends_with($key, '_id')) {
+            if (\str_ends_with($key, '_id')) {
                 $newValue = Uuid::fromBytesToHex($newValue);
             }
 
@@ -249,10 +249,10 @@ final class UserResolver implements UserResolverInterface
             $currentAclRoleIds = [];
         }
 
-        $currentAclRoleIds = Uuid::fromBytesToHexList(array_column($currentAclRoleIds, 'acl_role_id'));
+        $currentAclRoleIds = Uuid::fromBytesToHexList(\array_column($currentAclRoleIds, 'acl_role_id'));
 
         // delete old
-        $toDelete = array_diff($currentAclRoleIds, $newAclRoles);
+        $toDelete = \array_diff($currentAclRoleIds, $newAclRoles);
         if (\count($toDelete) > 0) {
             $binToDelete = Uuid::fromHexToBytesList($toDelete);
             $this->connection->createQueryBuilder()
@@ -265,7 +265,7 @@ final class UserResolver implements UserResolverInterface
         }
 
         // insert new
-        $toAdd = array_diff($newAclRoles, $currentAclRoleIds);
+        $toAdd = \array_diff($newAclRoles, $currentAclRoleIds);
         if (\count($toAdd) > 0) {
             foreach ($toAdd as $aclRoleId) {
                 $this->connection->insert(

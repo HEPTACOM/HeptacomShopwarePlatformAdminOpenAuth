@@ -46,7 +46,7 @@ class ClientRuleValidator
     }
 
     /**
-     * Mostly copied from Shopware
+     * Mostly copied from Shopware.
      *
      * @see \Shopware\Core\Content\Rule\DataAbstractionLayer\RulePayloadUpdater::buildNested()
      */
@@ -71,7 +71,7 @@ class ClientRuleValidator
             }
 
             if ($rule['value'] !== null) {
-                $object->assign(json_decode((string) $rule['value'], true, 512, \JSON_THROW_ON_ERROR));
+                $object->assign(\json_decode((string) $rule['value'], true, 512, \JSON_THROW_ON_ERROR));
             }
 
             if ($object instanceof ContainerInterface) {
@@ -83,7 +83,7 @@ class ClientRuleValidator
 
             // BEGIN HEPTACOM CHANGE
             // try to wake up the object, as some rules only then deserialize all data
-            if (method_exists($object, '__wakeup')) {
+            if (\method_exists($object, '__wakeup')) {
                 $object->__wakeup();
             }
             // END HEPTACOM CHANGE

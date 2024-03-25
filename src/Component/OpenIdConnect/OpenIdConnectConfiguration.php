@@ -199,7 +199,7 @@ final class OpenIdConnectConfiguration extends Struct
 
     public function getScopes(): array
     {
-        if (array_search('openid', $this->scopes, true) === false) {
+        if (\array_search('openid', $this->scopes, true) === false) {
             $this->scopes[] = 'openid';
         }
 
@@ -214,13 +214,13 @@ final class OpenIdConnectConfiguration extends Struct
     public function getResponseTypeAuthorizationEndpoint(): string
     {
         $supported = $this->getResponseTypesSupported() ?? $this->responseTypeAuthorizationEndpoint;
-        $matches = array_intersect($supported, $this->responseTypeAuthorizationEndpoint);
+        $matches = \array_intersect($supported, $this->responseTypeAuthorizationEndpoint);
 
         if (\count($matches) < 1) {
             throw new OpenIdConnectException('No supported response type available for authorizationEndpoint requests.');
         }
 
-        return $matches[array_key_first($matches)];
+        return $matches[\array_key_first($matches)];
     }
 
     public function setResponseTypeAuthorizationEndpoint(array $responseTypeAuthorizationEndpoint): void
@@ -231,13 +231,13 @@ final class OpenIdConnectConfiguration extends Struct
     public function getResponseTypeTokenEndpoint(): string
     {
         $supported = $this->getResponseTypesSupported() ?? $this->responseTypeTokenEndpoint;
-        $matches = array_intersect($supported, $this->responseTypeTokenEndpoint);
+        $matches = \array_intersect($supported, $this->responseTypeTokenEndpoint);
 
         if (\count($matches) < 1) {
             throw new OpenIdConnectException('No supported response type available for tokenEndpoint requests.');
         }
 
-        return $matches[array_key_first($matches)];
+        return $matches[\array_key_first($matches)];
     }
 
     public function setResponseTypeTokenEndpoint(array $responseTypeTokenEndpoint): void

@@ -57,8 +57,8 @@ final class KeycloakProvider extends ClientProviderContract
         $config = new OpenIdConnectConfiguration();
         $config->assign($resolvedConfig);
 
-        $jsonConfig = @json_decode($resolvedConfig['keycloakOidcJson'] ?? '{}', true) ?? [];
-        $config->setDiscoveryDocumentUrl(sprintf('%srealms/%s/.well-known/openid-configuration', $jsonConfig['auth-server-url'] ?? 'https://not-available', $jsonConfig['realm'] ?? 'n.a.'));
+        $jsonConfig = @\json_decode($resolvedConfig['keycloakOidcJson'] ?? '{}', true) ?? [];
+        $config->setDiscoveryDocumentUrl(\sprintf('%srealms/%s/.well-known/openid-configuration', $jsonConfig['auth-server-url'] ?? 'https://not-available', $jsonConfig['realm'] ?? 'n.a.'));
         $config->setClientId($jsonConfig['resource'] ?? '');
         $config->setClientSecret(($jsonConfig['credentials'] ?? [])['secret'] ?? '');
 

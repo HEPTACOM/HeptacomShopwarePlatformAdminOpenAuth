@@ -67,11 +67,11 @@ final class CidaasProvider extends ClientProviderContract
 
         $config = new OpenIdConnectConfiguration();
         $config->assign($resolvedConfig);
-        $config->setDiscoveryDocumentUrl(sprintf('%s://%s/.well-known/openid-configuration', $organizationUrl->getScheme(), $organizationUrl->getHost()));
+        $config->setDiscoveryDocumentUrl(\sprintf('%s://%s/.well-known/openid-configuration', $organizationUrl->getScheme(), $organizationUrl->getHost()));
 
         $scopes = $config->getScopes();
-        array_push($scopes, 'profile');
-        $config->setScopes(array_unique($scopes));
+        \array_push($scopes, 'profile');
+        $config->setScopes(\array_unique($scopes));
 
         $service = $this->openIdConnectService->createWithConfig($config);
         $service->discoverWellKnown();

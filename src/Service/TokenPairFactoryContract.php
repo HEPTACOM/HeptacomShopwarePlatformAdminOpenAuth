@@ -35,7 +35,7 @@ class TokenPairFactoryContract
 
         if ($token->getExpiresIn() !== null) {
             $expires = \date_create()
-                ->setTimestamp(time() + $token->getExpiresIn())
+                ->setTimestamp(\time() + $token->getExpiresIn())
                 ->setTimezone(new \DateTimeZone('UTC'));
         }
 

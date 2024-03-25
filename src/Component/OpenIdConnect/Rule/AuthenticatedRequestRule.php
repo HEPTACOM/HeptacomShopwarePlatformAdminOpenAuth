@@ -182,7 +182,7 @@ class AuthenticatedRequestRule extends RuleContract
         try {
             $evaluatedExpression = JmesPath::search(
                 (string) $this->jmesPathExpression,
-                json_decode($response, true, 512, \JSON_THROW_ON_ERROR)
+                \json_decode($response, true, 512, \JSON_THROW_ON_ERROR)
             );
 
             return $this->validateExpressionResult($evaluatedExpression);
