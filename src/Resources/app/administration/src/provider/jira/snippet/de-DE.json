@@ -4,7 +4,7 @@
             "jira": {
                 "additionalScopes": "Anwendungsberechtigungen",
                 "clientId": "Anwendungsschlüssel",
-                "clientSecret": "Anwendungsgehemnis"
+                "clientSecret": "Anwendungsgeheimnis"
             }
         },
         "providers": {
