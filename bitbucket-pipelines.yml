@@ -96,12 +96,6 @@ definitions:
                 script:
                     - bash setup-vendor.sh
                     - COMPOSER_EXTRA_ARGS=-vvv make -e cs-phpstan
-        -   step: &test-code-style-psalm
-                <<: *default-step
-                name: Psalm (Static code analysis)
-                script:
-                    - bash setup-vendor.sh
-                    - COMPOSER_EXTRA_ARGS=-vvv make -e cs-psalm
         -   step: &test-code-style-phpmd
                 <<: *default-step
                 name: PHP Mess Detector (Static code analysis)
@@ -206,9 +200,7 @@ pipelines:
             -   parallel:
                     -   step: *test-code-style-phpmd
                     -   step: *test-code-style-phpstan
-                    -   step: *test-code-style-psalm
             -   step: *composer-low-install
             -   parallel:
                     -   step: *test-code-style-phpmd
                     -   step: *test-code-style-phpstan
-                    -   step: *test-code-style-psalm

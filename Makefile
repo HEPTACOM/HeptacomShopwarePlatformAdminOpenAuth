@@ -14,7 +14,6 @@ COMPOSER_REQUIRE_CHECKER_PHAR := https://github.com/maglnet/ComposerRequireCheck
 COMPOSER_REQUIRE_CHECKER_FILE := dev-ops/bin/composer-require-checker
 PHPMD_PHAR := https://github.com/phpmd/phpmd/releases/download/2.13.0/phpmd.phar
 PHPMD_FILE := dev-ops/bin/phpmd
-PSALM_FILE := dev-ops/bin/psalm/vendor/bin/psalm
 COMPOSER_UNUSED_FILE := dev-ops/bin/composer-unused/vendor/bin/composer-unused
 PINT_FILE := dev-ops/bin/pint/vendor/bin/pint
 PHPCHURN_FILE := dev-ops/bin/php-churn/vendor/bin/churn
@@ -42,7 +41,6 @@ clean: ## Cleans up all ignored files and directories
 	[[ ! -d dev-ops/bin/pint/vendor ]] || rm -rf dev-ops/bin/pint/vendor
 	[[ ! -f dev-ops/bin/phpmd ]] || rm -f dev-ops/bin/phpmd
 	[[ ! -d dev-ops/bin/phpstan/vendor ]] || rm -rf dev-ops/bin/phpstan/vendor
-	[[ ! -d dev-ops/bin/psalm/vendor ]] || rm -rf dev-ops/bin/psalm/vendor
 	[[ ! -d dev-ops/bin/php-churn/vendor ]] || rm -rf dev-ops/bin/php-churn/vendor
 
 .PHONY: build-administration
@@ -53,7 +51,7 @@ build-administration: vendor ## Builds any administration js, when administratio
 it: cs-fix cs ## Fix code style
 
 .PHONY: cs
-cs: cs-ecs cs-phpstan cs-psalm cs-phpmd cs-soft-require cs-composer-unused cs-composer-normalize cs-json cs-phpchurn cs-translation ## Run every code style check target
+cs: cs-style cs-phpstan cs-phpmd cs-soft-require cs-composer-unused cs-composer-normalize cs-json cs-phpchurn cs-translation ## Run every code style check target
 
 .PHONY: cs-style
 cs-style: .build $(PINT_FILE) ## Run pint for code style analysis
@@ -64,10 +62,6 @@ cs-style: .build $(PINT_FILE) ## Run pint for code style analysis
 cs-phpstan: vendor .build $(PHPSTAN_FILE) ## Run phpstan for static code analysis
 	[[ -z "${CI}" ]] || $(PHP) $(PHPSTAN_FILE) analyse --level 6 -c dev-ops/phpstan.neon --error-format=junit > .build/phpstan.junit.xml
 	[[ -n "${CI}" ]] || $(PHP) $(PHPSTAN_FILE) analyse --level 6 -c dev-ops/phpstan.neon
-
-.PHONY: cs-psalm
-cs-psalm: vendor .build $(PSALM_FILE) ## Run psalm for static code analysis
-	$(PHP) $(PSALM_FILE) -c $(shell pwd)/dev-ops/psalm.xml
 
 .PHONY: cs-phpmd
 cs-phpmd: vendor .build $(PHPMD_FILE) ## Run php mess detector for static code analysis
@@ -135,12 +129,8 @@ $(COMPOSER_REQUIRE_CHECKER_FILE): ## Install composer-require-checker executable
 $(PHPMD_FILE): ## Install phpmd executable
 	$(CURL) -L $(PHPMD_PHAR) -o $(PHPMD_FILE)
 
-$(PSALM_FILE): ## Install psalm executable
-	$(COMPOSER) install -d dev-ops/bin/psalm
-
 $(COMPOSER_UNUSED_FILE): ## Install composer-unused executable
 	$(COMPOSER) install -d dev-ops/bin/composer-unused
-
 
 $(PHPCHURN_FILE): ## Install php-churn executable
 	$(COMPOSER) install -d dev-ops/bin/php-churn
