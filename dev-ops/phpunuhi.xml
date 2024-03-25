@@ -4,7 +4,7 @@
     xsi:noNamespaceSchemaLocation="bin/phpunuhi/vendor/boxblinkracer/phpunuhi/config.xsd"
 >
     <translations>
-        <set name="Administration">
+        <set name="Administration global snippets">
             <format>
                 <json indent="4" sort="true"/>
             </format>

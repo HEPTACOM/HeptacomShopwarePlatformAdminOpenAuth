@@ -108,6 +108,10 @@ replaceInFiles(
     [__DIR__ . '/../README.md'],
     ['# Shopware Platform Plugin Project' => '# ' . $topicName]
 );
-removeSection([__DIR__ . '/../bitbucket-pipelines.yml', __DIR__ . '/../README.md']);
+removeSection([
+    __DIR__ . '/../bitbucket-pipelines.yml',
+    __DIR__ . '/../README.md',
+    __DIR__ . '/../HeptacomShopwarePlatformPluginName.php',
+]);
 
 \rename(__DIR__ . '/../src/HeptacomShopwarePlatformPluginName.php', __DIR__ . '/../src/HeptacomShopwarePlatform' . $topic . '.php');

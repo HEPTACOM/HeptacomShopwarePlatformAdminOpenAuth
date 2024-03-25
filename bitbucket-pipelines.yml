@@ -81,7 +81,7 @@ definitions:
                     - |
                         if [[ $(git rev-parse HEAD) != "${BITBUCKET_COMMIT}" ]]; then
                             echo "Changes get pushed, new pipeline will run later see"
-                            echo "https://bitbucket.org/${BITBUCKET_REPO_FULL_NAME}/commits/" $(git rev-parse HEAD)
+                            echo "https://bitbucket.org/${BITBUCKET_REPO_FULL_NAME}/commits/"$(git rev-parse HEAD)
                             git push
                             exit 1
                         fi
@@ -200,9 +200,7 @@ pipelines:
                         - rm dev-ops/init-plugin.php
                         - git add -A
                         - git commit -m "init-plugin pipeline"
-                        - git tag -am "Initial release" 0.1.0
                         - git push
-                        - git push origin 0.1.0
 # END-INIT-PLUGIN
         deep-check:
             -   step: *composer-high-install
