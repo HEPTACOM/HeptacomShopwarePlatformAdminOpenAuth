@@ -1,0 +1,9 @@
+build:
+    shopwareVersionConstraint: ~6.5.0
+    zip:
+        composer:
+            enabled: false
+        assets:
+            enabled: true
+            enable_es_build_for_admin: true
+            enable_es_build_for_storefront: true

@@ -59,7 +59,6 @@ definitions:
                 <<: *default-step
                 name: Build and fix (composer.json, Pint, admin)
                 script:
-                    - bash setup-vendor.sh
                     - COMPOSER_EXTRA_ARGS=-vvv make -e cs-fix-composer-normalize
                     - |
                         if [[ $(git add -A -n | wc -l) -ne 0 ]]; then
@@ -72,11 +71,11 @@ definitions:
                             git add -A
                             git commit -m "$ make cs-fix-style"
                         fi
-                    - COMPOSER_EXTRA_ARGS=-vvv make -e build-administration
+                    - COMPOSER_EXTRA_ARGS=-vvv make -e build-assets
                     - |
                         if [[ $(git add -A -n | wc -l) -ne 0 ]]; then
                             git add -A
-                            git commit -m "$ make build-administration"
+                            git commit -m "$ make build-assets"
                         fi
                     - |
                         if [[ $(git rev-parse HEAD) != "${BITBUCKET_COMMIT}" ]]; then
@@ -124,60 +123,58 @@ definitions:
                 <<: *default-step
                 name: '*.json (Code style)'
                 script:
-                    - bash setup-vendor.sh
                     - COMPOSER_EXTRA_ARGS=-vvv make -e cs-json
         -   step: &test-code-style-translation
                 <<: *default-step
                 name: Analyse translations are complete
                 script:
-                    # delete php74 artifacts
-                    - rm -rf composer.lock vendor
-                    - PHPUNUHI_EXTRA_ARGS="--report-format=junit --report-output=.build/phpunuhi-report.xml" make -e cs-translation
-        -   step: &test-build-administration
+                    - make -e cs-translation
+        -   step: &test-build-assets
                 <<: *default-step
-                name: Check administration is built
+                name: Check assets are built
                 script:
-                    - bash setup-vendor.sh
-                    - COMPOSER_EXTRA_ARGS=-vvv make -e build-administration
+                    - COMPOSER_EXTRA_ARGS=-vvv make -e build-assets
                     - 'test $(git add -A -n | wc -l) -eq 0'
 
 pipelines:
     branches:
         main:
-            -   step: *keyword-check
-            -   step: *composer-low-install
             -   step: *build-fix-and-commit
             -   parallel:
-                    -   step: *test-code-style-composer-unused
+                    -   step: *keyword-check
                     -   step: *test-code-style-json
                     -   step: *test-code-style-translation
-        '*.*.x':
-            -   step: *tag-check
-            -   step: *keyword-check
             -   step: *composer-low-install
-            -   step: *test-code-style-translation
+            -   step: *test-code-style-composer-unused
+        '*.*.x':
             -   step: *build-fix-and-commit
+            -   parallel:
+                    -   step: *keyword-check
+                    -   step: *test-code-style-translation
+                    -   step: *test-code-style-composer-normalize
+                    -   step: *test-code-style-php
+                    -   step: *test-code-style-json
 
     tags:
         '*':
-            -   step: *tag-check
-            -   step: *keyword-check
-            -   step: *composer-low-install
             -   parallel:
+                    -   step: *tag-check
+                    -   step: *keyword-check
                     -   step: *test-code-style-translation
                     -   step: *test-code-style-composer-normalize
-                    -   step: *test-build-administration
+                    -   step: *test-build-assets
                     -   step: *test-code-style-php
                     -   step: *test-code-style-json
 
     default:
-        -   step: *keyword-check
-        -   step: *composer-low-install
         -   step: *build-fix-and-commit
         -   parallel:
-                -   step: *test-code-style-translation
-                -   step: *test-code-style-composer-unused
+                -   step: *keyword-check
                 -   step: *test-code-style-json
+                -   step: *test-code-style-translation
+        -   step: *composer-low-install
+        -   parallel:
+                -   step: *test-code-style-composer-unused
                 -   step: *test-code-style-soft-require
 
     custom:

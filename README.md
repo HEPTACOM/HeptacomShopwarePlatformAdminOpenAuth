@@ -5,7 +5,7 @@ or run this in your clone
 php dev-ops/init-plugin.php $(basename $(pwd)) "ENTER HERE A SHORT NAME" "ENTER HERE A SHORT DESCRIPTION"
 rm dev-ops/init-plugin.php
 ```
-This will remove this hint, renames a lot of placeholders and ensures correct plugin JavaScript compilation.
+This will remove this hint, renames a lot of placeholders.
 # END-INIT-PLUGIN
 
 # Shopware Platform Plugin Project
