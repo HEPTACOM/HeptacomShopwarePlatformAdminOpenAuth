@@ -20,9 +20,6 @@
         "php": ">=8.2",
         "shopware/core": "^6.6"
     },
-    "require-dev": {
-        "shopware/administration": "*"
-    },
     "autoload": {
         "psr-4": {
             "Heptacom\\ShopwarePlatform\\PluginName\\": "src/"
