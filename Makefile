@@ -21,8 +21,6 @@ PINT_FILE := dev-ops/bin/pint/vendor/bin/pint
 PHPCHURN_FILE := dev-ops/bin/php-churn/vendor/bin/churn
 PHPUNUHI_DIR := dev-ops/bin/phpunuhi
 PHPUNUHI_FILE := $(PHPUNUHI_DIR)/vendor/bin/phpunuhi
-FROSH_PLUGIN_UPLOAD_PHAR := https://github.com/FriendsOfShopware/FroshPluginUploader/releases/download/0.3.19/frosh-plugin-upload.phar
-FROSH_PLUGIN_UPLOAD_FILE := dev-ops/bin/frosh-plugin-upload
 
 ifeq ($(UNAME),Linux)
 	SHOPWARE_CLI_ARCHIVE := https://github.com/FriendsOfShopware/shopware-cli/releases/download/0.4.29/shopware-cli_Linux_x86_64.tar.gz
