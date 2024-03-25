@@ -145,6 +145,13 @@ definitions:
                     - git commit -m "$ releasecheck"
                     - git tag 999.999.999
                     - make releasecheck
+        -   step: &build-store
+                <<: *default-step
+                name: Build for store
+                artifacts:
+                    - .build/store-build/*.zip
+                script:
+                    - make releasecheck
 
 pipelines:
     branches:
@@ -182,6 +189,7 @@ pipelines:
                     -   step: *test-build-assets
                     -   step: *test-code-style-php
                     -   step: *test-code-style-json
+            -   step: *build-store
             -   step:
                     image: atlassian/default-image:2
                     name: Mirror tags to Github
@@ -192,13 +200,13 @@ pipelines:
         -   step: *build-fix-and-commit
         -   parallel:
                 -   step: *keyword-check
+                -   step: *lint-store-readiness
                 -   step: *test-code-style-json
                 -   step: *test-code-style-translation
         -   step: *composer-low-install
         -   parallel:
                 -   step: *test-code-style-composer-unused
                 -   step: *test-code-style-soft-require
-                -   step: *lint-store-readiness
 
     custom:
         deep-check:

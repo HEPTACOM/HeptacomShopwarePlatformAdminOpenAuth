@@ -66,13 +66,11 @@ it: cs-fix cs ## Fix code style
 .PHONY: cs
 cs: cs-style cs-phpstan cs-phpmd cs-soft-require cs-composer-unused cs-composer-normalize cs-json cs-phpchurn cs-translation ## Run every code style check target
 
-releasecheck: $(FROSH_PLUGIN_UPLOAD_FILE) ## Builds a community store ready zip file and validates it
-	[[ -d .build/store-build ]] || mkdir -p .build/store-build
-	git archive --format=tar HEAD | (cd .build/store-build && tar xf -)
-	[[ ! -d .build/store-build/.git ]] || rm -rf .build/store-build/.git
-	cp -a .git/ .build/store-build/.git/
-	(cd .build/store-build && ../../$(FROSH_PLUGIN_UPLOAD_FILE) plugin:zip:dir .)
-	$(FROSH_PLUGIN_UPLOAD_FILE) plugin:validate $(shell pwd)/.build/store-build/*.zip
+releasecheck: .build $(SHOPWARE_CLI_FILE) ## Builds a community store ready zip file and validates it
+	[[ ! -d .build/store-build ]] || rm -rf .build/store-build
+	$(SHOPWARE_CLI_FILE) extension zip . --output-directory=.build/store-build --git-commit=HEAD
+	(cd .build/store-build && unzip *-HEAD.zip)
+	$(SHOPWARE_CLI_FILE) extension validate .build/store-build/*
 
 .PHONY: cs-style
 cs-style: .build $(PINT_FILE) ## Run pint for code style analysis
