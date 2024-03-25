@@ -4,6 +4,16 @@ build:
         composer:
             enabled: false
         assets:
-            enabled: true
+            enabled: false
             enable_es_build_for_admin: true
             enable_es_build_for_storefront: true
+        pack:
+            excludes:
+                paths:
+                    - .idea
+                    - .run
+                    - dev-ops
+                    - vendor
+                    - CLA.md
+                    - README.md
+                    - docker-compose.yml
