@@ -4,7 +4,7 @@
             "microsoft_azure_oidc": {
                 "additionalScopes": "Anwendungsberechtigungen",
                 "clientId": "Anwendungsschlüssel",
-                "clientSecret": "Anwendungsgehemnis",
+                "clientSecret": "Anwendungsgeheimnis",
                 "condition": {
                     "rule": {
                         "groupIds": "Gruppen-IDs"
