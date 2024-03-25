@@ -1,5 +1,7 @@
 # Unreleased
 
+# 6.0.2-rc.1
+
 **Fixed**
 
 * Amend typo in German snippets `heptacomAdminOpenAuthClient.providerFields.microsoft_azure_oidc.clientSecret` and `heptacomAdminOpenAuthClient.providerFields.jira.clientSecret`. See [Niklas Wolf's contribution on GitHub](https://github.com/HEPTACOM/HeptacomShopwarePlatformAdminOpenAuth/pull/21)
