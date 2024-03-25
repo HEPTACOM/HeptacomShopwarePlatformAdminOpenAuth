@@ -1,5 +1,9 @@
 # Unreleased
 
+**Behoben**
+
+* Schreibfehler in deutschen Textbausteinen `heptacomAdminOpenAuthClient.providerFields.microsoft_azure_oidc.clientSecret` und `heptacomAdminOpenAuthClient.providerFields.jira.clientSecret` behoben. Siehe [Niklas Wolf's Beitrag auf GitHub](https://github.com/HEPTACOM/HeptacomShopwarePlatformAdminOpenAuth/pull/21)
+
 # 6.0.1
 
 **Entfernt**
