@@ -101,7 +101,7 @@ final class Saml2ServiceProviderConfiguration extends Struct
                 'privateKey' => $this->serviceProviderPrivateKey,
             ],
             'idp' => $idpSettings['idp'] ?? [],
-            'security' => array_merge([
+            'security' => \array_merge([
                 'allowRepeatAttributeName' => true,
                 'authnRequestsSigned' => true,
                 'rejectUnsolicitedResponsesWithInResponseTo' => true,

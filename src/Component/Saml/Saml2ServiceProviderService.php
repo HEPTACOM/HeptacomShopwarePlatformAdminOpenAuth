@@ -51,9 +51,9 @@ class Saml2ServiceProviderService
             return true;
         }
 
-        $cacheKey = sprintf(
+        $cacheKey = \sprintf(
             'heptacom-admin-open-auth_metadata_%s',
-            md5($idpMetadataXmlUrl),
+            \md5($idpMetadataXmlUrl),
         );
         $cachedMetadata = $this->cache->getItem($cacheKey);
 
@@ -71,7 +71,7 @@ class Saml2ServiceProviderService
                 $cachedMetadata->expiresAfter(self::METADATA_CACHE_TTL);
                 $this->cache->save($cachedMetadata);
             } catch (ClientExceptionInterface $e) {
-                $message = sprintf(
+                $message = \sprintf(
                     'Could not discover SAML metadata from %s. %s',
                     $idpMetadataXmlUrl,
                     $e->getMessage()
@@ -88,9 +88,9 @@ class Saml2ServiceProviderService
     }
 
     /**
-     * @throws Saml2Exception
-     *
      * @return string|null The URL the user should be redirected to
+     *
+     * @throws Saml2Exception
      */
     public function getAuthnRequestRedirectUri(?string $relayState): string
     {
@@ -105,7 +105,7 @@ class Saml2ServiceProviderService
             $samlRequest = $this->decodeRequest($authnRequest->getRequest());
 
             if ($relayState !== null) {
-                $samlRequest = preg_replace('/ID="[^"]+"/', 'ID="' . self::ID_PREFIX . $relayState . '"', $samlRequest, 1);
+                $samlRequest = \preg_replace('/ID="[^"]+"/', 'ID="' . self::ID_PREFIX . $relayState . '"', $samlRequest, 1);
             }
             $samlRequest = $this->encodeRequest($samlRequest);
 
@@ -120,7 +120,7 @@ class Saml2ServiceProviderService
             }
 
             $uri = new Uri((string) $settings->getIdPSSOUrl());
-            $uri = $uri->withQuery(http_build_query($parameters));
+            $uri = $uri->withQuery(\http_build_query($parameters));
 
             return (string) $uri;
         } catch (\Exception $e) {
@@ -137,7 +137,7 @@ class Saml2ServiceProviderService
     }
 
     /**
-     * Creates the SAML Service Provider Metadata XML
+     * Creates the SAML Service Provider Metadata XML.
      *
      * @throws Saml2Exception
      */
@@ -149,7 +149,7 @@ class Saml2ServiceProviderService
             $errors = $settings->validateMetadata($metadata);
 
             if (\count($errors) > 0) {
-                $errorMessage = sprintf('Invalid SP metadata: %s', implode(', ', $errors));
+                $errorMessage = \sprintf('Invalid SP metadata: %s', \implode(', ', $errors));
 
                 throw new OneLoginSaml2Error($errorMessage, OneLoginSaml2Error::METADATA_SP_INVALID);
             }
@@ -164,7 +164,7 @@ class Saml2ServiceProviderService
     }
 
     /**
-     * Parse and verify incoming SAMLResponse
+     * Parse and verify incoming SAMLResponse.
      *
      * @throws Saml2Exception
      */
@@ -178,12 +178,12 @@ class Saml2ServiceProviderService
             $errors = $auth->getErrors();
 
             if (\count($errors) > 0) {
-                throw new OneLoginSaml2Error('Invalid response: ' . implode(', ', $errors));
+                throw new OneLoginSaml2Error('Invalid response: ' . \implode(', ', $errors));
             }
 
             return $auth;
         } catch (\Exception $e) {
-            $message = sprintf('Could not verify SAMLResponse: %s', $e->getMessage());
+            $message = \sprintf('Could not verify SAMLResponse: %s', $e->getMessage());
             $this->logger->error($message, $e->getTrace());
 
             throw new Saml2Exception($message, $e);
@@ -207,7 +207,7 @@ class Saml2ServiceProviderService
         try {
             return new Settings($this->config->getOneLoginSettings(), true);
         } catch (\Exception $e) {
-            $message = sprintf('Could not retrieve SAML settings: %s', $e->getMessage());
+            $message = \sprintf('Could not retrieve SAML settings: %s', $e->getMessage());
             $this->logger->critical($message, $e->getTrace());
 
             throw new Saml2Exception($message, $e);
@@ -216,9 +216,9 @@ class Saml2ServiceProviderService
 
     protected function decodeRequest(string $payload): string
     {
-        $encodedPayload = base64_decode($payload, true);
+        $encodedPayload = \base64_decode($payload, true);
 
-        $inflatedPayload = gzinflate($encodedPayload);
+        $inflatedPayload = \gzinflate($encodedPayload);
 
         return !$inflatedPayload ? $encodedPayload : $inflatedPayload;
     }
@@ -226,10 +226,10 @@ class Saml2ServiceProviderService
     protected function encodeRequest(string $payload): string
     {
         if ($this->getSaml2Settings()->shouldCompressRequests()) {
-            $payload = gzdeflate($payload);
+            $payload = \gzdeflate($payload);
         }
 
-        return base64_encode($payload);
+        return \base64_encode($payload);
     }
 
     /**

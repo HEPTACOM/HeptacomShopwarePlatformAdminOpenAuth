@@ -57,7 +57,7 @@ final class Saml2ServiceProviderClient extends ClientContract implements Metadat
             }
 
             $propertyValues = $auth->getAttribute($attributeName) ?? $auth->getAttributeWithFriendlyName($attributeName) ?? [];
-            $propertyValue = \count($propertyValues) > 0 ? $propertyValues[array_key_first($propertyValues)] : null;
+            $propertyValue = \count($propertyValues) > 0 ? $propertyValues[\array_key_first($propertyValues)] : null;
 
             if ($propertyValue === null) {
                 continue;

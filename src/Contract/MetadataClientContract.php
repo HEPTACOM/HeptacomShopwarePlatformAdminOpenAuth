@@ -10,12 +10,12 @@ namespace Heptacom\AdminOpenAuth\Contract;
 interface MetadataClientContract
 {
     /**
-     * Returns the mime type of the requested metadata
+     * Returns the mime type of the requested metadata.
      */
     public function getMetadataType(): string;
 
     /**
-     * Returns the metadata for this client, to be exposed
+     * Returns the metadata for this client, to be exposed.
      */
     public function getMetadata(): string;
 }

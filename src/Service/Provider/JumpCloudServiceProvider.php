@@ -27,7 +27,7 @@ final class JumpCloudServiceProvider extends Saml2ServiceProvider
     public function getInitialConfiguration(): array
     {
         $config = parent::getInitialConfiguration();
-        $config['attributeMapping'] = array_merge($config['attributeMapping'], [
+        $config['attributeMapping'] = \array_merge($config['attributeMapping'], [
             'firstName' => 'firstname',
             'lastName' => 'lastname',
             'email' => 'email',

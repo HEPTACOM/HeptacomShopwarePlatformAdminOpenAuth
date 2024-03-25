@@ -40,14 +40,14 @@ class OpenIdConnectService
     public function getAuthorizationUrl(array $params = []): string
     {
         $defaultParams = [
-            'scope' => implode(' ', $this->config->getScopes()),
+            'scope' => \implode(' ', $this->config->getScopes()),
             'response_type' => $this->config->getResponseTypeAuthorizationEndpoint(),
             'client_id' => $this->config->getClientId(),
             'redirect_uri' => $this->config->getRedirectUri(),
         ];
-        $queryParams = array_merge($defaultParams, $params);
+        $queryParams = \array_merge($defaultParams, $params);
 
-        return $this->getConfig()->getAuthorizationEndpoint() . '?' . http_build_query(
+        return $this->getConfig()->getAuthorizationEndpoint() . '?' . \http_build_query(
             $queryParams,
             '',
             '&',
@@ -64,13 +64,13 @@ class OpenIdConnectService
 
             OpenIdConnectRequestHelper::verifyRequestSuccess($request, $response);
 
-            $json = json_decode((string) $response->getBody(), true);
+            $json = \json_decode((string) $response->getBody(), true);
             $user = new OpenIdConnectUser();
             $user->assign($json);
 
             return $user;
         } catch (ClientExceptionInterface $e) {
-            $message = sprintf('Could not retrieve user info: %s', $e->getMessage());
+            $message = \sprintf('Could not retrieve user info: %s', $e->getMessage());
             $this->logger->error($message, $e->getTrace());
 
             throw new OpenIdConnectException($message);
@@ -81,7 +81,7 @@ class OpenIdConnectService
     {
         $supportedGrantTypes = $this->config->getGrantTypesSupported();
         if ($supportedGrantTypes !== null && !\in_array($grantType, $supportedGrantTypes, true)) {
-            $message = sprintf('%s is a not supported grant type for this identity provider', $grantType);
+            $message = \sprintf('%s is a not supported grant type for this identity provider', $grantType);
             $this->logger->critical($message);
 
             throw new OpenIdConnectException($message);
@@ -92,8 +92,8 @@ class OpenIdConnectService
             $headers = [
                 'Content-Type' => 'application/x-www-form-urlencoded',
             ];
-            $body = http_build_query(
-                array_merge([
+            $body = \http_build_query(
+                \array_merge([
                     'grant_type' => $grantType,
                     'response_type' => $this->config->getResponseTypeTokenEndpoint(),
                     'client_id' => $this->config->getClientId(),
@@ -109,7 +109,7 @@ class OpenIdConnectService
 
             OpenIdConnectRequestHelper::verifyRequestSuccess($request, $response);
 
-            $json = json_decode((string) $response->getBody(), true);
+            $json = \json_decode((string) $response->getBody(), true);
 
             $idToken = $json['id_token'] ?? null;
             if ($idToken) {
@@ -123,7 +123,7 @@ class OpenIdConnectService
 
             return $tokenResponse;
         } catch (ClientExceptionInterface $e) {
-            $message = sprintf('Could not retrieve access token: %s', $e->getMessage());
+            $message = \sprintf('Could not retrieve access token: %s', $e->getMessage());
             $this->logger->error($message, $e->getTrace());
 
             throw new OpenIdConnectException($message);
@@ -145,9 +145,9 @@ class OpenIdConnectService
             }
             $openIdConnectDiscoveryDocument = $this->config->getIssuer() . '/.well-known/openid-configuration';
         }
-        $cacheKey = sprintf(
+        $cacheKey = \sprintf(
             'heptacom-admin-open-auth_well-known_%s',
-            md5($openIdConnectDiscoveryDocument),
+            \md5($openIdConnectDiscoveryDocument),
         );
         $cachedWellKnown = $this->cache->getItem($cacheKey);
 
@@ -160,11 +160,11 @@ class OpenIdConnectService
 
                 OpenIdConnectRequestHelper::verifyRequestSuccess($request, $response);
 
-                $cachedWellKnown->set(json_decode((string) $response->getBody(), true));
+                $cachedWellKnown->set(\json_decode((string) $response->getBody(), true));
                 $cachedWellKnown->expiresAfter(self::WELL_KNOWN_CACHE_TTL);
                 $this->cache->save($cachedWellKnown);
             } catch (ClientExceptionInterface $e) {
-                $message = sprintf(
+                $message = \sprintf(
                     'Could not discover OpenID Connect metadata from %s. %s',
                     $openIdConnectDiscoveryDocument,
                     $e->getMessage()
