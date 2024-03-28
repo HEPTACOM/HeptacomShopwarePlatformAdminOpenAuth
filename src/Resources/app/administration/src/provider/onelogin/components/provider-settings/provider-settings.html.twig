@@ -1,13 +1,13 @@
 {% block heptacom_admin_open_auth_provider_onelogin_settings %}
     <sw-card position-identifier="heptacom-admin-open-auth-provider-onelogin-settings">
-        <sw-url-field
+        <heptacom-admin-open-auth-url-field
             required
             :omitUrlHash="true"
             :omitUrlSearch="true"
             :label="$t('heptacomAdminOpenAuthClient.providerFields.onelogin.organizationUrl')"
             placeholder="my-company.onelogin.com"
             v-model:value="item.config.organizationUrl"
-        ></sw-url-field>
+        ></heptacom-admin-open-auth-url-field>
         <sw-text-field
             required
             :label="$t('heptacomAdminOpenAuthClient.providerFields.onelogin.clientId')"

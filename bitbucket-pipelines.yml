@@ -24,10 +24,12 @@ definitions:
                 script:
                     - '[[ "${BITBUCKET_TAG}" == *"$(jq -r composer.json .version)" ]]'
                     - 'grep -qe "# ${BITBUCKET_TAG}" CHANGELOG.md'
+                    - 'grep -qe "# ${BITBUCKET_TAG}" CHANGELOG_de-DE.md'
                 after-script:
                     - 'test ${BITBUCKET_EXIT_CODE} -eq 0 || echo "Bitbucket tag: ${BITBUCKET_TAG}"'
                     - 'test ${BITBUCKET_EXIT_CODE} -eq 0 || (echo "composer.json version: " && jq -r composer.json .version)'
                     - "test ${BITBUCKET_EXIT_CODE} -eq 0 || (echo 'CHANGELOG.md versions: ' && grep -e '# ' CHANGELOG.md)'"
+                    - "test ${BITBUCKET_EXIT_CODE} -eq 0 || (echo 'CHANGELOG_de-DE.md versions: ' && grep -e '# ' CHANGELOG_de-DE.md)'"
         -   step: &composer-high-install
                 <<: *default-step
                 name: Install (High dependencies)
@@ -117,7 +119,6 @@ definitions:
                 <<: *default-step
                 name: composer.json (Code style)
                 script:
-                    - bash setup-vendor.sh
                     - COMPOSER_EXTRA_ARGS=-vvv make -e cs-composer-normalize
         -   step: &test-code-style-json
                 <<: *default-step

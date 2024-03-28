@@ -1,8 +1,11 @@
 # Unreleased
 
+# 6.0.2
+
 **Fixed**
 
 * Amend typo in German snippets `heptacomAdminOpenAuthClient.providerFields.microsoft_azure_oidc.clientSecret` and `heptacomAdminOpenAuthClient.providerFields.jira.clientSecret`. See [Niklas Wolf's contribution on GitHub](https://github.com/HEPTACOM/HeptacomShopwarePlatformAdminOpenAuth/pull/21)
+* Fixed Github issue #20 with Shopware provided URL field changing inputs in the configuration by using a custom URL field to allow usage of [goauthentik.io](https://goauthentik.io)
 
 # 6.0.1
 
