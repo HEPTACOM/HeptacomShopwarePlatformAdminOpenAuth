@@ -1,5 +1,10 @@
 {
     "require": {
-        "boxblinkracer/phpunuhi": "^1.6"
+        "boxblinkracer/phpunuhi": "^1.18"
+    },
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": false
+        }
     }
 }

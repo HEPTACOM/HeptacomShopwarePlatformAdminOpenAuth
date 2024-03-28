@@ -15,13 +15,10 @@ use PHPStan\Rules\RuleErrorBuilder;
 /**
  * @implements Rule<Class_>
  */
-final class ContractsHaveDocumentationRule implements Rule
+final readonly class ContractsHaveDocumentationRule implements Rule
 {
-    private ReflectionProvider $reflectionProvider;
-
-    public function __construct(ReflectionProvider $reflectionProvider)
+    public function __construct(private ReflectionProvider $reflectionProvider)
     {
-        $this->reflectionProvider = $reflectionProvider;
     }
 
     public function getNodeType(): string

@@ -4,7 +4,7 @@ rules:
 	- Heptacom\AdminOpenAuth\DevOps\PhpStan\Rule\InterfacesHaveDocumentationRule
 	- Shopware\Core\DevOps\StaticAnalyze\PHPStan\Rules\Deprecation\DeprecatedMethodsThrowDeprecationRule
 parameters:
-	level: 6
+	level: 8
 	checkMissingIterableValueType: false
 	inferPrivatePropertyTypeFromConstructor: true
 	paths:
