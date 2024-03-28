@@ -6,7 +6,7 @@
                 position-identifier="heptacom-admin-open-auth-provider-saml2-settings-idp"
             >
                 <!-- auto config -->
-                <sw-url-field
+                <heptacom-admin-open-auth-url-field
                     :omitUrlHash="true"
                     :omitUrlSearch="false"
                     :disabled="!!item.config.identityProviderMetadataXml"
@@ -14,7 +14,7 @@
                     :help-text="$t('heptacomAdminOpenAuthClient.providerFields.saml2.identityProviderMetadataUrl-help')"
                     :placeholder="$t('heptacomAdminOpenAuthClient.providerFields.saml2.identityProviderMetadataUrl-placeholder')"
                     v-model="item.config.identityProviderMetadataUrl"
-                ></sw-url-field>
+                ></heptacom-admin-open-auth-url-field>
                 <sw-textarea-field
                     :disabled="!!item.config.identityProviderMetadataUrl"
                     :label="$t('heptacomAdminOpenAuthClient.providerFields.saml2.identityProviderMetadataXml')"
@@ -28,13 +28,13 @@
                     :label="$t('heptacomAdminOpenAuthClient.providerFields.saml2.identityProviderEntityId')"
                     v-model="item.config.identityProviderEntityId"
                 ></sw-text-field>
-                <sw-url-field
+                <heptacom-admin-open-auth-url-field
                     :omitUrlHash="true"
                     :omitUrlSearch="true"
                     :disabled="!!item.config.identityProviderMetadataUrl || !!item.config.identityProviderMetadataXml"
                     :label="$t('heptacomAdminOpenAuthClient.providerFields.saml2.identityProviderSsoUrl')"
                     v-model="item.config.identityProviderSsoUrl"
-                ></sw-url-field>
+                ></heptacom-admin-open-auth-url-field>
                 <sw-textarea-field
                     :disabled="!!item.config.identityProviderMetadataUrl || !!item.config.identityProviderMetadataXml"
                     :label="$t('heptacomAdminOpenAuthClient.providerFields.saml2.identityProviderCertificate')"

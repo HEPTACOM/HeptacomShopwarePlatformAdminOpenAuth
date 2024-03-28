@@ -3,6 +3,7 @@
 **Behoben**
 
 * Schreibfehler in deutschen Textbausteinen `heptacomAdminOpenAuthClient.providerFields.microsoft_azure_oidc.clientSecret` und `heptacomAdminOpenAuthClient.providerFields.jira.clientSecret` behoben. Siehe [Niklas Wolf's Beitrag auf GitHub](https://github.com/HEPTACOM/HeptacomShopwarePlatformAdminOpenAuth/pull/21)
+* Eigenes URL Feld für Konfigurationen genutzt um automatische Änderungen vom Shopware URL Feld (GitHub Issue #20) zu verhindern um Benutzung von [goauthentik.io](https://goauthentik.io) zu ermöglichen
 
 # 6.0.1
 
