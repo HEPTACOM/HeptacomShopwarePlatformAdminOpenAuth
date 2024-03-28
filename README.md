@@ -18,7 +18,7 @@ HEPTACOM Shopware 6 Plugin
 
 ## System requirements
 
-* PHP 8.0 or above
+* PHP 8.2 or above
 
 
 ## Changelog
