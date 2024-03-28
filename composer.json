@@ -55,7 +55,7 @@
         "psr/cache": "^3.0",
         "psr/http-client": "^1.0",
         "psr/http-message": "^2.0",
-        "psr/log": "^2|^3",
+        "psr/log": "^2 || ^3",
         "shopware/core": "^6.6",
         "web-token/jwt-core": "^3.2",
         "web-token/jwt-signature": "^3.2",
