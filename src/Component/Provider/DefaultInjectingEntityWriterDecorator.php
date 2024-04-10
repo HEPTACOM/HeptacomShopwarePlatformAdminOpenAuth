@@ -46,7 +46,7 @@ abstract class DefaultInjectingEntityWriterDecorator implements EntityWriterInte
         return $this->decorated->upsert($definition, $rawData, $writeContext);
     }
 
-    public function insert(EntityDefinition $definition, array $rawData, WriteContext $writeContext)
+    public function insert(EntityDefinition $definition, array $rawData, WriteContext $writeContext): array
     {
         if ($definition->getEntityName() === ClientDefinition::ENTITY_NAME) {
             $provider = $this->getProvider();
@@ -63,7 +63,7 @@ abstract class DefaultInjectingEntityWriterDecorator implements EntityWriterInte
         return $this->decorated->insert($definition, $rawData, $writeContext);
     }
 
-    public function update(EntityDefinition $definition, array $rawData, WriteContext $writeContext)
+    public function update(EntityDefinition $definition, array $rawData, WriteContext $writeContext): array
     {
         return $this->decorated->update($definition, $rawData, $writeContext);
     }
