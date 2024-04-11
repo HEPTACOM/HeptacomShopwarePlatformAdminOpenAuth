@@ -1,5 +1,11 @@
 # Unreleased
 
+# 6.0.3
+
+**Fixed**
+
+* Fixed compatibility issue with Shopware 6.5.8.8. See [Johannes's contribution on GitHub](https://github.com/HEPTACOM/HeptacomShopwarePlatformAdminOpenAuth/pull/23)
+
 # 6.0.2
 
 **Fixed**
