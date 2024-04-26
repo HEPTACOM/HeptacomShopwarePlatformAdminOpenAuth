@@ -90,7 +90,7 @@ cs-soft-require: vendor .build $(COMPOSER_REQUIRE_CHECKER_FILE) ## Run composer-
 	$(PHP) $(COMPOSER_REQUIRE_CHECKER_FILE) check --config-file=$(shell pwd)/dev-ops/composer-soft-requirements.json composer.json
 
 .PHONY: cs-composer-normalize
-cs-composer-normalize: vendor $(COMPOSER_NORMALIZE_FILE) ## Run composer-normalize for composer.json style analysis
+cs-composer-normalize: $(COMPOSER_NORMALIZE_FILE) ## Run composer-normalize for composer.json style analysis
 	$(PHP) $(COMPOSER_NORMALIZE_FILE) --diff --dry-run --no-check-lock --no-update-lock composer.json
 
 .PHONY: cs-json
