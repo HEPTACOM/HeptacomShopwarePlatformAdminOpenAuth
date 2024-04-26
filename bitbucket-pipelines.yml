@@ -117,7 +117,6 @@ definitions:
                 <<: *default-step
                 name: composer.json (Code style)
                 script:
-                    - bash setup-vendor.sh
                     - COMPOSER_EXTRA_ARGS=-vvv make -e cs-composer-normalize
         -   step: &test-code-style-json
                 <<: *default-step
