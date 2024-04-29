@@ -1,5 +1,15 @@
 # Unreleased
 
+# 7.0.0-rc1
+
+**Hinzugefügt**
+
+* Kompatibilität mit Shopware 6.6 und zugehörigen Abhängigkeiten hinzugefügt
+
+**Entfernt**
+
+* Shopware 6.4 Kompatibilität wurde entfernt
+
 # 6.0.2
 
 **Behoben**

@@ -1,5 +1,15 @@
 # Unreleased
 
+# 7.0.0-rc1
+
+**Added**
+
+* Added Shopware 6.6 compatibility with related dependencies
+
+**Removed**
+
+* Removed Shopware 6.5 compatibility
+
 # 6.0.2
 
 **Fixed**
