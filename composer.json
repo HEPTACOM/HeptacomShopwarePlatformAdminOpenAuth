@@ -62,9 +62,6 @@
         "web-token/jwt-signature-algorithm-ecdsa": "^3.2",
         "web-token/jwt-signature-algorithm-rsa": "^3.2"
     },
-    "require-dev": {
-        "shopware/administration": "*"
-    },
     "autoload": {
         "psr-4": {
             "Heptacom\\AdminOpenAuth\\": "src/"
