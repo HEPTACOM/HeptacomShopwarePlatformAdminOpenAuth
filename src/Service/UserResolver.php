@@ -26,11 +26,17 @@ use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\PrefixFilter;
 use Shopware\Core\Framework\Util\Random;
 use Shopware\Core\Framework\Uuid\Uuid;
 use Shopware\Core\Maintenance\User\Service\UserProvisioner;
+use Shopware\Core\System\Language\LanguageCollection;
 use Shopware\Core\System\Language\LanguageEntity;
+use Shopware\Core\System\User\UserCollection;
 use Shopware\Core\System\User\UserDefinition;
 
 final readonly class UserResolver implements UserResolverInterface
 {
+    /**
+     * @param EntityRepository<UserCollection> $userRepository
+     * @param EntityRepository<LanguageCollection> $languageRepository
+     */
     public function __construct(
         private EntityRepository $userRepository,
         private EntityRepository $languageRepository,

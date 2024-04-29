@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Heptacom\AdminOpenAuth\Service;
 
 use Heptacom\AdminOpenAuth\Contract\UserKeyInterface;
+use Heptacom\AdminOpenAuth\Database\UserKeyCollection;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Aggregation\Metric\EntityAggregation;
@@ -17,6 +18,9 @@ use Shopware\Core\System\User\UserDefinition;
 
 final readonly class UserKey implements UserKeyInterface
 {
+    /**
+     * @param EntityRepository<UserKeyCollection> $userKeysRepository
+     */
     public function __construct(
         private EntityRepository $userKeysRepository,
     ) {
