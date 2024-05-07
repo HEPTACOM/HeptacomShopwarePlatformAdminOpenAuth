@@ -7,7 +7,12 @@ namespace Heptacom\AdminOpenAuth\Service;
 use Heptacom\AdminOpenAuth\Contract\OpenAuthenticationFlowInterface;
 use Heptacom\AdminOpenAuth\Contract\User;
 use Heptacom\AdminOpenAuth\Contract\UserResolverInterface;
+use Heptacom\AdminOpenAuth\Database\ClientCollection;
 use Heptacom\AdminOpenAuth\Database\ClientEntity;
+use Heptacom\AdminOpenAuth\Database\LoginCollection;
+use Heptacom\AdminOpenAuth\Database\UserEmailCollection;
+use Heptacom\AdminOpenAuth\Database\UserKeyCollection;
+use Heptacom\AdminOpenAuth\Database\UserTokenCollection;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityCollection;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
@@ -19,6 +24,13 @@ use Symfony\Component\Routing\RouterInterface;
 
 final readonly class OpenAuthenticationFlow implements OpenAuthenticationFlowInterface
 {
+    /**
+     * @param EntityRepository<ClientCollection> $clientsRepository
+     * @param EntityRepository<LoginCollection> $loginsRepository
+     * @param EntityRepository<UserEmailCollection> $userEmailsRepository
+     * @param EntityRepository<UserKeyCollection> $userKeysRepository
+     * @param EntityRepository<UserTokenCollection> $userTokensRepository
+     */
     public function __construct(
         private UserResolverInterface $userResolver,
         private EntityRepository $clientsRepository,
@@ -43,6 +55,7 @@ final readonly class OpenAuthenticationFlow implements OpenAuthenticationFlowInt
             new EqualsFilter('userId', $userId)
         );
 
+        /** @var EntityRepository[] $repos */
         $repos = [
             $this->loginsRepository,
             $this->userEmailsRepository,
@@ -50,7 +63,6 @@ final readonly class OpenAuthenticationFlow implements OpenAuthenticationFlowInt
             $this->userTokensRepository,
         ];
 
-        /** @var EntityRepository $repo */
         foreach ($repos as $repo) {
             $ids = $repo->searchIds($criteria, $context)->getIds();
 

@@ -54,8 +54,8 @@ final class OpenIdConnectClient extends ClientContract
         $token = $this->getInnerClient()->getAccessToken('authorization_code', $options);
         $user = $this->getInnerClient()->getUserInfo($token);
 
-        $name = $user->getName() ?? sprintf('%s %s', $user->getGivenName() ?? '', $user->getFamilyName() ?? '');
-        if (empty(trim($name))) {
+        $name = $user->getName() ?? \sprintf('%s %s', $user->getGivenName() ?? '', $user->getFamilyName() ?? '');
+        if (empty(\trim($name))) {
             $name = $user->getNickname() ?? $user->getPreferredUsername() ?? $user->getEmail();
         }
 
@@ -70,7 +70,7 @@ final class OpenIdConnectClient extends ClientContract
         $result->timezone = $user->getZoneinfo();
 
         if ($user->getLocale() !== null) {
-            $result->locale = str_replace('_', '-', $user->getLocale());
+            $result->locale = \str_replace('_', '-', $user->getLocale());
         }
 
         $result->addArrayExtension('picture', [

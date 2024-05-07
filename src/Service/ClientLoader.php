@@ -22,6 +22,9 @@ use Shopware\Core\Framework\Uuid\Uuid;
 
 final readonly class ClientLoader implements ClientLoaderInterface
 {
+    /**
+     * @param EntityRepository<ClientCollection> $clientsRepository
+     */
     public function __construct(
         private ClientProviderRepositoryContract $providers,
         private EntityRepository $clientsRepository,

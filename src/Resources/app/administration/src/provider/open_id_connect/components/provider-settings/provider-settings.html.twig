@@ -1,34 +1,34 @@
 {% block heptacom_admin_open_auth_provider_open_id_connect_settings %}
     <sw-card position-identifier="heptacom-admin-open-auth-provider-open-id-connect-settings">
-        <sw-url-field
+        <heptacom-admin-open-auth-url-field
             :omitUrlHash="true"
             :omitUrlSearch="true"
             :label="$t('heptacomAdminOpenAuthClient.providerFields.open_id_connect.discoveryDocumentUrl')"
             :help-text="$t('heptacomAdminOpenAuthClient.providerFields.open_id_connect.discoveryDocumentUrl-help')"
             :placeholder="$t('heptacomAdminOpenAuthClient.providerFields.open_id_connect.discoveryDocumentUrl-placeholder')"
             v-model:value="item.config.discoveryDocumentUrl"
-        ></sw-url-field>
-        <sw-url-field
+        ></heptacom-admin-open-auth-url-field>
+        <heptacom-admin-open-auth-url-field
             :omitUrlHash="true"
             :omitUrlSearch="true"
             :disabled="!!item.config.discoveryDocumentUrl"
             :label="$t('heptacomAdminOpenAuthClient.providerFields.open_id_connect.authorization_endpoint')"
             v-model:value="item.config.authorization_endpoint"
-        ></sw-url-field>
-        <sw-url-field
+        ></heptacom-admin-open-auth-url-field>
+        <heptacom-admin-open-auth-url-field
             :omitUrlHash="true"
             :omitUrlSearch="true"
             :disabled="!!item.config.discoveryDocumentUrl"
             :label="$t('heptacomAdminOpenAuthClient.providerFields.open_id_connect.token_endpoint')"
             v-model:value="item.config.token_endpoint"
-        ></sw-url-field>
-        <sw-url-field
+        ></heptacom-admin-open-auth-url-field>
+        <heptacom-admin-open-auth-url-field
             :omitUrlHash="true"
             :omitUrlSearch="true"
             :disabled="!!item.config.discoveryDocumentUrl"
             :label="$t('heptacomAdminOpenAuthClient.providerFields.open_id_connect.userinfo_endpoint')"
             v-model:value="item.config.userinfo_endpoint"
-        ></sw-url-field>
+        ></heptacom-admin-open-auth-url-field>
         <sw-text-field
             :required="true"
             :label="$t('heptacomAdminOpenAuthClient.providerFields.open_id_connect.clientId')"

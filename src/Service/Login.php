@@ -16,6 +16,9 @@ use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\RangeFilter;
 
 final readonly class Login implements LoginInterface
 {
+    /**
+     * @param EntityRepository<LoginCollection> $loginsRepository
+     */
     public function __construct(
         private EntityRepository $loginsRepository,
     ) {

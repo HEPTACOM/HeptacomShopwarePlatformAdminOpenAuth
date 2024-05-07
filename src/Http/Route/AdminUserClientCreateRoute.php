@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Heptacom\AdminOpenAuth\Http\Route;
 
 use Heptacom\AdminOpenAuth\Contract\ClientLoaderInterface;
+use Heptacom\AdminOpenAuth\Database\ClientCollection;
 use Heptacom\AdminOpenAuth\Database\ClientDefinition;
 use Shopware\Core\Framework\Api\Response\ResponseFactoryInterface;
 use Shopware\Core\Framework\Context;
@@ -17,6 +18,9 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class AdminUserClientCreateRoute extends AbstractController
 {
+    /**
+     * @param EntityRepository<ClientCollection> $clientsRepository
+     */
     public function __construct(
         private readonly ClientLoaderInterface $clientLoader,
         private readonly ClientDefinition $definition,

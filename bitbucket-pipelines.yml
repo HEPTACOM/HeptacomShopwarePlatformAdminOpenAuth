@@ -24,10 +24,12 @@ definitions:
                 script:
                     - '[[ "${BITBUCKET_TAG}" == *"$(jq -r composer.json .version)" ]]'
                     - 'grep -qe "# ${BITBUCKET_TAG}" CHANGELOG.md'
+                    - 'grep -qe "# ${BITBUCKET_TAG}" CHANGELOG_de-DE.md'
                 after-script:
                     - 'test ${BITBUCKET_EXIT_CODE} -eq 0 || echo "Bitbucket tag: ${BITBUCKET_TAG}"'
                     - 'test ${BITBUCKET_EXIT_CODE} -eq 0 || (echo "composer.json version: " && jq -r composer.json .version)'
                     - "test ${BITBUCKET_EXIT_CODE} -eq 0 || (echo 'CHANGELOG.md versions: ' && grep -e '# ' CHANGELOG.md)'"
+                    - "test ${BITBUCKET_EXIT_CODE} -eq 0 || (echo 'CHANGELOG_de-DE.md versions: ' && grep -e '# ' CHANGELOG_de-DE.md)'"
         -   step: &composer-high-install
                 <<: *default-step
                 name: Install (High dependencies)
@@ -57,26 +59,25 @@ definitions:
                     - echo 'mkdir -p vendor; rm -rf vendor; mv .build/vendor-low vendor' > setup-vendor.sh
         -   step: &build-fix-and-commit
                 <<: *default-step
-                name: Build and fix (composer.json, ECS, admin)
+                name: Build and fix (composer.json, Pint, admin)
                 script:
-                    - bash setup-vendor.sh
                     - COMPOSER_EXTRA_ARGS=-vvv make -e cs-fix-composer-normalize
                     - |
                         if [[ $(git add -A -n | wc -l) -ne 0 ]]; then
                             git add -A
                             git commit -m "$ make cs-fix-composer-normalize"
                         fi
-                    - COMPOSER_EXTRA_ARGS=-vvv make -e cs-fix-ecs
+                    - COMPOSER_EXTRA_ARGS=-vvv make -e cs-fix-style
                     - |
                         if [[ $(git add -A -n | wc -l) -ne 0 ]]; then
                             git add -A
-                            git commit -m "$ make cs-fix-ecs"
+                            git commit -m "$ make cs-fix-style"
                         fi
-                    - COMPOSER_EXTRA_ARGS=-vvv make -e build-administration
+                    - COMPOSER_EXTRA_ARGS=-vvv make -e build-assets
                     - |
                         if [[ $(git add -A -n | wc -l) -ne 0 ]]; then
                             git add -A
-                            git commit -m "$ make build-administration"
+                            git commit -m "$ make build-assets"
                         fi
                     - |
                         if [[ $(git rev-parse HEAD) != "${BITBUCKET_COMMIT}" ]]; then
@@ -87,22 +88,15 @@ definitions:
                         fi
         -   step: &test-code-style-php
                 <<: *default-step
-                name: ECS (Code style)
+                name: Pint (Code style)
                 script:
-                    - bash setup-vendor.sh
-                    - COMPOSER_EXTRA_ARGS=-vvv make -e cs-ecs
+                    - COMPOSER_EXTRA_ARGS=-vvv make -e cs-style
         -   step: &test-code-style-phpstan
                 <<: *default-step
                 name: PHPStan (Static code analysis)
                 script:
                     - bash setup-vendor.sh
                     - COMPOSER_EXTRA_ARGS=-vvv make -e cs-phpstan
-        -   step: &test-code-style-psalm
-                <<: *default-step
-                name: Psalm (Static code analysis)
-                script:
-                    - bash setup-vendor.sh
-                    - COMPOSER_EXTRA_ARGS=-vvv make -e cs-psalm
         -   step: &test-code-style-phpmd
                 <<: *default-step
                 name: PHP Mess Detector (Static code analysis)
@@ -125,25 +119,22 @@ definitions:
                 <<: *default-step
                 name: composer.json (Code style)
                 script:
-                    - bash setup-vendor.sh
                     - COMPOSER_EXTRA_ARGS=-vvv make -e cs-composer-normalize
         -   step: &test-code-style-json
                 <<: *default-step
                 name: '*.json (Code style)'
                 script:
-                    - bash setup-vendor.sh
                     - COMPOSER_EXTRA_ARGS=-vvv make -e cs-json
         -   step: &test-code-style-translation
                 <<: *default-step
                 name: Analyse translations are complete
                 script:
-                    - PHPUNUHI_EXTRA_ARGS="--report-format=junit --report-output=.build/phpunuhi-report.xml" make -e cs-translation
-        -   step: &test-build-administration
+                    - make -e cs-translation
+        -   step: &test-build-assets
                 <<: *default-step
-                name: Check administration is built
+                name: Check assets are built
                 script:
-                    - bash setup-vendor.sh
-                    - COMPOSER_EXTRA_ARGS=-vvv make -e build-administration
+                    - COMPOSER_EXTRA_ARGS=-vvv make -e build-assets
                     - 'test $(git add -A -n | wc -l) -eq 0'
         -   step: &lint-store-readiness
                 <<: *default-step
@@ -155,35 +146,51 @@ definitions:
                     - git commit -m "$ releasecheck"
                     - git tag 999.999.999
                     - make releasecheck
+        -   step: &build-store
+                <<: *default-step
+                name: Build for store
+                artifacts:
+                    - .build/store-build/*.zip
+                script:
+                    - make releasecheck
 
 pipelines:
     branches:
         main:
-            -   step: *keyword-check
-            -   step: *composer-low-install
             -   step: *build-fix-and-commit
             -   parallel:
-                    -   step: *test-code-style-composer-unused
+                    -   step: *keyword-check
                     -   step: *test-code-style-json
                     -   step: *test-code-style-translation
+            -   step: *composer-low-install
+            -   step: *test-code-style-composer-unused
             -   step:
                     image: atlassian/default-image:2
                     name: Mirror to Github
                     script:
                         - git remote add github git@github.com:HEPTACOM/HeptacomShopwarePlatformAdminOpenAuth.git
                         - git push --force github main
-    tags:
-        '*':
-            -   step: *tag-check
-            -   step: *keyword-check
-            -   step: *lint-store-readiness
-            -   step: *composer-low-install
+        '*.*.x':
+            -   step: *build-fix-and-commit
             -   parallel:
+                    -   step: *keyword-check
                     -   step: *test-code-style-translation
                     -   step: *test-code-style-composer-normalize
-                    -   step: *test-build-administration
                     -   step: *test-code-style-php
                     -   step: *test-code-style-json
+
+    tags:
+        '*':
+            -   parallel:
+                    -   step: *tag-check
+                    -   step: *keyword-check
+                    -   step: *lint-store-readiness
+                    -   step: *test-code-style-translation
+                    -   step: *test-code-style-composer-normalize
+                    -   step: *test-build-assets
+                    -   step: *test-code-style-php
+                    -   step: *test-code-style-json
+            -   step: *build-store
             -   step:
                     image: atlassian/default-image:2
                     name: Mirror tags to Github
@@ -191,15 +198,16 @@ pipelines:
                         - git remote add github git@github.com:HEPTACOM/HeptacomShopwarePlatformAdminOpenAuth.git
                         - git push --force github tag $BITBUCKET_TAG
     default:
-        -   step: *keyword-check
-        -   step: *composer-low-install
         -   step: *build-fix-and-commit
         -   parallel:
-                -   step: *test-code-style-translation
-                -   step: *test-code-style-composer-unused
-                -   step: *test-code-style-json
-                -   step: *test-code-style-soft-require
+                -   step: *keyword-check
                 -   step: *lint-store-readiness
+                -   step: *test-code-style-json
+                -   step: *test-code-style-translation
+        -   step: *composer-low-install
+        -   parallel:
+                -   step: *test-code-style-composer-unused
+                -   step: *test-code-style-soft-require
 
     custom:
         deep-check:
@@ -207,9 +215,7 @@ pipelines:
             -   parallel:
                     -   step: *test-code-style-phpmd
                     -   step: *test-code-style-phpstan
-                    -   step: *test-code-style-psalm
             -   step: *composer-low-install
             -   parallel:
                     -   step: *test-code-style-phpmd
                     -   step: *test-code-style-phpstan
-                    -   step: *test-code-style-psalm

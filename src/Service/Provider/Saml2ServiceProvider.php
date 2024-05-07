@@ -83,9 +83,9 @@ class Saml2ServiceProvider extends ClientProviderContract implements Configurati
         $result['identityProviderSsoUrl'] = '';
         $result['identityProviderCertificate'] = '';
 
-        $result['attributeMapping'] = array_combine(
+        $result['attributeMapping'] = \array_combine(
             Saml2ServiceProviderClient::AVAILABLE_USER_PROPERTIES,
-            array_fill(0, \count(Saml2ServiceProviderClient::AVAILABLE_USER_PROPERTIES), '')
+            \array_fill(0, \count(Saml2ServiceProviderClient::AVAILABLE_USER_PROPERTIES), '')
         );
 
         // TODO: tag:v6.1.0 make generation configurable and dynamic per client in administration
@@ -99,11 +99,11 @@ class Saml2ServiceProvider extends ClientProviderContract implements Configurati
         $config->assign($resolvedConfig);
 
         // decrypt private key, as library doesn't support encrypted keys
-        $privateKey = openssl_get_privatekey($config->getServiceProviderPrivateKey(), $this->appSecret);
+        $privateKey = \openssl_get_privatekey($config->getServiceProviderPrivateKey(), $this->appSecret);
         if (!$privateKey) {
             throw new \RuntimeException('SP private key could not be loaded. Refresh of private key is required.');
         }
-        openssl_pkey_export($privateKey, $decryptedPrivateKey);
+        \openssl_pkey_export($privateKey, $decryptedPrivateKey);
         $config->setServiceProviderPrivateKey($decryptedPrivateKey);
 
         // Add routes to config
@@ -124,7 +124,7 @@ class Saml2ServiceProvider extends ClientProviderContract implements Configurati
 
     public function configurationNeedsUpdate(array $configuration): bool
     {
-        $x509Details = openssl_x509_parse($configuration['serviceProviderCertificate'] ?? '');
+        $x509Details = \openssl_x509_parse($configuration['serviceProviderCertificate'] ?? '');
         if (!$x509Details) {
             return true;
         }
@@ -143,19 +143,19 @@ class Saml2ServiceProvider extends ClientProviderContract implements Configurati
 
     protected function createCertificate(array $config): array
     {
-        $privateKey = openssl_pkey_new([
+        $privateKey = \openssl_pkey_new([
             'private_key_bits' => 2048,
             'private_key_type' => \OPENSSL_KEYTYPE_RSA,
         ]);
 
-        openssl_pkey_export($privateKey, $config['serviceProviderPrivateKey'], $this->appSecret);
-        $config['serviceProviderPublicKey'] = openssl_pkey_get_details($privateKey)['key'];
+        \openssl_pkey_export($privateKey, $config['serviceProviderPrivateKey'], $this->appSecret);
+        $config['serviceProviderPublicKey'] = \openssl_pkey_get_details($privateKey)['key'];
 
-        $csr = openssl_csr_new([], $privateKey, ['digest_alg' => 'sha256']);
-        $x509 = openssl_csr_sign($csr, null, $privateKey, 365, ['digest_alg' => 'sha256']);
-        openssl_x509_export($x509, $config['serviceProviderCertificate']);
+        $csr = \openssl_csr_new([], $privateKey, ['digest_alg' => 'sha256']);
+        $x509 = \openssl_csr_sign($csr, null, $privateKey, 365, ['digest_alg' => 'sha256']);
+        \openssl_x509_export($x509, $config['serviceProviderCertificate']);
 
-        $x509Details = openssl_x509_parse($x509);
+        $x509Details = \openssl_x509_parse($x509);
         $config['serviceProviderCertificateExpiresAt'] = \DateTimeImmutable::createFromFormat('ymdHise', $x509Details['validFrom'])->format(\DateTimeInterface::ATOM);
 
         return $config;

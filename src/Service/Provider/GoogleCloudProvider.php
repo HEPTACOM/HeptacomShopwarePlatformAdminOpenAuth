@@ -63,8 +63,8 @@ final class GoogleCloudProvider extends ClientProviderContract
         $config->setDiscoveryDocumentUrl('https://accounts.google.com/.well-known/openid-configuration');
 
         $scopes = $config->getScopes();
-        array_push($scopes, 'email', 'profile');
-        $config->setScopes(array_unique($scopes));
+        \array_push($scopes, 'email', 'profile');
+        $config->setScopes(\array_unique($scopes));
 
         $service = $this->openIdConnectService->createWithConfig($config);
         $service->discoverWellKnown();

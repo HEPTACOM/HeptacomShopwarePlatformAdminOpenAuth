@@ -16,6 +16,9 @@ use Shopware\Core\Framework\Uuid\Uuid;
 
 final readonly class UserToken implements UserTokenInterface
 {
+    /**
+     * @param EntityRepository<UserTokenCollection> $userTokensRepository
+     */
     public function __construct(
         private EntityRepository $userTokensRepository,
     ) {

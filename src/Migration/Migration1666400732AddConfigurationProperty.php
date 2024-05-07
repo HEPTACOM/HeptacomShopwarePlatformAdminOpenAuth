@@ -25,11 +25,11 @@ UPDATE `heptacom_admin_open_auth_client` SET `config` = :config WHERE `id` = :id
 SQL);
 
         foreach ($clients as $client) {
-            $config = json_decode($client['config'] ?? '', true);
-            $config['id'] = bin2hex((string) $client['id']);
+            $config = \json_decode($client['config'] ?? '', true);
+            $config['id'] = \bin2hex((string) $client['id']);
 
             $updateStatement->executeQuery([
-                'config' => json_encode($config),
+                'config' => \json_encode($config),
                 'id' => $client['id'],
             ]);
         }

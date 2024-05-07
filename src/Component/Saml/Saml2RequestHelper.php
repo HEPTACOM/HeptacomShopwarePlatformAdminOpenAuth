@@ -23,22 +23,12 @@ class Saml2RequestHelper
     public static function verifyRequestSuccess(RequestInterface $request, ResponseInterface $response): void
     {
         if ($response->getStatusCode() < 200 || $response->getStatusCode() > 299) {
-            throw new RequestException(
-                'Request resulted in a non-successful status code: ' . $response->getStatusCode(),
-                $request,
-                $response
-            );
+            throw new RequestException('Request resulted in a non-successful status code: ' . $response->getStatusCode(), $request, $response);
         }
 
-        $contentType = explode(';', $response->getHeaderLine('Content-Type'))[0] ?? '';
+        $contentType = \explode(';', $response->getHeaderLine('Content-Type'))[0] ?? '';
         if (!\in_array($contentType, ['text/xml', 'application/xml'], true)) {
-            throw new RequestException(
-                'Expected content type to be of type text/xml or application/xml, received ' . $response->getHeaderLine(
-                    'Content-Type'
-                ),
-                $request,
-                $response
-            );
+            throw new RequestException('Expected content type to be of type text/xml or application/xml, received ' . $response->getHeaderLine('Content-Type'), $request, $response);
         }
     }
 }
