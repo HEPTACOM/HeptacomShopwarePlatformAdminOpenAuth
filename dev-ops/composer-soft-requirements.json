@@ -17,7 +17,7 @@
         "Symfony\\Component\\HttpKernel\\Event\\RequestEvent",
         "Symfony\\Component\\HttpKernel\\Exception\\NotFoundHttpException",
         "Symfony\\Component\\HttpKernel\\KernelEvents",
-        "Symfony\\Component\\Messenger\\AsMessageHandler",
+        "Symfony\\Component\\Messenger\\Attribute\\AsMessageHandler",
         "Symfony\\Component\\OptionsResolver\\OptionsResolver",
         "Symfony\\Component\\Routing\\Annotation\\Route",
         "Symfony\\Component\\Routing\\Generator\\UrlGeneratorInterface",
