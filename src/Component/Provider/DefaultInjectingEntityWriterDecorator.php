@@ -68,9 +68,9 @@ abstract class DefaultInjectingEntityWriterDecorator implements EntityWriterInte
         return $this->decorated->update($definition, $rawData, $writeContext);
     }
 
-    public function delete(EntityDefinition $definition, array $ids, WriteContext $writeContext): WriteResult
+    public function delete(EntityDefinition $definition, array $rawData, WriteContext $writeContext): WriteResult
     {
-        return $this->decorated->delete($definition, $ids, $writeContext);
+        return $this->decorated->delete($definition, $rawData, $writeContext);
     }
 
     abstract protected function getProvider(): string;

@@ -10,6 +10,12 @@
 
 * Shopware 6.4 Kompatibilität wurde entfernt
 
+# 6.0.3
+
+**Behoben**
+
+* Kompatibilitätsprobleme mit Shopware 6.5.8.8 behoben. Siehe [Johannes's Beitrag auf GitHub](https://github.com/HEPTACOM/HeptacomShopwarePlatformAdminOpenAuth/pull/23)
+
 # 6.0.2
 
 **Behoben**
