@@ -49,6 +49,9 @@ export default {
     },
 
     computed: {
+        dateFilter() {
+            return Shopware.Filter.getByName('date');
+        },
         clientRepository() {
             return this.repositoryFactory.create('heptacom_admin_open_auth_client');
         },

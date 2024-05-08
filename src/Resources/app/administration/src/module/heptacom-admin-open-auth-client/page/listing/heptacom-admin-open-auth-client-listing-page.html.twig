@@ -57,7 +57,7 @@
 
                         {% block heptacom_admin_open_auth_client_listing_page_content_entity_listing_columns_created_at %}
                             <template #column-createdAt="{ item }">
-                                {{ item.createdAt | date({ hour: '2-digit', minute: '2-digit' }) }}
+                                {{ dateFilter(item.createdAt)}}
                             </template>
                         {% endblock %}
 
