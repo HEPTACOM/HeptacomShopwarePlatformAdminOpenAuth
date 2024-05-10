@@ -3,20 +3,20 @@
         "providerFields": {
             "microsoft_azure_oidc": {
                 "additionalScopes": "Application scopes",
-                "clientId": "Application identifier",
-                "clientSecret": "Application secret",
+                "clientId": "Application (client) ID",
+                "clientSecret": "Client secret",
                 "condition": {
                     "rule": {
                         "groupIds": "Group IDs"
                     }
                 },
-                "tenantId": "Tenant identifier"
+                "tenantId": "Directory (tenant) ID"
             }
         },
         "providers": {
             "microsoft_azure_oidc": {
-                "helpUrl": "https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app",
-                "label": "Microsoft Azure",
+                "helpUrl": "https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-register-app",
+                "label": "Microsoft Entra ID",
                 "logoFile": "microsoft_logo.svg"
             }
         }

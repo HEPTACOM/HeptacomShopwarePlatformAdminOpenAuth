@@ -8,8 +8,14 @@ use Shopware\Core\Framework\Rule\RuleComparison;
 use Shopware\Core\Framework\Rule\RuleConfig;
 use Shopware\Core\Framework\Rule\RuleConstraints;
 
+/**
+ * @deprecated tag:v8.0.0 - Will be renamed into MicrosoftEntraIdOidcGroupsRule
+ */
 class MicrosoftAzureOidcGroupsRule extends AuthenticatedRequestRule
 {
+    /**
+     * @deprecated tag:v8.0.0 - Value will be changed to heptacomAdminOpenAuthMicrosoftEntraIdOidcGroups
+     */
     public const RULE_NAME = 'heptacomAdminOpenAuthMicrosoftAzureOidcGroups';
 
     public function __construct(
