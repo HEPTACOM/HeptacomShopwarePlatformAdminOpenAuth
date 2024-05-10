@@ -21,51 +21,6 @@
     {% endif %}
 </style>
 <script{% if cspNonce is defined %} nonce="{{ cspNonce }}" {% endif %}>
-    // Ensure we have access to the Vue component of a DOM node
-    (function () {
-        const DomNodeToComponent = {
-            install: (Vue, options) => {
-                Vue.mixin({
-                    mounted () {
-                        if (
-                            !(this.$el instanceof HTMLElement)
-                            || !this.$el.classList.contains('sw-inactivity-login')
-                        ) {
-                            return;
-                        }
-
-                        this.$el.__hcInactivityLoginComponent__ = this
-                    },
-                })
-            },
-        };
-
-        let domComponentInstallRunning = false;
-
-        const domComponentInstall = window.setInterval(() => {
-            if (domComponentInstallRunning) {
-                return;
-            }
-
-            try {
-                domComponentInstallRunning = true;
-
-                if (
-                    window.Shopware === undefined
-                    || Shopware.Application === undefined
-                    || Shopware.Application.view === undefined
-                ) {
-                    return;
-                }
-
-                Shopware.Application.view.app.use(DomNodeToComponent);
-                clearInterval(domComponentInstall);
-            } finally {
-                domComponentInstallRunning = false;
-            }
-        }, 50);
-    })();
-
     // Launch listener for login and inactivity routes
     (function () {
         async function getClientRoutes() {
@@ -73,6 +28,80 @@
 
             const result = await fetch(clientRoutes);
             return await result.json();
+        }
+
+        let vueRegistrationRunning = false;
+
+        function registerVuePlugin(waitForApplicationChanges = false) {
+            const DomNodeToComponent = {
+                install: (Vue, options) => {
+                    Vue.mixin({
+                        mounted() {
+                            if (
+                                !(this.$el instanceof HTMLElement)
+                                || !this.$el.classList.contains('sw-inactivity-login')
+                            ) {
+                                return;
+                            }
+
+                            this.$el.__hcInactivityLoginComponent__ = this
+                        },
+                    })
+                },
+            };
+
+            let domComponentInstallRunning = false;
+            const startedAt = Date.now();
+
+            // if already running, restart registration
+            if (vueRegistrationRunning !== false) {
+                clearInterval(vueRegistrationRunning);
+            }
+
+            vueRegistrationRunning = window.setInterval(() => {
+                // don't run multiple times
+                if (domComponentInstallRunning) {
+                    return;
+                }
+
+                try {
+                    domComponentInstallRunning = true;
+
+                    // check if vue is available
+                    if (
+                        window.Shopware === undefined
+                        || Shopware.Application === undefined
+                        || Shopware.Application.view === undefined
+                        || Shopware.Application.view.app === undefined
+                    ) {
+                        return;
+                    }
+
+                    const currentTime = Date.now();
+
+                    if (waitForApplicationChanges) {
+                        // wait for application changes for 5 seconds
+                        if (currentTime - startedAt > 5000) {
+                            clearInterval(vueRegistrationRunning);
+                            return;
+                        }
+
+                        // wait for next interval if application is already installed
+                        if (Shopware.Application.view.app._heptacomDomNodeToComponentInstalled === true) {
+                            return;
+                        }
+                    }
+
+                    // register plugin
+                    Shopware.Application.view.app.use(DomNodeToComponent);
+                    Shopware.Application.view.app._heptacomDomNodeToComponentInstalled = true;
+
+                    // stop interval
+                    clearInterval(vueRegistrationRunning);
+                } finally {
+                    domComponentInstallRunning = false;
+                }
+            }, 50);
         }
 
         function checkLogin(redirectHandler) {
@@ -230,9 +259,14 @@
 
         let lastPath = null;
         function handleEvent() {
+            // check if path changed
             if (lastPath === window.location.hash) {
                 return;
             }
+
+            // wait for application changes
+            // This is necessary, because Shopware recreates the application when logging out due to user inactivity.
+            registerVuePlugin(true);
 
             lastPath = window.location.hash;
 
@@ -252,5 +286,6 @@
         window.addEventListener('load', () => handleEvent());
         window.addEventListener('popstate', () => handleEvent());
         window.setInterval(() => handleEvent(), 500);
+        registerVuePlugin();
     })();
 </script>
