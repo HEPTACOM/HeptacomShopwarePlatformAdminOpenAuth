@@ -207,7 +207,7 @@
                 handler: () => handleLoginRoute()
             },
             {
-                path: /^#\/inactivity\/login\/[a-z0-9]{32}\/$/,
+                path: /^#\/inactivity\/login\/[a-z0-9]{32}\/?$/,
                 requiredElement: '.sw-inactivity-login__modal .sw-modal__body',
                 handler: () => handleInactivityRoute()
             },
