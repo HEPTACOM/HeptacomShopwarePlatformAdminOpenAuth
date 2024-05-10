@@ -62,7 +62,7 @@ class OpenIdConnectTokenVerifier
     {
         try {
             $token = $this->serializerManager->unserialize($idToken);
-            $payload = @\json_decode($token->getPayload(), true) ?? [];
+            $payload = @\json_decode((string) $token->getPayload(), true) ?? [];
         } catch (\InvalidArgumentException $e) {
             throw new OpenIdConnectException('Unable to decode id_token: ' . $e->getMessage(), $e);
         }
