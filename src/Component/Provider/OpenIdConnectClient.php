@@ -22,7 +22,7 @@ final class OpenIdConnectClient extends ClientContract
 
     public function getLoginUrl(?string $state, RedirectBehaviour $behaviour): string
     {
-        $state = $state ?? '';
+        $state ??= '';
         $params = [];
 
         if (\is_string($behaviour->redirectUri)) {

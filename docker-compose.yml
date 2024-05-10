@@ -2,9 +2,10 @@ version: "3"
 
 services:
   shopware:
-    image: dockware/dev:6.5.7.3
+    image: dockware/dev:6.6.0.0
     ports:
       - "8080:80"
+      - "8443:443"
       - "3310:3306"
       - "8888:8888"
       - "9999:9999"

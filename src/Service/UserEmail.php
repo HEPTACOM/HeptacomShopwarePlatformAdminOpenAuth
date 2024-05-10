@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Heptacom\AdminOpenAuth\Service;
 
 use Heptacom\AdminOpenAuth\Contract\UserEmailInterface;
+use Heptacom\AdminOpenAuth\Database\UserEmailCollection;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Aggregation\Metric\EntityAggregation;
@@ -16,10 +17,13 @@ use Shopware\Core\Framework\Uuid\Uuid;
 use Shopware\Core\System\User\UserCollection;
 use Shopware\Core\System\User\UserDefinition;
 
-final class UserEmail implements UserEmailInterface
+final readonly class UserEmail implements UserEmailInterface
 {
+    /**
+     * @param EntityRepository<UserEmailCollection> $userEmailsRepository
+     */
     public function __construct(
-        private readonly EntityRepository $userEmailsRepository,
+        private EntityRepository $userEmailsRepository,
     ) {
     }
 

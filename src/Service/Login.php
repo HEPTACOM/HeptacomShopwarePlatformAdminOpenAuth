@@ -14,10 +14,13 @@ use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\RangeFilter;
 
-final class Login implements LoginInterface
+final readonly class Login implements LoginInterface
 {
+    /**
+     * @param EntityRepository<LoginCollection> $loginsRepository
+     */
     public function __construct(
-        private readonly EntityRepository $loginsRepository,
+        private EntityRepository $loginsRepository,
     ) {
     }
 

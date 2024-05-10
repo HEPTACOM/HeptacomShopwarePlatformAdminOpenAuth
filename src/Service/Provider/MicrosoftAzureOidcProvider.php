@@ -12,8 +12,14 @@ use Heptacom\AdminOpenAuth\Contract\ClientProvider\ClientProviderContract;
 use Heptacom\AdminOpenAuth\Service\TokenPairFactoryContract;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @deprecated tag:v8.0.0 - Will be renamed into MicrosoftEntraIdOidcProvider
+ */
 final class MicrosoftAzureOidcProvider extends ClientProviderContract
 {
+    /**
+     * @deprecated tag:v8.0.0 - Will be renamed into microsoft_entra_id_oidc
+     */
     public const PROVIDER_NAME = 'microsoft_azure_oidc';
 
     public function __construct(

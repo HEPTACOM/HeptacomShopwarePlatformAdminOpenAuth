@@ -3,20 +3,20 @@
         "providerFields": {
             "microsoft_azure_oidc": {
                 "additionalScopes": "Anwendungsberechtigungen",
-                "clientId": "Anwendungsschlüssel",
-                "clientSecret": "Anwendungsgeheimnis",
+                "clientId": "Anwendungs-ID (Client)",
+                "clientSecret": "Geheimer Clientschlüssel",
                 "condition": {
                     "rule": {
                         "groupIds": "Gruppen-IDs"
                     }
                 },
-                "tenantId": "Verzeichnis-ID"
+                "tenantId": "Verzeichnis-ID (Mandant)"
             }
         },
         "providers": {
             "microsoft_azure_oidc": {
-                "helpUrl": "https://docs.microsoft.com/de-de/azure/active-directory/develop/quickstart-register-app",
-                "label": "Microsoft Azure",
+                "helpUrl": "https://learn.microsoft.com/de-de/entra/identity-platform/quickstart-register-app",
+                "label": "Microsoft Entra ID",
                 "logoFile": "microsoft_logo.svg"
             }
         }

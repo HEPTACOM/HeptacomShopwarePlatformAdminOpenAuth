@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\DevOps\PhpStan\Rule;
 
+use PhpParser\Node\Expr\Error;
 use PhpParser\Node;
 use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\ClassMethod;
@@ -12,7 +13,7 @@ use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleErrorBuilder;
 
 /**
- * @implements \PHPStan\Rules\Rule<\PhpParser\Node\Stmt\Class_>
+ * @implements Rule<Class_>
  */
 final class ImplementationsMustBeFinalRule implements Rule
 {
@@ -168,7 +169,7 @@ final class ImplementationsMustBeFinalRule implements Rule
             foreach ($constructor->getParams() as $param) {
                 $paramVar = $param->var;
 
-                if ($paramVar instanceof Node\Expr\Error) {
+                if ($paramVar instanceof Error) {
                     throw new \LogicException('Unexpected error type');
                 }
 

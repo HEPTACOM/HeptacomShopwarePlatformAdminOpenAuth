@@ -6,6 +6,7 @@ namespace Heptacom\AdminOpenAuth\Service\StateFactory;
 
 use Heptacom\AdminOpenAuth\Contract\ClientFeatureCheckerInterface;
 use Heptacom\AdminOpenAuth\Contract\StateFactory\ConfirmStateFactoryInterface;
+use Heptacom\AdminOpenAuth\Database\LoginCollection;
 use Heptacom\AdminOpenAuth\Exception\LoadClientException;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
@@ -13,12 +14,15 @@ use Shopware\Core\Framework\Uuid\Uuid;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 
-final class ConfirmStateFactory implements ConfirmStateFactoryInterface
+final readonly class ConfirmStateFactory implements ConfirmStateFactoryInterface
 {
+    /**
+     * @param EntityRepository<LoginCollection> $loginsRepository
+     */
     public function __construct(
-        private readonly EntityRepository $loginsRepository,
-        private readonly RouterInterface $router,
-        private readonly ClientFeatureCheckerInterface $clientFeatureChecker,
+        private EntityRepository $loginsRepository,
+        private RouterInterface $router,
+        private ClientFeatureCheckerInterface $clientFeatureChecker,
     ) {
     }
 

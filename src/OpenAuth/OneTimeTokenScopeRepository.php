@@ -7,10 +7,10 @@ namespace Heptacom\AdminOpenAuth\OpenAuth;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Repositories\ScopeRepositoryInterface;
 
-final class OneTimeTokenScopeRepository implements ScopeRepositoryInterface
+final readonly class OneTimeTokenScopeRepository implements ScopeRepositoryInterface
 {
     public function __construct(
-        private readonly ScopeRepositoryInterface $decorated,
+        private ScopeRepositoryInterface $decorated,
     ) {
     }
 

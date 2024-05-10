@@ -21,6 +21,52 @@
     {% endif %}
 </style>
 <script{% if cspNonce is defined %} nonce="{{ cspNonce }}" {% endif %}>
+    // Ensure we have access to the Vue component of a DOM node
+    (function () {
+        const DomNodeToComponent = {
+            install: (Vue, options) => {
+                Vue.mixin({
+                    mounted () {
+                        if (
+                            !(this.$el instanceof HTMLElement)
+                            || !this.$el.classList.contains('sw-inactivity-login')
+                        ) {
+                            return;
+                        }
+
+                        this.$el.__hcInactivityLoginComponent__ = this
+                    },
+                })
+            },
+        };
+
+        let domComponentInstallRunning = false;
+
+        const domComponentInstall = window.setInterval(() => {
+            if (domComponentInstallRunning) {
+                return;
+            }
+
+            try {
+                domComponentInstallRunning = true;
+
+                if (
+                    window.Shopware === undefined
+                    || Shopware.Application === undefined
+                    || Shopware.Application.view === undefined
+                ) {
+                    return;
+                }
+
+                Shopware.Application.view.app.use(DomNodeToComponent);
+                clearInterval(domComponentInstall);
+            } finally {
+                domComponentInstallRunning = false;
+            }
+        }, 50);
+    })();
+
+    // Launch listener for login and inactivity routes
     (function () {
         async function getClientRoutes() {
             const clientRoutes = {{ url('administration.heptacom.admin_open_auth.routes')|json_encode|raw }};
@@ -87,12 +133,12 @@
 
         function handleInactivityRoute() {
             const container = document.querySelector('.sw-inactivity-login');
-            if (!container || !container.__vue__) {
+            if (!container || !container.__hcInactivityLoginComponent__) {
                 console.error('Could not find inactivity login container.');
                 return;
             }
 
-            const inactivityLogin = container.__vue__;
+            const inactivityLogin = container.__hcInactivityLoginComponent__;
             inactivityLogin.isLoading = true;
 
             // add login buttons
@@ -156,12 +202,12 @@
 
         const paths = [
             {
-                path: /^#\/login$/,
+                path: /^#\/login\/?$/,
                 requiredElement: '.sw-login',
                 handler: () => handleLoginRoute()
             },
             {
-                path: /^#\/inactivity\/login\/[a-z0-9]{32}$/,
+                path: /^#\/inactivity\/login\/[a-z0-9]{32}\/?$/,
                 requiredElement: '.sw-inactivity-login__modal .sw-modal__body',
                 handler: () => handleInactivityRoute()
             },

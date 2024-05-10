@@ -14,10 +14,13 @@ use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
 use Shopware\Core\Framework\Uuid\Uuid;
 
-final class UserToken implements UserTokenInterface
+final readonly class UserToken implements UserTokenInterface
 {
+    /**
+     * @param EntityRepository<UserTokenCollection> $userTokensRepository
+     */
     public function __construct(
-        private readonly EntityRepository $userTokensRepository,
+        private EntityRepository $userTokensRepository,
     ) {
     }
 

@@ -6,16 +6,20 @@ namespace Heptacom\AdminOpenAuth\Service\StateFactory;
 
 use Heptacom\AdminOpenAuth\Contract\ClientFeatureCheckerInterface;
 use Heptacom\AdminOpenAuth\Contract\StateFactory\LoginStateFactoryInterface;
+use Heptacom\AdminOpenAuth\Database\LoginCollection;
 use Heptacom\AdminOpenAuth\Exception\LoadClientException;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Shopware\Core\Framework\Uuid\Uuid;
 
-final class LoginStateFactory implements LoginStateFactoryInterface
+final readonly class LoginStateFactory implements LoginStateFactoryInterface
 {
+    /**
+     * @param EntityRepository<LoginCollection> $loginsRepository
+     */
     public function __construct(
-        private readonly EntityRepository $loginsRepository,
-        private readonly ClientFeatureCheckerInterface $clientFeatureChecker,
+        private EntityRepository $loginsRepository,
+        private ClientFeatureCheckerInterface $clientFeatureChecker,
     ) {
     }
 

@@ -6,6 +6,7 @@ namespace Heptacom\AdminOpenAuth\Http\Route;
 
 use Heptacom\AdminOpenAuth\Contract\OpenAuthenticationFlowInterface;
 use Heptacom\AdminOpenAuth\Contract\RedirectBehaviourFactoryInterface;
+use Heptacom\AdminOpenAuth\Database\ClientCollection;
 use Heptacom\AdminOpenAuth\Database\ClientEntity;
 use Heptacom\AdminOpenAuth\Http\Route\Support\RedirectReceiveRoute;
 use Heptacom\AdminOpenAuth\Service\StateResolver;
@@ -21,11 +22,14 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 final class ClientRedirectRoute extends AbstractController
 {
+    /**
+     * @param EntityRepository<ClientCollection> $clientsRepository
+     */
     public function __construct(
         private readonly OpenAuthenticationFlowInterface $flow,
         private readonly EntityRepository $clientsRepository,

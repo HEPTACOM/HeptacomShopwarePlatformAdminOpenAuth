@@ -19,20 +19,23 @@
                     {{ $tc('heptacom-admin-open-auth-user-confirm-login.popupsBlocked') }}
                 </sw-alert>
 
-                <sw-button
+                <template
                     v-for="client of clients"
                     :key="client.id"
-                    block
-                    @click="startAuthFlow(client)"
                 >
-                    {{ $t('heptacom-admin-open-auth-user-confirm-login.confirmWith', {
-                        'clientName': client.name
-                    }) }}
-                    <sw-icon
-                        name="regular-external-link-s"
-                        small
-                    ></sw-icon>
-                </sw-button>
+                    <sw-button
+                        block
+                        @click="startAuthFlow(client)"
+                    >
+                        {{ $t('heptacom-admin-open-auth-user-confirm-login.confirmWith', {
+                            'clientName': client.name
+                        }) }}
+                        <sw-icon
+                            name="regular-external-link-s"
+                            small
+                        ></sw-icon>
+                    </sw-button>
+                </template>
             </sw-card-section>
         </template>
     </div>

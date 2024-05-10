@@ -1,7 +1,7 @@
 {
     "require": {
-        "php": ">=8.1",
-        "icanhazstring/composer-unused": ">=0.8.8"
+        "php": ">=8.2",
+        "icanhazstring/composer-unused": ">=0.8.11"
     },
     "config": {
         "allow-plugins": {

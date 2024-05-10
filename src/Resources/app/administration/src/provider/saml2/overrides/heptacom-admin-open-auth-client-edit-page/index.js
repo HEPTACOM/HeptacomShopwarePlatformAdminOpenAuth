@@ -26,7 +26,7 @@ Component.override('heptacom-admin-open-auth-client-edit-page', {
                     lastName: 'urn:oid:2.5.4.4',
                     email: 'urn:oid:1.2.840.113549.1.9.1',
                 },
-                azure: {
+                entraId: {
                     firstName: 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname',
                     lastName: 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname',
                     email: 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress',

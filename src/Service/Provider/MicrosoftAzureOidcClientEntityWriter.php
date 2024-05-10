@@ -6,6 +6,9 @@ namespace Heptacom\AdminOpenAuth\Service\Provider;
 
 use Heptacom\AdminOpenAuth\Component\Provider\DefaultInjectingEntityWriterDecorator;
 
+/**
+ * @deprecated tag:v8.0.0 - Will be renamed into MicrosoftEntraIdOidcClientEntityWriter
+ */
 final class MicrosoftAzureOidcClientEntityWriter extends DefaultInjectingEntityWriterDecorator
 {
     protected function getProvider(): string

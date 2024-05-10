@@ -13,7 +13,7 @@
                         "timezone": "Timezone"
                     },
                     "template": {
-                        "azure": "Azure AD",
+                        "entraId": "Microsoft Entra ID",
                         "friendlyNames": "Simple (e.g. Keycloak)",
                         "x500": "X500 (e.g. Keycloak)"
                     },

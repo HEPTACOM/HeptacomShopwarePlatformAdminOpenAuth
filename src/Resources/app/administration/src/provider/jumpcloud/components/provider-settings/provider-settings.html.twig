@@ -8,7 +8,7 @@
             <sw-textarea-field
                 :disabled="!!item.config.identityProviderMetadataUrl"
                 :label="$t('heptacomAdminOpenAuthClient.providerFields.jumpcloud.identityProviderMetadataXml')"
-                v-model="item.config.identityProviderMetadataXml"
+                v-model:value="item.config.identityProviderMetadataXml"
             ></sw-textarea-field>
         </sw-card>
     {% endblock %}
@@ -19,10 +19,11 @@
             position-identifier="heptacom-admin-open-auth-provider-jumpcloud-settings-attribute-mapping"
         >
             {% block heptacom_admin_open_auth_provider_jumpcloud_settings_attribute_mapping_inner %}
-                <sw-text-field v-for="mappedProperty of availableProperties"
-                               :label="$t('heptacomAdminOpenAuthClient.providerFields.saml2.attributeMapping.field.' + mappedProperty)"
-                               v-model="item.config.attributeMapping[mappedProperty]"
-                ></sw-text-field>
+                <template v-for="mappedProperty of availableProperties">
+                    <sw-text-field :label="$t('heptacomAdminOpenAuthClient.providerFields.saml2.attributeMapping.field.' + mappedProperty)"
+                                   v-model:value="item.config.attributeMapping[mappedProperty]"
+                    ></sw-text-field>
+                </template>
             {% endblock %}
         </sw-card>
     {% endblock %}

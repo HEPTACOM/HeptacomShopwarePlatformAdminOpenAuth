@@ -1,5 +1,23 @@
 # Unreleased
 
+# 7.0.0
+
+**Hinzugefügt**
+
+* Kompatibilität mit Shopware 6.6 und zugehörigen Abhängigkeiten hinzugefügt
+
+**Geändert**
+
+* Microsoft Azure in Microsoft Entra ID umbenannt (nur Übersetzungen; siehe Abkündigungen)
+
+**Entfernt**
+
+* Shopware 6.5 Kompatibilität wurde entfernt
+
+**Abgekündigt**
+
+* Der Microsoft Azure Anbieter wird in Version 8.0.0 technisch in Microsoft Entra ID umbenannt
+
 # 6.0.3
 
 **Behoben**

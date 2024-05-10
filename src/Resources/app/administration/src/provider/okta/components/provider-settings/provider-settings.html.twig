@@ -6,21 +6,21 @@
             :omitUrlSearch="true"
             :label="$t('heptacomAdminOpenAuthClient.providerFields.okta.organizationUrl')"
             placeholder="my-company.okta.com"
-            v-model="item.config.organizationUrl"
+            v-model:value="item.config.organizationUrl"
         ></heptacom-admin-open-auth-url-field>
         <sw-text-field
             required
             :label="$t('heptacomAdminOpenAuthClient.providerFields.okta.clientId')"
-            v-model="item.config.clientId"
+            v-model:value="item.config.clientId"
         ></sw-text-field>
         <sw-password-field
             required
             :label="$t('heptacomAdminOpenAuthClient.providerFields.okta.clientSecret')"
-            v-model="item.config.clientSecret"
+            v-model:value="item.config.clientSecret"
         ></sw-password-field>
         <heptacom-admin-open-auth-scope-field
             :label="$t('heptacomAdminOpenAuthClient.providerFields.okta.additionalScopes')"
-            v-model="item.config.scopes"
+            v-model:value="item.config.scopes"
         ></heptacom-admin-open-auth-scope-field>
     </sw-card>
 {% endblock %}

@@ -7,7 +7,12 @@ namespace Heptacom\AdminOpenAuth\Service;
 use Heptacom\AdminOpenAuth\Contract\OpenAuthenticationFlowInterface;
 use Heptacom\AdminOpenAuth\Contract\User;
 use Heptacom\AdminOpenAuth\Contract\UserResolverInterface;
+use Heptacom\AdminOpenAuth\Database\ClientCollection;
 use Heptacom\AdminOpenAuth\Database\ClientEntity;
+use Heptacom\AdminOpenAuth\Database\LoginCollection;
+use Heptacom\AdminOpenAuth\Database\UserEmailCollection;
+use Heptacom\AdminOpenAuth\Database\UserKeyCollection;
+use Heptacom\AdminOpenAuth\Database\UserTokenCollection;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityCollection;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
@@ -17,16 +22,23 @@ use Shopware\Core\Framework\DataAbstractionLayer\Search\Sorting\FieldSorting;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 
-final class OpenAuthenticationFlow implements OpenAuthenticationFlowInterface
+final readonly class OpenAuthenticationFlow implements OpenAuthenticationFlowInterface
 {
+    /**
+     * @param EntityRepository<ClientCollection> $clientsRepository
+     * @param EntityRepository<LoginCollection> $loginsRepository
+     * @param EntityRepository<UserEmailCollection> $userEmailsRepository
+     * @param EntityRepository<UserKeyCollection> $userKeysRepository
+     * @param EntityRepository<UserTokenCollection> $userTokensRepository
+     */
     public function __construct(
-        private readonly UserResolverInterface $userResolver,
-        private readonly EntityRepository $clientsRepository,
-        private readonly EntityRepository $loginsRepository,
-        private readonly EntityRepository $userEmailsRepository,
-        private readonly EntityRepository $userKeysRepository,
-        private readonly EntityRepository $userTokensRepository,
-        private readonly RouterInterface $router,
+        private UserResolverInterface $userResolver,
+        private EntityRepository $clientsRepository,
+        private EntityRepository $loginsRepository,
+        private EntityRepository $userEmailsRepository,
+        private EntityRepository $userKeysRepository,
+        private EntityRepository $userTokensRepository,
+        private RouterInterface $router,
     ) {
     }
 
@@ -43,6 +55,7 @@ final class OpenAuthenticationFlow implements OpenAuthenticationFlowInterface
             new EqualsFilter('userId', $userId)
         );
 
+        /** @var EntityRepository[] $repos */
         $repos = [
             $this->loginsRepository,
             $this->userEmailsRepository,
@@ -50,7 +63,6 @@ final class OpenAuthenticationFlow implements OpenAuthenticationFlowInterface
             $this->userTokensRepository,
         ];
 
-        /** @var EntityRepository $repo */
         foreach ($repos as $repo) {
             $ids = $repo->searchIds($criteria, $context)->getIds();
 
