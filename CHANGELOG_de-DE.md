@@ -8,7 +8,7 @@
 
 **Entfernt**
 
-* Shopware 6.4 Kompatibilität wurde entfernt
+* Shopware 6.5 Kompatibilität wurde entfernt
 
 # 6.0.3
 
