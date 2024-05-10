@@ -19,7 +19,7 @@
         "Symfony\\Component\\HttpKernel\\KernelEvents",
         "Symfony\\Component\\Messenger\\Attribute\\AsMessageHandler",
         "Symfony\\Component\\OptionsResolver\\OptionsResolver",
-        "Symfony\\Component\\Routing\\Annotation\\Route",
+        "Symfony\\Component\\Routing\\Attribute\\Route",
         "Symfony\\Component\\Routing\\Generator\\UrlGeneratorInterface",
         "Symfony\\Component\\Routing\\RouterInterface",
         "Symfony\\Contracts\\EventDispatcher\\EventDispatcherInterface"
