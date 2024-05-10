@@ -1,6 +1,6 @@
 # Unreleased
 
-# 7.0.0-rc1
+# 7.0.0
 
 **Hinzugefügt**
 
