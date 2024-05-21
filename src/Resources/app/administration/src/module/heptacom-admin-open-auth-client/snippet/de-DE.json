@@ -23,7 +23,8 @@
             "create": {
                 "actions": {
                     "create": "Auswählen"
-                }
+                },
+                "header": "Anbieter auswählen"
             },
             "edit": {
                 "actions": {

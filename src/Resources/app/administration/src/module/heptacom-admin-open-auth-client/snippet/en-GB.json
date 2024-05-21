@@ -23,7 +23,8 @@
             "create": {
                 "actions": {
                     "create": "Choose"
-                }
+                },
+                "header": "Select provider"
             },
             "edit": {
                 "actions": {
