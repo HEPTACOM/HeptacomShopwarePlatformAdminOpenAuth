@@ -69,6 +69,10 @@
                     "name": "Name",
                     "provider": "Anbieter",
                     "users": "Benutzer"
+                },
+                "iconTooltip": {
+                    "active": "Aktiv",
+                    "connection": "Verbindung"
                 }
             }
         }
