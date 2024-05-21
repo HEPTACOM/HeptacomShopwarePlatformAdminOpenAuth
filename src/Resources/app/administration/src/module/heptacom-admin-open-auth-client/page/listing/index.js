@@ -1,5 +1,5 @@
-import './heptacom-admin-open-auth-client-listing-page.scss';
 import template from './heptacom-admin-open-auth-client-listing-page.html.twig';
+import './heptacom-admin-open-auth-client-listing-page.scss';
 
 const { Context, Data, Mixin } = Shopware;
 const { Criteria } = Data;
@@ -20,6 +20,7 @@ export default {
         return {
             isLoading: true,
             items: null,
+            // TODO refactor to computed
             columns: [{
                 property: 'active',
                 label: this.$t('heptacom-admin-open-auth-client.pages.listing.columns.active'),
