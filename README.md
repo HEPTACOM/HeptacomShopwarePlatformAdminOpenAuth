@@ -112,6 +112,133 @@ In case it results in a different type, the condition will be validated as follo
 | `object`    | non-empty       | `true` |
 | `null`      | `null`          | `false` |
 
+## Adding your own rule actions
+
+In most scenarios you only need to assign roles based on rules.
+However, for some use cases you might want to add your own actions.
+As a plugin developer you can simply add your own rule actions.
+The rules will evaluate while the login process synchronously and the appropriate action will be executed.
+
+### Adding a new rule action
+
+To add a new rule action, you need to create a service that implements `RuleActionInterface`.
+The service must be tagged with `heptacom.shopware_platform_admin_open_auth.rule_action`.
+
+Thereafter, your action should already be visible in the client configuration.
+
+#### Service
+
+```php
+<?php
+
+namespace Heptacom\MyCustomPlugin\HeptacomOpenAuth;
+
+use Heptacom\AdminOpenAuth\Contract\RuleActionInterface;
+
+class CustomRuleAction implements RuleActionInterface
+{
+    public function getName(): string
+    {
+        return 'heptacom_my_custom_action';
+    }
+    
+    public function actionConfigurationComponent(): string
+    {
+        return 'heptacom-my-custom-action-config';
+    }
+    
+    public function execute(): void {
+        // TODO: adjust method signature when implemented
+        // your business logic here
+    }
+}
+```
+
+#### Administration Snippet
+
+```json
+{
+    "heptacom_admin_open_auth": {
+        "actions": {
+            "heptacom_my_custom_action": {
+                "label": "My custom action"
+            }
+        }
+    }
+}
+```
+
+### Adding a configurable action to the administration
+
+Now we can already see our action in the client configuration.
+Although we can already add rules, we are not able to configure what action should be executed if a rule matches.
+To do so, we need to add a new component to the administration.
+
+The component receives the client and the current configuration as props.
+
+In the following example we will simply set a configurable text.
+
+```js
+import template from './heptacom-my-custom-action-config.html.twig';
+
+export default {
+    template,
+
+    props: {
+        client: {
+            type: Object,
+            required: true,
+        },
+        actionConfig: {
+            type: Object,
+            required: true,
+        },
+    }
+}
+```
+
+```twig
+<sw-text-field
+    v-model="actionConfig.myText"
+    label="Enter a text"
+    required
+></sw-text-field>
+```
+
+### Adding the business logic for an action
+
+Now, that your action is configurable, you need to define what should happen if the rule matches.
+To do so, you need to implement the `execute` method of your action.
+
+For this example we will only log the configured text.
+
+```php
+<?php
+
+namespace Heptacom\MyCustomPlugin\HeptacomOpenAuth;
+
+use Heptacom\AdminOpenAuth\Contract\RuleActionInterface;
+use Psr\Log\LoggerInterface;
+
+class CustomRuleAction implements RuleActionInterface
+{
+    public function __construct(
+        private readonly LoggerInterface $logger
+    ) {
+    }
+    
+    // ...
+    
+    // TODO: adjust method signature when implemented
+    public function execute(array $actionConfig): void {
+        $this->logger->info(sprintf(
+            'My custom action was executed with text: %s',
+            $actionConfig['myText']
+        ));
+    }
+}
+```
+
 ## Changes
 
 View the [CHANGELOG](./CHANGELOG.md) file attached to this project.
