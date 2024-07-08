@@ -11,13 +11,13 @@ use Shopware\Core\Framework\DataAbstractionLayer\EntityCollection;
  */
 final class ClientRuleCollection extends EntityCollection
 {
-    protected function getExpectedClass(): string
-    {
-        return ClientRuleEntity::class;
-    }
-
     public function filterByActionName(string $actionName): self
     {
         return $this->filterByProperty('actionName', $actionName);
+    }
+
+    protected function getExpectedClass(): string
+    {
+        return ClientRuleEntity::class;
     }
 }

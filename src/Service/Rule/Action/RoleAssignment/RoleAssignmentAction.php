@@ -61,5 +61,4 @@ class RoleAssignmentAction implements RuleActionInterface
             ];
         }
     }
-
 }

@@ -58,7 +58,7 @@ class Migration1720193260MigrateToRuleActions extends MigrationStep
                     FROM `heptacom_admin_open_auth_client_rule_role`
                     WHERE `client_rule_id` = :clientRuleId
                 SQL,
-                [ 'clientRuleId' => $clientRule['id'] ]
+                ['clientRuleId' => $clientRule['id']]
             );
 
             $actionConfig = [
@@ -76,7 +76,7 @@ class Migration1720193260MigrateToRuleActions extends MigrationStep
                 SQL,
                 [
                     'clientRuleId' => $clientRule['id'],
-                    'actionConfig' => json_encode($actionConfig)
+                    'actionConfig' => \json_encode($actionConfig),
                 ]
             );
         }

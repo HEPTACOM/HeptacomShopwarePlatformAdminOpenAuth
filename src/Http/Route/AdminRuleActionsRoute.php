@@ -32,7 +32,7 @@ final class AdminRuleActionsRoute extends AbstractController
         $actions = \array_map(static fn (RuleActionInterface $action): array => [
             'name' => $action->getName(),
             'component' => $action->getActionConfigurationComponent(),
-        ], iterator_to_array($this->actions));
+        ], \iterator_to_array($this->actions));
 
         return new JsonResponse($actions);
     }

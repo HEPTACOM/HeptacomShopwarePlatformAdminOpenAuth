@@ -23,7 +23,8 @@ readonly class ClientRuleExecutor
     ) {
     }
 
-    public function executeRules(ClientRuleCollection $rules, OAuthRuleScope $ruleScope): void {
+    public function executeRules(ClientRuleCollection $rules, OAuthRuleScope $ruleScope): void
+    {
         foreach ($this->actions as $action) {
             foreach ($rules->filterByActionName($action->getName()) as $rule) {
                 if ($this->clientRuleValidator->isValid($rule->getId(), $ruleScope)) {
@@ -31,7 +32,7 @@ readonly class ClientRuleExecutor
                         $action->execute($rule, $ruleScope);
                     } catch (\Throwable $e) {
                         $this->logger->error(
-                            sprintf(
+                            \sprintf(
                                 'Failed to execute action %s for rule %s, while trying to log in user "%s": %s',
                                 $action->getName(),
                                 $rule->getId(),

@@ -16,21 +16,16 @@ interface RuleActionInterface
 {
     /**
      * Returns a unique name for the action (max. 64 characters).
-     * @return string
      */
     public static function getName(): string;
 
     /**
      * Returns an admin component name that is used to configure the action.
-     * @return string
      */
     public function getActionConfigurationComponent(): string;
 
     /**
      * Executes the action when the appropriate rule matches.
-     * @param ClientRuleEntity $rule
-     * @param OAuthRuleScope $ruleScope
-     * @return void
      */
     public function execute(ClientRuleEntity $rule, OAuthRuleScope $ruleScope): void;
 }
