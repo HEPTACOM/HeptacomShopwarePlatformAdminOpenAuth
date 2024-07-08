@@ -2,7 +2,9 @@
     "heptacom-admin-open-auth-client": {
         "actions": {
             "heptacomAdminOpenAuthRoleAssignment": {
-                "label": "Role assignment"
+                "label": "Role assignment",
+                "defaultAclRoles": "Roles assigned to new users",
+                "userBecomeAdmin": "Make user to admin on creation"
             }
         },
         "components": {
@@ -10,13 +12,11 @@
                 "warningEmpty": "There are no rules. Please add a rule. Without rules the user will not be assigned to any role."
             },
             "rule-item": {
-                "defaultAclRoles": "Roles assigned to new users",
                 "moveDown": "Move down",
                 "moveUp": "Move up",
                 "stopOnMatch": "Stop on match",
                 "stopOnMatchHelpText": "If enabled, the no further rules will be evaluated when this rule matches.",
-                "title": "Rule {n}",
-                "userBecomeAdmin": "Make user to admin on creation"
+                "title": "Rule {n}"
             }
         },
         "module": {

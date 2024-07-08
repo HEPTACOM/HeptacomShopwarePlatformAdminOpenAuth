@@ -120,7 +120,7 @@
 {% endblock %}
 `});var L={};a(L,{default:()=>wt});var Pi,h,M,wt,T=o(()=>{R();U();({Component:Pi,Context:h}=Shopware),M="HeptacomAdminOpenAuthConfirmState",wt={template:q,inject:["loginService","repositoryFactory"],props:{divider:{type:Boolean,default:!0}},data(){return{loading:!0,clients:[],waitingForConfirmation:!1,confirmationClient:null,popupsAreBlocked:null}},computed:{heptacomAdminOpenAuthClientsRepository(){return this.repositoryFactory.create("heptacom_admin_open_auth_client")},httpClient(){return this.heptacomAdminOpenAuthClientsRepository.httpClient},sectionDivider(){return this.divider?"bottom":""}},created(){this.createdComponent()},methods:{createdComponent(){this.loadClients()},loadClients(){this.loading=!0,this.clients=[],this.getConnectedClients().then(e=>{this.clients=e}).finally(()=>{this.loading=!1})},startAuthFlow(e){let t=this;this.waitingForConfirmation=!0,this.popupsAreBlocked=null,this.confirmationClient=e,localStorage.removeItem(M),this.getConfirmRedirectUrl(e.id).then(i=>{let n=Math.floor((screen.width-600)/2),r=Math.floor((screen.height-600)/2),s=window.open(i,this.$t("heptacom-admin-open-auth-user-confirm-login.confirmWith",{clientName:e.name}),`location=0,status=0,width=600,height=600, top=${r}, left=${n}`),d=null,_=window.setTimeout(()=>{(!s||s.closed||typeof s.closed>"u")&&(t.popupsAreBlocked=!0,t.waitingForConfirmation=!1,d&&window.clearInterval(d))},1200);try{s.focus(),t.popupsAreBlocked=!1}catch{t.popupsAreBlocked=!0,t.waitingForConfirmation=!1,window.clearTimeout(_);return}d=window.setInterval(()=>{if(!this.waitingForConfirmation){window.clearInterval(d),window.clearTimeout(_),this.popupsAreBlocked=!1,s.close();return}if(s.closed){window.clearInterval(d),window.clearTimeout(_),this.popupsAreBlocked=!1,this.waitingForConfirmation=!1;let g=localStorage.getItem(M);g&&this.verifyByState(JSON.parse(g).state)}},1e3)})},abortAuthFlow(){this.confirmationClient=null,this.waitingForConfirmation=!1},getConnectedClients(){let e=this.heptacomAdminOpenAuthClientsRepository.buildHeaders(h.api);return this.httpClient.get("/_admin/open-auth/client/list",{headers:e}).then(t=>t.data.data.filter(i=>i.connected))},getConfirmRedirectUrl(e){let t=this.heptacomAdminOpenAuthClientsRepository.buildHeaders(h.api);return this.httpClient.get(`/_admin/open-auth/${e}/confirm`,{headers:t}).then(i=>i.data.target)},verifyByState(e){this.httpClient.post("/oauth/token",{grant_type:"heptacom_admin_open_auth_one_time_token",client_id:"administration",scope:"user-verified",one_time_token:e},{baseURL:h.api.apiPath}).then(t=>{let i={...h.api};i.authToken.access=t.data.access_token;let n={...this.loginService.getBearerAuthentication(),access:i.authToken.access};this.loginService.setBearerAuthentication(n),this.$emit("confirm",i)})}}}});var N,H=o(()=>{N=`{% block heptacom_admin_open_auth_role_assignment_action_config %}
     <sw-switch-field
-            :label="$t('heptacom-admin-open-auth-client.components.rule-item.userBecomeAdmin')" {# TODO: change translation path #}
+            :label="$t('heptacom-admin-open-auth-client.actions.heptacomAdminOpenAuthRoleAssignment.userBecomeAdmin')"
             v-model:value="rule.actionConfig.userBecomeAdmin"
     ></sw-switch-field>
 
@@ -128,7 +128,7 @@
             v-if="!rule.actionConfig.userBecomeAdmin"
             :repository="aclRoleRepository"
             v-model:value="rule.actionConfig.aclRoleIds"
-            :label="$t('heptacom-admin-open-auth-client.components.rule-item.defaultAclRoles')" {# TODO: change translation path #}
+            :label="$t('heptacom-admin-open-auth-client.actions.heptacomAdminOpenAuthRoleAssignment.defaultAclRoles')"
     ></sw-entity-multi-id-select>
 {% endblock %}
 `});var j={};a(j,{default:()=>Ot});var Ot,E=o(()=>{H();Ot={template:N,inject:["repositoryFactory"],props:{client:{required:!0,type:Object},rule:{required:!0,type:Object}},computed:{aclRoleRepository(){return this.repositoryFactory.create("acl_role")}}}});var z,B=o(()=>{z=`{% block heptacom_admin_open_auth_client_rule_container %}
@@ -378,7 +378,6 @@
 
         {% block heptacom_admin_open_auth_client_edit_page_content %}
             <template #content>
-
                 <sw-card-view>
                     {% block heptacom_admin_open_auth_client_edit_page_content_base_settings %}
                         <sw-card
@@ -463,14 +462,6 @@
                         </sw-card>
                     {% endblock %}
 
-                    {% block heptacom_admin_open_auth_client_edit_page_content_provider_settings %}
-                        <component
-                            v-if="item && item.provider"
-                            :is="providerSettingsComponent"
-                            v-bind="providerSettingsProps"
-                        ></component>
-                    {% endblock %}
-
                     {% block heptacom_admin_open_auth_client_edit_page_content_actions %}
                         <sw-card
                             :isLoading="isLoading"
@@ -503,6 +494,14 @@
                                 {% endblock %}
                             </template>
                         </sw-card>
+                    {% endblock %}
+
+                    {% block heptacom_admin_open_auth_client_edit_page_content_provider_settings %}
+                        <component
+                            v-if="item && item.provider"
+                            :is="providerSettingsComponent"
+                            v-bind="providerSettingsProps"
+                        ></component>
                     {% endblock %}
                 </sw-card-view>
 
