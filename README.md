@@ -139,7 +139,7 @@ use Heptacom\AdminOpenAuth\Database\ClientRuleEntity;
 
 class CustomRuleAction implements RuleActionInterface
 {
-    public function getName(): string
+    public static function getName(): string
     {
         return 'heptacom_my_custom_action';
     }
