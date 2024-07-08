@@ -8,6 +8,7 @@ use Heptacom\AdminOpenAuth\Contract\OAuthRuleScope;
 use Heptacom\AdminOpenAuth\Contract\RoleAssignment;
 use Heptacom\AdminOpenAuth\Contract\RuleActionInterface;
 use Heptacom\AdminOpenAuth\Database\ClientRuleEntity;
+use Psr\Log\LoggerInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
@@ -17,6 +18,7 @@ class RoleAssignmentAction implements RuleActionInterface
 {
     public function __construct(
         private readonly EntityRepository $aclRoleRepository,
+        private readonly LoggerInterface $logger,
     ) {
     }
 
@@ -38,8 +40,7 @@ class RoleAssignmentAction implements RuleActionInterface
             ->getExtensionOfType('roleAssignment', RoleAssignment::class);
 
         if (!$roleAssignment instanceof RoleAssignment) {
-            // TODO throw exception or log error; however this should never happen
-            return;
+            throw new RoleAssignmentMissingException();
         }
 
         if (!$roleAssignment->isAdministrator) {
