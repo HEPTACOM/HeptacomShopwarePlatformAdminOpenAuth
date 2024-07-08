@@ -1,5 +1,10 @@
 {
     "heptacom-admin-open-auth-client": {
+        "actions": {
+            "heptacomAdminOpenAuthRoleAssignment": {
+                "label": "Rollenzuweisung"
+            }
+        },
         "components": {
             "rule-container": {
                 "warningEmpty": "Es sind keine Regeln vorhanden. Bitte fügen Sie eine Regel hinzu. Ohne Regeln wird der Nutzer keiner Rolle zugewiesen."
@@ -53,8 +58,8 @@
                         "warning": "Sind Sie sich sicher, dass Sie diese Anbieterkonfiguration löschen wollen?"
                     }
                 },
-                "roleAssignment": {
-                    "title": "Rollenzuweisung"
+                "ruleActions": {
+                    "title": "Aktionen"
                 },
                 "title": "Anbieter bearbeiter"
             },

@@ -13,7 +13,7 @@ use Heptacom\AdminOpenAuth\Contract\Route\Exception\RedirectReceiveException;
 use Heptacom\AdminOpenAuth\Contract\Route\Exception\RedirectReceiveMissingStateException;
 use Heptacom\AdminOpenAuth\Contract\User;
 use Heptacom\AdminOpenAuth\Database\ClientRuleCollection;
-use Heptacom\AdminOpenAuth\Service\ClientRuleValidator;
+use Heptacom\AdminOpenAuth\Service\Rule\ClientRuleExecutor;
 use Psr\Http\Message\RequestInterface;
 use Psr\Log\LoggerInterface;
 use Shopware\Core\Framework\Context;
@@ -24,7 +24,7 @@ class RedirectReceiveRoute
     public function __construct(
         private readonly ClientFactoryContract $clientFactory,
         private readonly EventDispatcherInterface $eventDispatcher,
-        private readonly ClientRuleValidator $clientRuleValidator,
+        private readonly ClientRuleExecutor $clientRuleExecutor,
         private readonly LoggerInterface $logger,
     ) {
     }
@@ -61,40 +61,25 @@ class RedirectReceiveRoute
             'requestState' => $state,
         ]);
 
-        $this->discoverRoleAssignment($rules, $user, $client, $configuration);
+        $this->executeRules($rules, $user, $client, $configuration);
 
         $this->eventDispatcher->dispatch(new UserRedirectReceivedEvent($user, $request, $behaviour));
 
         return $user;
     }
 
-    private function discoverRoleAssignment(
+    private function executeRules(
         ClientRuleCollection $rules,
         User $user,
         ClientContract $client,
-        array $configuration
+        array $clientConfiguration
     ): void {
-        $ruleScope = new OAuthRuleScope($user, $client, $configuration, Context::createDefaultContext(), $this->logger);
+        $ruleScope = new OAuthRuleScope($user, $client, $clientConfiguration, Context::createDefaultContext(), $this->logger);
         $client->prepareOAuthRuleScope($ruleScope);
 
         $roleAssignment = new RoleAssignment();
         $user->addExtension('roleAssignment', $roleAssignment);
 
-        foreach ($rules->getElements() as $rule) {
-            if ($this->clientRuleValidator->isValid($rule->getId(), $ruleScope)) {
-                if (!$roleAssignment->isAdministrator) {
-                    $roleAssignment->isAdministrator = $rule->isUserBecomeAdmin();
-                }
-
-                $roleAssignment->roleIds = [
-                    ...$roleAssignment->roleIds,
-                    ...$rule->getAclRoles()->getIds(),
-                ];
-
-                if ($rule->isStopOnMatch()) {
-                    break;
-                }
-            }
-        }
+        $this->clientRuleExecutor->executeRules($rules, $ruleScope);
     }
 }

@@ -1,0 +1,13 @@
+{% block heptacom_admin_open_auth_role_assignment_action_config %}
+    <sw-switch-field
+            :label="$t('heptacom-admin-open-auth-client.components.rule-item.userBecomeAdmin')" {# TODO: change translation path #}
+            v-model:value="rule.actionConfig.userBecomeAdmin"
+    ></sw-switch-field>
+
+    <sw-entity-multi-id-select
+            v-if="!rule.actionConfig.userBecomeAdmin"
+            :repository="aclRoleRepository"
+            v-model:value="rule.actionConfig.aclRoleIds"
+            :label="$t('heptacom-admin-open-auth-client.components.rule-item.defaultAclRoles')" {# TODO: change translation path #}
+    ></sw-entity-multi-id-select>
+{% endblock %}

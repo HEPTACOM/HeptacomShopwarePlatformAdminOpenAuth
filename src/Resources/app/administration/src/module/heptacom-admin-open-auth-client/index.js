@@ -2,6 +2,7 @@ const { Component, Module } = Shopware;
 
 import './acl';
 
+Component.register('heptacom-admin-open-auth-role-assignment-action-config', () => import ('./component/role-assignment-action-config'));
 Component.register('heptacom-admin-open-auth-client-rule-container', () => import ('./component/rule-container'));
 Component.register('heptacom-admin-open-auth-client-rule-item', () => import ('./component/rule-item'));
 

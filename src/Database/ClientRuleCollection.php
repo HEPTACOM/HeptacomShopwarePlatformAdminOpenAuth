@@ -15,4 +15,9 @@ final class ClientRuleCollection extends EntityCollection
     {
         return ClientRuleEntity::class;
     }
+
+    public function filterByActionName(string $actionName): self
+    {
+        return $this->filterByProperty('actionName', $actionName);
+    }
 }

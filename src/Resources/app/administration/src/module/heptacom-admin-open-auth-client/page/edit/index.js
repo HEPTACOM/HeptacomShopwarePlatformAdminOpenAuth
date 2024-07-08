@@ -11,6 +11,7 @@ export default {
         'acl',
         'repositoryFactory',
         'HeptacomAdminOpenAuthProviderApiService',
+        'HeptacomAdminOpenAuthRuleActionsApiService',
     ],
 
     mixins: [
@@ -33,6 +34,7 @@ export default {
             showDeleteModal: false,
             redirectUri: null,
             metadataUri: null,
+            actionTab: '',
             deletedRuleIds: [],
             deletedConditionIds: [],
         }
@@ -62,9 +64,7 @@ export default {
         clientCriteria() {
             const criteria = new Criteria();
             criteria.getAssociation('rules').addSorting(Criteria.sort('position', 'ASC'));
-            criteria.addAssociation('rules.aclRoles');
             criteria.addAssociation('rules.conditions');
-            criteria.addAssociation('defaultAclRoles');
 
             return criteria;
         },
@@ -89,7 +89,10 @@ export default {
         loadData() {
             this.isLoading = true;
 
-            this.loadClient().finally(() => {
+            Promise.all([
+                this.loadClient(),
+                this.loadActions(),
+            ]).finally(() => {
                 this.isLoading = false;
             });
         },
@@ -100,6 +103,20 @@ export default {
             this.item = await this.clientRepository.get(this.clientId, Context.api, this.clientCriteria);
             this.redirectUri = (await this.HeptacomAdminOpenAuthProviderApiService.getRedirectUri(this.item.id)).target;
             this.metadataUri = (await this.HeptacomAdminOpenAuthProviderApiService.getMetadataUri(this.item.id)).target;
+        },
+
+        async loadActions() {
+            this.actions = {};
+
+            const actions = await this.HeptacomAdminOpenAuthRuleActionsApiService.list();
+
+            for (const action of actions) {
+                this.actions[action.name] = action;
+            }
+
+            if (actions.length > 0) {
+                this.actionTab = actions[0].name;
+            }
         },
 
         cancelEdit() {

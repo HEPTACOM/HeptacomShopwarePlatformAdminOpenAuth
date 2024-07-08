@@ -1,5 +1,15 @@
 # Unreleased
 
+# 8.0.0
+
+**Hinzugefügt**
+
+* Login-Aktionen hinzugefügt, um das Erstellen von individuellen Aktionen nach dem Login zu ermöglichen
+
+**Geändert**
+
+* Rollen-Zuweisung überarbeitet, damit diese die Login-Aktionen verwenden
+
 # 7.0.0
 
 **Hinzugefügt**

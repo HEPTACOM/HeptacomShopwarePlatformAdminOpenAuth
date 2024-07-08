@@ -122,7 +122,7 @@ The rules will evaluate while the login process synchronously and the appropriat
 ### Adding a new rule action
 
 To add a new rule action, you need to create a service that implements `RuleActionInterface`.
-The service must be tagged with `heptacom.shopware_platform_admin_open_auth.rule_action`.
+The service must be tagged with `heptacom_open_auth.rule_action`.
 
 Thereafter, your action should already be visible in the client configuration.
 
@@ -133,7 +133,9 @@ Thereafter, your action should already be visible in the client configuration.
 
 namespace Heptacom\MyCustomPlugin\HeptacomOpenAuth;
 
+use Heptacom\AdminOpenAuth\Contract\OAuthRuleScope;
 use Heptacom\AdminOpenAuth\Contract\RuleActionInterface;
+use Heptacom\AdminOpenAuth\Database\ClientRuleEntity;
 
 class CustomRuleAction implements RuleActionInterface
 {
@@ -142,13 +144,12 @@ class CustomRuleAction implements RuleActionInterface
         return 'heptacom_my_custom_action';
     }
     
-    public function actionConfigurationComponent(): string
+    public function getActionConfigurationComponent(): string
     {
         return 'heptacom-my-custom-action-config';
     }
     
-    public function execute(): void {
-        // TODO: adjust method signature when implemented
+    public function execute(ClientRuleEntity $rule, OAuthRuleScope $ruleScope): void {
         // your business logic here
     }
 }
@@ -158,7 +159,7 @@ class CustomRuleAction implements RuleActionInterface
 
 ```json
 {
-    "heptacom_admin_open_auth": {
+    "heptacom-admin-open-auth-client": {
         "actions": {
             "heptacom_my_custom_action": {
                 "label": "My custom action"
@@ -199,7 +200,7 @@ export default {
 
 ```twig
 <sw-text-field
-    v-model="actionConfig.myText"
+    v-model:value="actionConfig.myText"
     label="Enter a text"
     required
 ></sw-text-field>
@@ -218,6 +219,8 @@ For this example we will only log the configured text.
 namespace Heptacom\MyCustomPlugin\HeptacomOpenAuth;
 
 use Heptacom\AdminOpenAuth\Contract\RuleActionInterface;
+use Heptacom\AdminOpenAuth\Contract\OAuthRuleScope;
+use Heptacom\AdminOpenAuth\Database\ClientRuleEntity;
 use Psr\Log\LoggerInterface;
 
 class CustomRuleAction implements RuleActionInterface
@@ -229,11 +232,10 @@ class CustomRuleAction implements RuleActionInterface
     
     // ...
     
-    // TODO: adjust method signature when implemented
-    public function execute(array $actionConfig): void {
+    public function execute(ClientRuleEntity $rule, OAuthRuleScope $ruleScope): void {
         $this->logger->info(sprintf(
             'My custom action was executed with text: %s',
-            $actionConfig['myText']
+            $rule->getActionConfig()['myText']
         ));
     }
 }

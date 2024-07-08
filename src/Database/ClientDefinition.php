@@ -43,7 +43,6 @@ final class ClientDefinition extends EntityDefinition
     {
         return [
             'active' => false,
-            'userBecomeAdmin' => true,
             'keepUserUpdated' => true,
         ];
     }
@@ -58,7 +57,6 @@ final class ClientDefinition extends EntityDefinition
             (new BoolField('login', 'login'))->addFlags(new Required()),
             (new BoolField('connect', 'connect'))->addFlags(new Required()),
             (new BoolField('store_user_token', 'storeUserToken'))->addFlags(new Required()),
-            (new BoolField('user_become_admin', 'userBecomeAdmin'))->addFlags(new Required()),
             (new BoolField('keep_user_updated', 'keepUserUpdated'))->addFlags(new Required()),
             (new JsonField('config', 'config', [], []))->addFlags(new Required()),
             new CreatedAtField(),
@@ -69,8 +67,6 @@ final class ClientDefinition extends EntityDefinition
             (new OneToManyAssociationField('userKeys', UserKeyDefinition::class, 'client_id', 'id'))->addFlags(new CascadeDelete()),
             (new OneToManyAssociationField('userTokens', UserTokenDefinition::class, 'client_id', 'id'))->addFlags(new CascadeDelete()),
             (new OneToManyAssociationField('rules', ClientRuleDefinition::class, 'client_id', 'id'))->addFlags(new CascadeDelete()),
-
-            (new ManyToManyAssociationField('defaultAclRoles', AclRoleDefinition::class, ClientAclRoleDefinition::class, 'client_id', 'acl_role_id'))->addFlags(new CascadeDelete()),
         ]);
     }
 }

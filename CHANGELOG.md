@@ -1,5 +1,15 @@
 # Unreleased
 
+# 8.0.0
+
+**Added**
+
+* Added extensible login actions to allow custom actions after a successful login
+
+**Changed**
+
+* Refactored role assignment rules to use the new login actions
+
 # 7.0.0
 
 **Added**

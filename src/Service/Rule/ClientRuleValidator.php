@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Heptacom\AdminOpenAuth\Service;
+namespace Heptacom\AdminOpenAuth\Service\Rule;
 
 use Doctrine\DBAL\Connection;
 use Heptacom\AdminOpenAuth\Contract\OAuthRuleScope;

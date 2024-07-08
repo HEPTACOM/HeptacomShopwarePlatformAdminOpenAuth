@@ -23,6 +23,10 @@ export default {
             required: true,
             type: Object,
         },
+        action: {
+            required: true,
+            type: Object,
+        },
     },
 
     computed: {
@@ -35,7 +39,14 @@ export default {
                 'global',
                 this.client.provider
             ];
-        }
+        },
+
+        actionConfigProps() {
+            return {
+                rule: this.rule,
+                client: this.client,
+            };
+        },
     },
 
     methods: {
