@@ -40,7 +40,7 @@ class ClientRuleValidator
         $rule = $this->buildRule($clientRuleId);
         $result = $rule->match($scope);
 
-        /**
+        /*
          * Do not extract $scope->getCacheKey() to a variable!
          * It might happen that the key changes after the rule execution (e.g. if a new token for HTTP requests was generated).
          */

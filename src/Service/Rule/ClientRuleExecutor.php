@@ -53,8 +53,7 @@ readonly class ClientRuleExecutor
         ClientRuleEntity $rule,
         OAuthRuleScope $ruleScope,
         ?string $userId
-    ): bool
-    {
+    ): bool {
         if ($this->clientRuleValidator->isValid($rule->getId(), $ruleScope)) {
             try {
                 if ($userId === null) {

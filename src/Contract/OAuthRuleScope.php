@@ -70,7 +70,7 @@ class OAuthRuleScope extends RuleScope
         // generate cache key from user and client configuration
         return (string) Uuid::uuid5(self::CACHE_KEY_NS, \json_encode([
             $user,
-            $this->clientConfiguration
+            $this->clientConfiguration,
         ]))->getHex();
     }
 }
