@@ -69,6 +69,7 @@ final readonly class UserResolver implements UserResolverInterface
         }
 
         $this->postUpdates($user, $mappedUserId, $state, $isNew, $clientId, $context);
+        $user->addArrayExtension('shopwareUser', ['id' => $mappedUserId]);
     }
 
     protected function postUpdates(

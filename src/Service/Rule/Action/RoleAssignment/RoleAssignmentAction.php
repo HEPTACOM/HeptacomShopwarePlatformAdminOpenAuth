@@ -8,7 +8,6 @@ use Heptacom\AdminOpenAuth\Contract\OAuthRuleScope;
 use Heptacom\AdminOpenAuth\Contract\RoleAssignment;
 use Heptacom\AdminOpenAuth\Contract\RuleActionInterface;
 use Heptacom\AdminOpenAuth\Database\ClientRuleEntity;
-use Psr\Log\LoggerInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
@@ -18,7 +17,6 @@ class RoleAssignmentAction implements RuleActionInterface
 {
     public function __construct(
         private readonly EntityRepository $aclRoleRepository,
-        private readonly LoggerInterface $logger,
     ) {
     }
 
@@ -32,7 +30,7 @@ class RoleAssignmentAction implements RuleActionInterface
         return 'heptacom-admin-open-auth-role-assignment-action-config';
     }
 
-    public function execute(ClientRuleEntity $rule, OAuthRuleScope $ruleScope): void
+    public function preResolveUser(ClientRuleEntity $rule, OAuthRuleScope $ruleScope): void
     {
         $actionConfig = $rule->getActionConfig();
 
@@ -60,5 +58,10 @@ class RoleAssignmentAction implements RuleActionInterface
                 ...$roleIds,
             ];
         }
+    }
+
+    public function postResolveUser(ClientRuleEntity $rule, OAuthRuleScope $ruleScope, string $userId): void
+    {
+        // nth
     }
 }

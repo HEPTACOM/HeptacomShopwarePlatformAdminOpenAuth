@@ -17,6 +17,11 @@ use Shopware\Core\Framework\Uuid\Uuid;
 
 class ClientRuleValidator
 {
+    /**
+     * @var array<string, array<string, bool>>
+     */
+    private array $ruleExecutionCache = [];
+
     public function __construct(
         private readonly Connection $connection,
         private readonly RuleConditionRegistry $ruleConditionRegistry
@@ -25,9 +30,23 @@ class ClientRuleValidator
 
     public function isValid(string $clientRuleId, OAuthRuleScope $scope): bool
     {
-        $rule = $this->buildRule($clientRuleId);
+        $this->ruleExecutionCache[$clientRuleId] ??= [];
 
-        return $rule->match($scope);
+        $cachedResult = $this->ruleExecutionCache[$clientRuleId][$scope->getCacheKey()] ?? null;
+        if ($cachedResult !== null) {
+            return $cachedResult;
+        }
+
+        $rule = $this->buildRule($clientRuleId);
+        $result = $rule->match($scope);
+
+        /**
+         * Do not extract $scope->getCacheKey() to a variable!
+         * It might happen that the key changes after the rule execution (e.g. if a new token for HTTP requests was generated).
+         */
+        $this->ruleExecutionCache[$clientRuleId][$scope->getCacheKey()] = $result;
+
+        return $result;
     }
 
     public function buildRule(string $clientRuleId): Rule

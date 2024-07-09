@@ -25,7 +25,13 @@ interface RuleActionInterface
     public function getActionConfigurationComponent(): string;
 
     /**
-     * Executes the action when the appropriate rule matches.
+     * Executes the action before resolving the SSO user into a shopware user, when the appropriate rule matches.
      */
-    public function execute(ClientRuleEntity $rule, OAuthRuleScope $ruleScope): void;
+    public function preResolveUser(ClientRuleEntity $rule, OAuthRuleScope $ruleScope): void;
+
+    /**
+     * Executes the action after the SSO user is resolved and the shopware user is updated, when the appropriate rule matches.
+     * When this method is executed, the user is not yet logged in.
+     */
+    public function postResolveUser(ClientRuleEntity $rule, OAuthRuleScope $ruleScope, string $userId): void;
 }

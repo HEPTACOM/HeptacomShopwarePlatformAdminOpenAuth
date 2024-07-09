@@ -232,9 +232,16 @@ class CustomRuleAction implements RuleActionInterface
     
     // ...
     
-    public function execute(ClientRuleEntity $rule, OAuthRuleScope $ruleScope): void {
+    public function preResolveUser(ClientRuleEntity $rule, OAuthRuleScope $ruleScope): void {
         $this->logger->info(sprintf(
-            'My custom action was executed with text: %s',
+            'My custom action (preResolveUser) was executed with text: %s',
+            $rule->getActionConfig()['myText']
+        ));
+    }
+    
+    public function postResolveUser(ClientRuleEntity $rule, OAuthRuleScope $ruleScope): void {
+        $this->logger->info(sprintf(
+            'My custom action (postResolveUser) was executed with text: %s',
             $rule->getActionConfig()['myText']
         ));
     }
