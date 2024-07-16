@@ -149,7 +149,11 @@ class CustomRuleAction implements RuleActionInterface
         return 'heptacom-my-custom-action-config';
     }
     
-    public function execute(ClientRuleEntity $rule, OAuthRuleScope $ruleScope): void {
+    public function preResolveUser(ClientRuleEntity $rule, OAuthRuleScope $ruleScope): void {
+        // your business logic here
+    }
+    
+    public function postResolveUser(ClientRuleEntity $rule, OAuthRuleScope $ruleScope): void {
         // your business logic here
     }
 }
