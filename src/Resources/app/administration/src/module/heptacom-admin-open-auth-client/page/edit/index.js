@@ -34,7 +34,8 @@ export default {
             showDeleteModal: false,
             redirectUri: null,
             metadataUri: null,
-            actionTab: '',
+            actions: {},
+            defaultActionTab: '',
             deletedRuleIds: [],
             deletedConditionIds: [],
         }
@@ -115,7 +116,7 @@ export default {
             }
 
             if (actions.length > 0) {
-                this.actionTab = actions[0].name;
+                this.defaultActionTab = actions[0].name;
             }
         },
 
