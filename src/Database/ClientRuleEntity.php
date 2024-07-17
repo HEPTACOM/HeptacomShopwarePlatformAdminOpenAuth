@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\Database;
 
-use Shopware\Core\Framework\Api\Acl\Role\AclRoleCollection;
 use Shopware\Core\Framework\DataAbstractionLayer\Entity;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityIdTrait;
 
@@ -14,7 +13,9 @@ class ClientRuleEntity extends Entity
 
     protected string $clientId;
 
-    protected bool $userBecomeAdmin;
+    protected string $actionName;
+
+    protected array $actionConfig;
 
     protected bool $stopOnMatch;
 
@@ -22,18 +23,11 @@ class ClientRuleEntity extends Entity
 
     protected ?ClientRuleConditionCollection $conditions = null;
 
-    protected ?AclRoleCollection $aclRoles = null;
-
     protected int $position;
 
     public function getClientId(): string
     {
         return $this->clientId;
-    }
-
-    public function isUserBecomeAdmin(): bool
-    {
-        return $this->userBecomeAdmin;
     }
 
     public function isStopOnMatch(): bool
@@ -46,14 +40,19 @@ class ClientRuleEntity extends Entity
         return $this->client;
     }
 
+    public function getActionName(): string
+    {
+        return $this->actionName;
+    }
+
+    public function getActionConfig(): array
+    {
+        return $this->actionConfig;
+    }
+
     public function getConditions(): ?ClientRuleConditionCollection
     {
         return $this->conditions;
-    }
-
-    public function getAclRoles(): ?AclRoleCollection
-    {
-        return $this->aclRoles;
     }
 
     public function getPosition(): int

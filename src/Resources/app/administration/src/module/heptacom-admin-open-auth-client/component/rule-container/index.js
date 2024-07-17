@@ -13,6 +13,10 @@ export default {
             required: true,
             type: Object,
         },
+        action: {
+            required: true,
+            type: Array,
+        },
     },
 
     data() {
@@ -27,7 +31,9 @@ export default {
         },
 
         sortedRules() {
-            return this.client.rules.sort((a, b) => a.position - b.position);
+            return this.client.rules
+                .filter(rule => rule.actionName === this.action.name)
+                .sort((a, b) => a.position - b.position);
         },
     },
 
@@ -52,7 +58,9 @@ export default {
         addRule() {
             const rule = this.ruleRepository.create();
             rule.clientId = this.client.id;
-            rule.position = this.client.rules.length;
+            rule.actionName = this.action.name;
+            rule.actionConfig = {};
+            rule.position = this.sortedRules.length;
             this.client.rules.add(rule);
         },
 
@@ -83,7 +91,7 @@ export default {
             let ruleA = null;
             let ruleB = null;
 
-            for (const rule of this.client.rules) {
+            for (const rule of this.sortedRules) {
                 if (ruleA === null && rule.position === positionA) {
                     ruleA = rule;
                     continue;

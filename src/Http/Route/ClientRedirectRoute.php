@@ -9,6 +9,7 @@ use Heptacom\AdminOpenAuth\Contract\RedirectBehaviourFactoryInterface;
 use Heptacom\AdminOpenAuth\Database\ClientCollection;
 use Heptacom\AdminOpenAuth\Database\ClientEntity;
 use Heptacom\AdminOpenAuth\Http\Route\Support\RedirectReceiveRoute;
+use Heptacom\AdminOpenAuth\Http\Route\Support\UserRedirectAuthenticationEvent;
 use Heptacom\AdminOpenAuth\Service\StateResolver;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Shopware\Core\Framework\Context;
@@ -18,6 +19,7 @@ use Shopware\Core\Framework\DataAbstractionLayer\Search\Sorting\FieldSorting;
 use Shopware\Core\Framework\Struct\ArrayStruct;
 use Symfony\Bridge\PsrHttpMessage\Factory\PsrHttpFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -36,6 +38,7 @@ final class ClientRedirectRoute extends AbstractController
         private readonly RedirectReceiveRoute $redirectReceiveRoute,
         private readonly RedirectBehaviourFactoryInterface $redirectBehaviourFactory,
         private readonly StateResolver $stateResolver,
+        private readonly EventDispatcherInterface $eventDispatcher,
     ) {
     }
 
@@ -67,17 +70,21 @@ final class ClientRedirectRoute extends AbstractController
         $user = $this->redirectReceiveRoute
             ->onReceiveRequest(
                 $psrHttpFactory->createRequest($request),
-                $client->provider,
-                $client->config,
+                $client,
                 $this->redirectBehaviourFactory->createRedirectBehaviour($clientId, $context),
-                $client->rules
             );
         $requestState = (string) $user->getExtensionOfType('requestState', ArrayStruct::class)['requestState'];
 
         $this->flow->upsertUser($user, $clientId, $requestState, $context);
 
-        $statePayload = $this->stateResolver->getPayload($requestState, $context);
+        $this->eventDispatcher->dispatch(
+            new UserRedirectAuthenticationEvent(
+                $user,
+                $client
+            )
+        );
 
+        $statePayload = $this->stateResolver->getPayload($requestState, $context);
         $targetUrl = $statePayload['redirectTo'] ?? $this->generateUrl(
             'administration.index',
             [],

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\Database;
 
-use Shopware\Core\Framework\Api\Acl\Role\AclRoleCollection;
 use Shopware\Core\Framework\DataAbstractionLayer\Entity;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityIdTrait;
 
@@ -24,10 +23,6 @@ final class ClientEntity extends Entity
 
     public ?bool $storeUserToken = null;
 
-    public ?bool $userBecomeAdmin = null;
-
-    public ?bool $keepUserUpdated = null;
-
     public ?array $config = null;
 
     public ?LoginCollection $logins = null;
@@ -39,6 +34,4 @@ final class ClientEntity extends Entity
     public ?UserTokenCollection $userTokens = null;
 
     public ?ClientRuleCollection $rules = null;
-
-    public ?AclRoleCollection $defaultAclRoles = null;
 }

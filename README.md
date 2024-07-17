@@ -112,6 +112,146 @@ In case it results in a different type, the condition will be validated as follo
 | `object`    | non-empty       | `true` |
 | `null`      | `null`          | `false` |
 
+## Adding your own rule actions
+
+In most scenarios you only need to assign roles based on rules.
+However, for some use cases you might want to add your own actions.
+As a plugin developer you can simply add your own rule actions.
+The rules will evaluate while the login process synchronously and the appropriate action will be executed.
+
+### Adding a new rule action
+
+To add a new rule action, you need to create a service that implements `RuleActionInterface`.
+The service must be tagged with `heptacom_open_auth.rule_action`.
+
+Thereafter, your action should already be visible in the client configuration.
+
+#### Service
+
+```php
+<?php
+
+namespace Heptacom\MyCustomPlugin\HeptacomOpenAuth;
+
+use Heptacom\AdminOpenAuth\Contract\OAuthRuleScope;
+use Heptacom\AdminOpenAuth\Contract\RuleActionInterface;
+use Heptacom\AdminOpenAuth\Database\ClientRuleEntity;
+
+class CustomRuleAction implements RuleActionInterface
+{
+    public static function getName(): string
+    {
+        return 'heptacom_my_custom_action';
+    }
+    
+    public function getActionConfigurationComponent(): string
+    {
+        return 'heptacom-my-custom-action-config';
+    }
+    
+    public function preResolveUser(ClientRuleEntity $rule, OAuthRuleScope $ruleScope): void {
+        // your business logic here
+    }
+    
+    public function postResolveUser(ClientRuleEntity $rule, OAuthRuleScope $ruleScope): void {
+        // your business logic here
+    }
+}
+```
+
+#### Administration Snippet
+
+```json
+{
+    "heptacom-admin-open-auth-client": {
+        "actions": {
+            "heptacom_my_custom_action": {
+                "label": "My custom action"
+            }
+        }
+    }
+}
+```
+
+### Adding a configurable action to the administration
+
+Now we can already see our action in the client configuration.
+Although we can already add rules, we are not able to configure what action should be executed if a rule matches.
+To do so, we need to add a new component to the administration.
+
+The component receives the client and the current configuration as props.
+
+In the following example we will simply set a configurable text.
+
+```js
+import template from './heptacom-my-custom-action-config.html.twig';
+
+export default {
+    template,
+
+    props: {
+        client: {
+            type: Object,
+            required: true,
+        },
+        actionConfig: {
+            type: Object,
+            required: true,
+        },
+    }
+}
+```
+
+```twig
+<sw-text-field
+    v-model:value="actionConfig.myText"
+    label="Enter a text"
+    required
+></sw-text-field>
+```
+
+### Adding the business logic for an action
+
+Now, that your action is configurable, you need to define what should happen if the rule matches.
+To do so, you need to implement the `execute` method of your action.
+
+For this example we will only log the configured text.
+
+```php
+<?php
+
+namespace Heptacom\MyCustomPlugin\HeptacomOpenAuth;
+
+use Heptacom\AdminOpenAuth\Contract\RuleActionInterface;
+use Heptacom\AdminOpenAuth\Contract\OAuthRuleScope;
+use Heptacom\AdminOpenAuth\Database\ClientRuleEntity;
+use Psr\Log\LoggerInterface;
+
+class CustomRuleAction implements RuleActionInterface
+{
+    public function __construct(
+        private readonly LoggerInterface $logger
+    ) {
+    }
+    
+    // ...
+    
+    public function preResolveUser(ClientRuleEntity $rule, OAuthRuleScope $ruleScope): void {
+        $this->logger->info(sprintf(
+            'My custom action (preResolveUser) was executed with text: %s',
+            $rule->getActionConfig()['myText']
+        ));
+    }
+    
+    public function postResolveUser(ClientRuleEntity $rule, OAuthRuleScope $ruleScope): void {
+        $this->logger->info(sprintf(
+            'My custom action (postResolveUser) was executed with text: %s',
+            $rule->getActionConfig()['myText']
+        ));
+    }
+}
+```
+
 ## Changes
 
 View the [CHANGELOG](./CHANGELOG.md) file attached to this project.

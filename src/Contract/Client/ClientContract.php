@@ -9,8 +9,9 @@ use Heptacom\AdminOpenAuth\Contract\RedirectBehaviour;
 use Heptacom\AdminOpenAuth\Contract\TokenPair;
 use Heptacom\AdminOpenAuth\Contract\User;
 use Psr\Http\Message\RequestInterface;
+use Shopware\Core\Framework\Struct\Struct;
 
-abstract class ClientContract
+abstract class ClientContract extends Struct
 {
     abstract public function getLoginUrl(?string $state, RedirectBehaviour $behaviour): string;
 

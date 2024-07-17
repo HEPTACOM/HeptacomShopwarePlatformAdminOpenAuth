@@ -46,17 +46,11 @@
                     v-model:value="rule.stopOnMatch"
             ></sw-switch-field>
 
-            <sw-switch-field
-                    :label="$t('heptacom-admin-open-auth-client.components.rule-item.userBecomeAdmin')"
-                    v-model:value="rule.userBecomeAdmin"
-            ></sw-switch-field>
-
-            <sw-entity-multi-select
-                    v-if="!rule.userBecomeAdmin"
-                    v-model:entityCollection="rule.aclRoles"
-                    :label="$t('heptacom-admin-open-auth-client.components.rule-item.defaultAclRoles')"
-                    entityName="acl_role"
-            ></sw-entity-multi-select>
+            <component
+                v-if="rule && action"
+                :is="action.component"
+                v-bind="actionConfigProps"
+            ></component>
 
             <div class="heptacom-admin-open-auth-rule-item__collapse-footer">
                 <sw-button
