@@ -60,7 +60,7 @@ export default {
             rule.clientId = this.client.id;
             rule.actionName = this.action.name;
             rule.actionConfig = {};
-            rule.position = this.client.rules.length;
+            rule.position = this.sortedRules.length;
             this.client.rules.add(rule);
         },
 
@@ -91,7 +91,7 @@ export default {
             let ruleA = null;
             let ruleB = null;
 
-            for (const rule of this.client.rules) {
+            for (const rule of this.sortedRules) {
                 if (ruleA === null && rule.position === positionA) {
                     ruleA = rule;
                     continue;
