@@ -5,10 +5,15 @@
 **Added**
 
 * Added extensible login actions to allow custom actions after a successful login
+* Added authenticated OData request condition for OpenID Connect based providers
 
 **Changed**
 
 * Refactored role assignment rules to use the new login actions
+
+**Fixed**
+
+* Fixed false negative validations for group ids condition in Microsoft Entra ID provider if too many groups are assigned to a user in Entra ID (GitHub Issue #27) 
 
 # 7.0.0
 

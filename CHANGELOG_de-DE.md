@@ -5,10 +5,15 @@
 **Hinzugefügt**
 
 * Login-Aktionen hinzugefügt, um das Erstellen von individuellen Aktionen nach dem Login zu ermöglichen
+* Authentifizierter OData Request Bedingung für OpenID Connect basierte Provider hinzugefügt
 
 **Geändert**
 
 * Rollen-Zuweisung überarbeitet, damit diese die Login-Aktionen verwenden
+
+**Behoben**
+
+* Falsch negative Validierungen in der Gruppen IDs Bedingung im Microsoft Entra ID Provider behoben (GitHub Issue #27) 
 
 # 7.0.0
 
