@@ -7,9 +7,6 @@ namespace Heptacom\AdminOpenAuth\Component\OpenIdConnect\Rule;
 use Heptacom\AdminOpenAuth\Component\Provider\OpenIdConnectClient;
 use Heptacom\AdminOpenAuth\Contract\OAuthRuleScope;
 use Heptacom\AdminOpenAuth\Contract\User;
-use Shopware\Core\Framework\Rule\RuleComparison;
-use Shopware\Core\Framework\Rule\RuleConfig;
-use Shopware\Core\Framework\Rule\RuleConstraints;
 
 class AuthenticatedODataRequestRule extends AuthenticatedRequestRule
 {
@@ -43,6 +40,7 @@ class AuthenticatedODataRequestRule extends AuthenticatedRequestRule
     {
         try {
             $odataResponse = \json_decode($response, true, 512, \JSON_THROW_ON_ERROR);
+
             return $odataResponse['@odata.nextLink'] ?? null;
         } catch (\JsonException $e) {
             return null;
