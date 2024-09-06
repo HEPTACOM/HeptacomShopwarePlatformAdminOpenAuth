@@ -9,6 +9,7 @@
                 "condition": {
                     "rule": {
                         "authenticatedRequest": "Authentifizierter HTTP Request",
+                        "authenticatedODataRequest": "Authentifizierter OData Request",
                         "jmesPathDocumentation": "JMESPath Dokumentation"
                     }
                 },
