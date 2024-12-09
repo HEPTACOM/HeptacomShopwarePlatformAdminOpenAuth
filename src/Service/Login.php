@@ -45,22 +45,36 @@ final readonly class Login implements LoginInterface
 
     public function pop(string $state, Context $context): ?LoginEntity
     {
+        $currentTime = new \DateTime();
+
+        $expiredCriteria = new Criteria();
+        $expiredCriteria->addFilter(new RangeFilter('expiresAt', [
+            RangeFilter::LT => $currentTime->format(Defaults::STORAGE_DATE_TIME_FORMAT),
+        ]));
+
+        /** @var LoginCollection $expiredLogins */
+        $expiredLogins = $this->loginsRepository->search($expiredCriteria, $context)->getEntities();
+
+        if ($expiredLogins->count() > 0) {
+            $deletePayload = $expiredLogins->map(fn (LoginEntity $login) => ['id' => $login->getId()]);
+            $this->loginsRepository->delete(\array_values($deletePayload), $context);
+        }
+
         $criteria = new Criteria();
         $criteria->addAssociation('user');
         $criteria->addFilter(new EqualsFilter('state', $state));
         $criteria->addFilter(new RangeFilter('expiresAt', [
-            RangeFilter::GTE => (new \DateTime())->format(Defaults::STORAGE_DATE_TIME_FORMAT),
+            RangeFilter::GTE => $currentTime->format(Defaults::STORAGE_DATE_TIME_FORMAT),
         ]));
 
         /** @var LoginCollection $logins */
         $logins = $this->loginsRepository->search($criteria, $context)->getEntities();
 
         if ($logins->count() > 0) {
-            $deletePayload = $logins->map(fn (LoginEntity $login): array => ['id' => $login->getId()]);
-            $this->loginsRepository->delete(\array_values($deletePayload), $context);
+            return $logins->first();
         }
 
-        return $logins->first();
+        return null;
     }
 
     public function getUser(string $state, Context $context): ?string
