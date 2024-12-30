@@ -78,7 +78,7 @@ final class JiraProvider extends ClientProviderContract
 
         $resolvedConfig['scopes'] = \array_unique([
             ...$defaultScopes,
-            ...$resolvedConfig['scopes']
+            ...$resolvedConfig['scopes'],
         ]);
 
         return new JiraClient($this->tokenPairFactory, new Atlassian($resolvedConfig));
