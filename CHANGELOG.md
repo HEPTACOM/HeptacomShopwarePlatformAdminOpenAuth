@@ -9,6 +9,7 @@
 **Fixed**
 
 * Fixed false negative validations for group ids condition in Microsoft Entra ID provider if too many groups are assigned to a user in Entra ID (GitHub Issue #27) 
+* Changed field type for additional scopes in oauth based providers to fix scopes not being saved. (GitHub issue #33)
 
 # 7.0.0
 

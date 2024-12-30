@@ -1,6 +1,9 @@
 import './heptacom-admin-open-auth-scope-field.scss';
 import template from './heptacom-admin-open-auth-scope-field.html.twig';
 
+/**
+ * @deprecated tag:v8.0.0 - Will be removed in v9.0.0. `sw-tagged-field` is used instead.
+ */
 export default {
     inheritAttrs: false,
 
