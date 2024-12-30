@@ -1,5 +1,9 @@
 # Unreleased
 
+**Behoben**
+
+* Fehler behoben, der das Konfigurieren von Scopes bei OAuth Clients verhinderte. (GitHub Issue #33)
+
 # 8.0.0
 
 **Hinzugefügt**

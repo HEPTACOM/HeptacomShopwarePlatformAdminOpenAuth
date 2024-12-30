@@ -10,9 +10,9 @@
             :label="$t('heptacomAdminOpenAuthClient.providerFields.google_cloud.clientSecret')"
             v-model:value="item.config.clientSecret"
         ></sw-password-field>
-        <heptacom-admin-open-auth-scope-field
+        <sw-tagged-field
             :label="$t('heptacomAdminOpenAuthClient.providerFields.google_cloud.additionalScopes')"
             v-model:value="item.config.scopes"
-        ></heptacom-admin-open-auth-scope-field>
+        ></sw-tagged-field>
     </sw-card>
 {% endblock %}
