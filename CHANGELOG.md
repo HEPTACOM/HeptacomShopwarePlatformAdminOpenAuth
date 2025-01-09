@@ -3,6 +3,7 @@
 **Fixed**
 
 * Changed field type for additional scopes in oauth based providers to fix scopes not being saved. (GitHub issue #33)
+* Fixed incomplete implementation in `\Heptacom\AdminOpenAuth\Exception\UserMismatchException` (GitHub issue #33)
 
 # 8.0.0
 

@@ -12,4 +12,9 @@ class UserMismatchException extends ShopwareHttpException
     {
         parent::__construct('The given user is not allowed to accept this confirmation', [], $previous);
     }
+
+    public function getErrorCode(): string
+    {
+        return 'HEPTACOM_ADMIN_OPEN_AUTH__USER_MISMATCH';
+    }
 }
