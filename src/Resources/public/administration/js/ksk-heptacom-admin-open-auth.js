@@ -653,10 +653,10 @@
             :label="$t('heptacomAdminOpenAuthClient.providerFields.cidaas.clientSecret')"
             v-model:value="item.config.clientSecret"
         ></sw-password-field>
-        <heptacom-admin-open-auth-scope-field
+        <sw-tagged-field
             :label="$t('heptacomAdminOpenAuthClient.providerFields.cidaas.additionalScopes')"
             v-model:value="item.config.scopes"
-        ></heptacom-admin-open-auth-scope-field>
+        ></sw-tagged-field>
     </sw-card>
 {% endblock %}
 `});var ge={};a(ge,{default:()=>It});var It,fe=o(()=>{ue();It={template:_e,props:{item:{required:!0}},watch:{item(e){e.config.scopes||(e.config.scopes=[])}}}});var be,ve=o(()=>{be=`{% block heptacom_admin_open_auth_client_google_cloud_settings %}
@@ -671,10 +671,10 @@
             :label="$t('heptacomAdminOpenAuthClient.providerFields.google_cloud.clientSecret')"
             v-model:value="item.config.clientSecret"
         ></sw-password-field>
-        <heptacom-admin-open-auth-scope-field
+        <sw-tagged-field
             :label="$t('heptacomAdminOpenAuthClient.providerFields.google_cloud.additionalScopes')"
             v-model:value="item.config.scopes"
-        ></heptacom-admin-open-auth-scope-field>
+        ></sw-tagged-field>
     </sw-card>
 {% endblock %}
 `});var we={};a(we,{default:()=>Nt});var Nt,Ae=o(()=>{ve();Nt={template:be,props:{item:{required:!0}},watch:{item(e){e.config.scopes||(e.config.scopes=[])}}}});var ke,ye=o(()=>{ke=`{% block heptacom_admin_open_auth_provider_jira_settings %}
@@ -687,11 +687,10 @@
             :label="$t('heptacomAdminOpenAuthClient.providerFields.jira.clientSecret')"
             v-model:value="item.config.clientSecret"
         ></sw-password-field>
-        <heptacom-admin-open-auth-scope-field
+        <sw-tagged-field
             :label="$t('heptacomAdminOpenAuthClient.providerFields.jira.additionalScopes')"
-            :defaultScopes="['read:me', 'read:jira-user', 'offline_access']"
             v-model:value="item.config.scopes"
-        ></heptacom-admin-open-auth-scope-field>
+        ></sw-tagged-field>
     </sw-card>
 {% endblock %}
 `});var Ce={};a(Ce,{default:()=>jt});var jt,xe=o(()=>{ye();jt={template:ke,props:{item:{required:!0}}}});var Se,Oe=o(()=>{Se=`{% block heptacom_admin_open_auth_provider_jumpcloud_settings %}
@@ -732,10 +731,10 @@
             :placeholder="jsonPlaceholder"
             v-model:value="item.config.keycloakOidcJson"
         ></sw-textarea-field>
-        <heptacom-admin-open-auth-scope-field
+        <sw-tagged-field
             :label="$t('heptacomAdminOpenAuthClient.providerFields.keycloak.additionalScopes')"
             v-model:value="item.config.scopes"
-        ></heptacom-admin-open-auth-scope-field>
+        ></sw-tagged-field>
     </sw-card>
 {% endblock %}
 `});var Ue={};a(Ue,{default:()=>Xt});var Xt,qe=o(()=>{Fe();Xt={template:Re,props:{item:{required:!0}},data(){return{jsonPlaceholder:JSON.stringify({realm:"master","auth-server-url":"https://keycloak.my-company.com/auth/","ssl-required":"external",resource:"my-client",credentials:{secret:"abcdefghijgklmnopqrstuvwxyz"},"confidential-port":0},null,"	")}},watch:{item(e){e.config.scopes||(e.config.scopes=[])}}}});var Le,Me=o(()=>{Le=`{% block heptacom_admin_open_auth_provider_microsoft_azure_oidc_settings %}
@@ -755,10 +754,10 @@
             :label="$t('heptacomAdminOpenAuthClient.providerFields.microsoft_azure_oidc.clientSecret')"
             v-model:value="item.config.clientSecret"
         ></sw-password-field>
-        <heptacom-admin-open-auth-scope-field
+        <sw-tagged-field
             :label="$t('heptacomAdminOpenAuthClient.providerFields.microsoft_azure_oidc.additionalScopes')"
             v-model:value="item.config.scopes"
-        ></heptacom-admin-open-auth-scope-field>
+        ></sw-tagged-field>
     </sw-card>
 {% endblock %}
 `});var De={};a(De,{default:()=>Gt});var Gt,Te=o(()=>{Me();Gt={template:Le,props:{item:{required:!0}},watch:{item(e){e.config.scopes||(e.config.scopes=[])}}}});var He,Ie=o(()=>{He=`{% block heptacom_admin_open_auth_provider_okta_settings %}
@@ -781,10 +780,10 @@
             :label="$t('heptacomAdminOpenAuthClient.providerFields.okta.clientSecret')"
             v-model:value="item.config.clientSecret"
         ></sw-password-field>
-        <heptacom-admin-open-auth-scope-field
+        <sw-tagged-field
             :label="$t('heptacomAdminOpenAuthClient.providerFields.okta.additionalScopes')"
             v-model:value="item.config.scopes"
-        ></heptacom-admin-open-auth-scope-field>
+        ></sw-tagged-field>
     </sw-card>
 {% endblock %}
 `});var Ne={};a(Ne,{default:()=>Wt});var Wt,Ee=o(()=>{Ie();Wt={template:He,props:{item:{required:!0}},watch:{item(e){e.config.scopes||(e.config.scopes=[])}}}});var ze,je=o(()=>{ze=`{% block heptacom_admin_open_auth_provider_onelogin_settings %}
@@ -807,10 +806,10 @@
             :label="$t('heptacomAdminOpenAuthClient.providerFields.onelogin.clientSecret')"
             v-model:value="item.config.clientSecret"
         ></sw-password-field>
-        <heptacom-admin-open-auth-scope-field
+        <sw-tagged-field
             :label="$t('heptacomAdminOpenAuthClient.providerFields.onelogin.additionalScopes')"
             v-model:value="item.config.scopes"
-        ></heptacom-admin-open-auth-scope-field>
+        ></sw-tagged-field>
     </sw-card>
 {% endblock %}
 `});var Be={};a(Be,{default:()=>Qt});var Qt,Ke=o(()=>{je();Qt={template:ze,props:{item:{required:!0}},watch:{item(e){e.config.scopes||(e.config.scopes=[])}}}});var Je,Xe=o(()=>{Je=`{% block sw_condition_value_content %}
@@ -884,10 +883,10 @@
             :label="$t('heptacomAdminOpenAuthClient.providerFields.open_id_connect.clientSecret')"
             v-model:value="item.config.clientSecret"
         ></sw-password-field>
-        <heptacom-admin-open-auth-scope-field
+        <sw-tagged-field
             :label="$t('heptacomAdminOpenAuthClient.providerFields.open_id_connect.additionalScopes')"
             v-model:value="item.config.scopes"
-        ></heptacom-admin-open-auth-scope-field>
+        ></sw-tagged-field>
     </sw-card>
 {% endblock %}
 `});var Ye={};a(Ye,{default:()=>ni});var ni,et=o(()=>{Ze();ni={template:Qe,props:{item:{required:!0}},watch:{item(e){e.config.scopes||(e.config.scopes=[])}}}});var it,tt=o(()=>{it=`{% block heptacom_admin_open_auth_provider_saml2_settings %}
