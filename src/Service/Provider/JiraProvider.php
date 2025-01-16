@@ -70,6 +70,17 @@ final class JiraProvider extends ClientProviderContract
 
     public function provideClient(array $resolvedConfig): ClientContract
     {
+        $defaultScopes = [
+            'read:me',
+            'read:jira-user',
+            'offline_access',
+        ];
+
+        $resolvedConfig['scopes'] = \array_unique([
+            ...$defaultScopes,
+            ...$resolvedConfig['scopes'],
+        ]);
+
         return new JiraClient($this->tokenPairFactory, new Atlassian($resolvedConfig));
     }
 }

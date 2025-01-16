@@ -39,9 +39,9 @@
             :label="$t('heptacomAdminOpenAuthClient.providerFields.open_id_connect.clientSecret')"
             v-model:value="item.config.clientSecret"
         ></sw-password-field>
-        <heptacom-admin-open-auth-scope-field
+        <sw-tagged-field
             :label="$t('heptacomAdminOpenAuthClient.providerFields.open_id_connect.additionalScopes')"
             v-model:value="item.config.scopes"
-        ></heptacom-admin-open-auth-scope-field>
+        ></sw-tagged-field>
     </sw-card>
 {% endblock %}

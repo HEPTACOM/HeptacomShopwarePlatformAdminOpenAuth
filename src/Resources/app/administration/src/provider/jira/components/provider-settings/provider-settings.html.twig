@@ -8,10 +8,9 @@
             :label="$t('heptacomAdminOpenAuthClient.providerFields.jira.clientSecret')"
             v-model:value="item.config.clientSecret"
         ></sw-password-field>
-        <heptacom-admin-open-auth-scope-field
+        <sw-tagged-field
             :label="$t('heptacomAdminOpenAuthClient.providerFields.jira.additionalScopes')"
-            :defaultScopes="['read:me', 'read:jira-user', 'offline_access']"
             v-model:value="item.config.scopes"
-        ></heptacom-admin-open-auth-scope-field>
+        ></sw-tagged-field>
     </sw-card>
 {% endblock %}
