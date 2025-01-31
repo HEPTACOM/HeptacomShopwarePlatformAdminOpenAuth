@@ -10,6 +10,18 @@
 
 * Rollen-Zuweisung überarbeitet, damit diese die Login-Aktionen verwenden
 
+# 7.0.1
+
+**Hinzugefügt**
+
+* Authentifizierter OData Request Bedingung für OpenID Connect basierte Provider hinzugefügt
+
+**Behoben**
+
+* Falsch negative Validierungen in der Gruppen IDs Bedingung im Microsoft Entra ID Provider behoben (GitHub Issue #27)
+* Fehler behoben, der das Konfigurieren von Scopes bei OAuth Clients verhinderte. (GitHub Issue #33)
+* Unvollständige Implementierung in `\Heptacom\AdminOpenAuth\Exception\UserMismatchException` behoben (GitHub Issue #33)
+
 # 7.0.0
 
 **Hinzugefügt**

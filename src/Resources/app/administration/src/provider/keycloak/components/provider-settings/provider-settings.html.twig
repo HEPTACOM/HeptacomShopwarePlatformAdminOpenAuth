@@ -6,9 +6,9 @@
             :placeholder="jsonPlaceholder"
             v-model:value="item.config.keycloakOidcJson"
         ></sw-textarea-field>
-        <heptacom-admin-open-auth-scope-field
+        <sw-tagged-field
             :label="$t('heptacomAdminOpenAuthClient.providerFields.keycloak.additionalScopes')"
             v-model:value="item.config.scopes"
-        ></heptacom-admin-open-auth-scope-field>
+        ></sw-tagged-field>
     </sw-card>
 {% endblock %}
