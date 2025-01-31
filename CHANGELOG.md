@@ -1,10 +1,5 @@
 # Unreleased
 
-**Fixed**
-
-* Changed field type for additional scopes in oauth based providers to fix scopes not being saved. (GitHub issue #33)
-* Fixed incomplete implementation in `\Heptacom\AdminOpenAuth\Exception\UserMismatchException` (GitHub issue #33)
-
 # 8.0.0
 
 **Added**
@@ -14,6 +9,19 @@
 **Changed**
 
 * Refactored role assignment rules to use the new login actions
+* Replaced deprecated JWT libraries (`web-token/jwt-core`, `web-token/jwt-signature*`) with replacement library (`web-token/jwt-library`) (GitHub Issue #29)
+
+# 7.0.1
+
+**Added**
+
+* Added authenticated OData request condition for OpenID Connect based providers
+
+**Fixed**
+
+* Fixed false negative validations for group ids condition in Microsoft Entra ID provider if too many groups are assigned to a user in Entra ID (GitHub Issue #27)
+* Changed field type for additional scopes in oauth based providers to fix scopes not being saved. (GitHub issue #33)
+* Fixed incomplete implementation in `\Heptacom\AdminOpenAuth\Exception\UserMismatchException` (GitHub issue #33)
 
 # 7.0.0
 

@@ -1,10 +1,5 @@
 # Unreleased
 
-**Behoben**
-
-* Fehler behoben, der das Konfigurieren von Scopes bei OAuth Clients verhinderte. (GitHub Issue #33)
-* Unvollständige Implementierung in `\Heptacom\AdminOpenAuth\Exception\UserMismatchException` behoben (GitHub Issue #33)
-
 # 8.0.0
 
 **Hinzugefügt**
@@ -14,6 +9,19 @@
 **Geändert**
 
 * Rollen-Zuweisung überarbeitet, damit diese die Login-Aktionen verwenden
+* JWT Bibliotheken (`web-token/jwt-core`, `web-token/jwt-signature*`) mit neuer Bibliothek (`web-token/jwt-library`) ersetzt (GitHub Issue #29)
+
+# 7.0.1
+
+**Hinzugefügt**
+
+* Authentifizierter OData Request Bedingung für OpenID Connect basierte Provider hinzugefügt
+
+**Behoben**
+
+* Falsch negative Validierungen in der Gruppen IDs Bedingung im Microsoft Entra ID Provider behoben (GitHub Issue #27)
+* Fehler behoben, der das Konfigurieren von Scopes bei OAuth Clients verhinderte. (GitHub Issue #33)
+* Unvollständige Implementierung in `\Heptacom\AdminOpenAuth\Exception\UserMismatchException` behoben (GitHub Issue #33)
 
 # 7.0.0
 
