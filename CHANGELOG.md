@@ -9,6 +9,7 @@
 **Changed**
 
 * Refactored role assignment rules to use the new login actions
+* Replaced deprecated JWT libraries (`web-token/jwt-core`, `web-token/jwt-signature*`) with replacement library (`web-token/jwt-library`) (GitHub Issue #29)
 
 # 7.0.1
 

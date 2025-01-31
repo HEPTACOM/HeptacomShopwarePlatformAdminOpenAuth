@@ -9,6 +9,7 @@
 **Geändert**
 
 * Rollen-Zuweisung überarbeitet, damit diese die Login-Aktionen verwenden
+* JWT Bibliotheken (`web-token/jwt-core`, `web-token/jwt-signature*`) mit neuer Bibliothek (`web-token/jwt-library`) ersetzt (GitHub Issue #29)
 
 # 7.0.1
 
