@@ -112,6 +112,12 @@ In case it results in a different type, the condition will be validated as follo
 | `object`    | non-empty       | `true` |
 | `null`      | `null`          | `false` |
 
+#### Pagination
+
+In case of larger responses, you might need to paginate through the results.
+When using an OData compatible endpoint, you can use the "Authenticated OData request" instead.
+If the validation result on the current result page is `false`, the next page will be automatically requested.
+
 ## Adding your own rule actions
 
 In most scenarios you only need to assign roles based on rules.
