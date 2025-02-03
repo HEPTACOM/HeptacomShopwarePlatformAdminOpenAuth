@@ -11,10 +11,10 @@ services:
       - "9999:9999"
       - "9998:9998"
     volumes:
-        - ".:/var/www/html/custom/plugins/KskHeptacomAdminOpenAuth"
+        - ".:/var/www/html/custom/static-plugins/KskHeptacomAdminOpenAuth"
         # exclude by using anonymous volumes
-        - "/var/www/html/custom/plugins/KskHeptacomAdminOpenAuth/.git/"
-        - "/var/www/html/custom/plugins/KskHeptacomAdminOpenAuth/vendor/"
-        - "/var/www/html/custom/plugins/KskHeptacomAdminOpenAuth/src/Resources/app/administration/node_modules/"
+        - "/var/www/html/custom/static-plugins/KskHeptacomAdminOpenAuth/.git/"
+        - "/var/www/html/custom/static-plugins/KskHeptacomAdminOpenAuth/vendor/"
+        - "/var/www/html/custom/static-plugins/KskHeptacomAdminOpenAuth/src/Resources/app/administration/node_modules/"
     environment:
       - XDEBUG_ENABLED=1
