@@ -10,6 +10,7 @@
 
 * Rollen-Zuweisung überarbeitet, damit diese die Login-Aktionen verwenden
 * JWT Bibliotheken (`web-token/jwt-core`, `web-token/jwt-signature*`) mit neuer Bibliothek (`web-token/jwt-library`) ersetzt (GitHub Issue #29)
+* Anlage von neuen Benutzern überarbeitet, um Benutzer ohne Admin-Rechte anzulegen. Die Berechtigungen werden später im Login-Prozess zugewiesen (GitHub Issue #12)
 
 # 7.0.1
 
