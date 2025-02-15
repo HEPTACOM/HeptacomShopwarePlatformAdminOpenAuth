@@ -40,6 +40,7 @@ class AuthenticatedODataRequestRule extends AuthenticatedRequestRule
     {
         try {
             $odataResponse = \json_decode($response, true, 512, \JSON_THROW_ON_ERROR);
+
             return $odataResponse['@odata.nextLink'] ?? null;
         } catch (\JsonException $e) {
             return null;
