@@ -8,7 +8,7 @@ use Shopware\Core\Framework\Rule\RuleComparison;
 use Shopware\Core\Framework\Rule\RuleConfig;
 use Shopware\Core\Framework\Rule\RuleConstraints;
 
-class MicrosoftAzureOidcGroupsRule extends AuthenticatedRequestRule
+class MicrosoftAzureOidcGroupsRule extends AuthenticatedODataRequestRule
 {
     public const RULE_NAME = 'heptacomAdminOpenAuthMicrosoftAzureOidcGroups';
 

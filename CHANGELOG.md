@@ -1,5 +1,15 @@
 # Unreleased
 
+# 6.0.4
+
+**Added**
+
+* Added authenticated OData request condition for OpenID Connect based providers (copied from 7.0.0)
+
+**Fixed**
+
+* Fixed false negative validations for group ids condition in Microsoft Entra ID provider if too many groups are assigned to a user in Entra ID (GitHub Issue #27, copied from 7.0.0)
+
 # 6.0.3
 
 **Fixed**

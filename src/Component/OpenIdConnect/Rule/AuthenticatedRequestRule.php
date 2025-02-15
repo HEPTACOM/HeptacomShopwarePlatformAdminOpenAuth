@@ -47,9 +47,7 @@ class AuthenticatedRequestRule extends RuleContract
             return false;
         }
 
-        $response = $this->performRequest($client, $user, $scope->getLogger());
-
-        return $this->validateResponse($response);
+        return $this->executeAuthenticatedRequest($client, $user, $scope);
     }
 
     public function getConstraints(): array
@@ -96,7 +94,17 @@ class AuthenticatedRequestRule extends RuleContract
         return self::$httpClient;
     }
 
-    private function performRequest(OpenIdConnectClient $client, User $user, LoggerInterface $logger): ?string
+    /**
+     * Executes and validates the request
+     */
+    protected function executeAuthenticatedRequest(OpenIdConnectClient $client, User $user, OAuthRuleScope $scope): bool
+    {
+        $response = $this->performRequest($client, $user, $scope->getLogger());
+
+        return $this->validateResponse($response);
+    }
+
+    final protected function performRequest(OpenIdConnectClient $client, User $user, LoggerInterface $logger): ?string
     {
         $requestUrl = (string) $this->requestUrl;
 
@@ -173,7 +181,7 @@ class AuthenticatedRequestRule extends RuleContract
         $user->addExtension(AuthenticatedRequestRule::class, $userExtension);
     }
 
-    private function validateResponse(?string $response): bool
+    final protected function validateResponse(?string $response): bool
     {
         if ($response === null) {
             return false;

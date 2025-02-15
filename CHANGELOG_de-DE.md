@@ -1,5 +1,15 @@
 # Unreleased
 
+# 6.0.4
+
+**Hinzugefügt**
+
+* Authentifizierter OData Request Bedingung für OpenID Connect basierte Provider hinzugefügt (kopiert von 7.0.0)
+
+**Behoben**
+
+* Falsch negative Validierungen in der Gruppen IDs Bedingung im Microsoft Entra ID Provider behoben (kopiert von 7.0.0, GitHub Issue #27)
+
 # 6.0.3
 
 **Behoben**
