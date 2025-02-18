@@ -17,10 +17,6 @@ export default {
             type: Boolean,
             default: true,
         },
-        autoRedirect: {
-            type: Boolean,
-            default: false,
-        },
     },
 
     data() {
@@ -64,11 +60,9 @@ export default {
                 this.clients = result;
             }).finally(() => {
                 this.loading = false;
-
-                if (this.autoRedirect && this.clients.length === 1) {
-                    this.startAuthFlow(this.clients[0]);
-                }
             });
+
+
         },
 
         startAuthFlow(client) {
