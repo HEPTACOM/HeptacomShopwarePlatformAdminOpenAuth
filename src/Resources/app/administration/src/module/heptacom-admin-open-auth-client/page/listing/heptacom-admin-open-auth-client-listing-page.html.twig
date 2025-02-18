@@ -44,11 +44,13 @@
                             <template #column-active="{ item }">
                                 <sw-icon
                                     :color="getLoginColor(item)"
+                                    v-tooltip="{ message: $t('heptacom-admin-open-auth-client.pages.listing.iconTooltip.active') }"
                                     name="regular-sign-in"
                                     small
                                 ></sw-icon>
                                 <sw-icon
                                     :color="getConnectColor(item)"
+                                    v-tooltip="{ message: $t('heptacom-admin-open-auth-client.pages.listing.iconTooltip.connection') }"
                                     name="regular-share"
                                     small
                                 ></sw-icon>
