@@ -5,6 +5,7 @@
 **Hinzugefügt**
 
 * Login-Aktionen hinzugefügt, um das Erstellen von individuellen Aktionen nach dem Login zu ermöglichen
+* `gmp` und `bcmath` als empfohlene PHP-Erweiterungen in `composer.json` hinzugefügt (GitHub Issue #5)
 
 **Geändert**
 
