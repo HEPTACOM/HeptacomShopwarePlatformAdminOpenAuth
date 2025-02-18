@@ -5,6 +5,7 @@
 **Hinzugefügt**
 
 * Login-Aktionen hinzugefügt, um das Erstellen von individuellen Aktionen nach dem Login zu ermöglichen
+* Konfiguration hinzugefügt, um Benutzer automatisch für den Login zum Identity Provider weiterzuleiten
 
 **Geändert**
 
