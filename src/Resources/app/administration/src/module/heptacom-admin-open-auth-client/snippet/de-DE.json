@@ -28,7 +28,8 @@
             "create": {
                 "actions": {
                     "create": "Auswählen"
-                }
+                },
+                "header": "Anbieter auswählen"
             },
             "edit": {
                 "actions": {
@@ -74,6 +75,10 @@
                     "name": "Name",
                     "provider": "Anbieter",
                     "users": "Benutzer"
+                },
+                "iconTooltip": {
+                    "active": "Aktiv",
+                    "connection": "Verknüpfung mit bestehenden Benutzerkonten"
                 }
             }
         }
