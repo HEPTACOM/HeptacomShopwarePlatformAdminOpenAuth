@@ -4,17 +4,9 @@ declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\Component\OpenIdConnect\Rule;
 
-use GuzzleHttp\Client;
-use GuzzleHttp\Psr7\Request;
-use GuzzleHttp\Psr7\Uri;
-use Heptacom\AdminOpenAuth\Component\OpenIdConnect\OpenIdConnectRequestHelper;
 use Heptacom\AdminOpenAuth\Component\Provider\OpenIdConnectClient;
 use Heptacom\AdminOpenAuth\Contract\OAuthRuleScope;
 use Heptacom\AdminOpenAuth\Contract\RuleContract;
-use Heptacom\AdminOpenAuth\Contract\User;
-use JmesPath\Env as JmesPath;
-use Psr\Http\Client\ClientInterface;
-use Psr\Log\LoggerInterface;
 use Shopware\Core\Framework\Rule\RuleConfig;
 use Shopware\Core\Framework\Rule\RuleConstraints;
 use Shopware\Core\Framework\Struct\ArrayStruct;

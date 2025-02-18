@@ -12,7 +12,6 @@ use Heptacom\AdminOpenAuth\Component\Provider\OpenIdConnectClient;
 use Heptacom\AdminOpenAuth\Contract\OAuthRuleScope;
 use Heptacom\AdminOpenAuth\Contract\RuleContract;
 use Heptacom\AdminOpenAuth\Contract\User;
-use JmesPath\Env as JmesPath;
 use Psr\Http\Client\ClientInterface;
 use Psr\Log\LoggerInterface;
 use Shopware\Core\Framework\Rule\RuleConfig;

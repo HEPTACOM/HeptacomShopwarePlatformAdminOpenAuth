@@ -59,6 +59,7 @@ final class OpenIdConnectToken extends Struct
     public function setIdToken(?string $id_token): OpenIdConnectToken
     {
         $this->id_token = $id_token;
+
         return $this;
     }
 
@@ -73,7 +74,7 @@ final class OpenIdConnectToken extends Struct
             return [];
         }
 
-        $decodedPayload = \json_decode($idTokenPayload, true, 512, JSON_THROW_ON_ERROR);
+        $decodedPayload = \json_decode($idTokenPayload, true, 512, \JSON_THROW_ON_ERROR);
         if (!\is_array($decodedPayload)) {
             throw new \InvalidArgumentException('Invalid id_token payload. Expected JSON object.', 1739779042);
         }
