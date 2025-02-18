@@ -9,13 +9,18 @@ Component.override('sw-verify-user-modal', {
 
     data() {
         return {
+            ssoSettingsLoading: true,
             denyPasswordLogin: false,
+            autoRedirect: false,
         };
     },
 
     created() {
         this.systemConfigApiService.getValues('KskHeptacomAdminOpenAuth.config').then((response) => {
             this.denyPasswordLogin = response['KskHeptacomAdminOpenAuth.config.denyPasswordLogin'];
+            this.autoRedirect = response['KskHeptacomAdminOpenAuth.config.enableAutoRedirect'];
+        }).finally(() => {
+            this.ssoSettingsLoading = false;
         });
     },
 

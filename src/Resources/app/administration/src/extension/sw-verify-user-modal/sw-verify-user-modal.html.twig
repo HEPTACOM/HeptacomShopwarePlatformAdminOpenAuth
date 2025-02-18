@@ -1,6 +1,8 @@
 {% block sw_settings_user_detail_content_confirm_password_modal_input__confirm_password %}
     <heptacom-admin-open-auth-user-confirm-login
+        v-if="!ssoSettingsLoading"
         :divider="!denyPasswordLogin"
+        :autoRedirect="denyPasswordLogin && autoRedirect"
         ref="heptacomAdminOpenAuthUserConfirmLogin"
         @confirm="heptacomAdminOpenAuthUserConfirm"
     ></heptacom-admin-open-auth-user-confirm-login>

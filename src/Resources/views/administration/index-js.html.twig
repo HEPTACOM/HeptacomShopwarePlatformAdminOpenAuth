@@ -68,6 +68,11 @@
 
     // Launch listener for login and inactivity routes
     (function () {
+        const SSO_SHOPWARE_SETTINGS = {
+            disablePasswordLogin: {{ config('KskHeptacomAdminOpenAuth.config.denyPasswordLogin') ? 'true' : 'false' }},
+            autoRedirect: {{ config('KskHeptacomAdminOpenAuth.config.enableAutoRedirect') ? 'true' : 'false' }},
+        };
+
         async function getClientRoutes() {
             const clientRoutes = {{ url('administration.heptacom.admin_open_auth.routes')|json_encode|raw }};
 
@@ -75,30 +80,57 @@
             return await result.json();
         }
 
+        function getSsoState() {
+            return new URLSearchParams(window.location.search).get('state');
+        }
+
         function checkLogin(redirectHandler) {
-            const token = new URLSearchParams(window.location.search).get('state');
+            const token = getSsoState();
 
-            if (token) {
-                const loginService = Shopware.Service().get('loginService');
-                const httpClient = Shopware.Service().get('userService').client;
-
-                httpClient.post('/oauth/token', {
-                    grant_type: 'heptacom_admin_open_auth_one_time_token',
-                    client_id: 'administration',
-                    scopes: 'write',
-                    one_time_token: token
-                }, {
-                    baseURL: Shopware.Context.api.apiPath
-                }).then((response) => {
-                    loginService.setBearerAuthentication({
-                        access: response.data.access_token,
-                        refresh: response.data.refresh_token,
-                        expiry: response.data.expires_in
-                    });
-
-                    redirectHandler();
-                });
+            if (!token) {
+                return;
             }
+
+            const loginService = Shopware.Service().get('loginService');
+            const httpClient = Shopware.Service().get('userService').client;
+
+            httpClient.post('/oauth/token', {
+                grant_type: 'heptacom_admin_open_auth_one_time_token',
+                client_id: 'administration',
+                scopes: 'write',
+                one_time_token: token
+            }, {
+                baseURL: Shopware.Context.api.apiPath
+            }).then((response) => {
+                loginService.setBearerAuthentication({
+                    access: response.data.access_token,
+                    refresh: response.data.refresh_token,
+                    expiry: response.data.expires_in
+                });
+
+                redirectHandler();
+            });
+        }
+
+        function handleAutoRedirect(clients) {
+            // only redirect if password login is disabled and auto redirect is enabled
+            if (!SSO_SHOPWARE_SETTINGS.disablePasswordLogin || !SSO_SHOPWARE_SETTINGS.autoRedirect) {
+                return;
+            }
+
+            // only redirect if there is exactly one client
+            if (clients.length !== 1) {
+                return;
+            }
+
+            // prevent endless redirect loop
+            if (getSsoState() !== null) {
+                return;
+            }
+
+            // redirect to idp
+            const client = clients[0];
+            window.location.href = client.url;
         }
 
         function handleLoginRoute() {
@@ -110,6 +142,8 @@
                     console.warn('Login modal does not exist anymore.');
                     return;
                 }
+
+                handleAutoRedirect(data.clients);
 
                 data.clients.forEach(function (item) {
                     const link = document.createElement('a');
@@ -158,16 +192,27 @@
                         container.setAttribute('data-heptacom-sso-initialized', 'true');
                     }
 
-                    {% if not config('KskHeptacomAdminOpenAuth.config.denyPasswordLogin') %}
+                    // add redirectTo to urls
+                    data.clients = data.clients.map((client) => {
+                        const url = new URL(client.url);
+                        url.searchParams.set('redirectTo', window.location.pathname + window.location.search + window.location.hash);
+                        client.url = url.toString();
+
+                        return client;
+                    });
+
+                    // initiate auto redirect
+                    handleAutoRedirect(data.clients);
+
+                    // add spacer between password login and sso login
+                    if (!SSO_SHOPWARE_SETTINGS.disablePasswordLogin) {
                         const separator = document.createElement('hr');
                         separator.classList.add('heptacom-admin-open-auth--separator');
                         container.appendChild(separator);
-                    {% endif %}
+                    }
 
+                    // add login buttons
                     data.clients.forEach(function (item) {
-                        const url = new URL(item.url);
-                        url.searchParams.set('redirectTo', window.location.pathname + window.location.search + window.location.hash);
-
                         const link = document.createElement('a');
                         link.classList.add(
                             'sw-button',
@@ -175,7 +220,7 @@
                             'sw-button--ghost',
                             'heptacom-admin-open-auth--button'
                         );
-                        link.href = url.toString();
+                        link.href = item.url;
                         link.innerHTML = item.name;
                         container.appendChild(link);
                     });
