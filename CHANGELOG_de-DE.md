@@ -5,6 +5,7 @@
 **Hinzugefügt**
 
 * Login-Aktionen hinzugefügt, um das Erstellen von individuellen Aktionen nach dem Login zu ermöglichen
+* ID-Token Bedingung für OpenID Connect basierte Provider hinzugefügt (GitHub Issue #34)
 
 **Geändert**
 

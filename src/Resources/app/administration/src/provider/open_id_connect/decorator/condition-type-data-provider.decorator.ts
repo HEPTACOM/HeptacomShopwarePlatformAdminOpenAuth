@@ -15,5 +15,12 @@ export default (ruleConditionService: HeptacomOauthRuleDataProviderService) => {
         group: 'user',
     });
 
+    ruleConditionService.addCondition('heptacomAdminOpenAuthIdToken', {
+        component: 'heptacom-admin-open-auth-condition-jmes-path',
+        label: 'heptacomAdminOpenAuthClient.providerFields.open_id_connect.condition.rule.idToken',
+        scopes: ['open_id_connect', 'cidaas', 'google_cloud', 'keycloak', 'microsoft_azure_oidc', 'okta', 'onelogin'],
+        group: 'user',
+    });
+
     return ruleConditionService;
 };

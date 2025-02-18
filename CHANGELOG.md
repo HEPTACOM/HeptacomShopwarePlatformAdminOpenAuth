@@ -5,6 +5,7 @@
 **Added**
 
 * Added extensible login actions to allow custom actions after a successful login
+* Added ID-Token condition for OpenID Connect based providers (GitHub Issue #34)
 
 **Changed**
 

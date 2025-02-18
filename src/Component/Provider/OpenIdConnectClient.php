@@ -77,6 +77,10 @@ final class OpenIdConnectClient extends ClientContract
             'picture' => $user->getPicture(),
         ]);
 
+        $result->addArrayExtension('oidcData', [
+            'idTokenPayload' => $token->getIdTokenPayload(),
+        ]);
+
         return $result;
     }
 
