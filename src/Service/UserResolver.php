@@ -63,12 +63,13 @@ final readonly class UserResolver implements UserResolverInterface
         if ($mappedUserId === null) {
             $isNew = true;
             $password = Random::getAlphanumericString(254);
-            $this->userProvisioner->provision($user->primaryEmail, $password, ['email' => $user->primaryEmail]);
+            $this->userProvisioner->provision($user->primaryEmail, $password, ['email' => $user->primaryEmail, 'admin' => 0]);
 
             $mappedUserId = $this->findUserId($user, $clientId, $context);
         }
 
         $this->postUpdates($user, $mappedUserId, $state, $isNew, $clientId, $context);
+        $user->addArrayExtension('shopwareUser', ['id' => $mappedUserId]);
     }
 
     protected function postUpdates(

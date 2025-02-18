@@ -47,9 +47,7 @@ class AuthenticatedRequestRule extends RuleContract
             return false;
         }
 
-        $response = $this->performRequest($client, $user, $scope->getLogger());
-
-        return $this->validateResponse($response);
+        return $this->executeAuthenticatedRequest($client, $user, $scope);
     }
 
     public function getConstraints(): array
@@ -80,23 +78,17 @@ class AuthenticatedRequestRule extends RuleContract
         };
     }
 
-    private function getHttpClient(): ClientInterface
+    /**
+     * Executes and validates the request.
+     */
+    protected function executeAuthenticatedRequest(OpenIdConnectClient $client, User $user, OAuthRuleScope $scope): bool
     {
-        if (self::$httpClient === null) {
-            self::$httpClient = new Client([
-                'protocols' => ['https'],
-                'verify' => true,
-                'timeout' => self::REQUEST_TIMEOUT,
-                'headers' => [
-                    'Accept' => 'application/json',
-                ],
-            ]);
-        }
+        $response = $this->performRequest($client, $user, $scope->getLogger());
 
-        return self::$httpClient;
+        return $this->validateResponse($response);
     }
 
-    private function performRequest(OpenIdConnectClient $client, User $user, LoggerInterface $logger): ?string
+    final protected function performRequest(OpenIdConnectClient $client, User $user, LoggerInterface $logger): ?string
     {
         $requestUrl = (string) $this->requestUrl;
 
@@ -146,6 +138,40 @@ class AuthenticatedRequestRule extends RuleContract
         return $response;
     }
 
+    final protected function validateResponse(?string $response): bool
+    {
+        if ($response === null) {
+            return false;
+        }
+
+        try {
+            $evaluatedExpression = JmesPath::search(
+                (string) $this->jmesPathExpression,
+                \json_decode($response, true, 512, \JSON_THROW_ON_ERROR)
+            );
+
+            return $this->validateExpressionResult($evaluatedExpression);
+        } catch (\Throwable) {
+            return false;
+        }
+    }
+
+    private function getHttpClient(): ClientInterface
+    {
+        if (self::$httpClient === null) {
+            self::$httpClient = new Client([
+                'protocols' => ['https'],
+                'verify' => true,
+                'timeout' => self::REQUEST_TIMEOUT,
+                'headers' => [
+                    'Accept' => 'application/json',
+                ],
+            ]);
+        }
+
+        return self::$httpClient;
+    }
+
     private function getCachedResponse(User $user, string $requestUrl): ?string
     {
         /** @var ArrayStruct $userExtension */
@@ -171,23 +197,5 @@ class AuthenticatedRequestRule extends RuleContract
 
         $userExtension->set('requests', $cachedRequests);
         $user->addExtension(AuthenticatedRequestRule::class, $userExtension);
-    }
-
-    private function validateResponse(?string $response): bool
-    {
-        if ($response === null) {
-            return false;
-        }
-
-        try {
-            $evaluatedExpression = JmesPath::search(
-                (string) $this->jmesPathExpression,
-                \json_decode($response, true, 512, \JSON_THROW_ON_ERROR)
-            );
-
-            return $this->validateExpressionResult($evaluatedExpression);
-        } catch (\Throwable) {
-            return false;
-        }
     }
 }
