@@ -78,7 +78,7 @@
                 },
                 "iconTooltip": {
                     "active": "Active",
-                    "connection": "Connection"
+                    "connection": "Connecting to existing user accounts"
                 }
             }
         }
