@@ -5,6 +5,7 @@
 **Hinzugefügt**
 
 * Login-Aktionen hinzugefügt, um das Erstellen von individuellen Aktionen nach dem Login zu ermöglichen
+* `gmp` und `bcmath` als empfohlene PHP-Erweiterungen in `composer.json` hinzugefügt (GitHub Issue #5)
 * Konfiguration hinzugefügt, um Benutzer automatisch für den Login zum Identity Provider weiterzuleiten
 
 **Geändert**
@@ -12,6 +13,12 @@
 * Rollen-Zuweisung überarbeitet, damit diese die Login-Aktionen verwenden
 * JWT Bibliotheken (`web-token/jwt-core`, `web-token/jwt-signature*`) mit neuer Bibliothek (`web-token/jwt-library`) ersetzt (GitHub Issue #29)
 * Anlage von neuen Benutzern überarbeitet, um Benutzer ohne Admin-Rechte anzulegen. Die Berechtigungen werden später im Login-Prozess zugewiesen (GitHub Issue #12)
+
+# 7.0.2
+
+**Behoben**
+
+* Fehler behoben, der unter bestimmten Umständen dazu führte, dass der Login-Prozess, nach Weiterleitung vom Identity Provider zurück zu Shopware, nicht abgeschlossen wurde (GitHub Issues #26, #28, #31)
 
 # 7.0.1
 

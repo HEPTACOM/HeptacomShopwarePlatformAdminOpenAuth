@@ -143,8 +143,16 @@
                     return;
                 }
 
+                // add redirectTo to urls
+                data.clients = data.clients.map((client) => ({
+                    ...client,
+                    url: addRedirectToUrl(client.url),
+                }));
+
+                // initiate auto redirect
                 handleAutoRedirect(data.clients);
 
+                // add login buttons
                 data.clients.forEach(function (item) {
                     const link = document.createElement('a');
                     link.classList.add(
@@ -193,13 +201,10 @@
                     }
 
                     // add redirectTo to urls
-                    data.clients = data.clients.map((client) => {
-                        const url = new URL(client.url);
-                        url.searchParams.set('redirectTo', window.location.pathname + window.location.search + window.location.hash);
-                        client.url = url.toString();
-
-                        return client;
-                    });
+                    data.clients = data.clients.map((client) => ({
+                        ...client,
+                        url: addRedirectToUrl(client.url),
+                    }));
 
                     // initiate auto redirect
                     handleAutoRedirect(data.clients);
@@ -235,6 +240,17 @@
                 // dump query string
                 removeStateFromUrl();
             });
+        }
+
+        /**
+         * @param route {string}
+         * @returns {string}
+         */
+        function addRedirectToUrl(route) {
+            const url = new URL(route);
+            url.searchParams.set('redirectTo', window.location.pathname + window.location.search + window.location.hash);
+
+            return url.toString();
         }
 
         function removeStateFromUrl() {

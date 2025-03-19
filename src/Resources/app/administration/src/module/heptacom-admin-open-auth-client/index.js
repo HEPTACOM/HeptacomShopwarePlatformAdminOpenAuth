@@ -46,7 +46,7 @@ Module.register('heptacom-admin-open-auth-client', {
             component: 'heptacom-admin-open-auth-client-listing-page',
             path: 'settings',
             meta: {
-                parentPath: 'sw.settings.index',
+                parentPath: 'sw.settings.index.system',
                 privilege: 'heptacom_admin_open_auth_client.viewer'
             }
         }

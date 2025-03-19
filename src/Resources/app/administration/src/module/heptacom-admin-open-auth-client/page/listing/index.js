@@ -1,5 +1,5 @@
-import './heptacom-admin-open-auth-client-listing-page.scss';
 import template from './heptacom-admin-open-auth-client-listing-page.html.twig';
+import './heptacom-admin-open-auth-client-listing-page.scss';
 
 const { Context, Data, Mixin } = Shopware;
 const { Criteria } = Data;
@@ -20,27 +20,6 @@ export default {
         return {
             isLoading: true,
             items: null,
-            columns: [{
-                property: 'active',
-                label: this.$t('heptacom-admin-open-auth-client.pages.listing.columns.active'),
-                allowResize: false,
-                width: '50px'
-            }, {
-                property: 'name',
-                label: this.$t('heptacom-admin-open-auth-client.pages.listing.columns.name'),
-                routerLink: 'heptacom.admin.open.auth.client.edit'
-            }, {
-                property: 'provider',
-                label: this.$t('heptacom-admin-open-auth-client.pages.listing.columns.provider')
-            }, {
-                property: 'userKeys.length',
-                label: this.$t('heptacom-admin-open-auth-client.pages.listing.columns.users'),
-                width: '100px'
-            }, {
-                property: 'createdAt',
-                label: this.$t('heptacom-admin-open-auth-client.pages.listing.columns.createdAt'),
-                width: '200px'
-            }]
         }
     },
 
@@ -67,6 +46,32 @@ export default {
             }
 
             return result;
+        },
+
+        columns() {
+            return [
+                {
+                    property: 'active',
+                    label: this.$t('heptacom-admin-open-auth-client.pages.listing.columns.active'),
+                    allowResize: false,
+                    width: '50px'
+                }, {
+                    property: 'name',
+                    label: this.$t('heptacom-admin-open-auth-client.pages.listing.columns.name'),
+                    routerLink: 'heptacom.admin.open.auth.client.edit'
+                }, {
+                    property: 'provider',
+                    label: this.$t('heptacom-admin-open-auth-client.pages.listing.columns.provider')
+                }, {
+                    property: 'userKeys.length',
+                    label: this.$t('heptacom-admin-open-auth-client.pages.listing.columns.users'),
+                    width: '100px'
+                }, {
+                    property: 'createdAt',
+                    label: this.$t('heptacom-admin-open-auth-client.pages.listing.columns.createdAt'),
+                    width: '200px'
+                }
+            ];
         },
 
         dateFilter() {
