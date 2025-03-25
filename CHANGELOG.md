@@ -13,6 +13,12 @@
 * Replaced deprecated JWT libraries (`web-token/jwt-core`, `web-token/jwt-signature*`) with replacement library (`web-token/jwt-library`) (GitHub Issue #29)
 * Changed user creation to create new users without admin privileges. The privileges are applied later in the login process. (GitHub Issue #12)
 
+# 7.0.2
+
+**Fixed**
+
+* Fixed a bug causing the login process to terminate in some cases, after the redirect from the identity provider back to Shopware (GitHub Issues #26, #28, #31)
+
 # 7.0.1
 
 **Added**

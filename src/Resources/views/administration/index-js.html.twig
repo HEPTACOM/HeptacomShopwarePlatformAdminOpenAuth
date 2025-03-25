@@ -119,7 +119,7 @@
                         'sw-button--ghost',
                         'heptacom-admin-open-auth--button'
                     );
-                    link.href = item.url;
+                    link.href = addRedirectToUrl(item.url);
                     link.innerHTML = item.name;
                     container.appendChild(link);
                 });
@@ -165,9 +165,6 @@
                     {% endif %}
 
                     data.clients.forEach(function (item) {
-                        const url = new URL(item.url);
-                        url.searchParams.set('redirectTo', window.location.pathname + window.location.search + window.location.hash);
-
                         const link = document.createElement('a');
                         link.classList.add(
                             'sw-button',
@@ -175,7 +172,7 @@
                             'sw-button--ghost',
                             'heptacom-admin-open-auth--button'
                         );
-                        link.href = url.toString();
+                        link.href = addRedirectToUrl(item.url);
                         link.innerHTML = item.name;
                         container.appendChild(link);
                     });
@@ -190,6 +187,17 @@
                 // dump query string
                 removeStateFromUrl();
             });
+        }
+
+        /**
+         * @param route {string}
+         * @returns {string}
+         */
+        function addRedirectToUrl(route) {
+            const url = new URL(route);
+            url.searchParams.set('redirectTo', window.location.pathname + window.location.search + window.location.hash);
+
+            return url.toString();
         }
 
         function removeStateFromUrl() {
