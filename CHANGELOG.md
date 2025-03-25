@@ -1,5 +1,11 @@
 # Unreleased
 
+# 7.0.2
+
+**Fixed**
+
+* Fixed a bug causing the login process to terminate in some cases, after the redirect from the identity provider back to Shopware (GitHub Issues #26, #28, #31)
+
 # 7.0.1
 
 **Added**

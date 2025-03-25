@@ -1,5 +1,11 @@
 # Unreleased
 
+# 7.0.2
+
+**Behoben**
+
+* Fehler behoben, der unter bestimmten Umständen dazu führte, dass der Login-Prozess, nach Weiterleitung vom Identity Provider zurück zu Shopware, nicht abgeschlossen wurde (GitHub Issues #26, #28, #31)
+
 # 7.0.1
 
 **Hinzugefügt**
