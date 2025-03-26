@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\Database;
 
-use Heptacom\AdminOpenAuth\Database\Aggregate\ClientAclRoleDefinition;
 use Heptacom\AdminOpenAuth\Database\Aggregate\ClientRuleRoleDefinition;
 use Shopware\Core\Framework\Api\Acl\Role\AclRoleDefinition;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityExtension;
