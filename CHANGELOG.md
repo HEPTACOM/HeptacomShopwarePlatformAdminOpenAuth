@@ -5,6 +5,7 @@
 **Fixed**
 
 * Fixed a bug causing the login process to terminate in some cases, after the redirect from the identity provider back to Shopware (GitHub Issues #26, #28, #31)
+* Fixed broken installations when after execution of `database:migrate-destructive` (GitHub Issue #36)
 
 # 7.0.1
 

@@ -64,7 +64,6 @@ export default {
             criteria.getAssociation('rules').addSorting(Criteria.sort('position', 'ASC'));
             criteria.addAssociation('rules.aclRoles');
             criteria.addAssociation('rules.conditions');
-            criteria.addAssociation('defaultAclRoles');
 
             return criteria;
         },
