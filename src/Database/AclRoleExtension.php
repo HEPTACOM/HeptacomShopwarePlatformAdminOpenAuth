@@ -26,9 +26,5 @@ final class AclRoleExtension extends EntityExtension
         $collection->add(
             (new ManyToManyAssociationField('heptacomOpenAuthClientRules', ClientRuleDefinition::class, ClientRuleRoleDefinition::class, 'acl_role_id', 'client_rule_id'))->addFlags(new CascadeDelete()),
         );
-
-        $collection->add(
-            (new ManyToManyAssociationField('heptacomOpenAuthClients', ClientDefinition::class, ClientAclRoleDefinition::class, 'acl_role_id', 'client_id'))->addFlags(new CascadeDelete()),
-        );
     }
 }
