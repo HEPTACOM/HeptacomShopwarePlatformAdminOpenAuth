@@ -15,6 +15,8 @@ use Heptacom\AdminOpenAuth\Contract\UserEmailInterface;
 use Heptacom\AdminOpenAuth\Contract\UserKeyInterface;
 use Heptacom\AdminOpenAuth\Contract\UserResolverInterface;
 use Heptacom\AdminOpenAuth\Contract\UserTokenInterface;
+use Heptacom\AdminOpenAuth\Event\CalculateUserInfoChangeSetEvent;
+use Heptacom\AdminOpenAuth\Event\PostUpdateUserEvent;
 use Heptacom\AdminOpenAuth\Exception\UserMismatchException;
 use Shopware\Core\Defaults;
 use Shopware\Core\Framework\Api\Acl\Role\AclUserRoleDefinition;
@@ -31,6 +33,7 @@ use Shopware\Core\System\Language\LanguageCollection;
 use Shopware\Core\System\Language\LanguageEntity;
 use Shopware\Core\System\User\UserCollection;
 use Shopware\Core\System\User\UserDefinition;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 final readonly class UserResolver implements UserResolverInterface
 {
@@ -47,7 +50,8 @@ final readonly class UserResolver implements UserResolverInterface
         private UserEmailInterface $userEmail,
         private UserKeyInterface $userKey,
         private UserTokenInterface $userToken,
-        private ClientFeatureCheckerInterface $clientFeatureChecker
+        private ClientFeatureCheckerInterface $clientFeatureChecker,
+        private EventDispatcherInterface $eventDispatcher,
     ) {
     }
 
@@ -100,7 +104,12 @@ final readonly class UserResolver implements UserResolverInterface
 
         $userChangeSet = $this->getUserInfoChangeSet($user, $isNew, $clientId, $context);
 
+        $event = $this->eventDispatcher->dispatch(new CalculateUserInfoChangeSetEvent($user, $isNew, $clientId, $context, $userChangeSet));
+        $userChangeSet = $event->changeSet;
+
         $this->updateUser($userId, $userChangeSet, $isNew);
+
+        $this->eventDispatcher->dispatch(new PostUpdateUserEvent($user, $userId, $isNew, $clientId, $context));
     }
 
     protected function findUserId(User $user, string $clientId, Context $context): ?string
@@ -204,7 +213,7 @@ final readonly class UserResolver implements UserResolverInterface
         // check with database if update is required
         if ($isNew || $this->isUserChanged($userId, $userChangeSet)) {
             $userChangeSet['updated_at'] = (new \DateTime())->format(Defaults::STORAGE_DATE_TIME_FORMAT);
-            $this->connection->update(UserDefinition::ENTITY_NAME, $userChangeSet, ['id' => Uuid::fromHexToBytes($userId)], ['admin' => Types::BOOLEAN]);
+            $this->connection->update(UserDefinition::ENTITY_NAME, $userChangeSet, ['id' => Uuid::fromHexToBytes($userId)], ['admin' => Types::BOOLEAN, 'active' => Types::BOOLEAN]);
         }
 
         // check if acl roles are changed
