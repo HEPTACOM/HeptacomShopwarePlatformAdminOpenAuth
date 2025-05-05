@@ -10,6 +10,7 @@
 
 * Fixed false negative validations for group ids condition in Microsoft Entra ID provider if too many groups are assigned to a user in Entra ID (GitHub Issue #27, copied from 7.0.0)
 * Fixed a bug causing the login process to terminate in some cases, after the redirect from the identity provider back to Shopware (GitHub Issues #26, #28, #31)
+* Fixed broken installations when after execution of `database:migrate-destructive` (GitHub Issue #36)
 
 # 6.0.3
 
