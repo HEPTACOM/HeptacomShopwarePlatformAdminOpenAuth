@@ -17,6 +17,7 @@ use Shopware\Core\Framework\DataAbstractionLayer\Field\ManyToOneAssociationField
 use Shopware\Core\Framework\DataAbstractionLayer\Field\StringField;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\UpdatedAtField;
 use Shopware\Core\Framework\DataAbstractionLayer\FieldCollection;
+use Shopware\Core\System\SalesChannel\SalesChannelDefinition;
 use Shopware\Core\System\User\UserDefinition;
 
 final class LoginDefinition extends EntityDefinition
@@ -63,9 +64,11 @@ final class LoginDefinition extends EntityDefinition
 
             (new FkField('client_id', 'clientId', ClientDefinition::class))->addFlags(new Required()),
             new FkField('user_id', 'userId', UserDefinition::class),
+            new FkField('sales_channel_id', 'salesChannelId', SalesChannelDefinition::class),
 
             new ManyToOneAssociationField('client', 'client_id', ClientDefinition::class, 'id', false),
             new ManyToOneAssociationField('user', 'user_id', UserDefinition::class, 'id', false),
+            new ManyToOneAssociationField('salesChannel', 'sales_channel_id', SalesChannelDefinition::class, 'id', false),
         ]);
     }
 }

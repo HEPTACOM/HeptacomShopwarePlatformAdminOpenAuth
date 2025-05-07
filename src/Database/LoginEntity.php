@@ -6,6 +6,7 @@ namespace Heptacom\AdminOpenAuth\Database;
 
 use Shopware\Core\Framework\DataAbstractionLayer\Entity;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityIdTrait;
+use Shopware\Core\System\SalesChannel\SalesChannelEntity;
 use Shopware\Core\System\User\UserEntity;
 
 final class LoginEntity extends Entity
@@ -27,4 +28,8 @@ final class LoginEntity extends Entity
     public ?ClientEntity $client = null;
 
     public ?UserEntity $user = null;
+
+    public ?string $salesChannelId = null;
+
+    public ?SalesChannelEntity $salesChannel = null;
 }

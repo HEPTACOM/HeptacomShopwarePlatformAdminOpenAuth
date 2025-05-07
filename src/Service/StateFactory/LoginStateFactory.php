@@ -11,6 +11,7 @@ use Heptacom\AdminOpenAuth\Exception\LoadClientException;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Shopware\Core\Framework\Uuid\Uuid;
+use Shopware\Core\System\SalesChannel\SalesChannelEntity;
 
 final readonly class LoginStateFactory implements LoginStateFactoryInterface
 {
@@ -29,16 +30,30 @@ final readonly class LoginStateFactory implements LoginStateFactoryInterface
             throw new LoadClientException('Client can not login', $clientId, 1700229880);
         }
 
+        return $this->createEntity($clientId, $redirectTo, null, $context);
+    }
+
+    public function createWithSalesChannel(string $clientId, ?string $redirectTo, SalesChannelEntity $salesChannel, Context $context): string
+    {
+        if (!$this->clientFeatureChecker->canLogin($clientId, $context)) {
+            throw new LoadClientException('Client can not login', $clientId, 1700229880);
+        }
+
+        return $this->createEntity($clientId, $redirectTo, $salesChannel, $context);
+    }
+
+    private function createEntity(string $clientId, ?string $redirectTo, ?SalesChannelEntity $salesChannel, Context $context): string {
         $state = Uuid::randomHex();
 
         $this->loginsRepository->create([[
-            'clientId' => $clientId,
-            'userId' => null,
-            'type' => 'login',
-            'state' => $state,
-            'payload' => [
-                'redirectTo' => $redirectTo,
-            ],
+             'clientId' => $clientId,
+             'userId' => null,
+             'type' => 'login',
+             'state' => $state,
+             'salesChannelId' => $salesChannel?->getId(),
+             'payload' => [
+                 'redirectTo' => $redirectTo,
+             ],
         ]], $context);
 
         return $state;

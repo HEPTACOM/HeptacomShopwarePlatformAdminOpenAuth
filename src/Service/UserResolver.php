@@ -112,7 +112,7 @@ final readonly class UserResolver implements UserResolverInterface
         $this->eventDispatcher->dispatch(new PostUpdateUserEvent($user, $userId, $isNew, $clientId, $context));
     }
 
-    protected function findUserId(User $user, string $clientId, Context $context): ?string
+    public function findUserId(User $user, string $clientId, Context $context): ?string
     {
         $emails = $user->emails;
         $emails[] = $user->primaryEmail;
