@@ -13,6 +13,7 @@ use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\RangeFilter;
+use Shopware\Core\System\SalesChannel\SalesChannelEntity;
 
 final readonly class Login implements LoginInterface
 {
@@ -71,6 +72,18 @@ final readonly class Login implements LoginInterface
         $logins = $this->loginsRepository->search($criteria, $context)->getEntities();
         $first = $logins->first();
 
-        return $first === null ? null : $first->userId;
+        return $first?->userId;
+    }
+
+    public function getSalesChannel(string $state, Context $context): ?SalesChannelEntity
+    {
+        $criteria = new Criteria();
+        $criteria->addFilter(new EqualsFilter('state', $state));
+        $criteria->addAssociation('salesChannel');
+        /** @var LoginCollection $logins */
+        $logins = $this->loginsRepository->search($criteria, $context)->getEntities();
+        $first = $logins->first();
+
+        return $first?->salesChannel;
     }
 }

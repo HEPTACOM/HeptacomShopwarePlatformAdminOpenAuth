@@ -109,7 +109,9 @@ final readonly class UserResolver implements UserResolverInterface
 
         $this->updateUser($userId, $userChangeSet, $isNew);
 
-        $this->eventDispatcher->dispatch(new PostUpdateUserEvent($user, $userId, $isNew, $clientId, $context));
+        $salesChannel = $this->login->getSalesChannel($state, $context);
+
+        $this->eventDispatcher->dispatch(new PostUpdateUserEvent($user, $userId, $isNew, $clientId, $salesChannel, $context));
     }
 
     public function findUserId(User $user, string $clientId, Context $context): ?string
