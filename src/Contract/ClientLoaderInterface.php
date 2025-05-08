@@ -7,6 +7,7 @@ namespace Heptacom\AdminOpenAuth\Contract;
 use Heptacom\AdminOpenAuth\Contract\Client\ClientContract;
 use Heptacom\AdminOpenAuth\Exception\LoadClientException;
 use Shopware\Core\Framework\Context;
+use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 
 interface ClientLoaderInterface
 {
@@ -14,6 +15,11 @@ interface ClientLoaderInterface
      * @throws LoadClientException
      */
     public function load(string $clientId, Context $context): ClientContract;
+
+    /**
+     * @throws LoadClientException
+     */
+    public function loadFromCriteria(Criteria $criteria, Context $context): ClientContract;
 
     public function create(string $providerKey, Context $context): string;
 }
