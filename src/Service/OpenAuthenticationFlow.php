@@ -42,9 +42,9 @@ final readonly class OpenAuthenticationFlow implements OpenAuthenticationFlowInt
     ) {
     }
 
-    public function upsertUser(User $user, string $clientId, string $state, Context $context): void
+    public function upsertUser(User $user, string $clientId, string $state, Context $context): string
     {
-        $this->userResolver->resolve($user, $state, $clientId, $context);
+        return $this->userResolver->resolve($user, $state, $clientId, $context);
     }
 
     public function disconnectClient(string $clientId, string $userId, Context $context): void

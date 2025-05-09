@@ -15,7 +15,7 @@ interface OpenAuthenticationFlowInterface
     /**
      * @throws LoadClientException
      */
-    public function upsertUser(User $user, string $clientId, string $state, Context $context): void;
+    public function upsertUser(User $user, string $clientId, string $state, Context $context): string;
 
     public function disconnectClient(string $clientId, string $userId, Context $context): void;
 

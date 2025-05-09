@@ -55,7 +55,7 @@ final readonly class UserResolver implements UserResolverInterface
     ) {
     }
 
-    public function resolve(User $user, string $state, string $clientId, Context $context): void
+    public function resolve(User $user, string $state, string $clientId, Context $context): string
     {
         $userId = $this->login->getUser($state, $context);
         $mappedUserId = $this->findUserId($user, $clientId, $context);
@@ -75,6 +75,8 @@ final readonly class UserResolver implements UserResolverInterface
 
         $this->postUpdates($user, $mappedUserId, $state, $isNew, $clientId, $context);
         $user->addArrayExtension('shopwareUser', ['id' => $mappedUserId]);
+
+        return $mappedUserId;
     }
 
     protected function postUpdates(
