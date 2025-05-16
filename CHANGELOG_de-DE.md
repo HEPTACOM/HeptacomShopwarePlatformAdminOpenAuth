@@ -14,6 +14,10 @@
 **Geändert**
 
 * Standardwert für `keepUserUpdated` in der Client-Konfiguration auf `true` geändert, übernommen von [6.0.5](#605)
+* Rollen-Zuweisung überarbeitet, damit diese die Login-Aktionen verwenden
+* JWT Bibliotheken (`web-token/jwt-core`, `web-token/jwt-signature*`) mit neuer Bibliothek (`web-token/jwt-library`) ersetzt (GitHub Issue #29)
+* Anlage von neuen Benutzern überarbeitet, um Benutzer ohne Admin-Rechte anzulegen. Die Berechtigungen werden später im Login-Prozess zugewiesen (GitHub Issue #12)
+* Azure AD in technisch in Entra ID umbenannt (siehe Abkündigungen [v7.0.0](#700))
 
 **Behoben**
 

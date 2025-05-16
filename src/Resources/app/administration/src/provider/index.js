@@ -1,4 +1,4 @@
-import microsoftAzureOidcDataProvider from './microsoft_azure_oidc/decorator/condition-type-data-provider.decorator';
+import microsoftEntraIdOidcDataProvider from './microsoft_entra_id_oidc/decorator/condition-type-data-provider.decorator';
 import oidcDataProvider from './open_id_connect/decorator/condition-type-data-provider.decorator';
 import saml2DataProvider from './saml2/decorator/condition-type-data-provider.decorator';
 
@@ -19,9 +19,9 @@ Component.register('heptacom-admin-open-auth-provider-jumpcloud-settings', () =>
 // Keycloak
 Component.register('heptacom-admin-open-auth-provider-keycloak-settings', () => import ('./keycloak/components/provider-settings'));
 
-// Microsoft Azure
-Component.register('heptacom-admin-open-auth-provider-microsoft-azure-oidc-settings', () => import ('./microsoft_azure_oidc/components/provider-settings'));
-Application.addServiceProviderDecorator('heptacomOauthRuleDataProvider', microsoftAzureOidcDataProvider);
+// Microsoft Entra ID
+Component.register('heptacom-admin-open-auth-provider-microsoft-entra-id-oidc-settings', () => import ('./microsoft_entra_id_oidc/components/provider-settings'));
+Application.addServiceProviderDecorator('heptacomOauthRuleDataProvider', microsoftEntraIdOidcDataProvider);
 
 // Okta
 Component.register('heptacom-admin-open-auth-provider-okta-settings', () => import ('./okta/components/provider-settings'));
