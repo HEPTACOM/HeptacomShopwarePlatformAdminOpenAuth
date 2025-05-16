@@ -1,7 +1,7 @@
 {
     "heptacomAdminOpenAuthClient": {
         "providerFields": {
-            "microsoft_azure_oidc": {
+            "microsoft_entra_id_oidc": {
                 "additionalScopes": "Application scopes",
                 "clientId": "Application (client) ID",
                 "clientSecret": "Client secret",
@@ -14,7 +14,7 @@
             }
         },
         "providers": {
-            "microsoft_azure_oidc": {
+            "microsoft_entra_id_oidc": {
                 "helpUrl": "https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-register-app",
                 "label": "Microsoft Entra ID",
                 "logoFile": "microsoft_logo.svg"
