@@ -22,7 +22,7 @@ class Migration1747405651ReaddKeepUserUpdated extends MigrationStep
     public function update(Connection $connection): void
     {
         // check if keep_user_updated column exists
-        $columnExists = $connection->executeQuery(<<<SQL
+        $columnExists = (int) $connection->executeQuery(<<<SQL
             SELECT COUNT(*)
             FROM information_schema.COLUMNS
             WHERE TABLE_NAME = 'heptacom_admin_open_auth_client'
