@@ -6,13 +6,23 @@
 
 * Login-Aktionen hinzugefügt, um das Erstellen von individuellen Aktionen nach dem Login zu ermöglichen
 * `gmp` und `bcmath` als empfohlene PHP-Erweiterungen in `composer.json` hinzugefügt (GitHub Issue #5)
+* Konfiguration hinzugefügt, um Benutzer automatisch für den Login zum Identity Provider weiterzuleiten
+* ID-Token Bedingung für OpenID Connect basierte Provider hinzugefügt (GitHub Issue #34)
+
+# 7.0.2
 
 **Geändert**
 
+* Standardwert für `keepUserUpdated` in der Client-Konfiguration auf `true` geändert, übernommen von [6.0.5](#605)
 * Rollen-Zuweisung überarbeitet, damit diese die Login-Aktionen verwenden
 * JWT Bibliotheken (`web-token/jwt-core`, `web-token/jwt-signature*`) mit neuer Bibliothek (`web-token/jwt-library`) ersetzt (GitHub Issue #29)
 * Anlage von neuen Benutzern überarbeitet, um Benutzer ohne Admin-Rechte anzulegen. Die Berechtigungen werden später im Login-Prozess zugewiesen (GitHub Issue #12)
 * Azure AD in technisch in Entra ID umbenannt (siehe Abkündigungen [v7.0.0](#700))
+
+**Behoben**
+
+* Fehler behoben, der unter bestimmten Umständen dazu führte, dass der Login-Prozess, nach Weiterleitung vom Identity Provider zurück zu Shopware, nicht abgeschlossen wurde (GitHub Issues #26, #28, #31)
+* Fehler behoben, der zu Fehlern führte, nachdem `database:migrate-destructive` ausgeführt wurde, übernommen von [6.0.4](#604) und [6.0.5](#605) (GitHub Issue #36)
 
 # 7.0.1
 
@@ -43,6 +53,26 @@
 **Abgekündigt**
 
 * Der Microsoft Azure Anbieter wird in Version 8.0.0 technisch in Microsoft Entra ID umbenannt
+
+# 6.0.5
+
+**Behoben**
+
+* Spalte `keep_user_updated` wieder hinzugefügt. Diese könnte durch `database:migrate-destructive` gelöscht worden sein (GitHub Issue #36)
+
+# 6.0.4
+
+*Diese Version wurde aufgrund eines Fehlers zurückgezogen. Bitte Version 6.0.5 oder neuer verwenden.*
+
+**Hinzugefügt**
+
+* Authentifizierter OData Request Bedingung für OpenID Connect basierte Provider hinzugefügt (kopiert von 7.0.0)
+
+**Behoben**
+
+* Falsch negative Validierungen in der Gruppen IDs Bedingung im Microsoft Entra ID Provider behoben (kopiert von 7.0.0, GitHub Issue #27)
+* Fehler behoben, der unter bestimmten Umständen dazu führte, dass der Login-Prozess, nach Weiterleitung vom Identity Provider zurück zu Shopware, nicht abgeschlossen wurde (GitHub Issues #26, #28, #31)
+* Fehler behoben, der zu Fehlern führte, nachdem `database:migrate-destructive` ausgeführt wurde (GitHub Issue #36)
 
 # 6.0.3
 

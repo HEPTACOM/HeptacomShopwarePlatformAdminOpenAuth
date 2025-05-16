@@ -10,6 +10,7 @@
                     "rule": {
                         "authenticatedRequest": "Authenticated HTTP request",
                         "authenticatedODataRequest": "Authenticated OData request",
+                        "idToken": "ID-Token",
                         "jmesPathDocumentation": "JMESPath documentation"
                     }
                 },

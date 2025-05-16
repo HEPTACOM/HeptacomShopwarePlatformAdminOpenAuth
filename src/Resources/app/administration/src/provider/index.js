@@ -31,6 +31,7 @@ Component.register('heptacom-admin-open-auth-provider-onelogin-settings', () => 
 
 // OpenID Connect
 Component.extend('heptacom-admin-open-auth-condition-authenticated-request', 'sw-condition-base', () => import ('./open_id_connect/components/condition-authenticated-request'));
+Component.extend('heptacom-admin-open-auth-condition-jmes-path', 'sw-condition-base', () => import ('./open_id_connect/components/condition-jmes-path'));
 Component.register('heptacom-admin-open-auth-provider-open-id-connect-settings', () => import ('./open_id_connect/components/provider-settings'));
 Application.addServiceProviderDecorator('heptacomOauthRuleDataProvider', oidcDataProvider);
 

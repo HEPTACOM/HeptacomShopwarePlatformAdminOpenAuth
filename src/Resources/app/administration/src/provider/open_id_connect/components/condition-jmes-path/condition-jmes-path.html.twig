@@ -1,0 +1,19 @@
+{% block sw_condition_value_content %}
+    <div class="heptacom-admin-open-auth-condition-id-token sw-condition__condition-value">
+        {% block sw_condition_id_token_field_jmes_path_expression %}
+            <sw-text-field
+                v-model:value="jmesPathExpression"
+                placeholder="JMESPath query"
+                size="medium"
+                required
+                :disabled="disabled"
+            />
+            <sw-external-link
+                small
+                class="heptacom-admin-open-auth-condition-id-token--documentation-link"
+                href="https://jmespath.org/">
+                {{ $tc('heptacomAdminOpenAuthClient.providerFields.open_id_connect.condition.rule.jmesPathDocumentation') }}
+            </sw-external-link>
+        {% endblock %}
+    </div>
+{% endblock %}

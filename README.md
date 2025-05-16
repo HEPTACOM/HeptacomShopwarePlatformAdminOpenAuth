@@ -27,6 +27,7 @@ This Shopware 6 plugin allows to add "Login with" functionality into the Shopwar
   * easy setup using the provider's metadata xml
 * promote users automatically to administrators
 * set roles and permissions based on rules
+* disable the password login and automatically redirect users to the identity provider 
 
 ## Security
 
@@ -117,6 +118,14 @@ In case it results in a different type, the condition will be validated as follo
 In case of larger responses, you might need to paginate through the results.
 When using an OData compatible endpoint, you can use the "Authenticated OData request" instead.
 If the validation result on the current result page is `false`, the next page will be automatically requested.
+
+### OpenID Connect - ID Token rule
+
+Most OpenID Connect based providers issue an identity token while authentication.
+Depending on your use-case, this token might contain data that is relevant for the permission assignment.
+
+You can use the ID Token for rules by running a JMESPath query on the payload.
+For details on the JMESPath query evaluation, see the [authenticated request rule documentation](#processing-the-response).
 
 ## Adding your own rule actions
 

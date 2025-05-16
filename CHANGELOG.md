@@ -6,6 +6,8 @@
 
 * Added extensible login actions to allow custom actions after a successful login
 * Added `bcmath` and `gmp` to suggested php extensions in `composer.json` (GitHub Issue #5)
+* Added configuration to automatically redirect users to the identity provider for login
+* Added ID-Token condition for OpenID Connect based providers (GitHub Issue #34)
 
 **Changed**
 
@@ -13,6 +15,17 @@
 * Replaced deprecated JWT libraries (`web-token/jwt-core`, `web-token/jwt-signature*`) with replacement library (`web-token/jwt-library`) (GitHub Issue #29)
 * Changed user creation to create new users without admin privileges. The privileges are applied later in the login process. (GitHub Issue #12)
 * Technically renamed Azure AD to Entra ID (see deprecations from [v7.0.0](#700))
+
+# 7.0.2
+
+**Changed**
+
+* Changed default value for `keepUserUpdated` to `true` in the client configuration, applied from [6.0.5](#605)
+
+**Fixed**
+
+* Fixed a bug causing the login process to terminate in some cases, after the redirect from the identity provider back to Shopware (GitHub Issues #26, #28, #31)
+* Fixed broken installations when after execution of `database:migrate-destructive`, applied from [6.0.4](#604) and [6.0.5](#605) (GitHub Issue #36) 
 
 # 7.0.1
 
@@ -43,6 +56,26 @@
 **Deprecated**
 
 * The Microsoft Azure provider will be technically renamed to Microsoft Entra ID in version 8.0.0
+
+# 6.0.5
+
+**Fixed**
+
+* Fixed deleted `keep_user_updated` column in case of `database:migrate-destructive` (GitHub Issue #36)
+
+# 6.0.4
+
+*This version was revoked due to a bug. Please use 6.0.5 or later instead.*
+
+**Added**
+
+* Added authenticated OData request condition for OpenID Connect based providers (copied from 7.0.0)
+
+**Fixed**
+
+* Fixed false negative validations for group ids condition in Microsoft Entra ID provider if too many groups are assigned to a user in Entra ID (GitHub Issue #27, copied from 7.0.0)
+* Fixed a bug causing the login process to terminate in some cases, after the redirect from the identity provider back to Shopware (GitHub Issues #26, #28, #31)
+* Fixed broken installations when after execution of `database:migrate-destructive` (GitHub Issue #36)
 
 # 6.0.3
 
