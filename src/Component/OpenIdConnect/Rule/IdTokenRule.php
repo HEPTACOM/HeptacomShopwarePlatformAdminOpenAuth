@@ -34,6 +34,11 @@ class IdTokenRule extends RuleContract
         $oidcExtension = $user->getExtensionOfType('oidcData', ArrayStruct::class);
         $idTokenPayload = $oidcExtension?->get('idTokenPayload');
 
+        $scope->getLogger()->info('Available root keys for id-token', [
+            'id_token_keys' => \array_keys($idTokenPayload),
+            'log_code' => '1747412312',
+        ]);
+
         if (!$client instanceof OpenIdConnectClient || $idTokenPayload === null) {
             return false;
         }
