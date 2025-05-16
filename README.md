@@ -27,6 +27,7 @@ This Shopware 6 plugin allows to add "Login with" functionality into the Shopwar
   * easy setup using the provider's metadata xml
 * promote users automatically to administrators
 * set roles and permissions based on rules
+* disable the password login and automatically redirect users to the identity provider 
 
 ## Security
 

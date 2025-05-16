@@ -14,5 +14,14 @@
             <helpText lang="de-DE">Wenn aktiviert und Sie Probleme mit Ihrem Identity Provider haben, muss diese Konfigurationsoption über die Konsole zurückgesetzt werden.</helpText>
             <defaultValue>false</defaultValue>
         </input-field>
+
+        <input-field type="bool">
+            <name>enableAutoRedirect</name>
+            <label>Automatically redirect to identity provider</label>
+            <label lang="de-DE">Automatisch an Identity Provider weiterleiten</label>
+            <helpText>If activated and password login is disabled, users get automatically redirected to the identity provider. This does not apply to user verify modals.</helpText>
+            <helpText lang="de-DE">Wenn aktiviert und der Passwortlogin deaktiviert ist, werden Nutzer automatisch an den Identity Provider weitergeleitet. Diese Funktion ist nicht verfügbar in User Verify Modals.</helpText>
+            <defaultValue>true</defaultValue>
+        </input-field>
     </card>
 </config>
