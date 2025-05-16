@@ -1,6 +1,18 @@
 # Unreleased
 
+# 6.0.5
+
+**Changed**
+
+* Changed default value for `keepUserUpdated` to `true` in the client configuration.
+
+**Fixed**
+
+* Fixed deleted `keep_user_updated` column in case of `database:migrate-destructive` (GitHub Issue #36)
+
 # 6.0.4
+
+*This version was revoked due to a bug. Please use 6.0.5 or later instead.*
 
 **Added**
 

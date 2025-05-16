@@ -44,8 +44,7 @@ SQL)->fetchAllAssociative();
     {
         $connection->executeStatement(<<<'SQL'
             ALTER TABLE `heptacom_admin_open_auth_client`
-                DROP COLUMN `user_become_admin`,
-                DROP COLUMN `keep_user_updated`;
+                DROP COLUMN `user_become_admin`;
 SQL);
 
         $connection->executeStatement(<<<'SQL'

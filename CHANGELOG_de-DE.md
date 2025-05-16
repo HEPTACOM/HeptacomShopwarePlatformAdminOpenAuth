@@ -1,6 +1,18 @@
 # Unreleased
 
+# 6.0.5
+
+**Geändert**
+
+* Standardwert für `keepUserUpdated` in der Client-Konfiguration auf `true` geändert
+
+**Behoben**
+
+* Spalte `keep_user_updated` wieder hinzugefügt. Diese könnte durch `database:migrate-destructive` gelöscht worden sein (GitHub Issue #36)
+
 # 6.0.4
+
+*Diese Version wurde aufgrund eines Fehlers zurückgezogen. Bitte Version 6.0.5 oder neuer verwenden.*
 
 **Hinzugefügt**
 
