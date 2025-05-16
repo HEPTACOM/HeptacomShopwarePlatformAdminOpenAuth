@@ -161,7 +161,7 @@
                         'sw-button--ghost',
                         'heptacom-admin-open-auth--button'
                     );
-                    link.href = item.url;
+                    link.href = addRedirectToUrl(item.url);
                     link.innerHTML = item.name;
                     container.appendChild(link);
                 });
@@ -225,7 +225,7 @@
                             'sw-button--ghost',
                             'heptacom-admin-open-auth--button'
                         );
-                        link.href = item.url;
+                        link.href = addRedirectToUrl(item.url);
                         link.innerHTML = item.name;
                         container.appendChild(link);
                     });
