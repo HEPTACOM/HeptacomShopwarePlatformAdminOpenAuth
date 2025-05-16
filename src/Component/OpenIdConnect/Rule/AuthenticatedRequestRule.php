@@ -12,7 +12,6 @@ use Heptacom\AdminOpenAuth\Component\Provider\OpenIdConnectClient;
 use Heptacom\AdminOpenAuth\Contract\OAuthRuleScope;
 use Heptacom\AdminOpenAuth\Contract\RuleContract;
 use Heptacom\AdminOpenAuth\Contract\User;
-use JmesPath\Env as JmesPath;
 use Psr\Http\Client\ClientInterface;
 use Psr\Log\LoggerInterface;
 use Shopware\Core\Framework\Rule\RuleConfig;
@@ -21,6 +20,8 @@ use Shopware\Core\Framework\Struct\ArrayStruct;
 
 class AuthenticatedRequestRule extends RuleContract
 {
+    use JMESPathValidation;
+
     public const RULE_NAME = 'heptacomAdminOpenAuthAuthenticatedRequest';
 
     public const REQUEST_TIMEOUT = 5.0;
@@ -63,19 +64,6 @@ class AuthenticatedRequestRule extends RuleContract
         return (new RuleConfig())
             ->stringField('requestUrl')
             ->stringField('jmesPathExpression');
-    }
-
-    protected function validateExpressionResult($evaluatedExpression): bool
-    {
-        return match (\gettype($evaluatedExpression)) {
-            'NULL' => false,
-            'boolean' => $evaluatedExpression,
-            'integer' => $evaluatedExpression !== 0,
-            'double' => $evaluatedExpression !== 0.0,
-            'string' => $evaluatedExpression !== '',
-            'array' => \count($evaluatedExpression) > 0,
-            default => false,
-        };
     }
 
     /**
@@ -145,12 +133,10 @@ class AuthenticatedRequestRule extends RuleContract
         }
 
         try {
-            $evaluatedExpression = JmesPath::search(
+            return $this->matchExpression(
                 (string) $this->jmesPathExpression,
                 \json_decode($response, true, 512, \JSON_THROW_ON_ERROR)
             );
-
-            return $this->validateExpressionResult($evaluatedExpression);
         } catch (\Throwable) {
             return false;
         }

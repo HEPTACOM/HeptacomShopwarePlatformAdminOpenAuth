@@ -119,6 +119,14 @@ In case of larger responses, you might need to paginate through the results.
 When using an OData compatible endpoint, you can use the "Authenticated OData request" instead.
 If the validation result on the current result page is `false`, the next page will be automatically requested.
 
+### OpenID Connect - ID Token rule
+
+Most OpenID Connect based providers issue an identity token while authentication.
+Depending on your use-case, this token might contain data that is relevant for the permission assignment.
+
+You can use the ID Token for rules by running a JMESPath query on the payload.
+For details on the JMESPath query evaluation, see the [authenticated request rule documentation](#processing-the-response).
+
 ## Adding your own rule actions
 
 In most scenarios you only need to assign roles based on rules.
