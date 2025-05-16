@@ -124,13 +124,13 @@
             </locales>
         </set>
 
-        <set name="Administration provider Microsoft Azure OIDC">
+        <set name="Administration provider Microsoft Entra ID OIDC">
             <format>
                 <json indent="4" sort="true"/>
             </format>
             <locales>
-                <locale name="en">../src/Resources/app/administration/src/provider/microsoft_azure_oidc/snippet/en-GB.json</locale>
-                <locale name="de">../src/Resources/app/administration/src/provider/microsoft_azure_oidc/snippet/de-DE.json</locale>
+                <locale name="en">../src/Resources/app/administration/src/provider/microsoft_entra_id_oidc/snippet/en-GB.json</locale>
+                <locale name="de">../src/Resources/app/administration/src/provider/microsoft_entra_id_oidc/snippet/de-DE.json</locale>
             </locales>
         </set>
 
