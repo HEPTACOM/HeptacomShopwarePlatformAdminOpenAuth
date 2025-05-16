@@ -59,7 +59,7 @@ final class ClientRedirectRoute extends AbstractController
         $clientCriteria = new Criteria([$clientId]);
         $clientCriteria->getAssociation('rules')->addSorting(new FieldSorting('position', FieldSorting::ASCENDING));
         $clientCriteria->addAssociation('rules.aclRoles');
-        $clientCriteria->addAssociation('defaultAclRoles');
+
         /** @var ClientEntity|null $client */
         $client = $this->clientsRepository->search($clientCriteria, $context)->first();
 

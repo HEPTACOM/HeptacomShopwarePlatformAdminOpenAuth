@@ -23,6 +23,8 @@ final class ClientEntity extends Entity
 
     public ?bool $storeUserToken = null;
 
+    public ?bool $keepUserUpdated = null;
+
     public ?array $config = null;
 
     public ?LoginCollection $logins = null;
