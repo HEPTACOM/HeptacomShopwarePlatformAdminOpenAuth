@@ -9,7 +9,7 @@ use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 /**
- * This is quite similar to the \Shopware\Storefront\Framework\Twig\Extension\ConfigExtension but exists to work without shopware/storefront
+ * This is quite similar to the \Shopware\Storefront\Framework\Twig\Extension\ConfigExtension but exists to work without shopware/storefront.
  */
 final class ConfigExtension extends AbstractExtension
 {
