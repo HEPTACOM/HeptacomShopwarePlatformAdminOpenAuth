@@ -40,6 +40,7 @@ final class ClientDefinition extends EntityDefinition
     {
         return [
             'active' => false,
+            'keepUserUpdated' => true,
         ];
     }
 
@@ -53,6 +54,7 @@ final class ClientDefinition extends EntityDefinition
             (new BoolField('login', 'login'))->addFlags(new Required()),
             (new BoolField('connect', 'connect'))->addFlags(new Required()),
             (new BoolField('store_user_token', 'storeUserToken'))->addFlags(new Required()),
+            (new BoolField('keep_user_updated', 'keepUserUpdated'))->addFlags(new Required()),
             (new JsonField('config', 'config', [], []))->addFlags(new Required()),
             new CreatedAtField(),
             new UpdatedAtField(),
