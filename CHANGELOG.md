@@ -6,6 +6,7 @@
 
 * Added extensible login actions to allow custom actions after a successful login
 * Added `bcmath` and `gmp` to suggested php extensions in `composer.json` (GitHub Issue #5)
+* Added configuration to automatically redirect users to the identity provider for login
 
 **Changed**
 
