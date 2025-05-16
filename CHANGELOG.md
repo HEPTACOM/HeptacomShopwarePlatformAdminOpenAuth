@@ -16,6 +16,10 @@
 * Changed user creation to create new users without admin privileges. The privileges are applied later in the login process. (GitHub Issue #12)
 * Technically renamed Azure AD to Entra ID (see deprecations from [v7.0.0](#700))
 
+**Fixed**
+
+* Removed soft-dependency onto Shopware Storefront to allow usage in headless-only projects (GitHub Issue #37)
+
 # 7.0.2
 
 **Changed**

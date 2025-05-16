@@ -12,7 +12,7 @@
         background-color: #e3f3ff;
     }
 
-    {% if config('KskHeptacomAdminOpenAuth.config.denyPasswordLogin') %}
+    {% if heptacom_admin_auth_config('denyPasswordLogin') %}
         .sw-login-login > :not(.sw-login__content-headline),
         .sw-inactivity-login__modal .sw-modal__body .sw-field,
         .sw-inactivity-login__modal .sw-modal__footer .sw-button {
@@ -69,8 +69,8 @@
     // Launch listener for login and inactivity routes
     (function () {
         const SSO_SHOPWARE_SETTINGS = {
-            disablePasswordLogin: {{ config('KskHeptacomAdminOpenAuth.config.denyPasswordLogin') ? 'true' : 'false' }},
-            autoRedirect: {{ config('KskHeptacomAdminOpenAuth.config.enableAutoRedirect') ? 'true' : 'false' }},
+            disablePasswordLogin: {{ heptacom_admin_auth_config('denyPasswordLogin') ? 'true' : 'false' }},
+            autoRedirect: {{ heptacom_admin_auth_config('enableAutoRedirect') ? 'true' : 'false' }},
         };
 
         async function getClientRoutes() {
