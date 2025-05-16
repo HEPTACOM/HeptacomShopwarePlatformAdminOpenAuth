@@ -2,10 +2,14 @@
 
 # 7.0.2
 
+**Changed**
+
+* Changed default value for `keepUserUpdated` to `true` in the client configuration, applied from [6.0.5](#605)
+
 **Fixed**
 
 * Fixed a bug causing the login process to terminate in some cases, after the redirect from the identity provider back to Shopware (GitHub Issues #26, #28, #31)
-* Fixed broken installations when after execution of `database:migrate-destructive` (GitHub Issue #36)
+* Fixed broken installations when after execution of `database:migrate-destructive`, applied from [6.0.4](#604) and [6.0.5](#605) (GitHub Issue #36) 
 
 # 7.0.1
 
