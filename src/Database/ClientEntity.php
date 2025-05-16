@@ -37,6 +37,4 @@ final class ClientEntity extends Entity
     public ?UserTokenCollection $userTokens = null;
 
     public ?ClientRuleCollection $rules = null;
-
-    public ?AclRoleCollection $defaultAclRoles = null;
 }
