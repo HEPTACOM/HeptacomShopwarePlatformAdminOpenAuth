@@ -12,7 +12,6 @@ use League\OAuth2\Server\Exception\OAuthServerException;
 use League\OAuth2\Server\Grant\PasswordGrant;
 use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
 use League\OAuth2\Server\Repositories\UserRepositoryInterface;
-use League\OAuth2\Server\RequestEvent;
 use Psr\Http\Message\ServerRequestInterface;
 use Shopware\Core\Framework\Api\OAuth\User\User;
 use Shopware\Core\Framework\Context;
@@ -27,12 +26,14 @@ final class OneTimeTokenGrant extends PasswordGrant
         parent::__construct($userRepository, $refreshTokenRepository);
     }
 
-    public function getIdentifier()
+    #[\Override]
+    public function getIdentifier(): string
     {
         return 'heptacom_admin_open_auth_one_time_token';
     }
 
-    protected function validateUser(ServerRequestInterface $request, ClientEntityInterface $client)
+    #[\Override]
+    protected function validateUser(ServerRequestInterface $request, ClientEntityInterface $client): UserEntityInterface
     {
         $otp = $this->getRequestParameter('one_time_token', $request);
 
@@ -46,14 +47,6 @@ final class OneTimeTokenGrant extends PasswordGrant
             throw OAuthServerException::invalidRequest('one_time_token', 'Expired');
         }
 
-        $user = new User($loginState->userId);
-
-        if (!$user instanceof UserEntityInterface) {
-            $this->getEmitter()->emit(new RequestEvent(RequestEvent::USER_AUTHENTICATION_FAILED, $request));
-
-            throw OAuthServerException::invalidCredentials();
-        }
-
-        return $user;
+        return new User($loginState->userId);
     }
 }

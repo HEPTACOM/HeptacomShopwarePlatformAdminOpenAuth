@@ -43,11 +43,11 @@
         "ext-openssl": "*",
         "ext-zlib": "*",
         "composer/composer": "^2.7",
-        "doctrine/dbal": "^3.8",
+        "doctrine/dbal": "^4.2",
         "guzzlehttp/guzzle": "^7.5",
         "guzzlehttp/psr7": "^2.4",
         "league/oauth2-client": "^2.0",
-        "league/oauth2-server": "^8.5",
+        "league/oauth2-server": "^9.1",
         "mrjoops/oauth2-jira": "^0.2.4",
         "mtdowling/jmespath.php": "^2.7",
         "nyholm/psr7": "^1.5",
@@ -56,12 +56,13 @@
         "psr/http-client": "^1.0",
         "psr/http-message": "^2.0",
         "psr/log": "^3",
-        "shopware/core": "^6.6.0",
+        "shopware/core": "6.7.0.0-rc4",
         "web-token/jwt-library": "^4.0"
     },
     "require-dev": {
-        "shopware/administration": "~6.6.0"
+        "shopware/administration": "~6.7.0"
     },
+    "minimum-stability": "rc",
     "suggest": {
         "ext-bcmath": "Either the bcmath or gmp extension is required for token validation. Otherwise you will run into performance issues.",
         "ext-gmp": "Either the bcmath or gmp extension is required for token validation. Otherwise you will run into performance issues."
