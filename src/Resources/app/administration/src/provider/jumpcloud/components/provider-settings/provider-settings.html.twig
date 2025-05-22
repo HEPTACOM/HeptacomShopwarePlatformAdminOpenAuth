@@ -1,30 +1,31 @@
 {% block heptacom_admin_open_auth_provider_jumpcloud_settings %}
     {% block heptacom_admin_open_auth_provider_jumpcloud_settings_idp %}
-        <sw-card
+        <mt-card
             :title="$t('heptacomAdminOpenAuthClient.providerFields.saml2.identityProviderCardTitle')"
             position-identifier="heptacom-admin-open-auth-provider-jumpcloud-settings-idp"
         >
             <!-- auto config -->
-            <sw-textarea-field
+            <mt-textarea
                 :disabled="!!item.config.identityProviderMetadataUrl"
                 :label="$t('heptacomAdminOpenAuthClient.providerFields.jumpcloud.identityProviderMetadataXml')"
-                v-model:value="item.config.identityProviderMetadataXml"
-            ></sw-textarea-field>
-        </sw-card>
+                v-model="item.config.identityProviderMetadataXml"
+            ></mt-textarea>
+        </mt-card>
     {% endblock %}
 
     {% block heptacom_admin_open_auth_provider_jumpcloud_settings_attribute_mapping %}
-        <sw-card
+        <mt-card
             :title="$t('heptacomAdminOpenAuthClient.providerFields.saml2.attributeMapping.cardTitle')"
             position-identifier="heptacom-admin-open-auth-provider-jumpcloud-settings-attribute-mapping"
         >
             {% block heptacom_admin_open_auth_provider_jumpcloud_settings_attribute_mapping_inner %}
-                <template v-for="mappedProperty of availableProperties">
-                    <sw-text-field :label="$t('heptacomAdminOpenAuthClient.providerFields.saml2.attributeMapping.field.' + mappedProperty)"
-                                   v-model:value="item.config.attributeMapping[mappedProperty]"
-                    ></sw-text-field>
-                </template>
+            <template v-for="mappedProperty of availableProperties">
+                <mt-text-field
+                    :label="$t('heptacomAdminOpenAuthClient.providerFields.saml2.attributeMapping.field.' + mappedProperty)"
+                    v-model="item.config.attributeMapping[mappedProperty]"
+                ></mt-text-field>
+            </template>
             {% endblock %}
-        </sw-card>
+        </mt-card>
     {% endblock %}
 {% endblock %}

@@ -7,237 +7,243 @@
         {% endblock %}
 
         {% block heptacom_admin_open_auth_client_edit_page_smart_bar_header %}
-            <template #smart-bar-header>
-                {{ dynamicName }}
-            </template>
+        <template #smart-bar-header>
+            {{ dynamicName }}
+        </template>
         {% endblock %}
 
         {% block heptacom_admin_open_auth_client_edit_page_search_bar_actions %}
-            <template #smart-bar-actions>
-                {% block heptacom_admin_open_auth_client_edit_page_search_bar_actions_help %}
-                    <sw-button
-                        :disabled="isLoading"
-                        :isLoading="isLoading"
-                        :link="item ? $t('heptacomAdminOpenAuthClient.providers.' + item.provider + '.helpUrl') : ''"
-                    >
-                        <sw-icon name="regular-external-link" small></sw-icon>
-                        {{ $t('heptacom-admin-open-auth-client.pages.edit.actions.help') }}
-                    </sw-button>
-                {% endblock %}
+        <template #smart-bar-actions>
+            {% block heptacom_admin_open_auth_client_edit_page_search_bar_actions_help %}
+            <mt-button
+                variant="secondary"
+                :disabled="isLoading"
+                :isLoading="isLoading"
+                :link="item ? $t('heptacomAdminOpenAuthClient.providers.' + item.provider + '.helpUrl') : ''"
+            >
+                <template #iconFront>
+                    <mt-icon
+                        name="regular-external-link"
+                        size="16px"
+                    ></mt-icon>
+                </template>
+                {{ $t('heptacom-admin-open-auth-client.pages.edit.actions.help') }}
+            </mt-button>
+            {% endblock %}
 
-                {% block heptacom_admin_open_auth_client_edit_page_search_bar_actions_delete %}
-                    <sw-button
-                        v-if="acl.can('heptacom_admin_open_auth_client.deleter')"
-                        :disabled="isLoading"
-                        @click="showDeleteModal = true"
-                        variant="danger"
-                    >
-                        {{ $t('heptacom-admin-open-auth-client.pages.edit.actions.delete') }}
-                    </sw-button>
-                {% endblock %}
+            {% block heptacom_admin_open_auth_client_edit_page_search_bar_actions_delete %}
+            <mt-button
+                v-if="acl.can('heptacom_admin_open_auth_client.deleter')"
+                :disabled="isLoading"
+                @click="showDeleteModal = true"
+                variant="critical"
+            >
+                {{ $t('heptacom-admin-open-auth-client.pages.edit.actions.delete') }}
+            </mt-button>
+            {% endblock %}
 
-                {% block heptacom_admin_open_auth_client_edit_page_search_bar_actions_cancel %}
-                    <sw-button
-                        :disabled="isLoading"
-                        @click="cancelEdit"
-                    >
-                        {{ $t('heptacom-admin-open-auth-client.pages.edit.actions.cancel') }}
-                    </sw-button>
-                {% endblock %}
+            {% block heptacom_admin_open_auth_client_edit_page_search_bar_actions_cancel %}
+            <mt-button
+                :disabled="isLoading"
+                variant="secondary"
+                @click="cancelEdit"
+            >
+                {{ $t('heptacom-admin-open-auth-client.pages.edit.actions.cancel') }}
+            </mt-button>
+            {% endblock %}
 
-                {% block heptacom_admin_open_auth_client_edit_page_search_bar_actions_save %}
-                    <sw-button-process
-                        :disabled="isLoading"
-                        :isLoading="isLoading"
-                        @click.prevent="saveItem"
-                        v-model:value="isSaveSuccessful"
-                        variant="primary"
-                    >
-                        {{ $t('heptacom-admin-open-auth-client.pages.edit.actions.save') }}
-                    </sw-button-process>
-                {% endblock %}
-            </template>
+            {% block heptacom_admin_open_auth_client_edit_page_search_bar_actions_save %}
+            <sw-button-process
+                :disabled="isLoading"
+                :isLoading="isLoading"
+                @click.prevent="saveItem"
+                v-model:value="isSaveSuccessful"
+                variant="primary"
+            >
+                {{ $t('heptacom-admin-open-auth-client.pages.edit.actions.save') }}
+            </sw-button-process>
+            {% endblock %}
+        </template>
         {% endblock %}
 
         {% block heptacom_admin_open_auth_client_edit_page_content %}
-            <template #content>
-                <sw-card-view>
-                    {% block heptacom_admin_open_auth_client_edit_page_content_base_settings %}
-                        <sw-card
-                            :isLoading="isLoading"
-                            position-identifier="heptacom-admin-open-auth-client-edit-page-base-settings"
-                        >
-                            <template v-if="item">
-                                {% block heptacom_admin_open_auth_client_edit_page_content_base_settings_inner %}
-                                    {% block heptacom_admin_open_auth_client_edit_page_content_base_settings_inner_name %}
-                                        <sw-text-field
-                                            :label="$t('heptacom-admin-open-auth-client.pages.edit.fields.name')"
-                                            v-model:value="item.name"
-                                        ></sw-text-field>
-                                    {% endblock %}
-                                    {% block heptacom_admin_open_auth_client_edit_page_content_base_settings_inner_active %}
-                                        <sw-switch-field
-                                            :label="$t('heptacom-admin-open-auth-client.pages.edit.fields.active')"
-                                            v-model:value="item.active"
-                                        ></sw-switch-field>
-                                    {% endblock %}
-                                    {% block heptacom_admin_open_auth_client_edit_page_content_base_settings_inner_can_login %}
-                                        <sw-switch-field
-                                            :disabled="!item.active"
-                                            :label="$t('heptacom-admin-open-auth-client.pages.edit.fields.login')"
-                                            v-model:value="item.login"
-                                        ></sw-switch-field>
-                                    {% endblock %}
-                                    {% block heptacom_admin_open_auth_client_edit_page_content_base_settings_inner_can_connect %}
-                                        <sw-switch-field
-                                            :disabled="!item.active"
-                                            :label="$t('heptacom-admin-open-auth-client.pages.edit.fields.connect')"
-                                            v-model:value="item.connect"
-                                        ></sw-switch-field>
-                                    {% endblock %}
-                                    {% block heptacom_admin_open_auth_client_edit_page_content_base_settings_inner_store_user_token %}
-                                        <sw-switch-field
-                                            :disabled="!item.active"
-                                            :label="$t('heptacom-admin-open-auth-client.pages.edit.fields.storeUserToken')"
-                                            v-model:value="item.storeUserToken"
-                                        ></sw-switch-field>
-                                    {% endblock %}
-                                    {% block heptacom_admin_open_auth_client_edit_page_content_base_settings_inner_keep_user_updated %}
-                                        <sw-switch-field
-                                            :disabled="!item.active"
-                                            :label="$t('heptacom-admin-open-auth-client.pages.edit.fields.keepUserUpdated')"
-                                            :helpText="$t('heptacom-admin-open-auth-client.pages.edit.fields.keepUserUpdatedHelpText')"
-                                            v-model:value="item.keepUserUpdated"
-                                        ></sw-switch-field>
-                                    {% endblock %}
-                                    {% block heptacom_admin_open_auth_client_edit_page_content_base_settings_inner_redirect_uri %}
-                                        <sw-text-field
-                                            v-if="redirectUri"
-                                            :copyable="true"
-                                            :copyableTooltip="true"
-                                            :label="$t('heptacom-admin-open-auth-client.pages.edit.fields.redirectUri')"
-                                            :value="redirectUri"
-                                            disabled
-                                        ></sw-text-field>
-                                    {% endblock %}
-                                    {% block heptacom_admin_open_auth_client_edit_page_content_base_settings_inner_metadata_uri %}
-                                        <sw-text-field
-                                            v-if="metadataUri"
-                                            :copyable="true"
-                                            :copyableTooltip="true"
-                                            :label="$t('heptacom-admin-open-auth-client.pages.edit.fields.metadataUri')"
-                                            :value="metadataUri"
-                                            disabled
-                                        ></sw-text-field>
-                                        <sw-button
-                                            v-if="metadataUri"
-                                            class="sw-button__metadata-download"
-                                            :disabled="!metadataUri"
-                                            :link="metadataUri"
-                                            size="small"
-                                            :block="true"
-                                        >
-                                            {{ $t('heptacom-admin-open-auth-client.pages.edit.fields.downloadMetadata') }}
-                                        </sw-button>
-                                    {% endblock %}
-                                {% endblock %}
-                            </template>
-                        </sw-card>
-                    {% endblock %}
-
-                    {% block heptacom_admin_open_auth_client_edit_page_content_actions %}
-                        <sw-card
-                            :isLoading="isLoading"
-                            :title="$t('heptacom-admin-open-auth-client.pages.edit.ruleActions.title')"
-                            position-identifier="heptacom-admin-open-auth-client-edit-page-actions"
-                        >
-                            <template v-if="item && defaultActionTab !== ''">
-                                {% block heptacom_admin_open_auth_client_edit_page_content_actions_inner %}
-                                    <sw-tabs
-                                        :default-item="defaultActionTab"
-                                    >
-                                        <template #default="{ active }">
-                                            <template
-                                                v-for="action in actions"
-                                                :key="action.name"
-                                            >
-                                                <sw-tabs-item
-                                                    :active-tab="active"
-                                                    :name="action.name"
-                                                >
-                                                    {{ $t('heptacom-admin-open-auth-client.actions.' + action.name + '.label') }}
-                                                </sw-tabs-item>
-                                            </template>
-                                        </template>
-
-                                        <template #content="{ active }">
-                                            <heptacom-admin-open-auth-client-rule-container
-                                                v-if="actions[active] !== undefined"
-                                                :client="item"
-                                                :action="actions[active]"
-                                                @rule-deleted="onRuleDeleted"
-                                                @conditions-deleted="onConditionsDeleted"
-                                            ></heptacom-admin-open-auth-client-rule-container>
-                                        </template>
-                                    </sw-tabs>
-                                {% endblock %}
-                            </template>
-                        </sw-card>
-                    {% endblock %}
-
-                    {% block heptacom_admin_open_auth_client_edit_page_content_provider_settings %}
-                        <component
-                            v-if="item && item.provider"
-                            :is="providerSettingsComponent"
-                            v-bind="providerSettingsProps"
-                        ></component>
-                    {% endblock %}
-                </sw-card-view>
-
-                {% block heptacom_admin_open_auth_client_edit_page_content_modal_delete %}
-                    <sw-modal
-                        v-if="showDeleteModal"
-                        :title="$t('heptacom-admin-open-auth-client.pages.edit.modals.delete.title')"
-                        @modal-close="showDeleteModal = false"
-                        variant="small"
-                    >
-                        {% block heptacom_admin_open_auth_client_edit_page_content_modal_delete_confirm_text %}
-                            <p>
-                                {{ $t('heptacom-admin-open-auth-client.pages.edit.modals.delete.warning') }}
-                            </p>
-                            <p>
-                                <strong>{{ dynamicName }}</strong>
-                            </p>
-                            <p>
-                                {{ $t('heptacom-admin-open-auth-client.pages.edit.modals.delete.explanation') }}
-                            </p>
+        <template #content>
+            <sw-card-view>
+                {% block heptacom_admin_open_auth_client_edit_page_content_base_settings %}
+                <mt-card
+                    :isLoading="isLoading"
+                    position-identifier="heptacom-admin-open-auth-client-edit-page-base-settings"
+                >
+                    <template v-if="item">
+                        {% block heptacom_admin_open_auth_client_edit_page_content_base_settings_inner %}
+                        {% block heptacom_admin_open_auth_client_edit_page_content_base_settings_inner_name %}
+                        <mt-text-field
+                            :label="$t('heptacom-admin-open-auth-client.pages.edit.fields.name')"
+                            v-model="item.name"
+                        ></mt-text-field>
                         {% endblock %}
+                        {% block heptacom_admin_open_auth_client_edit_page_content_base_settings_inner_active %}
+                        <mt-switch
+                            :label="$t('heptacom-admin-open-auth-client.pages.edit.fields.active')"
+                            v-model="item.active"
+                        ></mt-switch>
+                        {% endblock %}
+                        {% block heptacom_admin_open_auth_client_edit_page_content_base_settings_inner_can_login %}
+                        <mt-switch
+                            :disabled="!item.active"
+                            :label="$t('heptacom-admin-open-auth-client.pages.edit.fields.login')"
+                            v-model="item.login"
+                        ></mt-switch>
+                        {% endblock %}
+                        {% block heptacom_admin_open_auth_client_edit_page_content_base_settings_inner_can_connect %}
+                        <mt-switch
+                            :disabled="!item.active"
+                            :label="$t('heptacom-admin-open-auth-client.pages.edit.fields.connect')"
+                            v-model="item.connect"
+                        ></mt-switch>
+                        {% endblock %}
+                        {% block heptacom_admin_open_auth_client_edit_page_content_base_settings_inner_store_user_token %}
+                        <mt-switch
+                            :disabled="!item.active"
+                            :label="$t('heptacom-admin-open-auth-client.pages.edit.fields.storeUserToken')"
+                            v-model="item.storeUserToken"
+                        ></mt-switch>
+                        {% endblock %}
+                        {% block heptacom_admin_open_auth_client_edit_page_content_base_settings_inner_keep_user_updated %}
+                        <mt-switch
+                            :disabled="!item.active"
+                            :label="$t('heptacom-admin-open-auth-client.pages.edit.fields.keepUserUpdated')"
+                            :helpText="$t('heptacom-admin-open-auth-client.pages.edit.fields.keepUserUpdatedHelpText')"
+                            v-model="item.keepUserUpdated"
+                        ></mt-switch>
+                        {% endblock %}
+                        {% block heptacom_admin_open_auth_client_edit_page_content_base_settings_inner_redirect_uri %}
+                        <mt-text-field
+                            v-if="redirectUri"
+                            copyable
+                            copyableTooltip
+                            :label="$t('heptacom-admin-open-auth-client.pages.edit.fields.redirectUri')"
+                            v-model="redirectUri"
+                            disabled
+                        ></mt-text-field>
+                        {% endblock %}
+                        {% block heptacom_admin_open_auth_client_edit_page_content_base_settings_inner_metadata_uri %}
+                        <mt-text-field
+                            v-if="metadataUri"
+                            :copyable="true"
+                            :copyableTooltip="true"
+                            :label="$t('heptacom-admin-open-auth-client.pages.edit.fields.metadataUri')"
+                            :value="metadataUri"
+                            disabled
+                        ></mt-text-field>
+                        <mt-button
+                            v-if="metadataUri"
+                            class="sw-button__metadata-download"
+                            :disabled="!metadataUri"
+                            :link="metadataUri"
+                            size="small"
+                            block
+                            variant="secondary"
+                        >
+                            {{ $t('heptacom-admin-open-auth-client.pages.edit.fields.downloadMetadata') }}
+                        </mt-button>
+                        {% endblock %}
+                        {% endblock %}
+                    </template>
+                </mt-card>
+                {% endblock %}
 
-                        {% block heptacom_admin_open_auth_client_edit_page_content_modal_delete_footer %}
-                            <template #modal-footer>
-                                {% block heptacom_admin_open_auth_client_edit_page_content_modal_delete_abort %}
-                                    <sw-button
-                                        size="small"
-                                        @click="showDeleteModal = false"
+                {% block heptacom_admin_open_auth_client_edit_page_content_actions %}
+                <mt-card
+                    :isLoading="isLoading"
+                    :title="$t('heptacom-admin-open-auth-client.pages.edit.ruleActions.title')"
+                    position-identifier="heptacom-admin-open-auth-client-edit-page-actions"
+                >
+                    <template v-if="item && defaultActionTab !== ''">
+                        {% block heptacom_admin_open_auth_client_edit_page_content_actions_inner %}
+                        <sw-tabs :default-item="defaultActionTab">
+                            <template #default="{ active }">
+                                <template
+                                    v-for="action in actions"
+                                    :key="action.name"
+                                >
+                                    <sw-tabs-item
+                                        :active-tab="active"
+                                        :name="action.name"
                                     >
-                                        {{ $t('heptacom-admin-open-auth-client.pages.edit.modals.delete.cancel') }}
-                                    </sw-button>
-                                {% endblock %}
+                                        {{ $t('heptacom-admin-open-auth-client.actions.' + action.name + '.label') }}
+                                    </sw-tabs-item>
+                                </template>
+                            </template>
+
+                            <template #content="{ active }">
+                                <heptacom-admin-open-auth-client-rule-container
+                                    v-if="actions[active] !== undefined"
+                                    :client="item"
+                                    :action="actions[active]"
+                                    @rule-deleted="onRuleDeleted"
+                                    @conditions-deleted="onConditionsDeleted"
+                                ></heptacom-admin-open-auth-client-rule-container>
+                            </template>
+                        </sw-tabs>
+                        {% endblock %}
+                    </template>
+                </mt-card>
+                {% endblock %}
+
+                {% block heptacom_admin_open_auth_client_edit_page_content_provider_settings %}
+                <component
+                    v-if="item && item.provider"
+                    :is="providerSettingsComponent"
+                    v-bind="providerSettingsProps"
+                ></component>
+                {% endblock %}
+            </sw-card-view>
+            {% block heptacom_admin_open_auth_client_edit_page_content_modal_delete %}
+            <sw-modal
+                v-if="showDeleteModal"
+                :title="$t('heptacom-admin-open-auth-client.pages.edit.modals.delete.title')"
+                @modal-close="showDeleteModal = false"
+                variant="small"
+            >
+                {% block heptacom_admin_open_auth_client_edit_page_content_modal_delete_confirm_text %}
+                <p>
+                    {{ $t('heptacom-admin-open-auth-client.pages.edit.modals.delete.warning') }}
+                </p>
+                <p>
+                    <strong>{{ dynamicName }}</strong>
+                </p>
+                <p>
+                    {{ $t('heptacom-admin-open-auth-client.pages.edit.modals.delete.explanation') }}
+                </p>
+                {% endblock %}
+
+                {% block heptacom_admin_open_auth_client_edit_page_content_modal_delete_footer %}
+                <template #modal-footer>
+                    {% block heptacom_admin_open_auth_client_edit_page_content_modal_delete_abort %}
+                    <mt-button
+                        size="small"
+                        @click="showDeleteModal = false"
+                        variant="secondary"
+                    >
+                        {{ $t('heptacom-admin-open-auth-client.pages.edit.modals.delete.cancel') }}
+                    </mt-button>
+                    {% endblock %}
 
                                 {% block heptacom_admin_open_auth_client_edit_page_content_modal_delete_delete %}
-                                    <sw-button
-                                        size="small"
-                                        variant="danger"
-                                        @click="onConfirmDelete"
-                                    >
-                                        {{ $t('heptacom-admin-open-auth-client.pages.edit.modals.delete.confirm') }}
-                                    </sw-button>
-                                {% endblock %}
-                            </template>
-                        {% endblock %}
-                    </sw-modal>
+                    <mt-button
+                        size="small"
+                        variant="critical"
+                        @click="onConfirmDelete"
+                    >
+                        {{ $t('heptacom-admin-open-auth-client.pages.edit.modals.delete.confirm') }}
+                    </mt-button>
+                    {% endblock %}
+                </template>
                 {% endblock %}
-            </template>
+            </sw-modal>
+            {% endblock %}
+        </template>
         {% endblock %}
     </sw-page>
 {% endblock %}

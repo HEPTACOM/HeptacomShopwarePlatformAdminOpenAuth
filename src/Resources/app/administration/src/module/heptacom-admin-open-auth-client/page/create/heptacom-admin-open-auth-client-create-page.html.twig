@@ -6,62 +6,62 @@
         {% block heptacom_admin_open_auth_client_create_page_inner %}{% endblock %}
 
         {% block heptacom_admin_open_auth_client_create_page_smart_bar_header %}
-            <template #smart-bar-header>
-                <h2>
-                    {{ $t('heptacom-admin-open-auth-client.pages.create.header') }}
-                </h2>
-            </template>
+        <template #smart-bar-header>
+            <h2>
+                {{ $t('heptacom-admin-open-auth-client.pages.create.header') }}
+            </h2>
+        </template>
         {% endblock heptacom_admin_open_auth_client_create_page_smart_bar_header %}
 
         {% block heptacom_admin_open_auth_client_create_page_content %}
-            <template #content>
-                <template
-                    v-if="isLoading"
-                >
-                    {% block heptacom_admin_open_auth_client_create_page_content_loader %}
-                        <sw-loader></sw-loader>
-                    {% endblock %}
-                </template>
-                <template
-                    v-else
-                >
-                    {% block heptacom_admin_open_auth_client_create_page_content_providers %}
-                        <sw-card-view class="heptacom-admin-open-auth-client-create_card-view">
-                            {% block heptacom_admin_open_auth_client_create_page_content_providers_list %}
-                                <template
-                                    v-for="provider of items"
-                                    :key="provider.key"
-                                >
-                                    <sw-card
-                                        :title="provider.label"
-                                        :classes="provider.classes"
-                                        :position-identifier="'heptacom-admin-open-auth-client-create-provider-' + provider.key"
-                                    >
-                                        {% block heptacom_admin_open_auth_client_create_page_content_providers_list_item %}
-                                            {% block heptacom_admin_open_auth_client_create_page_content_providers_list_item_logo %}
-                                                <div class="logo">
-                                                    <img :src="assetFilter('/kskheptacomadminopenauth/static/logo/'+provider.logoFile)">
-                                                </div>
-                                            {% endblock %}
-
-                                            {% block heptacom_admin_open_auth_client_create_page_content_providers_list_item_action %}
-                                                <sw-button
-                                                    @click="createClient(provider)"
-                                                    class="heptacom-admin-open-auth-client-create-page-providers-provider--action"
-                                                    variant="ghost"
-                                                    block
-                                                >
-                                                    {{ provider.actionLabel }}
-                                                </sw-button>
-                                            {% endblock %}
-                                        {% endblock %}
-                                    </sw-card>
-                                </template>
-                            {% endblock %}
-                        </sw-card-view>
-                    {% endblock %}
-                </template>
+        <template #content>
+            <template v-if="isLoading">
+                {% block heptacom_admin_open_auth_client_create_page_content_loader %}
+                <mt-loader></mt-loader>
+                {% endblock %}
             </template>
+
+            <template v-else>
+                {% block heptacom_admin_open_auth_client_create_page_content_providers %}
+                <sw-card-view class="heptacom-admin-open-auth-client-create_card-view">
+                    {% block heptacom_admin_open_auth_client_create_page_content_providers_list %}
+                    <template
+                        v-for="provider of items"
+                        :key="provider.key"
+                    >
+                        <mt-card
+                            :title="provider.label"
+                            :classes="provider.classes"
+                            :position-identifier="'heptacom-admin-open-auth-client-create-provider-' + provider.key"
+                        >
+                            {% block heptacom_admin_open_auth_client_create_page_content_providers_list_item %}
+                            {% block heptacom_admin_open_auth_client_create_page_content_providers_list_item_logo %}
+                            <div class="logo">
+                                <img
+                                    :src="assetFilter('/kskheptacomadminopenauth/static/logo/'+provider.logoFile)"
+                                    :alt="provider.label"
+                                />
+                            </div>
+                            {% endblock %}
+
+                            {% block heptacom_admin_open_auth_client_create_page_content_providers_list_item_action %}
+                            <mt-button
+                                @click="createClient(provider)"
+                                class="heptacom-admin-open-auth-client-create-page-providers-provider--action"
+                                block
+                                variant="secondary"
+                            >
+                                {{ provider.actionLabel }}
+                            </mt-button>
+                            {% endblock %}
+                            {% endblock %}
+                        </mt-card>
+                    </template>
+                    {% endblock %}
+                </sw-card-view>
+                {% endblock %}
+            </template>
+        </template>
         {% endblock %}
     </sw-page>
 {% endblock %}

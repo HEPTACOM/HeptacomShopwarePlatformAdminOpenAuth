@@ -1,14 +1,16 @@
 {% block heptacom_admin_open_auth_provider_keycloak_settings %}
-    <sw-card position-identifier="heptacom-admin-open-auth-provider-keycloak-settings">
-        <sw-textarea-field
+    <mt-card
+        position-identifier="heptacom-admin-open-auth-provider-keycloak-settings"
+    >
+        <mt-textarea
             required
             :label="$t('heptacomAdminOpenAuthClient.providerFields.keycloak.keycloakOidcJson')"
             :placeholder="jsonPlaceholder"
-            v-model:value="item.config.keycloakOidcJson"
-        ></sw-textarea-field>
+            v-model="item.config.keycloakOidcJson"
+        ></mt-textarea>
         <sw-tagged-field
             :label="$t('heptacomAdminOpenAuthClient.providerFields.keycloak.additionalScopes')"
             v-model:value="item.config.scopes"
         ></sw-tagged-field>
-    </sw-card>
+    </mt-card>
 {% endblock %}

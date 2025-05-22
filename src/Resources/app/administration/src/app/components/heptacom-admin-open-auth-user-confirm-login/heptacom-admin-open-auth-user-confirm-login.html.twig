@@ -1,40 +1,36 @@
 {% block heptacom_admin_open_auth_user_confirm %}
     <div class="heptacom-admin-open-auth-user-confirm-login">
-        <sw-loader
-            v-if="loading"
-        ></sw-loader>
+        <mt-loader v-if="loading"></mt-loader>
         <template v-else>
-            <sw-loader
-                v-if="waitingForConfirmation"
-            ></sw-loader>
+            <mt-loader v-if="waitingForConfirmation"></mt-loader>
             <sw-card-section
                 class="heptacom-admin-open-auth-user-confirm-login--clients"
                 :divider="sectionDivider"
                 v-if="clients.length > 0"
             >
-                <sw-alert
+                <mt-banner
                     v-if="popupsAreBlocked"
-                    variant="warning"
+                    variant="attention"
                 >
                     {{ $tc('heptacom-admin-open-auth-user-confirm-login.popupsBlocked') }}
-                </sw-alert>
-
+                </mt-banner>
                 <template
                     v-for="client of clients"
                     :key="client.id"
                 >
-                    <sw-button
+                    <mt-button
                         block
+                        variant="secondary"
                         @click="startAuthFlow(client)"
                     >
                         {{ $t('heptacom-admin-open-auth-user-confirm-login.confirmWith', {
                             'clientName': client.name
                         }) }}
-                        <sw-icon
+                        <mt-icon
                             name="regular-external-link-s"
-                            small
-                        ></sw-icon>
-                    </sw-button>
+                            size="16px"
+                        ></mt-icon>
+                    </mt-button>
                 </template>
             </sw-card-section>
         </template>

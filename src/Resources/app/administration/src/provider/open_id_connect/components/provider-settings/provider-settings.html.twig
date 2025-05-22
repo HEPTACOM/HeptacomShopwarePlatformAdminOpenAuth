@@ -1,5 +1,7 @@
 {% block heptacom_admin_open_auth_provider_open_id_connect_settings %}
-    <sw-card position-identifier="heptacom-admin-open-auth-provider-open-id-connect-settings">
+    <mt-card
+        position-identifier="heptacom-admin-open-auth-provider-open-id-connect-settings"
+    >
         <heptacom-admin-open-auth-url-field
             :omitUrlHash="true"
             :omitUrlSearch="true"
@@ -29,19 +31,19 @@
             :label="$t('heptacomAdminOpenAuthClient.providerFields.open_id_connect.userinfo_endpoint')"
             v-model:value="item.config.userinfo_endpoint"
         ></heptacom-admin-open-auth-url-field>
-        <sw-text-field
+        <mt-text-field
             :required="true"
             :label="$t('heptacomAdminOpenAuthClient.providerFields.open_id_connect.clientId')"
-            v-model:value="item.config.clientId"
-        ></sw-text-field>
-        <sw-password-field
+            v-model="item.config.clientId"
+        ></mt-text-field>
+        <mt-password-field
             :required="true"
             :label="$t('heptacomAdminOpenAuthClient.providerFields.open_id_connect.clientSecret')"
-            v-model:value="item.config.clientSecret"
-        ></sw-password-field>
+            v-model="item.config.clientSecret"
+        ></mt-password-field>
         <sw-tagged-field
             :label="$t('heptacomAdminOpenAuthClient.providerFields.open_id_connect.additionalScopes')"
             v-model:value="item.config.scopes"
         ></sw-tagged-field>
-    </sw-card>
+    </mt-card>
 {% endblock %}
