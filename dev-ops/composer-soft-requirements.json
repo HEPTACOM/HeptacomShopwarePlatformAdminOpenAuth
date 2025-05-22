@@ -27,7 +27,9 @@
         "Symfony\\Component\\Routing\\Attribute\\Route",
         "Symfony\\Component\\Routing\\Generator\\UrlGeneratorInterface",
         "Symfony\\Component\\Routing\\RouterInterface",
-        "Symfony\\Contracts\\EventDispatcher\\EventDispatcherInterface"
+        "Symfony\\Contracts\\EventDispatcher\\EventDispatcherInterface",
+        "Twig\\Extension\\AbstractExtension",
+        "Twig\\TwigFunction"
     ],
     "php-core-extensions" : [
         "Core",
