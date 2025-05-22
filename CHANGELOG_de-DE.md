@@ -16,6 +16,10 @@
 * Anlage von neuen Benutzern überarbeitet, um Benutzer ohne Admin-Rechte anzulegen. Die Berechtigungen werden später im Login-Prozess zugewiesen (GitHub Issue #12)
 * Azure AD in technisch in Entra ID umbenannt (siehe Abkündigungen [v7.0.0](#700))
 
+**Behoben**
+
+* Abhängigkeit zur Shopware Standard Storefront entfernt für Unterstützung von Projekten, die ausschließlich Headless-Verkaufskanäle vorsehen (GitHub Issue #37)
+
 # 7.0.2
 
 **Geändert**
