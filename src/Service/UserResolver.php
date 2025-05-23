@@ -216,11 +216,11 @@ final readonly class UserResolver implements UserResolverInterface
     {
         /** @var array<array-key, mixed>|false $user */
         $user = $this->connection->createQueryBuilder()
-            ->select(\array_keys($userChangeSet))
+            ->select(...\array_keys($userChangeSet))
             ->from(UserDefinition::ENTITY_NAME)
             ->where('id = :id')
             ->setParameter('id', Uuid::fromHexToBytes($userId))
-            ->execute()
+            ->executeQuery()
             ->fetchAssociative();
 
         if (!$user) {
