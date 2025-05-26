@@ -1,0 +1,44 @@
+{
+  "base": "/bundles/kskheptacomadminopenauth/administration/",
+  "entryPoints": {
+    "ksk-heptacom-admin-open-auth": {
+      "css": [],
+      "dynamic": [
+        "/bundles/kskheptacomadminopenauth/administration/assets/index-Cg1fud1D.js",
+        "/bundles/kskheptacomadminopenauth/administration/assets/index-CsOpz98K.js",
+        "/bundles/kskheptacomadminopenauth/administration/assets/index-5vojZm_3.js",
+        "/bundles/kskheptacomadminopenauth/administration/assets/index-Dp6dsyza.js",
+        "/bundles/kskheptacomadminopenauth/administration/assets/index-B79O-bFK.js",
+        "/bundles/kskheptacomadminopenauth/administration/assets/index-C6Y6jNDk.js",
+        "/bundles/kskheptacomadminopenauth/administration/assets/index-8PBwT0Nr.js",
+        "/bundles/kskheptacomadminopenauth/administration/assets/index-De8O79--.js",
+        "/bundles/kskheptacomadminopenauth/administration/assets/index-CMiqHuuh.js",
+        "/bundles/kskheptacomadminopenauth/administration/assets/index-DrDJpjjd.js",
+        "/bundles/kskheptacomadminopenauth/administration/assets/index-BdrZImDx.js",
+        "/bundles/kskheptacomadminopenauth/administration/assets/index-Sm9QGQia.js",
+        "/bundles/kskheptacomadminopenauth/administration/assets/index-DCd2vZo3.js",
+        "/bundles/kskheptacomadminopenauth/administration/assets/index-Cy7qwUxs.js",
+        "/bundles/kskheptacomadminopenauth/administration/assets/index-CpdFmOBa.js",
+        "/bundles/kskheptacomadminopenauth/administration/assets/index-B0TqJXkg.js",
+        "/bundles/kskheptacomadminopenauth/administration/assets/index-Dg6yaIJ9.js",
+        "/bundles/kskheptacomadminopenauth/administration/assets/index-BbuLKrJn.js",
+        "/bundles/kskheptacomadminopenauth/administration/assets/index-zVwbqgM2.js",
+        "/bundles/kskheptacomadminopenauth/administration/assets/index-CJ2sgnME.js"
+      ],
+      "js": [
+        "/bundles/kskheptacomadminopenauth/administration/assets/ksk-heptacom-admin-open-auth-BsUeUlde.js"
+      ],
+      "legacy": false,
+      "preload": []
+    }
+  },
+  "legacy": false,
+  "metadatas": {},
+  "version": [
+    "7.1.0",
+    7,
+    1,
+    0
+  ],
+  "viteServer": null
+}
