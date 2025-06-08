@@ -127,6 +127,12 @@
             autoRedirect: {{ heptacom_admin_auth_config('enableAutoRedirect') ? 'true' : 'false' }},
         };
 
+        class SsoError extends Error {
+            constructor(message) {
+                super(`[HEPTACOM Admin Open Auth] ${message}`);
+            }
+        }
+
         async function getClientRoutes() {
             const clientRoutes = {{ url('administration.heptacom.admin_open_auth.routes')|json_encode|raw }};
 
@@ -138,32 +144,49 @@
             return new URLSearchParams(window.location.search).get('state');
         }
 
-        function checkLogin(redirectHandler) {
+        async function checkLogin(redirectHandler) {
             const token = getSsoState();
 
             if (!token) {
                 return;
             }
 
-            const loginService = Shopware.Service().get('loginService');
-            const httpClient = Shopware.Service().get('userService').client;
+            const loginService = await getShopwareService('loginService');
+            const httpClient = (await getShopwareService('userService')).client;
 
-            httpClient.post('/oauth/token', {
+            const response = await httpClient.post('/oauth/token', {
                 grant_type: 'heptacom_admin_open_auth_one_time_token',
                 client_id: 'administration',
                 scopes: 'write',
                 one_time_token: token
             }, {
                 baseURL: Shopware.Context.api.apiPath
-            }).then((response) => {
-                loginService.setBearerAuthentication({
-                    access: response.data.access_token,
-                    refresh: response.data.refresh_token,
-                    expiry: response.data.expires_in
-                });
-
-                redirectHandler();
             });
+
+            loginService.setBearerAuthentication({
+                access: response.data.access_token,
+                refresh: response.data.refresh_token,
+                expiry: response.data.expires_in
+            });
+
+            redirectHandler();
+        }
+
+        async function getShopwareService(serviceName, timeout = 10000) {
+            const startTime = Date.now();
+
+            let service = Shopware.Service().get(serviceName);
+
+            while (service === undefined || service === null) {
+                await new Promise(resolve => setTimeout(resolve, 100));
+                service = Shopware.Service().get(serviceName);
+
+                if (Date.now() - startTime > timeout) {
+                    throw new SsoError(`Service "${serviceName}" could not be retrieved within ${timeout}ms.`);
+                }
+            }
+
+            return service;
         }
 
         function handleAutoRedirect(clients) {
@@ -227,7 +250,7 @@
             // check for login token
             checkLogin(() => {
                 window.location = window.location.origin + window.location.pathname;
-            });
+            }).then();
         }
 
         function handleInactivityRoute() {
@@ -287,7 +310,7 @@
 
                 // dump query string
                 removeStateFromUrl();
-            });
+            }).then();
         }
 
         /**
