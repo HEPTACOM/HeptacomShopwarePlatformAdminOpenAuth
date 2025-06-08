@@ -250,7 +250,7 @@ final readonly class UserResolver implements UserResolverInterface
             ->from(AclUserRoleDefinition::ENTITY_NAME)
             ->where('user_id = :userId')
             ->setParameter('userId', $binUserId)
-            ->execute()
+            ->executeQuery()
             ->fetchAllAssociative();
 
         if ($currentAclRoleIds === false) {
@@ -269,7 +269,7 @@ final readonly class UserResolver implements UserResolverInterface
                 ->andWhere('acl_role_id IN (:aclRoleIds)')
                 ->setParameter('userId', $binUserId)
                 ->setParameter('aclRoleIds', $binToDelete, ArrayParameterType::STRING)
-                ->execute();
+                ->executeStatement();
         }
 
         // insert new
