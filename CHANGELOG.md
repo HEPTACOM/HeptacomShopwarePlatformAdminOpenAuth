@@ -1,5 +1,9 @@
 # Unreleased
 
+**Fixed**
+
+* Fixed criteria using an outdated association
+
 # 8.0.0
 
 **Added**
