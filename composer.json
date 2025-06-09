@@ -62,11 +62,11 @@
     "require-dev": {
         "shopware/administration": "~6.7.0"
     },
-    "minimum-stability": "RC",
     "suggest": {
         "ext-bcmath": "Either the bcmath or gmp extension is required for token validation. Otherwise you will run into performance issues.",
         "ext-gmp": "Either the bcmath or gmp extension is required for token validation. Otherwise you will run into performance issues."
     },
+    "minimum-stability": "RC",
     "autoload": {
         "psr-4": {
             "Heptacom\\AdminOpenAuth\\": "src/"
