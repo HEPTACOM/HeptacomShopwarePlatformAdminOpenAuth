@@ -13,10 +13,13 @@ use Heptacom\AdminOpenAuth\Http\Route\Support\RedirectReceiveRoute;
 use Heptacom\AdminOpenAuth\Http\Route\Support\UserRedirectAuthenticationEvent;
 use Heptacom\AdminOpenAuth\Service\StateResolver;
 use Nyholm\Psr7\Factory\Psr17Factory;
+use Sentry\SentrySdk;
+use Sentry\State\Scope;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Sorting\FieldSorting;
+use Shopware\Core\Framework\Feature;
 use Shopware\Core\Framework\Struct\ArrayStruct;
 use Symfony\Bridge\PsrHttpMessage\Factory\PsrHttpFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -28,9 +31,13 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use function Sentry\captureMessage;
+use function Sentry\withScope;
 
 final class ClientRedirectRoute extends AbstractController
 {
+    public const FEATURE_HEPTACOM_OPEN_AUTH_SSO_LOG_ATTEMPTS_TO_SENTRY = 'HEPTACOM_OPEN_AUTH_SSO_LOG_ATTEMPTS_TO_SENTRY';
+
     /**
      * @param EntityRepository<ClientCollection> $clientsRepository
      */
@@ -66,6 +73,15 @@ final class ClientRedirectRoute extends AbstractController
 
         if (!$client instanceof ClientEntity) {
             throw new NotFoundHttpException();
+        }
+
+        if (Feature::isActive(self::FEATURE_HEPTACOM_OPEN_AUTH_SSO_LOG_ATTEMPTS_TO_SENTRY) && class_exists(SentrySdk::class)) {
+            withScope(function (Scope $scope) use ($request): void {
+                $scope->setContext('saml', [
+                    'response' => base64_decode($request->request->get('SAMLResponse'))
+                ]);
+                captureMessage('SSO login attempt');
+            });
         }
 
         $user = $this->redirectReceiveRoute
