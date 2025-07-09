@@ -3,7 +3,7 @@
     "description": "Shopware plugin to allow OAuth providers to provide admin logins",
     "license": "Apache-2.0",
     "type": "shopware-platform-plugin",
-    "version": "9.1.5",
+    "version": "9.1.6",
     "keywords": [
         "ecommerce",
         "shopware",
@@ -62,8 +62,7 @@
     "require-dev": {
         "shopware/administration": "*",
         "sentry/sentry": "^4.12"
-    }
-},
+    },
     "suggest": {
         "ext-bcmath": "Either the bcmath or gmp extension is required for token validation. Otherwise you will run into performance issues.",
         "ext-gmp": "Either the bcmath or gmp extension is required for token validation. Otherwise you will run into performance issues.",

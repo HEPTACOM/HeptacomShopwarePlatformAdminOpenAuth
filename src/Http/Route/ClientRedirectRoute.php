@@ -110,17 +110,17 @@ final class ClientRedirectRoute extends AbstractController
         $statePayload = $this->stateResolver->getPayload($requestState, $context);
 
         $targetUrl = $statePayload['redirectTo'] ??
-            $salesChannelId
-            ? $this->generateUrl(
-                'frontend.home.page',
-                [],
-                UrlGeneratorInterface::ABSOLUTE_URL
-            )
-            : $this->generateUrl(
-                'administration.index',
-                [],
-                UrlGeneratorInterface::ABSOLUTE_URL
-            );
+                     ($salesChannelId
+                         ? $this->generateUrl(
+                             'frontend.home.page',
+                             [],
+                             UrlGeneratorInterface::ABSOLUTE_URL
+                         )
+                         : $this->generateUrl(
+                             'administration.index',
+                             [],
+                             UrlGeneratorInterface::ABSOLUTE_URL
+                         ));
         $targetUrl = $this->enrichRedirectUrl($targetUrl, $requestState);
 
         $this->eventDispatcher->dispatch(new BeforeUserRedirectEvent($userId, $user, $clientId, $statePayload));
