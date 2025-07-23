@@ -1,0 +1,7 @@
+{% block sw_setting_user_detail_card_integrations %}
+    <heptacom-admin-open-auth-url-clients
+        :isUserLoading="isLoading"
+        :userId="userId"
+    />
+    {% parent %}
+{% endblock %}

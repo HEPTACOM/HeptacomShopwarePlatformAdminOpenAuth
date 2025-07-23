@@ -12,6 +12,7 @@ use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -30,15 +31,21 @@ final class AdminUserClientListRoute extends AbstractController
         ],
         methods: ['GET']
     )]
-    public function clientList(Context $context): Response
+    public function clientList(Request $request, Context $context): Response
     {
-        /** @var AdminApiSource $adminApiSource */
-        $adminApiSource = $context->getSource();
+        $userId = $request->query->getString('userId');
+
+        if ($userId === '') {
+            /** @var AdminApiSource $adminApiSource */
+            $adminApiSource = $context->getSource();
+
+            $userId = $adminApiSource->getUserId();
+        }
 
         $criteria = new Criteria();
         $criteria->getAssociation('userKeys')
             ->addFilter(
-                new EqualsFilter('userId', $adminApiSource->getUserId())
+                new EqualsFilter('userId', $userId)
             );
 
         $clients = $this->flow->getAvailableClients($criteria, $context)

@@ -1,0 +1,66 @@
+{% block heptacom_admin_open_auth_url_clients %}
+    <sw-card
+        position-identifier="heptacom-admin-open-auth-user-profile-sso"
+        :title="$tc('heptacom-admin-open-auth-url-clients.title')"
+        :isLoading="heptacomAdminOpenAuthLoading"
+    >
+        {% block heptacom_admin_open_auth_url_clients_content %}
+            <template>
+                {% block heptacom_admin_open_auth_url_clients_cards %}
+                    <sw-container rows="1fr">
+                        <template
+                            v-for="client of heptacomAdminOpenAuthClients"
+                            :key="client.id"
+                        >
+                            <sw-card-section
+                                :slim="true"
+                                divider="bottom"
+                            >
+                                {% block heptacom_admin_open_auth_url_clients_cards_item %}
+                                    <sw-container columns="1fr auto">
+                                        {% block heptacom_admin_open_auth_url_clients_cards_item_provider %}
+                                            <div>
+                                                {{ client.name }}
+                                            </div>
+                                        {% endblock %}
+
+                                        {% block heptacom_admin_open_auth_url_clients_cards_item_action %}
+                                            <template v-if="isMe">
+                                                <sw-button
+                                                    v-if="client.connected"
+                                                    @click="revokeHeptacomAdminOpenAuthUserKey(client.id)"
+                                                    icon="regular-minus"
+                                                >
+                                                    {{ $t('heptacom-admin-open-auth-url-clients.userKeys.actions.revoke') }}
+                                                </sw-button>
+                                                <sw-button
+                                                    v-else
+                                                    @click="redirectToLoginMask(client.id)"
+                                                    icon="regular-plus"
+                                                >
+                                                    {{ $t('heptacom-admin-open-auth-url-clients.userKeys.actions.connect') }}
+                                                </sw-button>
+                                            </template>
+                                            <template v-else>
+                                                <template
+                                                    v-if="client.connected"
+                                                >
+                                                    {{ $t('heptacom-admin-open-auth-url-clients.userKeys.states.connected') }}
+                                                </template>
+                                                <template
+                                                    v-else
+                                                >
+                                                    {{ $t('heptacom-admin-open-auth-url-clients.userKeys.states.notConnected') }}
+                                                </template>
+                                            </template>
+                                        {% endblock %}
+                                    </sw-container>
+                                {% endblock %}
+                            </sw-card-section>
+                        </template>
+                    </sw-container>
+                {% endblock %}
+            </template>
+        {% endblock %}
+    </sw-card>
+{% endblock %}
