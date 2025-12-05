@@ -13,7 +13,7 @@ services:
             Shopware\Core\Framework\DataAbstractionLayer\EntityRepository $scheduledTaskRepository: '@scheduled_task.repository'
             Psr\Http\Client\ClientInterface $oidcHttpClient: '@heptacom.admin_open_auth.oidc.http_client'
             Psr\Http\Client\ClientInterface $samlHttpClient: '@heptacom.admin_open_auth.saml.http_client'
-            Psr\Log\LoggerInterface $logger: '@logger'
+            Psr\Log\LoggerInterface $logger: '@monolog.logger.heptacom_admin_open_auth'
 
     _instanceof:
         Heptacom\AdminOpenAuth\Contract\ClientProvider\ClientProviderContract:
