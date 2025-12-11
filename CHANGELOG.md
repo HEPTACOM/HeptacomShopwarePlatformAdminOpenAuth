@@ -1,8 +1,18 @@
 # Unreleased
 
+# 9.0.0
+
+**Added**
+
+* Added Shopware 6.7 compatibility with related dependencies
+
 **Fixed**
 
 * Fixed criteria using an outdated association
+
+**Removed**
+
+* Removed Shopware 6.6 compatibility
 
 # 8.0.0
 
