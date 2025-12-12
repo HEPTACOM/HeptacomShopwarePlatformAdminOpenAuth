@@ -60,7 +60,7 @@
         "web-token/jwt-library": "^4.0"
     },
     "require-dev": {
-        "shopware/administration": "~6.7.0"
+        "shopware/administration": "*"
     },
     "suggest": {
         "ext-bcmath": "Either the bcmath or gmp extension is required for token validation. Otherwise you will run into performance issues.",
