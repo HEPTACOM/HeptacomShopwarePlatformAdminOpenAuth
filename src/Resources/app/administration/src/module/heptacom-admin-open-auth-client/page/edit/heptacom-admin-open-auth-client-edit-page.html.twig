@@ -133,7 +133,7 @@
                             :copyable="true"
                             :copyableTooltip="true"
                             :label="$t('heptacom-admin-open-auth-client.pages.edit.fields.metadataUri')"
-                            :value="metadataUri"
+                            v-model="metadataUri"
                             disabled
                         ></mt-text-field>
                         <mt-button
