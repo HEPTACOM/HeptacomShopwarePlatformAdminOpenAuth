@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Attribute\Route;
 final class ConfirmationMessageRoute extends AbstractController
 {
     #[Route(
-        path: '/admin/open-auth/confirm',
+        path: '/%shopware_administration.path_name%/open-auth/confirm',
         name: 'administration.heptacom.admin_open_auth.confirm',
         defaults: [
             'auth_required' => false,
