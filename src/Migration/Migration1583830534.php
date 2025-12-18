@@ -17,8 +17,6 @@ final class Migration1583830534 extends MigrationStep
     public function update(Connection $connection): void
     {
         $sql = <<<SQL
-SET FOREIGN_KEY_CHECKS = 0;
-
 DROP TABLE `heptacom_admin_open_auth_login`;
 
 CREATE TABLE `heptacom_admin_open_auth_login` (
@@ -38,8 +36,6 @@ CREATE TABLE `heptacom_admin_open_auth_login` (
     ENGINE = InnoDB
     DEFAULT CHARSET = utf8mb4
     COLLATE = utf8mb4_unicode_ci;
-
-SET FOREIGN_KEY_CHECKS = 1;
 SQL;
         $connection->executeStatement($sql);
     }

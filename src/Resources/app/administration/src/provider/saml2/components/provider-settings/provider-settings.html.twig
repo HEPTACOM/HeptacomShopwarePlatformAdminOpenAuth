@@ -67,6 +67,9 @@
             <mt-select
                 :label="$t('heptacomAdminOpenAuthClient.providerFields.saml2.attributeMapping.templateSelect')"
                 :placeholder="$t('heptacomAdminOpenAuthClient.providerFields.saml2.attributeMapping.templateSelect-placeholder')"
+                :options="mappingTemplateOptions"
+                label-property="label"
+                value-property="value"
                 v-model="selectedMappingTemplate"
             ></mt-select>
             <div class="sw-field">

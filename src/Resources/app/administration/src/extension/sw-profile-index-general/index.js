@@ -45,14 +45,12 @@ Component.override('sw-profile-index-general', {
         this.systemConfigApiService.getValues('KskHeptacomAdminOpenAuth.config').then((response) => {
             this.denyPasswordLogin = response['KskHeptacomAdminOpenAuth.config.denyPasswordLogin'];
         });
+
+        this.loadHeptacomAdminOpenAuth();
     },
 
     methods: {
         async loadHeptacomAdminOpenAuth() {
-            if (this.isUserLoading || !this.languages) {
-                return;
-            }
-
             this.heptacomAdminOpenAuthLoading = true;
             this.heptacomAdminOpenAuthClients = [];
 
