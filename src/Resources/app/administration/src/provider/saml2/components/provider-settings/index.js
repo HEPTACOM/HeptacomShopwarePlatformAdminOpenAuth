@@ -58,6 +58,15 @@ export default {
         };
     },
 
+    computed: {
+        mappingTemplateOptions() {
+            return Object.keys(this.attributeMappingTemplates).map((templateKey) => ({
+                value: templateKey,
+                label: this.$t(`heptacomAdminOpenAuthClient.providerFields.saml2.attributeMapping.template.${templateKey}`),
+            }));
+        },
+    },
+
     watch: {
         item(newValue) {
             if (!newValue.config.attributeMapping) {

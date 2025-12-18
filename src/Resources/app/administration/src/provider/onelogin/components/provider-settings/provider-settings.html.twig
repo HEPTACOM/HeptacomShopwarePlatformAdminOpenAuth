@@ -1,5 +1,7 @@
 {% block heptacom_admin_open_auth_provider_onelogin_settings %}
-    <sw-card position-identifier="heptacom-admin-open-auth-provider-onelogin-settings">
+    <mt-card
+        position-identifier="heptacom-admin-open-auth-provider-onelogin-settings"
+    >
         <heptacom-admin-open-auth-url-field
             required
             :omitUrlHash="true"
@@ -8,19 +10,19 @@
             placeholder="my-company.onelogin.com"
             v-model:value="item.config.organizationUrl"
         ></heptacom-admin-open-auth-url-field>
-        <sw-text-field
+        <mt-text-field
             required
             :label="$t('heptacomAdminOpenAuthClient.providerFields.onelogin.clientId')"
-            v-model:value="item.config.clientId"
-        ></sw-text-field>
-        <sw-password-field
+            v-model="item.config.clientId"
+        ></mt-text-field>
+        <mt-password-field
             required
             :label="$t('heptacomAdminOpenAuthClient.providerFields.onelogin.clientSecret')"
-            v-model:value="item.config.clientSecret"
-        ></sw-password-field>
+            v-model="item.config.clientSecret"
+        ></mt-password-field>
         <sw-tagged-field
             :label="$t('heptacomAdminOpenAuthClient.providerFields.onelogin.additionalScopes')"
             v-model:value="item.config.scopes"
         ></sw-tagged-field>
-    </sw-card>
+    </mt-card>
 {% endblock %}

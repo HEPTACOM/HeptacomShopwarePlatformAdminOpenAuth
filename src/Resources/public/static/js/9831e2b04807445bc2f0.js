@@ -1,0 +1,2 @@
+"use strict";(window["webpackJsonpPluginksk-heptacom-admin-open-auth"]=window["webpackJsonpPluginksk-heptacom-admin-open-auth"]||[]).push([[469],{469:function(e,t,n){n.r(t),t.default={methods:{validateCurrentValue(e){let t=this.getURLInstance(e);return t?t.toString().replace(/([a-zA-Z0-9]+\:\/\/)+/,"").replace(t.host,this.unicodeUriFilter(t.host)):null}}}}}]);
+//# sourceMappingURL=9831e2b04807445bc2f0.js.map

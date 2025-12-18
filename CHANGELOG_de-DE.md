@@ -1,5 +1,19 @@
 # Unreleased
 
+# 9.0.0
+
+**Hinzugefügt**
+
+* Kompatibilität mit Shopware 6.7 und zugehörigen Abhängigkeiten hinzugefügt
+
+**Behoben**
+
+* Verwendung einer veralteten Assoziation beim Login behoben
+
+**Entfernt**
+
+* Shopware 6.6 Kompatibilität wurde entfernt
+
 # 8.0.0
 
 **Hinzugefügt**

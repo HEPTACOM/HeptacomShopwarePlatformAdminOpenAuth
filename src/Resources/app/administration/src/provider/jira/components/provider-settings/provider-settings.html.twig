@@ -1,16 +1,16 @@
 {% block heptacom_admin_open_auth_provider_jira_settings %}
-    <sw-card position-identifier="heptacom-admin-open-auth-provider-jira-settings">
-        <sw-text-field
+    <mt-card position-identifier="heptacom-admin-open-auth-provider-jira-settings">
+        <mt-text-field
             :label="$t('heptacomAdminOpenAuthClient.providerFields.jira.clientId')"
-            v-model:value="item.config.clientId"
-        ></sw-text-field>
-        <sw-password-field
+            v-model="item.config.clientId"
+        ></mt-text-field>
+        <mt-password-field
             :label="$t('heptacomAdminOpenAuthClient.providerFields.jira.clientSecret')"
-            v-model:value="item.config.clientSecret"
-        ></sw-password-field>
+            v-model="item.config.clientSecret"
+        ></mt-password-field>
         <sw-tagged-field
             :label="$t('heptacomAdminOpenAuthClient.providerFields.jira.additionalScopes')"
             v-model:value="item.config.scopes"
         ></sw-tagged-field>
-    </sw-card>
+    </mt-card>
 {% endblock %}

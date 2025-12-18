@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\Service;
 
+use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;
 use Heptacom\AdminOpenAuth\Contract\ClientFeatureCheckerInterface;
@@ -216,11 +217,11 @@ final readonly class UserResolver implements UserResolverInterface
     {
         /** @var array<array-key, mixed>|false $user */
         $user = $this->connection->createQueryBuilder()
-            ->select(\array_keys($userChangeSet))
+            ->select(...\array_keys($userChangeSet))
             ->from(UserDefinition::ENTITY_NAME)
             ->where('id = :id')
             ->setParameter('id', Uuid::fromHexToBytes($userId))
-            ->execute()
+            ->executeQuery()
             ->fetchAssociative();
 
         if (!$user) {
@@ -249,7 +250,7 @@ final readonly class UserResolver implements UserResolverInterface
             ->from(AclUserRoleDefinition::ENTITY_NAME)
             ->where('user_id = :userId')
             ->setParameter('userId', $binUserId)
-            ->execute()
+            ->executeQuery()
             ->fetchAllAssociative();
 
         if ($currentAclRoleIds === false) {
@@ -267,8 +268,8 @@ final readonly class UserResolver implements UserResolverInterface
                 ->where('user_id = :userId')
                 ->andWhere('acl_role_id IN (:aclRoleIds)')
                 ->setParameter('userId', $binUserId)
-                ->setParameter('aclRoleIds', $binToDelete, Connection::PARAM_STR_ARRAY)
-                ->execute();
+                ->setParameter('aclRoleIds', $binToDelete, ArrayParameterType::STRING)
+                ->executeStatement();
         }
 
         // insert new

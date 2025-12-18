@@ -10,15 +10,13 @@
                 >
                     {{ $tc('heptacom-admin-open-auth-client.components.rule-item.title', rule.position + 1) }}
                 </h4>
-
-                <sw-icon
+                <mt-icon
                     v-if="expanded"
                     class="heptacom-admin-open-auth-rule-item__collapse-header-collapsed-indicator"
                     name="regular-chevron-down-xxs"
                     size="12px"
                 />
-
-                <sw-icon
+                <mt-icon
                     v-else
                     class="heptacom-admin-open-auth-rule-item__collapse-header-collapsed-indicator"
                     name="regular-chevron-right-xxs"
@@ -29,58 +27,60 @@
 
         <template #content>
             <sw-condition-tree
-                    v-if="rule && conditionRepository"
-                    class="heptacom-admin-open-auth-rule-item__condition-tree"
-                    association-field="clientRuleId" {# the field that is used for assigning the rule to its parent #}
-                    :scopes="scopes"
-                    :initial-conditions="rule.conditions"
-                    :condition-repository="conditionRepository" {# any entity repository that has children and  the above specified association field #}
-                    :condition-data-provider-service="heptacomOauthRuleDataProvider"
-                    :association-value="rule.id" {# the association id (so in this case the ruleId) #}
-                    :root-condition="null"
-                    @conditions-changed="onConditionsChanged"
+                v-if="rule && conditionRepository"
+                class="heptacom-admin-open-auth-rule-item__condition-tree"
+                association-field="clientRuleId" {# the field that is used for assigning the rule to its parent #}
+                :scopes="scopes"
+                :initial-conditions="rule.conditions"
+                :condition-repository="conditionRepository" {# any entity repository that has children and the above specified association field #}
+                :condition-data-provider-service="heptacomOauthRuleDataProvider"
+                :association-value="rule.id" {# the association id (so in this case the ruleId) #}
+                :root-condition="null"
+                @conditions-changed="onConditionsChanged"
             />
-
-            <sw-switch-field
-                    :label="$t('heptacom-admin-open-auth-client.components.rule-item.stopOnMatch')"
-                    v-model:value="rule.stopOnMatch"
-            ></sw-switch-field>
-
+            <mt-switch
+                :label="$t('heptacom-admin-open-auth-client.components.rule-item.stopOnMatch')"
+                v-model="rule.stopOnMatch"
+            ></mt-switch>
             <component
                 v-if="rule && action"
                 :is="action.component"
                 v-bind="actionConfigProps"
             ></component>
-
             <div class="heptacom-admin-open-auth-rule-item__collapse-footer">
-                <sw-button
-                    variant="ghost"
+                <mt-button
+                    block
+                    variant="secondary"
                     @click="onMoveUp"
                 >
-                    <sw-icon
-                        name="regular-chevron-up-xxs"
-                        size="12px"
-                    />
+                    <template #iconFront>
+                        <mt-icon
+                            name="regular-chevron-up-xxs"
+                            size="12px"
+                        />
+                    </template>
                     {{ $tc('heptacom-admin-open-auth-client.components.rule-item.moveUp') }}
-                </sw-button>
-
-                <sw-button
-                    variant="danger"
+                </mt-button>
+                <mt-button
+                    block
+                    variant="critical"
                     @click="onDelete"
                 >
                     {{ $tc('global.default.delete') }}
-                </sw-button>
-
-                <sw-button
-                    variant="ghost"
+                </mt-button>
+                <mt-button
+                    block
+                    variant="secondary"
                     @click="onMoveDown"
                 >
                     {{ $tc('heptacom-admin-open-auth-client.components.rule-item.moveDown') }}
-                    <sw-icon
-                        name="regular-chevron-down-xxs"
-                        size="12px"
-                    />
-                </sw-button>
+                    <template #iconBack>
+                        <mt-icon
+                            name="regular-chevron-down-xxs"
+                            size="12px"
+                        />
+                    </template>
+                </mt-button>
             </div>
         </template>
     </sw-collapse>

@@ -1,99 +1,96 @@
 {% block heptacom_admin_open_auth_provider_saml2_settings %}
     <div>
         {% block heptacom_admin_open_auth_provider_saml2_settings_idp %}
-            <sw-card
-                :title="$t('heptacomAdminOpenAuthClient.providerFields.saml2.identityProviderCardTitle')"
-                position-identifier="heptacom-admin-open-auth-provider-saml2-settings-idp"
-            >
-                <!-- auto config -->
-                <heptacom-admin-open-auth-url-field
-                    :omitUrlHash="true"
-                    :omitUrlSearch="false"
-                    :disabled="!!item.config.identityProviderMetadataXml"
-                    :label="$t('heptacomAdminOpenAuthClient.providerFields.saml2.identityProviderMetadataUrl')"
-                    :help-text="$t('heptacomAdminOpenAuthClient.providerFields.saml2.identityProviderMetadataUrl-help')"
-                    :placeholder="$t('heptacomAdminOpenAuthClient.providerFields.saml2.identityProviderMetadataUrl-placeholder')"
-                    v-model:value="item.config.identityProviderMetadataUrl"
-                ></heptacom-admin-open-auth-url-field>
-                <sw-textarea-field
-                    :disabled="!!item.config.identityProviderMetadataUrl"
-                    :label="$t('heptacomAdminOpenAuthClient.providerFields.saml2.identityProviderMetadataXml')"
-                    :help-text="$t('heptacomAdminOpenAuthClient.providerFields.saml2.identityProviderMetadataXml-help')"
-                    v-model:value="item.config.identityProviderMetadataXml"
-                ></sw-textarea-field>
-
-                <!-- manual config -->
-                <sw-text-field
-                    :disabled="!!item.config.identityProviderMetadataUrl || !!item.config.identityProviderMetadataXml"
-                    :label="$t('heptacomAdminOpenAuthClient.providerFields.saml2.identityProviderEntityId')"
-                    v-model:value="item.config.identityProviderEntityId"
-                ></sw-text-field>
-                <heptacom-admin-open-auth-url-field
-                    :omitUrlHash="true"
-                    :omitUrlSearch="true"
-                    :disabled="!!item.config.identityProviderMetadataUrl || !!item.config.identityProviderMetadataXml"
-                    :label="$t('heptacomAdminOpenAuthClient.providerFields.saml2.identityProviderSsoUrl')"
-                    v-model:value="item.config.identityProviderSsoUrl"
-                ></heptacom-admin-open-auth-url-field>
-                <sw-textarea-field
-                    :disabled="!!item.config.identityProviderMetadataUrl || !!item.config.identityProviderMetadataXml"
-                    :label="$t('heptacomAdminOpenAuthClient.providerFields.saml2.identityProviderCertificate')"
-                    v-model:value="item.config.identityProviderCertificate"
-                ></sw-textarea-field>
-            </sw-card>
+        <mt-card
+            :title="$t('heptacomAdminOpenAuthClient.providerFields.saml2.identityProviderCardTitle')"
+            position-identifier="heptacom-admin-open-auth-provider-saml2-settings-idp"
+        >
+            <!-- auto config -->
+            <heptacom-admin-open-auth-url-field
+                :omitUrlHash="true"
+                :omitUrlSearch="false"
+                :disabled="!!item.config.identityProviderMetadataXml"
+                :label="$t('heptacomAdminOpenAuthClient.providerFields.saml2.identityProviderMetadataUrl')"
+                :help-text="$t('heptacomAdminOpenAuthClient.providerFields.saml2.identityProviderMetadataUrl-help')"
+                :placeholder="$t('heptacomAdminOpenAuthClient.providerFields.saml2.identityProviderMetadataUrl-placeholder')"
+                v-model:value="item.config.identityProviderMetadataUrl"
+            ></heptacom-admin-open-auth-url-field>
+            <mt-textarea
+                :disabled="!!item.config.identityProviderMetadataUrl"
+                :label="$t('heptacomAdminOpenAuthClient.providerFields.saml2.identityProviderMetadataXml')"
+                :help-text="$t('heptacomAdminOpenAuthClient.providerFields.saml2.identityProviderMetadataXml-help')"
+                v-model="item.config.identityProviderMetadataXml"
+            ></mt-textarea>
+            <!-- manual config -->
+            <mt-text-field
+                :disabled="!!item.config.identityProviderMetadataUrl || !!item.config.identityProviderMetadataXml"
+                :label="$t('heptacomAdminOpenAuthClient.providerFields.saml2.identityProviderEntityId')"
+                v-model="item.config.identityProviderEntityId"
+            ></mt-text-field>
+            <heptacom-admin-open-auth-url-field
+                :omitUrlHash="true"
+                :omitUrlSearch="true"
+                :disabled="!!item.config.identityProviderMetadataUrl || !!item.config.identityProviderMetadataXml"
+                :label="$t('heptacomAdminOpenAuthClient.providerFields.saml2.identityProviderSsoUrl')"
+                v-model:value="item.config.identityProviderSsoUrl"
+            ></heptacom-admin-open-auth-url-field>
+            <mt-textarea
+                :disabled="!!item.config.identityProviderMetadataUrl || !!item.config.identityProviderMetadataXml"
+                :label="$t('heptacomAdminOpenAuthClient.providerFields.saml2.identityProviderCertificate')"
+                v-model="item.config.identityProviderCertificate"
+            ></mt-textarea>
+        </mt-card>
         {% endblock %}
 
         {% block heptacom_admin_open_auth_provider_saml2_settings_security %}
-            <sw-card
-                :title="$t('heptacomAdminOpenAuthClient.providerFields.saml2.security.cardTitle')"
-                position-identifier="heptacom-admin-open-auth-provider-saml2-settings-security"
+        <mt-card
+            :title="$t('heptacomAdminOpenAuthClient.providerFields.saml2.security.cardTitle')"
+            position-identifier="heptacom-admin-open-auth-provider-saml2-settings-security"
+        >
+            <sw-multi-select
+                :label="$t('heptacomAdminOpenAuthClient.providerFields.saml2.security.requestedAuthnContexts')"
+                :options="availableAuthnContexts"
+                :help-text="$t('heptacomAdminOpenAuthClient.providerFields.saml2.security.requestedAuthnContextsHelp')"
+                :placeholder="$t('heptacomAdminOpenAuthClient.providerFields.saml2.security.requestedAuthnContextsPlaceholder')"
+                v-model:value="item.config.requestedAuthnContext"
             >
-                <sw-multi-select :label="$t('heptacomAdminOpenAuthClient.providerFields.saml2.security.requestedAuthnContexts')"
-                                 :options="availableAuthnContexts"
-                                 :help-text="$t('heptacomAdminOpenAuthClient.providerFields.saml2.security.requestedAuthnContextsHelp')"
-                                 :placeholder="$t('heptacomAdminOpenAuthClient.providerFields.saml2.security.requestedAuthnContextsPlaceholder')"
-                                 v-model:value="item.config.requestedAuthnContext"
-                >
                 </sw-multi-select>
-            </sw-card>
+        </mt-card>
         {% endblock %}
 
         {% block heptacom_admin_open_auth_provider_saml2_settings_attribute_mapping %}
-            <sw-card
-                :title="$t('heptacomAdminOpenAuthClient.providerFields.saml2.attributeMapping.cardTitle')"
-                position-identifier="heptacom-admin-open-auth-provider-saml2-settings-attribute-mapping"
-            >
-                {% block heptacom_admin_open_auth_provider_saml2_settings_attribute_mapping_inner %}
-                    <sw-select-field :label="$t('heptacomAdminOpenAuthClient.providerFields.saml2.attributeMapping.templateSelect')"
-                                     :placeholder="$t('heptacomAdminOpenAuthClient.providerFields.saml2.attributeMapping.templateSelect-placeholder')"
-                                     v-model:value="selectedMappingTemplate"
-                    >
-                        <template v-for="(mappedAttributes, templateKey) of attributeMappingTemplates">
-                            <option :value="templateKey">
-                                {{ $t('heptacomAdminOpenAuthClient.providerFields.saml2.attributeMapping.template.' + templateKey) }}
-                            </option>
-                        </template>
-                    </sw-select-field>
-
-                    <div class="sw-field">
-                        <sw-button
-                            :block="true"
-                            variant="ghost"
-                            size="small"
-                            :disabled="!selectedMappingTemplate"
-                            @click="onApplyMappingTemplate(selectedMappingTemplate)"
-                        >
-                            {{ $t('heptacomAdminOpenAuthClient.providerFields.saml2.attributeMapping.templateApply') }}
-                        </sw-button>
-                    </div>
-
-                    <template v-for="mappedProperty of availableProperties">
-                        <sw-text-field :label="$t('heptacomAdminOpenAuthClient.providerFields.saml2.attributeMapping.field.' + mappedProperty)"
-                                       v-model:value="item.config.attributeMapping[mappedProperty]"
-                        ></sw-text-field>
-                    </template>
-                {% endblock %}
-            </sw-card>
+        <mt-card
+            :title="$t('heptacomAdminOpenAuthClient.providerFields.saml2.attributeMapping.cardTitle')"
+            position-identifier="heptacom-admin-open-auth-provider-saml2-settings-attribute-mapping"
+        >
+            {% block heptacom_admin_open_auth_provider_saml2_settings_attribute_mapping_inner %}
+            <mt-select
+                :label="$t('heptacomAdminOpenAuthClient.providerFields.saml2.attributeMapping.templateSelect')"
+                :placeholder="$t('heptacomAdminOpenAuthClient.providerFields.saml2.attributeMapping.templateSelect-placeholder')"
+                :options="mappingTemplateOptions"
+                label-property="label"
+                value-property="value"
+                v-model="selectedMappingTemplate"
+            ></mt-select>
+            <div class="sw-field">
+                <mt-button
+                    :block="true"
+                    size="small"
+                    :disabled="!selectedMappingTemplate"
+                    @click="onApplyMappingTemplate(selectedMappingTemplate)"
+                    variant="secondary"
+                >
+                    {{ $t('heptacomAdminOpenAuthClient.providerFields.saml2.attributeMapping.templateApply') }}
+                </mt-button>
+            </div>
+            <template v-for="mappedProperty of availableProperties">
+                <mt-text-field
+                    :label="$t('heptacomAdminOpenAuthClient.providerFields.saml2.attributeMapping.field.' + mappedProperty)"
+                    v-model="item.config.attributeMapping[mappedProperty]"
+                ></mt-text-field>
+            </template>
+            {% endblock %}
+        </mt-card>
         {% endblock %}
     </div>
 {% endblock %}

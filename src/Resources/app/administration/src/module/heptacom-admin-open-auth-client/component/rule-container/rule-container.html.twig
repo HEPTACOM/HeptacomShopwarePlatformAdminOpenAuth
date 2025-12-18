@@ -1,7 +1,6 @@
 {% block heptacom_admin_open_auth_client_rule_container %}
     <div>
-        <sw-loader v-if="isLoading"></sw-loader>
-
+        <mt-loader v-if="isLoading"></mt-loader>
         <template v-else>
             <template
                 v-for="rule in sortedRules"
@@ -17,21 +16,19 @@
                     @delete="deleteRule(rule)"
                 ></heptacom-admin-open-auth-client-rule-item>
             </template>
-
-            <sw-alert
+            <mt-banner
                 v-if="sortedRules.length === 0"
-                variant="warning"
+                variant="attention"
             >
                 {{ $t('heptacom-admin-open-auth-client.components.rule-container.warningEmpty') }}
-            </sw-alert>
-
-            <sw-button
-                variant="ghost"
+            </mt-banner>
+            <mt-button
                 block
                 @click="addRule"
+                variant="secondary"
             >
                 {{ $t('global.default.add') }}
-            </sw-button>
+            </mt-button>
         </template>
     </div>
 {% endblock %}
