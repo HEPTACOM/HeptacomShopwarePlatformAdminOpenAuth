@@ -2,16 +2,13 @@ image: heptacom/shopware-6-plugin-pipeline:php84-node22-latest
 
 definitions:
     services:
-        shopware-6-5-0: &shopware-6-5-service
-            image: dockware/play:6.5.0.0
+        shopware-6-7-0: &shopware-6-7-service
+            image: dockware/shopware:6.7.0.0
             variables:
                 APP_URL: http://127.0.0.1:80/
-        shopware-6-5-6:
-            <<: *shopware-6-5-service
-            image: dockware/play:6.5.6.0
-        shopware-6-5-8:
-            <<: *shopware-6-5-service
-            image: dockware/play:6.5.8.0
+        shopware-6-7-5:
+            <<: *shopware-6-7-service
+            image: dockware/shopware:6.7.5.1
     steps:
         -   step: &default-step
                 caches:
@@ -164,38 +161,34 @@ definitions:
                     - .build/store-build/*.zip
                 script:
                     - make releasecheck
-        -   step: &test-install-6-5-0
-                <<: *default-step
-                name: Test install 6.5.0
-                services:
-                    - shopware-6-5-0
-                artifacts:
-                    - curl-trace.log
-                    - curl-response.log
-                script:
-                    - make releasecheck
-                    - |
-                        export ACCESS_TOKEN=$(curl -X POST 'http://127.0.0.1:80/api/oauth/token' --fail --silent --show-error -H 'Accept: application/json' -H 'Content-Type: application/json' --data-raw '{"grant_type":"password","client_id":"administration","scopes":"write","username":"admin","password":"shopware"}' | jq -r .access_token)
-                        curl -X POST --fail -o /dev/stderr -v -H "Authorization: Bearer ${ACCESS_TOKEN}" -H 'Accept: application/json' \
-                            http://127.0.0.1:80/api/_action/extension/upload -F file=@./.build/store-build/KskHeptacomAdminOpenAuth-HEAD.zip
-                        curl -X POST --fail -o /dev/stderr -v -H "Authorization: Bearer ${ACCESS_TOKEN}" -H 'Accept: application/json' -H 'Content-Type: application/json' \
-                            http://127.0.0.1:80/api/_action/extension/refresh
-                        curl -X POST -v -H "Authorization: Bearer ${ACCESS_TOKEN}" -H 'Accept: application/json' -H 'Content-Type: application/json' \
-                            --trace-ascii curl-trace.log -o curl-response.log http://127.0.0.1:80/api/_action/extension/install/plugin/KskHeptacomAdminOpenAuth
-                        curl -X POST --fail -o /dev/stderr -v -H "Authorization: Bearer ${ACCESS_TOKEN}" -H 'Accept: application/json' -H 'Content-Type: application/json' \
-                            http://127.0.0.1:80/api/_action/extension/refresh
-                        curl -X PUT  --fail -o /dev/stderr -v -H "Authorization: Bearer ${ACCESS_TOKEN}" -H 'Accept: application/json' -H 'Content-Type: application/json' \
-                            http://127.0.0.1:80/api/_action/extension/activate/plugin/KskHeptacomAdminOpenAuth
-        -   step: &test-install-6-5-6
-                <<: *test-install-6-5-0
-                name: Test install 6.5.6
-                services:
-                    - shopware-6-5-6
-        -   step: &test-install-6-5-8
-                <<: *test-install-6-5-0
-                name: Test install 6.5.8
-                services:
-                    - shopware-6-5-8
+        -   parallel:
+                -   step: &test-install-6-7-0
+                        <<: *default-step
+                        name: Test install 6.7.0
+                        services:
+                            - shopware-6-7-0
+                        artifacts:
+                            - curl-trace.log
+                            - curl-response.log
+                        script:
+                            - make releasecheck
+                            - |
+                                export ACCESS_TOKEN=$(curl -X POST 'http://127.0.0.1:80/api/oauth/token' --fail --silent --show-error -H 'Accept: application/json' -H 'Content-Type: application/json' --data-raw '{"grant_type":"password","client_id":"administration","scopes":"write","username":"admin","password":"shopware"}' | jq -r .access_token)
+                                curl -X POST --fail -o /dev/stderr -v -H "Authorization: Bearer ${ACCESS_TOKEN}" -H 'Accept: application/json' \
+                                    http://127.0.0.1:80/api/_action/extension/upload -F file=@./.build/store-build/KskHeptacomAdminOpenAuth-HEAD.zip
+                                curl -X POST --fail -o /dev/stderr -v -H "Authorization: Bearer ${ACCESS_TOKEN}" -H 'Accept: application/json' -H 'Content-Type: application/json' \
+                                    http://127.0.0.1:80/api/_action/extension/refresh
+                                curl -X POST -v -H "Authorization: Bearer ${ACCESS_TOKEN}" -H 'Accept: application/json' -H 'Content-Type: application/json' \
+                                    --trace-ascii curl-trace.log -o curl-response.log http://127.0.0.1:80/api/_action/extension/install/plugin/KskHeptacomAdminOpenAuth
+                                curl -X POST --fail -o /dev/stderr -v -H "Authorization: Bearer ${ACCESS_TOKEN}" -H 'Accept: application/json' -H 'Content-Type: application/json' \
+                                    http://127.0.0.1:80/api/_action/extension/refresh
+                                curl -X PUT  --fail -o /dev/stderr -v -H "Authorization: Bearer ${ACCESS_TOKEN}" -H 'Accept: application/json' -H 'Content-Type: application/json' \
+                                    http://127.0.0.1:80/api/_action/extension/activate/plugin/KskHeptacomAdminOpenAuth
+                -   step: &test-install-6-7-5
+                        <<: *test-install-6-7-0
+                        name: Test install 6.7.5
+                        services:
+                            - shopware-6-7-5
 
 pipelines:
     branches:
@@ -251,9 +244,9 @@ pipelines:
         -   parallel:
                 -   step: *test-code-style-composer-unused
                 -   step: *test-code-style-soft-require
-        -   step: *test-install-6-5-0
-        -   step: *test-install-6-5-6
-        -   step: *test-install-6-5-8
+        -   parallel:
+                -   step: *test-install-6-7-0
+                -   step: *test-install-6-7-5
 
     custom:
         deep-check:
