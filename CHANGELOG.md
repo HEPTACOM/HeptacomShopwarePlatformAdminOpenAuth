@@ -1,5 +1,9 @@
 # Unreleased
 
+**Fixed**
+
+* Fixed issues when using Shopware with a custom `SHOPWARE_ADMINISTRATION_PATH_NAME` (GitHub Issue #45)
+
 # 9.0.0
 
 **Added**
