@@ -4,3 +4,4 @@
 /.gitattributes                     export-ignore
 /.idea                              export-ignore
 /Makefile                           export-ignore
+/.ddev                              export-ignore

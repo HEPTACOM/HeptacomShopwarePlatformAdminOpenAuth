@@ -1,0 +1,133 @@
+name: heptacom-shopware-open-auth
+disable_upload_dirs_warning: true
+performance_mode: none
+type: php
+docroot: public
+php_version: '8.2'
+nodejs_version: 20.11.0
+webserver_type: nginx-fpm
+xdebug_enabled: false
+additional_hostnames: []
+additional_fqdns: []
+database:
+  type: mariadb
+  version: '10.11'
+use_dns_when_possible: true
+composer_version: '2'
+web_extra_exposed_ports:
+  -
+    name: admin-proxy
+    container_port: 9997
+    http_port: 8887
+    https_port: 9997
+  -
+    name: admin-proxy-vite
+    container_port: 5173
+    http_port: 8173
+    https_port: 5173
+  -
+    name: storefront-proxy
+    container_port: 9998
+    http_port: 8888
+    https_port: 9998
+  -
+    name: storefront-assets
+    container_port: 9999
+    http_port: 8889
+    https_port: 9999
+  -
+    name: vite-plugin-0
+    container_port: 5333
+    http_port: 10333
+    https_port: 5333
+  -
+    name: vite-plugin-1
+    container_port: 5334
+    http_port: 10334
+    https_port: 5334
+  -
+    name: vite-plugin-2
+    container_port: 5335
+    http_port: 10335
+    https_port: 5335
+  -
+    name: vite-plugin-3
+    container_port: 5336
+    http_port: 10336
+    https_port: 5336
+  -
+    name: vite-plugin-4
+    container_port: 5337
+    http_port: 10337
+    https_port: 5337
+  -
+    name: vite-plugin-5
+    container_port: 5338
+    http_port: 10338
+    https_port: 5338
+  -
+    name: vite-plugin-6
+    container_port: 5339
+    http_port: 10339
+    https_port: 5339
+  -
+    name: vite-plugin-7
+    container_port: 5340
+    http_port: 10340
+    https_port: 5340
+web_environment:
+  - BLACKFIRE_SERVER_ID=f4df257b-9309-4ec7-a749-ee26d853eb1f
+  - BLACKFIRE_SERVER_TOKEN=d9bb76ff9898a73a548d56957530f2f2128ee7670621ed2df7c798a873cedfc2
+  - BLACKFIRE_CLIENT_ID=837d6fce-fc0a-4f45-8b37-fb56c31721c1
+  - BLACKFIRE_CLIENT_TOKEN=87b964a4270e0de343e8c3fa9a8a3e7087a88209c257b475290749f302b81181
+  - 'DATABASE_URL=mysql://db:db@db:3306/db'
+  - 'MAILER_DSN=smtp://127.0.0.1:1025?encryption=&auth_mode='
+  - 'APP_URL=https://${DDEV_SITENAME}.${DDEV_TLD}'
+  - 'DDEV_PRIMARY_URL=https://${DDEV_SITENAME}.${DDEV_TLD}'
+  - HOST=0.0.0.0
+  - ADMIN_PORT=5173
+  - PORT=5173
+  - DISABLE_ADMIN_COMPILATION_TYPECHECK=1
+  - 'PROXY_URL=https://${DDEV_SITENAME}.${DDEV_TLD}:9998'
+  - STOREFRONT_SKIP_SSL_CERT=true
+  - ENABLE_ADMIN_WORKER=false
+  - 'LOCK_DSN=redis://redis/0'
+  - 'CACHE_REDIS_DSN=redis://redis/0'
+  - 'MESSENGER_REDIS_DSN=redis://redis/0'
+  - 'INCREMENT_REDIS_DSN=redis://redis/0'
+  - 'OPENSEARCH_URL=http://elasticsearch:9200'
+  - SHOPWARE_ES_INDEXING_ENABLED=1
+  - SHOPWARE_ES_ENABLED=1
+  - SHOPWARE_ES_THROW_EXCEPTION=1
+  - 'S3_ENDPOINT=https://${DDEV_SITENAME}.${DDEV_TLD}:10101'
+  - S3_ACCESS_KEY=ddevminio
+  - S3_SECRET_KEY=ddevminio
+  - S3_BUCKET_PUBLIC=public
+  - S3_BUCKET_PRIVATE=private
+  - 'SHOPWARE_CACHE_ID=${DDEV_SITENAME}'
+  - SQL_SET_DEFAULT_SESSION_VARIABLES=0
+  - 'SYMFONY_IDE=phpstorm://open?file=%f&line=%l&/var/www/html/>${DDEV_APPROOT}/'
+corepack_enable: false
+webimage_extra_packages:
+  - httpie
+  - chromium
+  - php8.2-pcov
+  - php8.2-ds
+  - php8.2-yaml
+  - php8.2-ssh2
+  - php8.2-gmp
+hooks:
+  post-start:
+    -
+      exec: 'mc ls minio/public || mc mb minio/public'
+      service: minio
+    -
+      exec: 'mc anonymous set download minio/public'
+      service: minio
+    -
+      exec: 'mc ls minio/private || mc mb minio/private'
+      service: minio
+    -
+      exec: "mysql -uroot -proot -hdb -e \"CREATE DATABASE IF NOT EXISTS db_test; GRANT ALL ON db_test.* TO 'db'@'%';\";\nfor i in $(seq 1 5)\ndo\n  mysql -uroot -proot -hdb -e \"CREATE DATABASE IF NOT EXISTS db_${i}; GRANT ALL ON db_${i}.* TO 'db'@'%';\";\ndone"
+    -
+      exec: 'git config --global --add safe.directory /var/www/html'

@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+
+## Description: run admin (-a) or storefront (-s) builder, if no args are passed, admin builder will be started
+## Usage: build [-a -s]
+## Flags: [{"Name":"admin","Shorthand":"a","Usage":"starts the admin builder"},{"Name":"storefront","Shorthand":"s","Usage":"starts the storefront builder"}]
+
+# Function to start the admin builder
+start_admin_builder() {
+    echo "Starting admin builder..."
+    bin/build-administration.sh "$@"
+}
+
+# Function to start the storefront builder
+start_storefront_builder() {
+    echo "Starting storefront builder..."
+    bin/build-storefront.sh "$@"
+}
+
+# Function to start the both builders
+start_both_builders() {
+    echo "Starting both builders..."
+    bin/build-js.sh "$@"
+}
+
+# Parse command-line options
+while (( "$#" )); do
+    case "$1" in
+        -a | --admin)
+            shift
+            start_admin_builder "$@"
+            admin_flag=true
+            ;;
+        -s | --storefront)
+            shift
+            start_storefront_builder "$@"
+            storefront_flag=true
+            ;;
+        --)
+            shift
+            break
+            ;;
+        -*|--*)
+            echo "Invalid option: $1" >&2
+            exit 1
+            ;;
+        *)
+            break
+            ;;
+    esac
+done
+
+# If no options are passed, start both builders
+if [ -z "$admin_flag" ] && [ -z "$storefront_flag" ]; then
+    start_both_builders "$@"
+fi

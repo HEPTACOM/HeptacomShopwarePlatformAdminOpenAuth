@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+
+## Description: generate demo data for shopware 6
+## Usage: demodata [-l] [--<entity>=1000]
+## Flags: [{"Name":"list","Shorthand":"l","Usage":"Displays list of options"}]
+
+start_demodata_generator() {
+    echo "Starting demodata generator"
+    APP_ENV=prod bin/console framework:demodata "$@"
+    APP_ENV=prod bin/console dal:refresh:index
+}
+
+show_help() {
+    APP_ENV=prod bin/console framework:demodata --help
+}
+
+# Parse command-line options
+while getopts "l" opt; do
+    case ${opt} in
+        l)
+            show_help
+            exit 0
+            ;;
+        \?)
+            start_demodata_generator "$@"
+            exit 0
+            ;;
+    esac
+done
+
+# Shift away parsed options to pass the remaining ones to the command, if any
+shift $((OPTIND -1))
+
+start_demodata_generator "$@"

@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+#ddev-generated
+## Description: Run MinIO Client inside the minio container
+## Usage: mc [flags] [args]
+## Example: "mc admin bucket"
+
+mc "$@"

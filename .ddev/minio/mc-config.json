@@ -1,0 +1,12 @@
+{
+  "version": "10",
+  "aliases": {
+    "minio": {
+      "url": "http://localhost:10101",
+      "accessKey": "ddevminio",
+      "secretKey": "ddevminio",
+      "api": "s3v4",
+      "path": "auto"
+    }
+  }
+}

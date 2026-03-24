@@ -1,0 +1,11 @@
+#!/bin/bash
+
+## Description: Install and set up Shopware and the Application
+
+echo "Executing \`bin/build-js.sh\`"
+bin/build-js.sh
+echo "Executing \`bin/console es:index\`"
+bin/console es:index
+echo "Executing \`bin/console app:install\`"
+bin/console app:install
+

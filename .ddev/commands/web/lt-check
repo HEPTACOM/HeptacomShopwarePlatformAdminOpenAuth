@@ -1,0 +1,111 @@
+#!/usr/bin/env bash
+
+## Description: run lt checks pre commit
+## Usage: lt-check [-v -s -c -t -p | -a] -- [--verbose]
+## Flags: [{"Name":"validate","Shorthand":"v","Usage":"Executes the lt-validate command"},{"Name":"static-analysis","Shorthand":"s","Usage":"Executes the lt-static-analysis command"},{"Name":"code-style","Shorthand":"c","Usage":"Executes the lt-code-style command"},{"Name":"test-js","Shorthand":"t","Usage":"Executes the lt-test command with -lscript"},{"Name":"test-php","Shorthand":"p","Usage":"Executes the lt-test command with -lphp"},{"Name":"all","Shorthand":"a","Usage":"Executes all commands"}]
+
+EXIT_CODES=()
+
+run_script() {
+    local script_name=$1
+    local script_command=$2
+    shift
+    shift
+
+    if [ "$1" == "--" ]; then
+        shift
+    fi
+
+    if [ "$RUN_ALL" = true ]; then
+            eval "$script_command $*" &> /dev/null
+        else
+            echo "Running $script_name..."
+            eval "$script_command $*"
+        fi
+        EXIT_CODES+=("$script_name:$?")
+}
+
+start_validate_script() {
+    run_script "lt-validate" "vendor/bin/lt-validate" "$@"
+}
+
+start_static_analysis_script() {
+    run_script "lt-static-analysis" "vendor/bin/lt-static-analysis" "$@"
+}
+
+start_code_style_script() {
+    run_script "lt-code-style" "vendor/bin/lt-code-style" "$@"
+}
+
+start_jest_test_script() {
+    run_script "lt-test -lscript" "vendor/bin/lt-test -lscript" "$@"
+}
+
+start_php_unit_test_script() {
+    run_script "lt-test -lphp" "vendor/bin/lt-test -lphp" "$@"
+}
+
+# Function to check the exit codes and print the results
+check_exit_codes() {
+    echo "Summary of scripts with non-zero exit codes:"
+    for result in "${EXIT_CODES[@]}"; do
+        IFS=":" read -r script exit_code <<< "$result"
+        if [[ "$exit_code" -ne 0 ]]; then
+            echo "$script failed with exit code $exit_code"
+        fi
+    done
+}
+
+# Parse command-line options
+RUN_ALL=true
+
+while (( "$#" )); do
+    case "$1" in
+        -v | --validate)
+            shift
+            RUN_ALL=false
+            start_validate_script "$@"
+            ;;
+        -s | --static-analysis)
+            shift
+            RUN_ALL=false
+            start_static_analysis_script "$@"
+            ;;
+        -c | --code-style)
+            shift
+            RUN_ALL=false
+            start_code_style_script "$@"
+            ;;
+        -t | --test-js) # -j can not be used because of global flags
+            shift
+            RUN_ALL=false
+            start_jest_test_script "$@"
+            ;;
+        -p | --test-php)
+            shift
+            RUN_ALL=false
+            start_php_unit_test_script "$@"
+            ;;
+        --)
+            shift
+            break
+            ;;
+        -*|--*)
+            echo "Invalid option: $1" >&2
+            exit 1
+            ;;
+        *)
+            break
+            ;;
+    esac
+done
+
+# Run all scripts if nothing is specified
+if [ "$RUN_ALL" = true ]; then
+    start_validate_script "$@"
+    start_static_analysis_script "$@"
+    start_code_style_script "$@"
+    start_jest_test_script "$@"
+    start_php_unit_test_script "$@"
+    check_exit_codes "$@"
+fi

@@ -34,6 +34,17 @@
         {
             "name": "GitHub contributors",
             "homepage": "https://github.com/HEPTACOM/HeptacomShopwarePlatformAdminOpenAuth/graphs/contributors"
+        },
+        {
+            "name": "Let's Talk BV",
+            "homepage": "https://letstalk.nl",
+            "role": "Contributor"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://gitlab.ops.letstalk.nl/api/v4/group/42/-/packages/composer/packages.json"
         }
     ],
     "require": {
@@ -61,7 +72,8 @@
     },
     "require-dev": {
         "shopware/administration": "*",
-        "sentry/sentry": "^4.12"
+        "sentry/sentry": "^4.12",
+        "letstalk/sw-ddev-plugin-config": "^1.0"
     },
     "suggest": {
         "ext-bcmath": "Either the bcmath or gmp extension is required for token validation. Otherwise you will run into performance issues.",
@@ -77,7 +89,8 @@
         "allow-plugins": {
             "composer/package-versions-deprecated": true,
             "infection/extension-installer": true,
-            "symfony/runtime": true
+            "symfony/runtime": true,
+            "letstalk/ddev-configurator": true
         }
     },
     "extra": {

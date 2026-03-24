@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+
+## Description: run admin (-a) or storefront (-s) watcher, if no args are passed, admin watcher will be started
+## Usage: watch [-a -s]
+## Flags: [{"Name":"admin","Shorthand":"a","Usage":"starts the admin watcher"},{"Name":"storefront","Shorthand":"s","Usage":"starts the storefront watcher"}]
+
+# Function to start the admin watcher
+start_admin_watcher() {
+    echo "Starting admin watcher..."
+    bin/watch-administration.sh "$@"
+}
+
+# Function to start the storefront watcher
+start_storefront_watcher() {
+    APP_ENV=build bin/console theme:dump
+    APP_ENV=build bin/console theme:compile
+    echo "Starting storefront watcher..."
+    bin/watch-storefront.sh "$@"
+}
+
+# Parse command-line options
+while (( "$#" )); do
+    case "$1" in
+        -a | --admin)
+            shift
+            start_admin_watcher "$@"
+            admin_flag=true
+            ;;
+        -s | --storefront)
+            shift
+            start_storefront_watcher "$@"
+            storefront_flag=true
+            ;;
+        --)
+            shift
+            break
+            ;;
+        -*|--*)
+            echo "Invalid option: $1" >&2
+            exit 1
+            ;;
+        *)
+            break
+            ;;
+    esac
+done
+
+# If no options are passed, start admin watcher
+if [ -z "$admin_flag" ] && [ -z "$storefront_flag" ]; then
+    start_admin_watcher
+fi

@@ -1,0 +1,5 @@
+services:
+  db:
+    image: 'mariadb:11.3.2'
+    ports:
+      - '20339:3306'

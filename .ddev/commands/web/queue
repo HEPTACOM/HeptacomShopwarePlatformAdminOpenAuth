@@ -1,0 +1,5 @@
+#!/bin/bash
+
+## Description: Run the messenger consumer queue worker
+
+bin/console messenger:consume async_high_prio async low_priority async_low_prio "$@"

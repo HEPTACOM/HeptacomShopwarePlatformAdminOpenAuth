@@ -1,0 +1,52 @@
+#!/bin/bash
+
+## Description: Clear the caches (optionally for a specific environment)
+
+# Default values
+FORCE=false
+ENV=""
+
+# Parse arguments
+while [[ $# -gt 0 ]]; do
+  case $1 in
+    -f|--force)
+      FORCE=true
+      shift
+      ;;
+    -*)
+      echo "Unknown option: $1"
+      echo "Usage: ddev clear-cache [environment] [-f|--force]"
+      exit 1
+      ;;
+    *)
+      ENV="$1"
+      shift
+      ;;
+  esac
+done
+
+# Set environment if provided
+if [ -n "$ENV" ]; then
+  export APP_ENV=$ENV
+  echo "Using environment $ENV"
+fi
+
+# Force clear cache directories if -f/--force flag is set
+if [ "$FORCE" = true ]; then
+  echo "Force clearing cache directories..."
+  if [ -d "var/cache" ]; then
+    echo "Removing everything in var/cache directory..."
+    rm -rf var/cache/*
+  fi
+  if [ -d "vendor/shopware/platform/var/cache" ]; then
+    echo "Removing everything in vendor/shopware/platform/var/cache directory..."
+    rm -rf vendor/shopware/platform/var/cache/*
+  fi
+fi
+
+echo "Executing \`bin/console cache:clear\`"
+bin/console cache:clear
+echo "Executing \`bin/console cache:pool:clear --all\`"
+bin/console cache:pool:clear --all
+echo "Executing \`bin/console cache:pool:prune\`"
+bin/console cache:pool:prune
