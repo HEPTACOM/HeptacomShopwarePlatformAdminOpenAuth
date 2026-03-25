@@ -32,7 +32,6 @@ class RedirectReceiveRoute
     public function __construct(
         private readonly ClientFactoryContract $clientFactory,
         private readonly EventDispatcherInterface $eventDispatcher,
-        private readonly ClientRuleValidator $clientRuleValidator,
         #[Autowire(service: LoginDefinition::ENTITY_NAME . '.repository')]
         private readonly EntityRepository $loginRepository,
         private readonly LoggerInterface $logger,
