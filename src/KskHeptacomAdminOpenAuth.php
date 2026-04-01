@@ -12,6 +12,9 @@ final class KskHeptacomAdminOpenAuth extends Plugin
 {
     public const CONFIG_DENY_PASSWORD_LOGIN = 'KskHeptacomAdminOpenAuth.config.denyPasswordLogin';
 
+    public const CONFIG_ENABLE_UNIFIED_REDIRECT_DOMAIN = 'KskHeptacomAdminOpenAuth.config.enableUnifiedRedirectDomain';
+    public const CONFIG_UNIFIED_REDIRECT_DOMAIN = 'KskHeptacomAdminOpenAuth.config.unifiedRedirectDomain';
+
     /**
      * All plugin tables that should be removed on uninstall.
      * The tables are removed in the order they are defined here.
