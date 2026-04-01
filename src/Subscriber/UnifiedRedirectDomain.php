@@ -36,14 +36,14 @@ final readonly class UnifiedRedirectDomain implements EventSubscriberInterface
             try {
                 $payload = \json_decode($command->getPayload()['payload'] ?? '{}', true, 512, \JSON_THROW_ON_ERROR);
 
-                if (!is_array($payload)) {
+                if (!\is_array($payload)) {
                     // This should never happen, as the DAL already decodes the payload and it's a required field
                     throw new \RuntimeException('Decoded payload is not an array', 1775050147);
                 }
 
                 $payload['originUrl'] = $this->requestStack->getMainRequest()?->getSchemeAndHttpHost();
 
-                $command->addPayload('payload', json_encode($payload, \JSON_THROW_ON_ERROR));
+                $command->addPayload('payload', \json_encode($payload, \JSON_THROW_ON_ERROR));
             } catch (\JsonException) {
                 // This should never happen, as the DAL already decodes the payload
                 throw new \RuntimeException('Failed to decode or encode JSON payload', 1775050166);

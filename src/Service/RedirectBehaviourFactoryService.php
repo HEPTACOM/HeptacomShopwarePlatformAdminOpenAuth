@@ -56,7 +56,7 @@ final readonly class RedirectBehaviourFactoryService implements RedirectBehaviou
         $behaviour->expectState = true;
         $behaviour->redirectUri = $this->router->generate(
             'administration.heptacom.admin_open_auth.login',
-            [ 'clientId' => $clientId ],
+            ['clientId' => $clientId],
             UrlGeneratorInterface::ABSOLUTE_URL
         );
 

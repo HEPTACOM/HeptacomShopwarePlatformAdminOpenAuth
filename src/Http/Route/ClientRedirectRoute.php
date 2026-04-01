@@ -123,8 +123,8 @@ final class ClientRedirectRoute extends AbstractController
             }
 
             if (\array_key_exists('path', $originUrlParts) && $originUrlParts['path'] !== '/') {
-                $prefix = rtrim($originUrlParts['path'], '/');
-                $targetUrlPath = ltrim($targetUrlParts['path'], '/');
+                $prefix = \rtrim($originUrlParts['path'], '/');
+                $targetUrlPath = \ltrim($targetUrlParts['path'], '/');
 
                 if ($targetUrlPath === '') {
                     $targetUrlParts['path'] = $prefix;
