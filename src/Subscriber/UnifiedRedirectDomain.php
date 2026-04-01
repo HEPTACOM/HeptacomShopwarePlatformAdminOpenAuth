@@ -41,7 +41,7 @@ final readonly class UnifiedRedirectDomain implements EventSubscriberInterface
                     throw new \RuntimeException('Decoded payload is not an array', 1775050147);
                 }
 
-                $payload['originUrl'] = $this->requestStack->getMainRequest()?->getSchemeAndHttpHost();
+                $payload['originUrl'] = $this->requestStack->getMainRequest()?->getUriForPath('/');
 
                 $command->addPayload('payload', \json_encode($payload, \JSON_THROW_ON_ERROR));
             } catch (\JsonException) {
