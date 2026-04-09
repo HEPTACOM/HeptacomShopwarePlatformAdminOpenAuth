@@ -1,5 +1,11 @@
 # Unreleased
 
+# 7.1.0
+
+**Added**
+
+* Added configuration options `enableUnifiedRedirectDomain` and `unifiedRedirectDomain` to allow using one unified domain for the IdP redirect to the shop. (copied from 9.1.0)
+
 # 7.0.2
 
 **Changed**

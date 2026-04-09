@@ -1,5 +1,9 @@
 # Unreleased
 
+# 7.1.0
+
+* Einstellungen `enableUnifiedRedirectDomain` und `unifiedRedirectDomain` hinzugefügt zum Einrichten einer einheitlichen Rücksprungadresse für Shops mit mehreren validen Basis-URLs für Logins für weiterhin einzelne Adresse im IdP zur Freischaltung (Übernahme aus Version 9.1.0)
+
 # 7.0.2
 
 **Geändert**
