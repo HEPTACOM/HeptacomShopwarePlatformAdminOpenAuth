@@ -16,11 +16,10 @@ final class Migration1583830534 extends MigrationStep
 
     public function update(Connection $connection): void
     {
-        $sql = <<<SQL
-SET FOREIGN_KEY_CHECKS = 0;
-
-DROP TABLE `heptacom_admin_open_auth_login`;
-
+        $connection->executeStatement('ALTER TABLE `heptacom_admin_open_auth_login` DROP FOREIGN KEY `fk.heptacom_admin_open_auth_login.client_id`');
+        $connection->executeStatement('ALTER TABLE `heptacom_admin_open_auth_login` DROP FOREIGN KEY `fk.heptacom_admin_open_auth_login.user_id`');
+        $connection->executeStatement('DROP TABLE `heptacom_admin_open_auth_login`');
+        $connection->executeStatement(<<<'SQL'
 CREATE TABLE `heptacom_admin_open_auth_login` (
     `id` BINARY(16) NOT NULL,
     `client_id` BINARY(16) NOT NULL,
@@ -37,11 +36,9 @@ CREATE TABLE `heptacom_admin_open_auth_login` (
 )
     ENGINE = InnoDB
     DEFAULT CHARSET = utf8mb4
-    COLLATE = utf8mb4_unicode_ci;
-
-SET FOREIGN_KEY_CHECKS = 1;
-SQL;
-        $connection->executeStatement($sql);
+    COLLATE = utf8mb4_unicode_ci
+SQL
+        );
     }
 
     public function updateDestructive(Connection $connection): void
