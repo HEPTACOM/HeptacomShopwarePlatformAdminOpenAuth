@@ -5,6 +5,7 @@
 * Implement more strict validation of JWT signatures, previously received by the IdP
 * Fixed incomplete client validation
 * Fixed incomplete early verification of login expiry
+* Fixed incomplete active check in `ClientFeatureChecker`
 
 **Removed**
 

@@ -49,7 +49,10 @@ final readonly class ClientFeatureChecker implements ClientFeatureCheckerInterfa
     {
         $criteria = new Criteria();
         $criteria->setIds([$clientId]);
-        $criteria->addFilter(new EqualsFilter('storeUserToken', true));
+        $criteria->addFilter(
+            new EqualsFilter('active', true),
+            new EqualsFilter('storeUserToken', true)
+        );
 
         return $this->clientsRepository->searchIds($criteria, $context)->firstId() !== null;
     }
@@ -58,7 +61,10 @@ final readonly class ClientFeatureChecker implements ClientFeatureCheckerInterfa
     {
         $criteria = new Criteria();
         $criteria->setIds([$clientId]);
-        $criteria->addFilter(new EqualsFilter('keepUserUpdated', true));
+        $criteria->addFilter(
+            new EqualsFilter('active', true),
+            new EqualsFilter('keepUserUpdated', true)
+        );
 
         return $this->clientsRepository->searchIds($criteria, $context)->firstId() !== null;
     }
