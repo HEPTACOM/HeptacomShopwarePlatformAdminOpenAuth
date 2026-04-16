@@ -3,6 +3,7 @@
 **Fixed**
 
 * Implement more strict validation of JWT signatures, previously received by the IdP
+* Fixed incomplete client validation
 
 # 9.0.0
 
