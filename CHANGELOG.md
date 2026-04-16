@@ -1,5 +1,9 @@
 # Unreleased
 
+**Fixed**
+
+* Implement more strict validation of JWT signatures, previously received by the IdP
+
 # 9.0.0
 
 **Added**

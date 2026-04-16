@@ -96,6 +96,8 @@ class OpenIdConnectTokenVerifier
         }
 
         // try to verify all signatures
+        $verifiedSignatures = 0;
+
         /**
          * @var int $signatureIndex
          * @var Signature $signature
@@ -104,18 +106,28 @@ class OpenIdConnectTokenVerifier
             $algorithm = \array_merge($signature->getProtectedHeader(), $signature->getHeader())['alg'] ?? null;
 
             if (!$algorithm) {
-                continue;
+                $this->logger->warning('Rejecting JWT: signature is missing the alg header parameter.');
+
+                return false;
             }
 
             if (!$this->verifier->getSignatureAlgorithmManager()->has($algorithm)) {
-                $this->logger->notice(\sprintf('Could not verify JWT signature. Algorithm %s is not supported.', $algorithm));
+                $this->logger->warning(\sprintf('Rejecting JWT: algorithm %s is not supported.', $algorithm));
 
-                continue;
+                return false;
             }
 
             if (!$this->verifier->verifyWithKeySet($token, $keys, $signatureIndex)) {
                 return false;
             }
+
+            ++$verifiedSignatures;
+        }
+
+        if ($verifiedSignatures === 0) {
+            $this->logger->warning('Rejecting JWT: no signatures could be verified.');
+
+            return false;
         }
 
         $this->logger->debug('JWT signature successfully verified.');
