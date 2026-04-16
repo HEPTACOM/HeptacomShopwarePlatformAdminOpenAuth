@@ -6,6 +6,10 @@
 * Fixed incomplete client validation
 * Fixed incomplete early verification of login expiry
 
+**Removed**
+
+* Remove `ClientFeatureCheckerInterface::canUsersBecomeAdmin` as it's unused since v6.0.0
+
 # 9.0.0
 
 **Added**

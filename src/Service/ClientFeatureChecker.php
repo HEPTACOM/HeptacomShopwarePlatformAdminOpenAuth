@@ -54,15 +54,6 @@ final readonly class ClientFeatureChecker implements ClientFeatureCheckerInterfa
         return $this->clientsRepository->searchIds($criteria, $context)->firstId() !== null;
     }
 
-    public function canUsersBecomeAdmin(string $clientId, Context $context): bool
-    {
-        $criteria = new Criteria();
-        $criteria->setIds([$clientId]);
-        $criteria->addFilter(new EqualsFilter('userBecomeAdmin', true));
-
-        return $this->clientsRepository->searchIds($criteria, $context)->firstId() !== null;
-    }
-
     public function canKeepUserUpdated(string $clientId, Context $context): bool
     {
         $criteria = new Criteria();
