@@ -28,6 +28,9 @@ final readonly class Login implements LoginInterface
     {
         $criteria = new Criteria();
         $criteria->addFilter(new EqualsFilter('state', $state));
+        $criteria->addFilter(new RangeFilter('expiresAt', [
+            RangeFilter::GTE => (new \DateTime())->format(Defaults::STORAGE_DATE_TIME_FORMAT),
+        ]));
         $ids = $this->loginsRepository->searchIds($criteria, $context);
         $update = [];
 
@@ -67,6 +70,9 @@ final readonly class Login implements LoginInterface
     {
         $criteria = new Criteria();
         $criteria->addFilter(new EqualsFilter('state', $state));
+        $criteria->addFilter(new RangeFilter('expiresAt', [
+            RangeFilter::GTE => (new \DateTime())->format(Defaults::STORAGE_DATE_TIME_FORMAT),
+        ]));
         /** @var LoginCollection $logins */
         $logins = $this->loginsRepository->search($criteria, $context)->getEntities();
         $first = $logins->first();
