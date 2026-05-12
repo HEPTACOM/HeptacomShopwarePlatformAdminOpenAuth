@@ -173,18 +173,7 @@ definitions:
                         size: 4x
                         script:
                             - make releasecheck
-                            - |
-                                export ACCESS_TOKEN=$(curl -X POST 'http://127.0.0.1:80/api/oauth/token' --fail --silent --show-error -H 'Accept: application/json' -H 'Content-Type: application/json' --data-raw '{"grant_type":"password","client_id":"administration","scopes":"write","username":"admin","password":"shopware"}' | jq -r .access_token)
-                                curl -X POST --fail -o /dev/stderr -v -H "Authorization: Bearer ${ACCESS_TOKEN}" -H 'Accept: application/json' \
-                                    http://127.0.0.1:80/api/_action/extension/upload -F file=@./.build/store-build/KskHeptacomAdminOpenAuth-HEAD.zip
-                                curl -X POST --fail -o /dev/stderr -v -H "Authorization: Bearer ${ACCESS_TOKEN}" -H 'Accept: application/json' -H 'Content-Type: application/json' \
-                                    http://127.0.0.1:80/api/_action/extension/refresh
-                                curl -X POST -v -H "Authorization: Bearer ${ACCESS_TOKEN}" -H 'Accept: application/json' -H 'Content-Type: application/json' \
-                                    --trace-ascii curl-trace.log -o curl-response.log http://127.0.0.1:80/api/_action/extension/install/plugin/KskHeptacomAdminOpenAuth
-                                curl -X POST --fail -o /dev/stderr -v -H "Authorization: Bearer ${ACCESS_TOKEN}" -H 'Accept: application/json' -H 'Content-Type: application/json' \
-                                    http://127.0.0.1:80/api/_action/extension/refresh
-                                curl -X PUT  --fail -o /dev/stderr -v -H "Authorization: Bearer ${ACCESS_TOKEN}" -H 'Accept: application/json' -H 'Content-Type: application/json' \
-                                    http://127.0.0.1:80/api/_action/extension/activate/plugin/KskHeptacomAdminOpenAuth
+                            - bash dev-ops/test-install.sh
                 -   step: &test-install-6-7-current
                         <<: *test-install-6-7-min
                         name: Test install 6.7 (current)
