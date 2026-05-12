@@ -170,6 +170,7 @@ definitions:
                         artifacts:
                             - curl-trace.log
                             - curl-response.log
+                        size: 4x
                         script:
                             - make releasecheck
                             - |
