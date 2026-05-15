@@ -28,7 +28,10 @@ final readonly class OneTimeTokenClientRepository implements ClientRepositoryInt
     #[\Override]
     public function validateClient(string $clientIdentifier, ?string $clientSecret, ?string $grantType): bool
     {
-        return $grantType === 'heptacom_admin_open_auth_one_time_token'
-            || $this->decorated->validateClient($clientIdentifier, $clientSecret, $grantType);
+        if ($grantType === 'heptacom_admin_open_auth_one_time_token' && $clientIdentifier === 'administration') {
+            return true;
+        }
+
+        return $this->decorated->validateClient($clientIdentifier, $clientSecret, $grantType);
     }
 }

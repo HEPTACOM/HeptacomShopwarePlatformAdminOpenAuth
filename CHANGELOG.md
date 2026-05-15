@@ -11,6 +11,14 @@
 **Fixed**
 
 * Fixed issues when using Shopware with a custom `SHOPWARE_ADMINISTRATION_PATH_NAME` (GitHub Issue #45)
+* Implement more strict validation of JWT signatures, previously received by the IdP
+* Fixed incomplete client validation
+* Fixed incomplete early verification of login expiry
+* Fixed incomplete active check in `ClientFeatureChecker`
+
+**Removed**
+
+* Remove `ClientFeatureCheckerInterface::canUsersBecomeAdmin` as it's unused since v6.0.0
 
 # 9.0.0
 
