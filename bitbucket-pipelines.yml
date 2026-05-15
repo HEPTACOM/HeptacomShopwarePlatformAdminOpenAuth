@@ -1,6 +1,14 @@
 image: heptacom/shopware-6-plugin-pipeline:php84-node22-latest
 
 definitions:
+    services:
+        shopware-6-7-min: &shopware-6-7-service
+            image: dockware/shopware:6.7.2.1
+            variables:
+                APP_URL: http://127.0.0.1:80/
+        shopware-6-7-current:
+            <<: *shopware-6-7-service
+            image: dockware/shopware:6.7.10.0
     steps:
         -   step: &default-step
                 caches:
@@ -153,6 +161,24 @@ definitions:
                     - .build/store-build/*.zip
                 script:
                     - make releasecheck
+        -   parallel:
+                -   step: &test-install-6-7-min
+                        <<: *default-step
+                        name: Test install 6.7 (minimum)
+                        services:
+                            - shopware-6-7-min
+                        artifacts:
+                            - curl-trace.log
+                            - curl-response.log
+                        size: 4x
+                        script:
+                            - make releasecheck
+                            - bash dev-ops/test-install.sh
+                -   step: &test-install-6-7-current
+                        <<: *test-install-6-7-min
+                        name: Test install 6.7 (current)
+                        services:
+                            - shopware-6-7-current
 
 pipelines:
     branches:
@@ -208,6 +234,9 @@ pipelines:
         -   parallel:
                 -   step: *test-code-style-composer-unused
                 -   step: *test-code-style-soft-require
+        -   parallel:
+                -   step: *test-install-6-7-min
+                -   step: *test-install-6-7-current
 
     custom:
         deep-check:

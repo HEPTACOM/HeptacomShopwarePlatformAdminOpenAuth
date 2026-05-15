@@ -23,10 +23,10 @@ PHPUNUHI_DIR := dev-ops/bin/phpunuhi
 PHPUNUHI_FILE := $(PHPUNUHI_DIR)/vendor/bin/phpunuhi
 
 ifeq ($(UNAME),Linux)
-	SHOPWARE_CLI_ARCHIVE := https://github.com/FriendsOfShopware/shopware-cli/releases/download/0.4.29/shopware-cli_Linux_x86_64.tar.gz
+	SHOPWARE_CLI_ARCHIVE := https://github.com/shopware/shopware-cli/releases/download/0.14.7/shopware-cli_Linux_x86_64.tar.gz
 endif
 ifeq ($(UNAME),Darwin)
-	SHOPWARE_CLI_ARCHIVE := https://github.com/FriendsOfShopware/shopware-cli/releases/download/0.4.29/shopware-cli_Darwin_arm64.tar.gz
+	SHOPWARE_CLI_ARCHIVE := https://github.com/shopware/shopware-cli/releases/download/0.14.7/shopware-cli_Darwin_arm64.tar.gz
 endif
 SHOPWARE_CLI_FILE := dev-ops/bin/shopware-cli
 
@@ -56,6 +56,7 @@ clean: ## Cleans up all ignored files and directories
 
 .PHONY: build-assets
 build-assets: $(SHOPWARE_CLI_FILE) ## Builds assets
+	find src/Resources/public -type f -delete 2>/dev/null || true
 	$(SHOPWARE_CLI_FILE) extension build .
 
 .PHONY: it
