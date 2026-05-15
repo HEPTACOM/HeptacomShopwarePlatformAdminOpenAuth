@@ -1,0 +1,3 @@
+monolog:
+    channels:
+        - 'heptacom_admin_open_auth'

@@ -18,7 +18,7 @@ final class ClientLoginRoutesRoute extends AbstractController
     }
 
     #[Route(
-        path: '/admin/open-auth/routes',
+        path: '/%shopware_administration.path_name%/open-auth/routes',
         name: 'administration.heptacom.admin_open_auth.routes',
         defaults: [
             'auth_required' => false,
