@@ -23,5 +23,28 @@
             <helpText lang="de-DE">Wenn aktiviert und der Passwortlogin deaktiviert ist, werden Nutzer automatisch an den Identity Provider weitergeleitet. Diese Funktion ist nicht verfügbar in User Verify Modals.</helpText>
             <defaultValue>true</defaultValue>
         </input-field>
+
+    </card>
+
+    <card>
+        <title>Unified Redirect Domain</title>
+        <title lang="de-DE">Einheitliche Redirect Domain</title>
+
+        <input-field type="bool">
+            <name>enableUnifiedRedirectDomain</name>
+            <label>Enable</label>
+            <label lang="de-DE">Aktiv</label>
+            <helpText>If activated the identity provider will redirect to one unified url. This might be relevant when using different domains.</helpText>
+            <helpText lang="de-DE">Wenn aktiviert, wird der Identity Provider alle Nutzer beim Login an eine einheitliche Domain zurückleiten. Dies kann relevant sein, wenn verschiedene Domains verwendet werden.</helpText>
+            <defaultValue>false</defaultValue>
+        </input-field>
+
+        <input-field type="url">
+            <name>unifiedRedirectDomain</name>
+            <label>Redirect domain</label>
+            <label lang="de-DE">Redirect Domain</label>
+            <helpText>This is the domain that will be used for redirect from the identity provider back to the shop. If empty, APP_URL will be used.</helpText>
+            <helpText lang="de-DE">Diese Domain wird vom Identity Provider verwendet, um den Nutzer zurück zum Shop zu leiten. Wenn leer, wird APP_URL verwendet.</helpText>
+        </input-field>
     </card>
 </config>
