@@ -10,7 +10,8 @@
                         "groupIds": "Gruppen-IDs"
                     }
                 },
-                "tenantId": "Verzeichnis-ID (Mandant)"
+                "tenantId": "Verzeichnis-ID (Mandant)",
+                "fetchPicture": "Benutzerbild importieren"
             }
         },
         "providers": {

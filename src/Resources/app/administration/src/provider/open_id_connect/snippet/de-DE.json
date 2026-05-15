@@ -18,7 +18,8 @@
                 "discoveryDocumentUrl-help": "Sofern angegeben, wird die weitere Konfiguration automatisch geladen.",
                 "discoveryDocumentUrl-placeholder": "https://accounts.google.com/.well-known/openid-configuration",
                 "token_endpoint": "Token-Endpunkt",
-                "userinfo_endpoint": "Benutzer-Info-Endpunkt"
+                "userinfo_endpoint": "Benutzer-Info-Endpunkt",
+                "fetchPicture": "Benutzerbild importieren"
             }
         },
         "providers": {

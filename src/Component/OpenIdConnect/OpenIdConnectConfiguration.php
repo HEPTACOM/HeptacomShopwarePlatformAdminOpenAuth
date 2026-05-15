@@ -46,6 +46,8 @@ final class OpenIdConnectConfiguration extends Struct
 
     protected string $redirectUri = '';
 
+    protected bool $fetchPicture = false;
+
     public function isWellKnownDiscovered(): bool
     {
         return $this->wellKnownDiscovered;
@@ -253,5 +255,15 @@ final class OpenIdConnectConfiguration extends Struct
     public function setRedirectUri(string $redirectUri): void
     {
         $this->redirectUri = $redirectUri;
+    }
+
+    public function isFetchPicture(): bool
+    {
+        return $this->fetchPicture;
+    }
+
+    public function setFetchPicture(bool $fetchPicture): void
+    {
+        $this->fetchPicture = $fetchPicture;
     }
 }

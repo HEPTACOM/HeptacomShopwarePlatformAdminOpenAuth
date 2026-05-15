@@ -6,10 +6,12 @@ namespace Heptacom\AdminOpenAuth\Component\OpenIdConnect;
 
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Uri;
+use Heptacom\AdminOpenAuth\Contract\Picture;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Client\ClientInterface;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Mime\MimeTypes;
 
 /**
  * @notice signed/encrypted UserInfo is currently not supported
@@ -75,6 +77,41 @@ class OpenIdConnectService
 
             throw new OpenIdConnectException($message);
         }
+    }
+
+    public function getUserPicture(?string $userPictureUri, OpenIdConnectToken $token): ?Picture
+    {
+        if ($userPictureUri === null) {
+            return null;
+        }
+
+        if (\str_starts_with($userPictureUri, 'https://') === false) {
+            return null;
+        }
+
+        try {
+            $picture = new Picture();
+
+            $uri = new Uri($userPictureUri);
+            $request = OpenIdConnectRequestHelper::prepareRequest(new Request('GET', $uri), $token);
+            $response = $this->oidcHttpClient->sendRequest($request);
+
+            OpenIdConnectRequestHelper::verifyRequestSuccess($request, $response, 'image/');
+
+            $mimeTypes = new MimeTypes();
+            $extensions = $mimeTypes->getExtensions($response->getHeaderLine('Content-Type'));
+            if ($extensions !== []) {
+                $picture->fileExtension = $extensions[0];
+            }
+
+            $picture->setContent($response->getBody()->getContents());
+
+            return $picture;
+        } catch (ClientExceptionInterface) {
+            // we don't care about errors. E.g. Microsoft is showing URI, but there might be no picture.
+        }
+
+        return null;
     }
 
     public function getAccessToken(string $grantType, array $options = []): OpenIdConnectToken
