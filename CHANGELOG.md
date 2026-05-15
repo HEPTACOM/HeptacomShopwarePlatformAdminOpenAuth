@@ -8,6 +8,10 @@
 
 * Changed logs to use the channel `heptacom_admin_open_auth` instead of the default channel
 
+**Fixed**
+
+* Fixed issues when using Shopware with a custom `SHOPWARE_ADMINISTRATION_PATH_NAME` (GitHub Issue #45)
+
 # 9.0.0
 
 **Added**
