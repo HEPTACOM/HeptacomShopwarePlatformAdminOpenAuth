@@ -4,7 +4,7 @@
 
 **Added**
 
-* Added configuration options `enableUnifiedRedirectDomain` and `unifiedRedirectDomain` to allow using one unified domain for the IdP redirect to the shop.
+* Added configuration options `enableUnifiedRedirectDomain` and `unifiedRedirectDomain` to allow using one unified domain for the IdP redirect to the shop. (copied from 9.1.0)
 
 **Fixed**
 
@@ -29,6 +29,18 @@
 **Fixed**
 
 * Removed soft-dependency onto Shopware Storefront to allow usage in headless-only projects (GitHub Issue #37)
+
+# 7.1.1
+
+**Fixed**
+
+* Fixed issues when using Shopware with a custom `SHOPWARE_ADMINISTRATION_PATH_NAME` (GitHub Issue #45)
+
+# 7.1.0
+
+**Added**
+
+* Added configuration options `enableUnifiedRedirectDomain` and `unifiedRedirectDomain` to allow using one unified domain for the IdP redirect to the shop. (copied from 9.1.0)
 
 # 7.0.2
 
