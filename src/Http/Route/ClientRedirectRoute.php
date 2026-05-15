@@ -46,7 +46,7 @@ final class ClientRedirectRoute extends AbstractController
     }
 
     #[Route(
-        path: '/admin/open-auth/{clientId}/redirect',
+        path: '/%shopware_administration.path_name%/open-auth/{clientId}/redirect',
         name: 'administration.heptacom.admin_open_auth.login',
         defaults: [
             'auth_required' => false,
