@@ -7,6 +7,7 @@ namespace Heptacom\AdminOpenAuth;
 use Doctrine\DBAL\Connection;
 use Shopware\Core\Framework\Plugin;
 use Shopware\Core\Framework\Plugin\Context\UninstallContext;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class KskHeptacomAdminOpenAuth extends Plugin
 {
@@ -31,6 +32,13 @@ final class KskHeptacomAdminOpenAuth extends Plugin
     public function executeComposerCommands(): bool
     {
         return true;
+    }
+
+    public function build(ContainerBuilder $container): void
+    {
+        parent::build($container);
+
+        $this->buildDefaultConfig($container);
     }
 
     public function uninstall(UninstallContext $uninstallContext): void

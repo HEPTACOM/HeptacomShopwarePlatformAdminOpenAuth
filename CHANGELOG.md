@@ -1,5 +1,9 @@
 # Unreleased
 
+**Changed**
+
+* Changed logs to use the channel `heptacom_admin_open_auth` instead of the default channel
+
 # 9.0.0
 
 **Added**

@@ -11,6 +11,7 @@
         "Symfony\\Component\\DependencyInjection\\Attribute\\AsTaggedItem",
         "Symfony\\Component\\DependencyInjection\\Attribute\\AutoconfigureTag",
         "Symfony\\Component\\DependencyInjection\\Attribute\\AutowireIterator",
+        "Symfony\\Component\\DependencyInjection\\ContainerBuilder",
         "Symfony\\Component\\EventDispatcher\\Attribute\\AsEventListener",
         "Symfony\\Component\\EventDispatcher\\EventDispatcherInterface",
         "Symfony\\Component\\EventDispatcher\\EventSubscriberInterface",
