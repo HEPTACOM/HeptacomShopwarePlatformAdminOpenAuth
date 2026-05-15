@@ -25,7 +25,7 @@ final class ClientRemoteLoginRoute extends AbstractController
     }
 
     #[Route(
-        path: '/admin/open-auth/{clientId}/remote',
+        path: '/%shopware_administration.path_name%/open-auth/{clientId}/remote',
         name: 'administration.heptacom.admin_open_auth.remote_login',
         defaults: [
             'auth_required' => false,

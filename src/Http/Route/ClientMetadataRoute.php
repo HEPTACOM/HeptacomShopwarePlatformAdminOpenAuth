@@ -22,7 +22,7 @@ final class ClientMetadataRoute extends AbstractController
     }
 
     #[Route(
-        path: '/admin/open-auth/{clientId}/metadata',
+        path: '/%shopware_administration.path_name%/open-auth/{clientId}/metadata',
         name: 'administration.heptacom.admin_open_auth.metadata',
         defaults: [
             'auth_required' => false,
