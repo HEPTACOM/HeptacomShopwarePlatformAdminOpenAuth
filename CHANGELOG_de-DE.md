@@ -1,5 +1,11 @@
 # Unreleased
 
+# 7.1.1
+
+**Behoben**
+
+* Fehler behoben, der zu Fehlern führte, wenn ein individueller `SHOPWARE_ADMINISTRATION_PATH_NAME` verwendet wird (GitHub Issue #45)
+
 # 7.1.0
 
 * Einstellungen `enableUnifiedRedirectDomain` und `unifiedRedirectDomain` hinzugefügt zum Einrichten einer einheitlichen Rücksprungadresse für Shops mit mehreren validen Basis-URLs für Logins für weiterhin einzelne Adresse im IdP zur Freischaltung (Übernahme aus Version 9.1.0)
