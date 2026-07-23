@@ -36,9 +36,9 @@ class MediaUploadParameters
             throw MediaException::emptyMediaFilename();
         }
 
-        $extension = pathinfo($this->fileName, \PATHINFO_EXTENSION);
+        $extension = \pathinfo($this->fileName, \PATHINFO_EXTENSION);
 
-        return mb_substr($this->fileName, 0, mb_strlen($this->fileName) - mb_strlen($extension) - 1);
+        return \mb_substr($this->fileName, 0, \mb_strlen($this->fileName) - \mb_strlen($extension) - 1);
     }
 
     public function getFileNameExtension(): string
@@ -47,6 +47,6 @@ class MediaUploadParameters
             throw MediaException::emptyMediaFilename();
         }
 
-        return pathinfo($this->fileName, \PATHINFO_EXTENSION);
+        return \pathinfo($this->fileName, \PATHINFO_EXTENSION);
     }
 }

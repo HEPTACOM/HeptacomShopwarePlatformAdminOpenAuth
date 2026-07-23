@@ -301,9 +301,9 @@ final readonly class UserResolver implements UserResolverInterface
         $binAvatarId = Uuid::fromHexToBytes($avatarId);
 
         $mediaExists = $this->connection->fetchOne(
-                'SELECT id FROM media WHERE id = :id',
-                ['id' => $binAvatarId]
-            ) !== false;
+            'SELECT id FROM media WHERE id = :id',
+            ['id' => $binAvatarId]
+        ) !== false;
 
         if ($mediaExists) {
             return $avatarId;

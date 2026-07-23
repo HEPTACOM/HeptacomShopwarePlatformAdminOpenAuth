@@ -9,10 +9,9 @@ use Shopware\Core\Framework\Util\Hasher;
 
 final class Picture extends Struct
 {
+    public string $fileExtension = '';
     private string $id;
     private string $content = '';
-
-    public string $fileExtension = '';
 
     public function getId(): string
     {

@@ -21,26 +21,23 @@ readonly class MediaUploadService
 {
     /**
      * @param EntityRepository<MediaCollection> $mediaRepository
-     *
      */
     public function __construct(
-        private EntityRepository         $mediaRepository,
-        private FileSaver                $fileSaver,
+        private EntityRepository $mediaRepository,
+        private FileSaver $fileSaver,
         private EventDispatcherInterface $eventDispatcher,
-    )
-    {
+    ) {
     }
 
     /**
-     * Upload a new media file from a local path
+     * Upload a new media file from a local path.
      */
     public function uploadFromLocalPath(
-        string                $filePath,
-        Context               $context,
+        string $filePath,
+        Context $context,
         MediaUploadParameters $params = new MediaUploadParameters()
-    ): string
-    {
-        $size = filesize($filePath);
+    ): string {
+        $size = \filesize($filePath);
 
         if ($size === false) {
             throw MediaException::fileNotFound($filePath);
@@ -48,8 +45,8 @@ readonly class MediaUploadService
 
         $media = new MediaFile(
             $filePath,
-            mime_content_type($filePath) ?: '',
-            pathinfo($filePath, \PATHINFO_EXTENSION),
+            \mime_content_type($filePath) ?: '',
+            \pathinfo($filePath, \PATHINFO_EXTENSION),
             $size,
             Hasher::hashFile($filePath, 'md5'),
         );
