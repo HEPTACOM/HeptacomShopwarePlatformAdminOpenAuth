@@ -4,12 +4,21 @@ declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\Component\OpenIdConnect;
 
+use Heptacom\AdminOpenAuth\Contract\IgnoreUnknownProperties;
 use Jose\Component\Signature\Serializer\CompactSerializer;
 use Jose\Component\Signature\Serializer\JWSSerializerManager;
 use Shopware\Core\Framework\Struct\Struct;
 
+/**
+ * Holds the token data returned by the OpenID Connect provider.
+ */
 final class OpenIdConnectToken extends Struct
 {
+    /**
+     * Some providers return additional data in the token response, that we don't need and should not be created as dynamic properties.
+     */
+    use IgnoreUnknownProperties;
+
     protected ?string $access_token = null;
 
     protected ?int $expires_in = null;

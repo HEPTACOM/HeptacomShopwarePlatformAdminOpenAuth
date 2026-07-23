@@ -4,6 +4,7 @@ services:
         autoconfigure: true
         bind:
             string $appUrl: '%env(APP_URL)%'
+            bool $debugEnabled: '%env(bool:APP_DEBUG)%'
             string $appSecret: '%env(APP_SECRET)%'
             Doctrine\DBAL\Connection $connection: '@Doctrine\DBAL\Connection'
             Shopware\Core\Framework\DataAbstractionLayer\EntityRepository $clientsRepository: '@heptacom_admin_open_auth_client.repository'
@@ -23,6 +24,9 @@ services:
         Heptacom\AdminOpenAuth\Contract\RuleContract:
             tags:
                 - { name: 'shopware.rule.definition' }
+        Heptacom\AdminOpenAuth\Service\HttpClient\Middleware\HttpClientMiddlewareInterface:
+            tags:
+                - 'heptacom_open_auth.http_client.middleware'
         Shopware\Core\Framework\DataAbstractionLayer\EntityDefinition:
             tags:
                 - 'shopware.entity.definition'
@@ -48,6 +52,14 @@ services:
             - '../../Exception/*'
             - '../../Migration/*'
             - '../../Resources/*'
+            - '../../Service/HttpClient/Middleware/*AuthorizationMiddleware.php'
+
+    heptacom.admin_open_auth.base_http_client:
+        class: 'GuzzleHttp\Client'
+        arguments:
+            - protocols: [https]
+              verify: true
+              timeout: 5
 
     heptacom.admin_open_auth.oidc.http_client:
         class: 'GuzzleHttp\Client'
@@ -86,6 +98,11 @@ services:
         arguments:
             - '@Heptacom\AdminOpenAuth\Contract\Client\ClientFactoryContract'
             - '@event_dispatcher'
+
+    Heptacom\AdminOpenAuth\Service\HttpClient\AuthorizedHttpClientFactory:
+        arguments:
+            $httpClient: '@heptacom.admin_open_auth.base_http_client'
+            $middlewares: !tagged_iterator heptacom_open_auth.http_client.middleware
 
     Heptacom\AdminOpenAuth\Service\OpenAuth\OneTimeTokenClientRepository:
         decorates: Shopware\Core\Framework\Api\OAuth\ClientRepository

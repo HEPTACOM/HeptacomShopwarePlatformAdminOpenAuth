@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\Http\Route;
 
+use Heptacom\AdminOpenAuth\Contract\Client\MetadataClientContract;
 use Heptacom\AdminOpenAuth\Contract\ClientLoaderInterface;
-use Heptacom\AdminOpenAuth\Contract\MetadataClientContract;
 use Shopware\Core\Framework\Context;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;

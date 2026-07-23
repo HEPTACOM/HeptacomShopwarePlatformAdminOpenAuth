@@ -6,17 +6,19 @@ namespace Heptacom\AdminOpenAuth\Component\Provider;
 
 use Heptacom\AdminOpenAuth\Component\OpenIdConnect\OpenIdConnectService;
 use Heptacom\AdminOpenAuth\Contract\Client\ClientContract;
+use Heptacom\AdminOpenAuth\Contract\Client\RefreshTokenContract;
+use Heptacom\AdminOpenAuth\Contract\Client\StandaloneClientContract;
 use Heptacom\AdminOpenAuth\Contract\RedirectBehaviour;
 use Heptacom\AdminOpenAuth\Contract\TokenPair;
 use Heptacom\AdminOpenAuth\Contract\User;
 use Heptacom\AdminOpenAuth\Service\TokenPairFactoryContract;
 use Psr\Http\Message\RequestInterface;
 
-final class OpenIdConnectClient extends ClientContract
+final class OpenIdConnectClient extends ClientContract implements StandaloneClientContract, RefreshTokenContract
 {
     public function __construct(
         private readonly TokenPairFactoryContract $tokenPairFactory,
-        private readonly OpenIdConnectService $openIdConnectService
+        private readonly OpenIdConnectService $openIdConnectService,
     ) {
     }
 
@@ -41,6 +43,20 @@ final class OpenIdConnectClient extends ClientContract
         return $this->tokenPairFactory->fromOpenIdConnectToken($this->getInnerClient()->getAccessToken('refresh_token', [
             'refresh_token' => $refreshToken,
         ]));
+    }
+
+    public function getClientToken(?array $scopes = null): TokenPair
+    {
+        $additionalParams = [];
+
+        $scopes ??= $this->getInnerClient()->getConfig()->getScopes();
+        if ($scopes !== null && $scopes !== []) {
+            $additionalParams['scope'] = \implode(' ', $scopes);
+        }
+
+        $oauthToken = $this->getInnerClient()->getAccessToken('client_credentials', $additionalParams);
+
+        return $this->tokenPairFactory->fromOpenIdConnectToken($oauthToken);
     }
 
     public function getUser(string $state, string $code, RedirectBehaviour $behaviour): User

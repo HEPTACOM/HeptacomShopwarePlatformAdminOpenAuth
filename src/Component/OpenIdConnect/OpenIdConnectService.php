@@ -75,7 +75,7 @@ class OpenIdConnectService
             $message = \sprintf('Could not retrieve user info: %s', $e->getMessage());
             $this->logger->error($message, $e->getTrace());
 
-            throw new OpenIdConnectException($message);
+            throw new OpenIdConnectException($message, $e);
         }
     }
 
@@ -164,7 +164,7 @@ class OpenIdConnectService
             $message = \sprintf('Could not retrieve access token: %s', $e->getMessage());
             $this->logger->error($message, $e->getTrace());
 
-            throw new OpenIdConnectException($message);
+            throw new OpenIdConnectException($message, $e);
         }
     }
 

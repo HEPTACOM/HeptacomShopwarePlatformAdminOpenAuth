@@ -14,13 +14,13 @@
             </locales>
         </set>
 
-        <set name="Administration setings">
+        <set name="Administration url clients component">
             <format>
                 <json indent="4" sort="true"/>
             </format>
             <locales>
-                <locale name="en">../src/Resources/app/administration/src/extension/snippet/en-GB.json</locale>
-                <locale name="de">../src/Resources/app/administration/src/extension/snippet/de-DE.json</locale>
+                <locale name="en">../src/Resources/app/administration/src/app/components/heptacom-admin-open-auth-url-clients/snippet/en-GB.json</locale>
+                <locale name="de">../src/Resources/app/administration/src/app/components/heptacom-admin-open-auth-url-clients/snippet/de-DE.json</locale>
             </locales>
         </set>
 

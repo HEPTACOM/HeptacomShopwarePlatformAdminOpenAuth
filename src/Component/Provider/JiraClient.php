@@ -6,6 +6,8 @@ namespace Heptacom\AdminOpenAuth\Component\Provider;
 
 use Heptacom\AdminOpenAuth\Component\OpenAuth\Atlassian;
 use Heptacom\AdminOpenAuth\Contract\Client\ClientContract;
+use Heptacom\AdminOpenAuth\Contract\Client\RefreshTokenContract;
+use Heptacom\AdminOpenAuth\Contract\Client\RequestAuthorizationContract;
 use Heptacom\AdminOpenAuth\Contract\RedirectBehaviour;
 use Heptacom\AdminOpenAuth\Contract\TokenPair;
 use Heptacom\AdminOpenAuth\Contract\User;
@@ -13,7 +15,7 @@ use Heptacom\AdminOpenAuth\Service\TokenPairFactoryContract;
 use Mrjoops\OAuth2\Client\Provider\JiraResourceOwner;
 use Psr\Http\Message\RequestInterface;
 
-final class JiraClient extends ClientContract
+final class JiraClient extends ClientContract implements RefreshTokenContract, RequestAuthorizationContract
 {
     public function __construct(
         private readonly TokenPairFactoryContract $tokenPairFactory,

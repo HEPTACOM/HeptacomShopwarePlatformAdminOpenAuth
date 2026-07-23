@@ -11,7 +11,9 @@
         "Symfony\\Component\\DependencyInjection\\Attribute\\AsTaggedItem",
         "Symfony\\Component\\DependencyInjection\\Attribute\\AutoconfigureTag",
         "Symfony\\Component\\DependencyInjection\\Attribute\\AutowireIterator",
+        "Symfony\\Component\\DependencyInjection\\Compiler\\CompilerPassInterface",
         "Symfony\\Component\\DependencyInjection\\ContainerBuilder",
+        "Symfony\\Component\\DependencyInjection\\Reference",
         "Symfony\\Component\\EventDispatcher\\Attribute\\AsEventListener",
         "Symfony\\Component\\EventDispatcher\\EventDispatcherInterface",
         "Symfony\\Component\\EventDispatcher\\EventSubscriberInterface",
@@ -31,6 +33,8 @@
         "Symfony\\Component\\Routing\\RequestContext",
         "Symfony\\Component\\Routing\\RouterInterface",
         "Symfony\\Contracts\\EventDispatcher\\EventDispatcherInterface",
+        "Symfony\\Contracts\\Cache\\CacheInterface",
+        "Symfony\\Contracts\\Cache\\ItemInterface",
         "Twig\\Extension\\AbstractExtension",
         "Twig\\TwigFunction"
     ],

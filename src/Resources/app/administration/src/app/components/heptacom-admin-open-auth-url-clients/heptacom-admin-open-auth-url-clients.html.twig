@@ -1,0 +1,78 @@
+{% block heptacom_admin_open_auth_url_clients %}
+    <mt-card
+        v-if="heptacomAdminOpenAuthClients.length > 0"
+        position-identifier="heptacom-admin-open-auth-user-profile-sso"
+        :title="$tc('heptacom-admin-open-auth-url-clients.title')"
+        :isLoading="heptacomAdminOpenAuthLoading"
+    >
+        {% block heptacom_admin_open_auth_url_clients_content %}
+            <template #default>
+                {% block heptacom_admin_open_auth_url_clients_cards %}
+                    <sw-container rows="1fr">
+                        <sw-card-section
+                            v-for="(client, clientIndex) of heptacomAdminOpenAuthClients"
+                            :key="client.id"
+                            :slim="true"
+                            :divider="heptacomAdminOpenAuthClients.length - 1 !== clientIndex ? 'bottom' : ''"
+                        >
+                            {% block sw_profile_index_admin_open_auth_clients_cards_item %}
+                                <sw-container columns="1fr auto">
+                                    {% block sw_profile_index_admin_open_auth_clients_cards_item_provider %}
+                                        <div>
+                                            <template v-if="acl.can('heptacom_admin_open_auth_client.editor')">
+                                                <router-link
+                                                    :to="{ name: 'heptacom.admin.open.auth.client.edit', params: { id: client.id } }"
+                                                    type="internal"
+                                                    variant="primary">
+                                                    {{ client.name }}
+                                                </router-link>
+                                            </template>
+                                            <template v-else>
+                                                {{ client.name }}
+                                            </template>
+                                        </div>
+                                    {% endblock %}
+
+                                    {% block sw_profile_index_admin_open_auth_clients_cards_item_action %}
+                                    <template v-if="isMe">
+                                        <mt-button
+                                            v-if="client.connected"
+                                            @click="revokeHeptacomAdminOpenAuthUserKey(client.id)"
+                                            icon="regular-minus"
+                                        >
+                                            {{ $t('heptacom-admin-open-auth-url-clients.userKeys.actions.revoke') }}
+                                        </mt-button>
+                                        <mt-button
+                                            v-else
+                                            @click="redirectToLoginMask(client.id)"
+                                            icon="regular-plus"
+                                        >
+                                            {{ $t('heptacom-admin-open-auth-url-clients.userKeys.actions.connect') }}
+                                        </mt-button>
+                                    </template>
+                                    <template v-else>
+                                        <template
+                                            v-if="client.connected"
+                                        >
+                                            <sw-label variant="success" size="medium" appearance="pill">
+                                                {{ $t('heptacom-admin-open-auth-url-clients.userKeys.states.connected') }}
+                                            </sw-label>
+                                        </template>
+                                        <template
+                                            v-else
+                                        >
+                                            <sw-label variant="info" size="medium" appearance="pill">
+                                                {{ $t('heptacom-admin-open-auth-url-clients.userKeys.states.notConnected') }}
+                                            </sw-label>
+                                        </template>
+                                    </template>
+                                    {% endblock %}
+                                </sw-container>
+                            {% endblock %}
+                        </sw-card-section>
+                    </sw-container>
+                {% endblock %}
+            </template>
+        {% endblock %}
+    </mt-card>
+{% endblock %}

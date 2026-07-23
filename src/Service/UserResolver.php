@@ -86,7 +86,7 @@ final readonly class UserResolver implements UserResolverInterface
         $tokenPair = $user->tokenPair;
 
         if ($this->clientFeatureChecker->canStoreUserTokens($clientId, $context) && $tokenPair !== null) {
-            if (!empty($tokenPair->refreshToken)) {
+            if (!empty($tokenPair->accessToken)) {
                 $this->userToken->setToken($userId, $clientId, $tokenPair, $context);
             }
         }

@@ -1,0 +1,19 @@
+{
+    "heptacom-admin-open-auth-url-clients": {
+        "userKeys": {
+            "actions": {
+                "connect": "Verbinden",
+                "revoke": "Verbindung trennen"
+            },
+            "columns": {
+                "createdAt": "Verbunden am",
+                "provider": "Anbieter"
+            },
+            "states": {
+                "connected": "Verbunden",
+                "notConnected": "Nicht verbunden"
+            }
+        },
+        "title": "Single Sign-on"
+    }
+}

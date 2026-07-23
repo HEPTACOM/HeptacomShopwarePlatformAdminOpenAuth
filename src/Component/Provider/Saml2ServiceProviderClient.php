@@ -7,12 +7,10 @@ namespace Heptacom\AdminOpenAuth\Component\Provider;
 use Heptacom\AdminOpenAuth\Component\Saml\Saml2ServiceProviderService;
 use Heptacom\AdminOpenAuth\Component\Saml\Saml2UserData;
 use Heptacom\AdminOpenAuth\Contract\Client\ClientContract;
-use Heptacom\AdminOpenAuth\Contract\MetadataClientContract;
-use Heptacom\AdminOpenAuth\Contract\ModifiedRedirectBehaviourClientContract;
+use Heptacom\AdminOpenAuth\Contract\Client\MetadataClientContract;
+use Heptacom\AdminOpenAuth\Contract\Client\ModifiedRedirectBehaviourClientContract;
 use Heptacom\AdminOpenAuth\Contract\RedirectBehaviour;
-use Heptacom\AdminOpenAuth\Contract\TokenPair;
 use Heptacom\AdminOpenAuth\Contract\User;
-use Psr\Http\Message\RequestInterface;
 
 final class Saml2ServiceProviderClient extends ClientContract implements MetadataClientContract, ModifiedRedirectBehaviourClientContract
 {
@@ -33,11 +31,6 @@ final class Saml2ServiceProviderClient extends ClientContract implements Metadat
     public function getLoginUrl(?string $state, RedirectBehaviour $behaviour): string
     {
         return $this->getInnerClient()->getAuthnRequestRedirectUri($state);
-    }
-
-    public function refreshToken(string $refreshToken): TokenPair
-    {
-        throw new \Exception('Not supported.');
     }
 
     public function getUser(string $state, string $code, RedirectBehaviour $behaviour): User
@@ -98,11 +91,6 @@ final class Saml2ServiceProviderClient extends ClientContract implements Metadat
         }
 
         return $user;
-    }
-
-    public function authorizeRequest(RequestInterface $request, TokenPair $token): RequestInterface
-    {
-        throw new \RuntimeException('Not supported');
     }
 
     public function getMetadataType(): string

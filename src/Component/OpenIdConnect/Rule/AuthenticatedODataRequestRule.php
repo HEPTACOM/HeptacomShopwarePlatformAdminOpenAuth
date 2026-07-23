@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\Component\OpenIdConnect\Rule;
 
-use Heptacom\AdminOpenAuth\Component\Provider\OpenIdConnectClient;
 use Heptacom\AdminOpenAuth\Contract\OAuthRuleScope;
 use Heptacom\AdminOpenAuth\Contract\User;
+use Psr\Http\Client\ClientInterface;
 
 class AuthenticatedODataRequestRule extends AuthenticatedRequestRule
 {
     public const RULE_NAME = 'heptacomAdminOpenAuthAuthenticatedODataRequest';
 
-    protected function executeAuthenticatedRequest(OpenIdConnectClient $client, User $user, OAuthRuleScope $scope): bool
+    protected function executeAuthenticatedRequest(ClientInterface $client, User $user, OAuthRuleScope $scope): bool
     {
         $originalRequestUrl = $this->requestUrl;
 

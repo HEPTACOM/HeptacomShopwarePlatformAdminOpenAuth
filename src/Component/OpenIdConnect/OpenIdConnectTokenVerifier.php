@@ -197,7 +197,7 @@ class OpenIdConnectTokenVerifier
                 $cachedJwks->expiresAfter(self::CACHE_TTL);
                 $this->cache->save($cachedJwks);
             } catch (ClientExceptionInterface $e) {
-                throw new OpenIdConnectException('Retrieving JWK-Set for token signature verification failed: ' . $e->getMessage());
+                throw new OpenIdConnectException('Retrieving JWK-Set for token signature verification failed: ' . $e->getMessage(), $e);
             }
         }
 

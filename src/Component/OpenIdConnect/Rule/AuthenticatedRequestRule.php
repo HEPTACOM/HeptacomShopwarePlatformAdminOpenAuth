@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\Component\OpenIdConnect\Rule;
 
-use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Uri;
 use Heptacom\AdminOpenAuth\Component\OpenIdConnect\OpenIdConnectRequestHelper;
-use Heptacom\AdminOpenAuth\Component\Provider\OpenIdConnectClient;
 use Heptacom\AdminOpenAuth\Contract\OAuthRuleScope;
 use Heptacom\AdminOpenAuth\Contract\RuleContract;
 use Heptacom\AdminOpenAuth\Contract\User;
@@ -23,8 +21,6 @@ class AuthenticatedRequestRule extends RuleContract
     use JMESPathValidation;
 
     public const RULE_NAME = 'heptacomAdminOpenAuthAuthenticatedRequest';
-
-    public const REQUEST_TIMEOUT = 5.0;
 
     private static ?ClientInterface $httpClient = null;
 
@@ -41,14 +37,14 @@ class AuthenticatedRequestRule extends RuleContract
             return false;
         }
 
-        $client = $scope->getClient();
         $user = $scope->getUser();
+        $httpClient = $scope->getHttpClient();
 
-        if (!$client instanceof OpenIdConnectClient || $user->tokenPair?->accessToken === null) {
+        if (!$httpClient instanceof ClientInterface || $user->tokenPair?->accessToken === null) {
             return false;
         }
 
-        return $this->executeAuthenticatedRequest($client, $user, $scope);
+        return $this->executeAuthenticatedRequest($httpClient, $user, $scope);
     }
 
     public function getConstraints(): array
@@ -69,14 +65,14 @@ class AuthenticatedRequestRule extends RuleContract
     /**
      * Executes and validates the request.
      */
-    protected function executeAuthenticatedRequest(OpenIdConnectClient $client, User $user, OAuthRuleScope $scope): bool
+    protected function executeAuthenticatedRequest(ClientInterface $client, User $user, OAuthRuleScope $scope): bool
     {
         $response = $this->performRequest($client, $user, $scope->getLogger());
 
         return $this->validateResponse($response);
     }
 
-    final protected function performRequest(OpenIdConnectClient $client, User $user, LoggerInterface $logger): ?string
+    final protected function performRequest(ClientInterface $httpClient, User $user, LoggerInterface $logger): ?string
     {
         $requestUrl = (string) $this->requestUrl;
 
@@ -100,8 +96,8 @@ class AuthenticatedRequestRule extends RuleContract
                 throw new AuthenticatedRequestException($requestUrl, 'No token found', 1702992684);
             }
 
-            $request = $client->authorizeRequest(new Request('GET', $uri), $token);
-            $response = $this->getHttpClient()->sendRequest($request);
+            $request = new Request('GET', $uri, ['Accept' => 'application/json']);
+            $response = $httpClient->sendRequest($request);
 
             OpenIdConnectRequestHelper::verifyRequestSuccess($request, $response);
 
@@ -140,22 +136,6 @@ class AuthenticatedRequestRule extends RuleContract
         } catch (\Throwable) {
             return false;
         }
-    }
-
-    private function getHttpClient(): ClientInterface
-    {
-        if (self::$httpClient === null) {
-            self::$httpClient = new Client([
-                'protocols' => ['https'],
-                'verify' => true,
-                'timeout' => self::REQUEST_TIMEOUT,
-                'headers' => [
-                    'Accept' => 'application/json',
-                ],
-            ]);
-        }
-
-        return self::$httpClient;
     }
 
     private function getCachedResponse(User $user, string $requestUrl): ?string

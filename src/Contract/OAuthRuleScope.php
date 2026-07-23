@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Heptacom\AdminOpenAuth\Contract;
 
 use Heptacom\AdminOpenAuth\Contract\Client\ClientContract;
+use Psr\Http\Client\ClientInterface;
 use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\Uuid;
 use Shopware\Core\Framework\Context;
@@ -19,6 +20,7 @@ class OAuthRuleScope extends RuleScope
         private readonly User $user,
         private readonly ClientContract $client,
         private readonly array $clientConfiguration,
+        private readonly ?ClientInterface $httpClient,
         private readonly Context $context,
         private readonly LoggerInterface $logger,
     ) {
@@ -52,6 +54,14 @@ class OAuthRuleScope extends RuleScope
     public function getClientConfiguration(): array
     {
         return $this->clientConfiguration;
+    }
+
+    /**
+     * A authorized HTTP client for the user.
+     */
+    public function getHttpClient(): ?ClientInterface
+    {
+        return $this->httpClient;
     }
 
     public function getLogger(): LoggerInterface

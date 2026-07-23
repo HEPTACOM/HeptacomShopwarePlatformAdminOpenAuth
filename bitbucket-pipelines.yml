@@ -9,6 +9,9 @@ definitions:
         shopware-6-7-current:
             <<: *shopware-6-7-service
             image: dockware/shopware:6.7.10.0
+        shopware-6-7-11:
+            <<: *shopware-6-7-service
+            image: dockware/shopware:6.7.11.0
     steps:
         -   step: &default-step
                 caches:
@@ -179,6 +182,11 @@ definitions:
                         name: Test install 6.7 (current)
                         services:
                             - shopware-6-7-current
+        -   step: &test-install-6-7-11
+                        <<: *test-install-6-7-min
+                        name: Test install 6.7.11
+                        services:
+                            - shopware-6-7-11
 
 pipelines:
     branches:
@@ -237,6 +245,7 @@ pipelines:
         -   parallel:
                 -   step: *test-install-6-7-min
                 -   step: *test-install-6-7-current
+                -   step: *test-install-6-7-11
 
     custom:
         deep-check:

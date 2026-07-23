@@ -40,8 +40,8 @@ final class UserTokenDefinition extends EntityDefinition
     {
         return new FieldCollection([
             (new IdField('id', 'id'))->addFlags(new PrimaryKey(), new Required()),
-            (new LongTextField('refresh_token', 'refreshToken'))->addFlags(new Required()),
-            new LongTextField('access_token', 'accessToken'),
+            new LongTextField('refresh_token', 'refreshToken'),
+            (new LongTextField('access_token', 'accessToken'))->addFlags(new Required()),
             new DateTimeField('expires_at', 'expiresAt'),
             new CreatedAtField(),
             new UpdatedAtField(),

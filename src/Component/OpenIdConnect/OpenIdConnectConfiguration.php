@@ -4,10 +4,19 @@ declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth\Component\OpenIdConnect;
 
+use Heptacom\AdminOpenAuth\Contract\IgnoreUnknownProperties;
 use Shopware\Core\Framework\Struct\Struct;
 
+/**
+ * Holds the data returned by the OpenID Connect metadata discovery.
+ */
 final class OpenIdConnectConfiguration extends Struct
 {
+    /**
+     * Some providers return additional data that we don't need and should not be created as dynamic properties.
+     */
+    use IgnoreUnknownProperties;
+
     protected bool $wellKnownDiscovered = false;
 
     protected string $discoveryDocumentUrl = '';

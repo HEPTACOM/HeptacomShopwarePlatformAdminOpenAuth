@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Heptacom\AdminOpenAuth;
 
+use Composer\InstalledVersions;
 use Doctrine\DBAL\Connection;
+use Heptacom\AdminOpenAuth\DependencyInjection\McpAuthenticationListenerCompilerPass;
 use Shopware\Core\Framework\Plugin;
 use Shopware\Core\Framework\Plugin\Context\UninstallContext;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -37,11 +39,21 @@ final class KskHeptacomAdminOpenAuth extends Plugin
         return true;
     }
 
+    #[\Override]
     public function build(ContainerBuilder $container): void
     {
         parent::build($container);
 
         $this->buildDefaultConfig($container);
+
+        $shopwareVersion = InstalledVersions::isInstalled('shopware/platform')
+            ? InstalledVersions::getVersion('shopware/platform')
+            : InstalledVersions::getVersion('shopware/core');
+
+        if (\version_compare($shopwareVersion ?? '0.0.0.0', '6.7.11.0', '>=')
+            && \version_compare($shopwareVersion ?? '0.0.0.0', '6.7.11.1', '<')) {
+            $container->addCompilerPass(new McpAuthenticationListenerCompilerPass());
+        }
     }
 
     public function uninstall(UninstallContext $uninstallContext): void

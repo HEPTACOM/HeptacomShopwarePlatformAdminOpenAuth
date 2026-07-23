@@ -4,6 +4,20 @@ set -euo pipefail
 BASE_URL="${1:-http://127.0.0.1:80}"
 ZIP_PATH="${2:-./.build/store-build/KskHeptacomAdminOpenAuth-HEAD.zip}"
 
+echo "Waiting for Shopware at ${BASE_URL} ..."
+WAIT_SECONDS=0
+until curl --silent --max-time 5 "${BASE_URL}/api/_info/version" > /dev/null 2>&1; do
+    if [ "${WAIT_SECONDS}" -ge 300 ]; then
+        echo "ERROR: Shopware did not become ready after ${WAIT_SECONDS}s"
+        curl -v "${BASE_URL}/api/_info/version" || true
+        exit 1
+    fi
+    echo "  not ready yet (${WAIT_SECONDS}s elapsed), retrying in 5s ..."
+    sleep 5
+    WAIT_SECONDS=$((WAIT_SECONDS + 5))
+done
+echo "Shopware is ready after ${WAIT_SECONDS}s"
+
 export ACCESS_TOKEN
 ACCESS_TOKEN=$(curl -X POST "${BASE_URL}/api/oauth/token" \
     --fail --silent --show-error \
