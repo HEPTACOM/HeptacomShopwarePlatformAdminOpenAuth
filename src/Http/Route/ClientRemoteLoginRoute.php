@@ -40,8 +40,15 @@ final class ClientRemoteLoginRoute extends AbstractController
     ): Response {
         $redirectTo = (string) $request->query->get('redirectTo') ?: null;
 
-        if ($redirectTo && !\str_starts_with($redirectTo, '/')) {
-            throw new BadRequestException('Only absolute redirect urls are allowed.');
+        if ($redirectTo !== null) {
+            if (!\str_starts_with($redirectTo, '/')) {
+                throw new BadRequestException('Only absolute redirect urls are allowed.');
+            }
+
+            // a protocol-relative url like "//example.com" starts with a slash but targets a foreign host
+            if (\str_starts_with($redirectTo, '//')) {
+                throw new BadRequestException('Redirect urls must not contain a host.');
+            }
         }
 
         $systemContext = $context->scope(Context::SYSTEM_SCOPE, static fn (Context $context): Context => $context);
