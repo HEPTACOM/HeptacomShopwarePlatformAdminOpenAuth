@@ -1,5 +1,14 @@
 # Unreleased
 
+**Added**
+
+* Added event `UserInfoChangeSetCalculatedEvent` to change what is written to a user before the login applies the change set
+* Added event `UserUpdatedEvent` to react to a user that has been created or updated by a login
+
+**Changed**
+
+* Changed the user update to write every boolean of the change set with its DBAL type, previously only `admin` was covered
+
 # 9.1.0
 
 **Added**

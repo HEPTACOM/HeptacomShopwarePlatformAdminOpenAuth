@@ -1,5 +1,14 @@
 # Unreleased
 
+**Hinzugefügt**
+
+* Neues Event `UserInfoChangeSetCalculatedEvent` hinzugefügt um zu ändern, was beim Login an einem Benutzer geschrieben wird, bevor der Änderungssatz angewendet wird
+* Neues Event `UserUpdatedEvent` hinzugefügt um auf einen durch einen Login angelegten oder aktualisierten Benutzer zu reagieren
+
+**Geändert**
+
+* Beim Aktualisieren des Benutzers wird nun jeder Boolean des Änderungssatzes mit seinem DBAL-Typ geschrieben, zuvor war nur `admin` abgedeckt
+
 # 9.1.0
 
 **Hinzugefügt**

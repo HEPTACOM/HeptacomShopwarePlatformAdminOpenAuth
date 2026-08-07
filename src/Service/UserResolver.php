@@ -16,6 +16,8 @@ use Heptacom\AdminOpenAuth\Contract\UserKeyInterface;
 use Heptacom\AdminOpenAuth\Contract\UserResolverInterface;
 use Heptacom\AdminOpenAuth\Contract\UserTokenInterface;
 use Heptacom\AdminOpenAuth\Exception\UserMismatchException;
+use Heptacom\AdminOpenAuth\Service\Support\UserInfoChangeSetCalculatedEvent;
+use Heptacom\AdminOpenAuth\Service\Support\UserUpdatedEvent;
 use Shopware\Core\Defaults;
 use Shopware\Core\Framework\Api\Acl\Role\AclUserRoleDefinition;
 use Shopware\Core\Framework\Context;
@@ -31,6 +33,7 @@ use Shopware\Core\System\Language\LanguageCollection;
 use Shopware\Core\System\Language\LanguageEntity;
 use Shopware\Core\System\User\UserCollection;
 use Shopware\Core\System\User\UserDefinition;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 final readonly class UserResolver implements UserResolverInterface
 {
@@ -47,7 +50,9 @@ final readonly class UserResolver implements UserResolverInterface
         private UserEmailInterface $userEmail,
         private UserKeyInterface $userKey,
         private UserTokenInterface $userToken,
-        private ClientFeatureCheckerInterface $clientFeatureChecker
+        private ClientFeatureCheckerInterface $clientFeatureChecker,
+        private StateResolver $stateResolver,
+        private EventDispatcherInterface $eventDispatcher
     ) {
     }
 
@@ -98,9 +103,25 @@ final readonly class UserResolver implements UserResolverInterface
 
         $this->login->setCredentials($state, $userId, $context);
 
-        $userChangeSet = $this->getUserInfoChangeSet($user, $isNew, $clientId, $context);
+        $changeSetEvent = new UserInfoChangeSetCalculatedEvent(
+            $user,
+            $isNew,
+            $clientId,
+            $context,
+            $this->getUserInfoChangeSet($user, $isNew, $clientId, $context)
+        );
+        $this->eventDispatcher->dispatch($changeSetEvent);
 
-        $this->updateUser($userId, $userChangeSet, $isNew);
+        $this->updateUser($userId, $changeSetEvent->changeSet, $isNew);
+
+        $this->eventDispatcher->dispatch(new UserUpdatedEvent(
+            $user,
+            $userId,
+            $isNew,
+            $clientId,
+            $this->stateResolver->getPayload($state, $context),
+            $context
+        ));
     }
 
     protected function findUserId(User $user, string $clientId, Context $context): ?string
@@ -204,7 +225,9 @@ final readonly class UserResolver implements UserResolverInterface
         // check with database if update is required
         if ($isNew || $this->isUserChanged($userId, $userChangeSet)) {
             $userChangeSet['updated_at'] = (new \DateTime())->format(Defaults::STORAGE_DATE_TIME_FORMAT);
-            $this->connection->update(UserDefinition::ENTITY_NAME, $userChangeSet, ['id' => Uuid::fromHexToBytes($userId)], ['admin' => Types::BOOLEAN]);
+            // listeners may add further boolean columns than `admin`, all of them need the type to be written correctly
+            $types = \array_map(static fn (): string => Types::BOOLEAN, \array_filter($userChangeSet, \is_bool(...)));
+            $this->connection->update(UserDefinition::ENTITY_NAME, $userChangeSet, ['id' => Uuid::fromHexToBytes($userId)], $types);
         }
 
         // check if acl roles are changed

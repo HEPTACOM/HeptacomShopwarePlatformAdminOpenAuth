@@ -363,6 +363,64 @@ In case you want to use different settings, you can decorate the `heptacom.admin
 
 Please note that some settings of your HTTP client (like adding default headers) could lead to unwanted side effects, as the authorized HTTP client is used by this plugin as well.
 
+## Reacting to user provisioning
+
+Every successful login runs the identity provider's user data through [`UserResolver`](src/Service/UserResolver.php), which creates or updates the Shopware user. Two events let you take part in that without decorating the service.
+
+### Changing what is written to the user
+
+[`UserInfoChangeSetCalculatedEvent`](src/Service/Support/UserInfoChangeSetCalculatedEvent.php) is dispatched after the change set has been calculated and before it is written. Its `changeSet` property is mutable and holds raw `user` table columns. Use it to apply defaults the identity provider does not supply.
+
+```php
+<?php declare(strict_types=1);
+
+namespace Swag\Example\Subscriber;
+
+use Heptacom\AdminOpenAuth\Service\Support\UserInfoChangeSetCalculatedEvent;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
+
+class ExampleUserDefaultsSubscriber
+{
+    #[AsEventListener]
+    public function __invoke(UserInfoChangeSetCalculatedEvent $event): void
+    {
+        if (!$event->isNew) {
+            return;
+        }
+
+        $event->changeSet['time_zone'] = 'Europe/Berlin';
+    }
+}
+```
+
+Boolean values are written with the correct DBAL type, so adding `active` or another flag works the same way `admin` does.
+
+### Acting after the user has been written
+
+[`UserUpdatedEvent`](src/Service/Support/UserUpdatedEvent.php) is dispatched once the user exists. It carries the resolved `userId`, whether the user was just created, the client the login came from and the payload the login state was created with.
+
+```php
+<?php declare(strict_types=1);
+
+namespace Swag\Example\Subscriber;
+
+use Heptacom\AdminOpenAuth\Service\Support\UserUpdatedEvent;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
+
+class ExampleWelcomeMailSubscriber
+{
+    #[AsEventListener]
+    public function __invoke(UserUpdatedEvent $event): void
+    {
+        if ($event->isNew) {
+            // notify someone about $event->userId
+        }
+    }
+}
+```
+
+Use this event for anything that needs the user to exist first, like assigning associations or sending a notification. Changes to the user record itself belong in `UserInfoChangeSetCalculatedEvent`, so they are part of the same write.
+
 ## Storefront login
 
 You want to use this plugin to allow your customers to login using SSO?
