@@ -1,5 +1,9 @@
 # Unreleased
 
+**Hinzugefügt**
+
+* Neue Methode `LoginStateFactoryInterface::createWithPayload` hinzugefügt um eigene Daten an einem Login-State zu hinterlegen und sie nach der Weiterleitung vom Identity Provider zurückzuerhalten
+
 # 9.1.0
 
 **Hinzugefügt**

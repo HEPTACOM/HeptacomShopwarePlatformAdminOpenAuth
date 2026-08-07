@@ -363,6 +363,23 @@ In case you want to use different settings, you can decorate the `heptacom.admin
 
 Please note that some settings of your HTTP client (like adding default headers) could lead to unwanted side effects, as the authorized HTTP client is used by this plugin as well.
 
+## Passing data along a login
+
+A login is started by creating a state through [`LoginStateFactoryInterface`](src/Contract/StateFactory/LoginStateFactoryInterface.php). The identity provider hands that state back on the redirect, which is how the plugin recognises the request that started the login.
+
+`createWithPayload()` lets you store your own data on that state, so context of the initiating request survives the round trip to the identity provider.
+
+```php
+$state = $this->loginStateFactory->createWithPayload(
+    $clientId,
+    $redirectTo,
+    ['salesChannelId' => $salesChannelId],
+    $context
+);
+```
+
+The payload is handed back to you on `UserUpdatedEvent` and `UserRedirectCompletedEvent`, and can be read at any time with `StateResolver::getPayload()`. Keys the plugin owns, such as `redirectTo`, always win over the ones you pass.
+
 ## Storefront login
 
 You want to use this plugin to allow your customers to login using SSO?

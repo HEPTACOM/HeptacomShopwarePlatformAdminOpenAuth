@@ -25,6 +25,14 @@ final readonly class LoginStateFactory implements LoginStateFactoryInterface
 
     public function create(string $clientId, ?string $redirectTo, Context $context): string
     {
+        return $this->createWithPayload($clientId, $redirectTo, [], $context);
+    }
+
+    /**
+     * @param array<string, mixed> $payload
+     */
+    public function createWithPayload(string $clientId, ?string $redirectTo, array $payload, Context $context): string
+    {
         if (!$this->clientFeatureChecker->canLogin($clientId, $context)) {
             throw new LoadClientException('Client can not login', $clientId, 1700229880);
         }
@@ -36,7 +44,9 @@ final readonly class LoginStateFactory implements LoginStateFactoryInterface
             'userId' => null,
             'type' => 'login',
             'state' => $state,
+            // keys owned by the plugin are applied last, so a caller cannot redefine them
             'payload' => [
+                ...$payload,
                 'redirectTo' => $redirectTo,
             ],
         ]], $context);

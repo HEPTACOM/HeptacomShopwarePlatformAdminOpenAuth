@@ -1,5 +1,9 @@
 # Unreleased
 
+**Added**
+
+* Added `LoginStateFactoryInterface::createWithPayload` to store custom data on a login state and receive it back after the redirect from the identity provider
+
 # 9.1.0
 
 **Added**
