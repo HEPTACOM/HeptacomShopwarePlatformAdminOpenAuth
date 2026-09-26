@@ -5,6 +5,7 @@
 **Behoben**
 
 * Aktive SVG Bestandteile (CSS) in den Vorschaubildern ausgetauscht gegen eindeutige SVG Bestandteile ausgetauscht ohne visuelle Einbußen um den Community Store Richtlinien zu folgen
+* PHP-Deprecation in `ClientAuthorizationMiddleware` behoben, indem der optionale Konstruktorparameter `$clientScopes` hinter den erforderlichen Parameter `$cache` verschoben wurde
 
 # 9.1.0
 

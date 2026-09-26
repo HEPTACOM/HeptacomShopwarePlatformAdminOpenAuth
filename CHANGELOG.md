@@ -5,6 +5,7 @@
 **Fixed**
 
 * Converted active parts (CSS) in SVG assets to SVG attributes to match Community Store validation
+* Fixed PHP deprecation in `ClientAuthorizationMiddleware` by moving the optional `$clientScopes` constructor parameter after the required `$cache` parameter
 
 # 9.1.0
 

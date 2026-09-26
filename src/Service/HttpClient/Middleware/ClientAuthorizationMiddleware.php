@@ -18,8 +18,8 @@ final class ClientAuthorizationMiddleware extends AuthorizationMiddleware
     public function __construct(
         ClientContract $client,
         private readonly string $clientId,
-        private readonly ?array $clientScopes = null,
         private readonly CacheInterface $cache,
+        private readonly ?array $clientScopes = null,
     ) {
         parent::__construct($client);
     }
