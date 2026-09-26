@@ -36,7 +36,8 @@ class AuthenticationFlowActionExecution
             $event->client->rules,
             $event->user,
             $event->client->getExtensionOfType('oauthClient', ClientContract::class),
-            $event->client->config
+            $event->client->config,
+            $event->client->getId(),
         );
     }
 
@@ -47,7 +48,8 @@ class AuthenticationFlowActionExecution
             $event->client->rules,
             $event->user,
             $event->client->getExtensionOfType('oauthClient', ClientContract::class),
-            $event->client->config
+            $event->client->config,
+            $event->client->getId(),
         );
     }
 
@@ -55,10 +57,17 @@ class AuthenticationFlowActionExecution
         ?ClientRuleCollection $rules,
         User $user,
         ?ClientContract $client,
-        array $clientConfiguration
+        array $clientConfiguration,
+        string $clientId,
     ): void {
         // rules need both the loaded rule association and the oauth client that provides their scope
         if ($rules === null || $client === null) {
+            $this->logger->error('Skipped login rule execution: client is missing loaded rules or the oauthClient extension', [
+                'clientId' => $clientId,
+                'rulesLoaded' => $rules !== null,
+                'clientLoaded' => $client !== null,
+            ]);
+
             return;
         }
 
