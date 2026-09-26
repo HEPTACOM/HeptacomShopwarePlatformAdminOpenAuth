@@ -1,5 +1,11 @@
 # Unreleased
 
+# 9.1.1
+
+**Behoben**
+
+* Aktive SVG Bestandteile (CSS) in den Vorschaubildern ausgetauscht gegen eindeutige SVG Bestandteile ausgetauscht ohne visuelle Einbußen um den Community Store Richtlinien zu folgen
+
 # 9.1.0
 
 **Hinzugefügt**
