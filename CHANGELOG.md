@@ -2,7 +2,7 @@
 
 **Fixed**
 
-* Fixed `TypeError` in the login rule execution when a client has no rule association loaded or no `oauthClient` extension set
+* Fixed `TypeError` in the login rule execution when a client has no rule association loaded or no `oauthClient` extension set (library usage only). See [Nicky Gerritsen - Let's Talk's contribution on GitHub](https://github.com/HEPTACOM/HeptacomShopwarePlatformAdminOpenAuth/pull/58)
 
 # 9.1.0
 
