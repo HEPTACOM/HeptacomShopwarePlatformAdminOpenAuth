@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 
 final class RedirectTargetValidator
 {
-    private const SAME_ORIGIN_PATH = '{^/(?![/\\\\])[A-Za-z0-9._~!$&\'()*+,;=:@%/?#-]*$}';
+    private const SAME_ORIGIN_PATH = '{^/(?![/\\\\])[A-Za-z0-9._~!$&\'()*+,;=:@%/?#-]*$}D';
 
     public static function assertSameOrigin(?string $redirectTo): ?string
     {
