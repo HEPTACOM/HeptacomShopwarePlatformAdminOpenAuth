@@ -7,9 +7,9 @@ namespace Heptacom\AdminOpenAuth\Http\Route;
 use Heptacom\AdminOpenAuth\Contract\ClientLoaderInterface;
 use Heptacom\AdminOpenAuth\Contract\RedirectBehaviourFactoryInterface;
 use Heptacom\AdminOpenAuth\Contract\StateFactory\LoginStateFactoryInterface;
+use Heptacom\AdminOpenAuth\Http\Route\Support\RedirectTargetValidator;
 use Shopware\Core\Framework\Context;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -38,11 +38,7 @@ final class ClientRemoteLoginRoute extends AbstractController
         Request $request,
         Context $context
     ): Response {
-        $redirectTo = (string) $request->query->get('redirectTo') ?: null;
-
-        if ($redirectTo && !\str_starts_with($redirectTo, '/')) {
-            throw new BadRequestException('Only absolute redirect urls are allowed.');
-        }
+        $redirectTo = RedirectTargetValidator::assertSameOrigin((string) $request->query->get('redirectTo') ?: null);
 
         $systemContext = $context->scope(Context::SYSTEM_SCOPE, static fn (Context $context): Context => $context);
         $state = $this->loginStateFactory->create($clientId, $redirectTo, $systemContext);
