@@ -370,7 +370,7 @@ You want to use this plugin to allow your customers to login using SSO?
 We are happy to provide you an extension to this plugin, allowing you exactly that.
 It is based on this plugin, providing you the same extensibility and features as this plugin.
 
-For more information, please have a look at our website: [www.heptacom.de/en/products](https://www.heptacom.de/products/).
+For more information, please have a look at our website: [www.heptacom.de/en/products](https://www.heptacom.de/en/products/).
 
 ## Changes
 

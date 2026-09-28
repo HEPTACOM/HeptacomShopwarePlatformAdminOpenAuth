@@ -1,5 +1,26 @@
 # Unreleased
 
+**Changed**
+
+* Changed SAML2 logs to pass the exception as log context instead of its stack trace, so monitoring integrations can pick it up. See [Nicky Gerritsen - Let's Talk's contribution on GitHub](https://github.com/HEPTACOM/HeptacomShopwarePlatformAdminOpenAuth/pull/62)
+* Changed the SAMLResponse verification to also log the response error of the identity provider, which names the cause behind the failed check. See [Nicky Gerritsen - Let's Talk's contribution on GitHub](https://github.com/HEPTACOM/HeptacomShopwarePlatformAdminOpenAuth/pull/62)
+
+**Fixed**
+
+* Fixed `TypeError` in the login rule execution when a client has no rule association loaded or no `oauthClient` extension set (library usage only). See [Nicky Gerritsen - Let's Talk's contribution on GitHub](https://github.com/HEPTACOM/HeptacomShopwarePlatformAdminOpenAuth/pull/58)
+
+# 9.1.1
+
+**Fixed**
+
+* Converted active parts (CSS) in SVG assets to SVG attributes to match Community Store validation
+* Fixed PHP deprecation in `ClientAuthorizationMiddleware` by moving the optional `$clientScopes` constructor parameter after the required `$cache` parameter
+* Fixed `redirectTo` validation in the remote login route to also reject protocol-relative urls. See [Nicky Gerritsen - Let's Talk's contribution on GitHub](https://github.com/HEPTACOM/HeptacomShopwarePlatformAdminOpenAuth/pull/57)
+* Fixed `StateResolver` returning the payload of an already expired login. See [Nicky Gerritsen - Let's Talk's contribution on GitHub](https://github.com/HEPTACOM/HeptacomShopwarePlatformAdminOpenAuth/pull/57)
+* Fixed the redirect route accepting an expired or unknown login state, it now throws `RedirectReceiveInvalidStateException`. See [Nicky Gerritsen - Let's Talk's contribution on GitHub](https://github.com/HEPTACOM/HeptacomShopwarePlatformAdminOpenAuth/pull/57)
+
+# 9.1.0
+
 **Added**
 
 * Added configuration options `enableUnifiedRedirectDomain` and `unifiedRedirectDomain` to allow using one unified domain for the IdP redirect to the shop. (copied from 8.1.0)

@@ -76,7 +76,7 @@ class Saml2ServiceProviderService
                     $idpMetadataXmlUrl,
                     $e->getMessage()
                 );
-                $this->logger->warning($message, $e->getTrace());
+                $this->logger->warning($message, ['exception' => $e]);
 
                 return false;
             }
@@ -130,7 +130,7 @@ class Saml2ServiceProviderService
                 $message .= ': ' . $e->getMessage();
             }
 
-            $this->logger->error($message, $e->getTrace());
+            $this->logger->error($message, ['exception' => $e]);
 
             throw new Saml2Exception($message);
         }
@@ -157,7 +157,7 @@ class Saml2ServiceProviderService
             return $metadata;
         } catch (\Exception $e) {
             $message = 'Could not retrieve SP metadata';
-            $this->logger->critical($message . ': ' . $e->getMessage(), $e->getTrace());
+            $this->logger->critical($message . ': ' . $e->getMessage(), ['exception' => $e]);
 
             throw new Saml2Exception($message, $e);
         }
@@ -171,6 +171,7 @@ class Saml2ServiceProviderService
     public function validateLoginConfirmData(string $samlResponse, string $relayState): Auth
     {
         $this->prepareSuperGlobals($samlResponse, $relayState);
+        $responseException = null;
 
         try {
             $auth = new Auth($this->config->getOneLoginSettings());
@@ -178,13 +179,19 @@ class Saml2ServiceProviderService
             $errors = $auth->getErrors();
 
             if (\count($errors) > 0) {
+                // the error list only names the failed checks, the underlying cause is kept separately
+                $responseException = $auth->getLastErrorException();
+
                 throw new OneLoginSaml2Error('Invalid response: ' . \implode(', ', $errors));
             }
 
             return $auth;
         } catch (\Exception $e) {
             $message = \sprintf('Could not verify SAMLResponse: %s', $e->getMessage());
-            $this->logger->error($message, $e->getTrace());
+            $this->logger->error($message, [
+                'exception' => $responseException ?? $e,
+                'responseError' => $responseException?->getMessage(),
+            ]);
 
             throw new Saml2Exception($message, $e);
         } finally {
@@ -208,7 +215,7 @@ class Saml2ServiceProviderService
             return new Settings($this->config->getOneLoginSettings(), true);
         } catch (\Exception $e) {
             $message = \sprintf('Could not retrieve SAML settings: %s', $e->getMessage());
-            $this->logger->critical($message, $e->getTrace());
+            $this->logger->critical($message, ['exception' => $e]);
 
             throw new Saml2Exception($message, $e);
         }
