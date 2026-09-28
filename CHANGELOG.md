@@ -1,5 +1,7 @@
 # Unreleased
 
+# 6.0.6
+
 **Fixed**
 
 * Converted active parts (CSS) in SVG assets to SVG attributes to match Community Store validation (copied from 9.1.1)
