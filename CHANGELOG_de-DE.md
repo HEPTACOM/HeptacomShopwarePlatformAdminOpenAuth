@@ -5,6 +5,20 @@
 * SAML2-Logs übergeben nun die Exception als Log-Kontext statt ihres Stacktraces, damit Monitoring-Integrationen sie auswerten können. Siehe [Nicky Gerritsen - Let's Talk's Beitrag auf GitHub](https://github.com/HEPTACOM/HeptacomShopwarePlatformAdminOpenAuth/pull/62)
 * Bei der Prüfung der SAMLResponse wird zusätzlich der Response-Fehler des Identity Providers protokolliert, der die Ursache der fehlgeschlagenen Prüfung benennt. Siehe [Nicky Gerritsen - Let's Talk's Beitrag auf GitHub](https://github.com/HEPTACOM/HeptacomShopwarePlatformAdminOpenAuth/pull/62)
 
+**Behoben**
+
+* `TypeError` bei der Ausführung der Login-Regeln behoben, wenn ein Client keine geladene Regel-Assoziation oder keine `oauthClient`-Erweiterung besitzt (nur bei Nutzung als Bibliothek). Siehe [Nicky Gerritsen - Let's Talk's Beitrag auf GitHub](https://github.com/HEPTACOM/HeptacomShopwarePlatformAdminOpenAuth/pull/58)
+
+# 9.1.1
+
+**Behoben**
+
+* Aktive SVG Bestandteile (CSS) in den Vorschaubildern ausgetauscht gegen eindeutige SVG Bestandteile ausgetauscht ohne visuelle Einbußen um den Community Store Richtlinien zu folgen
+* PHP-Deprecation in `ClientAuthorizationMiddleware` behoben, indem der optionale Konstruktorparameter `$clientScopes` hinter den erforderlichen Parameter `$cache` verschoben wurde
+* `redirectTo`-Validierung in der Remote-Login-Route behoben, sodass protokollrelative URLs ebenfalls abgelehnt werden. Siehe [Nicky Gerritsen - Let's Talk's Beitrag auf GitHub](https://github.com/HEPTACOM/HeptacomShopwarePlatformAdminOpenAuth/pull/57)
+* `StateResolver` gibt die Payload eines bereits abgelaufenen Logins nicht mehr zurück. Siehe [Nicky Gerritsen - Let's Talk's Beitrag auf GitHub](https://github.com/HEPTACOM/HeptacomShopwarePlatformAdminOpenAuth/pull/57)
+* Die Redirect-Route akzeptiert keinen abgelaufenen oder unbekannten Login-State mehr, sondern wirft `RedirectReceiveInvalidStateException`. Siehe [Nicky Gerritsen - Let's Talk's Beitrag auf GitHub](https://github.com/HEPTACOM/HeptacomShopwarePlatformAdminOpenAuth/pull/57)
+
 # 9.1.0
 
 **Hinzugefügt**
