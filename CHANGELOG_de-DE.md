@@ -1,5 +1,7 @@
 # Unreleased
 
+# 8.1.1
+
 **Behoben**
 
 * Aktive SVG Bestandteile (CSS) in den Vorschaubildern gegen eindeutige SVG Bestandteile ausgetauscht ohne visuelle Einbußen um den Community Store Richtlinien zu folgen (Übernahme aus Version 9.1.1)
