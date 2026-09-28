@@ -5,10 +5,13 @@ declare(strict_types=1);
 namespace Heptacom\AdminOpenAuth\Service;
 
 use Heptacom\AdminOpenAuth\Database\LoginCollection;
+use Heptacom\AdminOpenAuth\Database\LoginEntity;
+use Shopware\Core\Defaults;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
+use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\RangeFilter;
 
 class StateResolver
 {
@@ -22,12 +25,19 @@ class StateResolver
 
     public function getPayload(string $state, Context $context): ?array
     {
+        return $this->getLogin($state, $context)?->payload;
+    }
+
+    public function getLogin(string $state, Context $context): ?LoginEntity
+    {
         $criteria = new Criteria();
         $criteria->addFilter(
             new EqualsFilter('state', $state),
         );
-        $login = $this->loginsRepository->search($criteria, $context)->first();
+        $criteria->addFilter(new RangeFilter('expiresAt', [
+            RangeFilter::GTE => (new \DateTimeImmutable())->format(Defaults::STORAGE_DATE_TIME_FORMAT),
+        ]));
 
-        return $login?->payload;
+        return $this->loginsRepository->search($criteria, $context)->getEntities()->first();
     }
 }
