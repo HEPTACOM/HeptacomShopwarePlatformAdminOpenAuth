@@ -1,5 +1,11 @@
 # Unreleased
 
+**Fixed**
+
+* Fixed `redirectTo` validation in the remote login route to also reject protocol-relative urls. See [Nicky Gerritsen - Let's Talk's contribution on GitHub](https://github.com/HEPTACOM/HeptacomShopwarePlatformAdminOpenAuth/pull/57)
+* Fixed `StateResolver` returning the payload of an already expired login. See [Nicky Gerritsen - Let's Talk's contribution on GitHub](https://github.com/HEPTACOM/HeptacomShopwarePlatformAdminOpenAuth/pull/57)
+* Fixed the redirect route accepting an expired or unknown login state, it now throws `RedirectReceiveInvalidStateException`. See [Nicky Gerritsen - Let's Talk's contribution on GitHub](https://github.com/HEPTACOM/HeptacomShopwarePlatformAdminOpenAuth/pull/57)
+
 # 9.1.0
 
 **Added**
