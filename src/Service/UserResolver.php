@@ -253,10 +253,6 @@ final readonly class UserResolver implements UserResolverInterface
             ->executeQuery()
             ->fetchAllAssociative();
 
-        if ($currentAclRoleIds === false) {
-            $currentAclRoleIds = [];
-        }
-
         $currentAclRoleIds = Uuid::fromBytesToHexList(\array_column($currentAclRoleIds, 'acl_role_id'));
 
         // delete old

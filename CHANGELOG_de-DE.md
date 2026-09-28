@@ -1,5 +1,9 @@
 # Unreleased
 
+**Behoben**
+
+* `TypeError` bei der Ausführung der Login-Regeln behoben, wenn ein Client keine geladene Regel-Assoziation oder keine `oauthClient`-Erweiterung besitzt (nur bei Nutzung als Bibliothek). Siehe [Nicky Gerritsen - Let's Talk's Beitrag auf GitHub](https://github.com/HEPTACOM/HeptacomShopwarePlatformAdminOpenAuth/pull/58)
+
 # 9.1.1
 
 **Behoben**
