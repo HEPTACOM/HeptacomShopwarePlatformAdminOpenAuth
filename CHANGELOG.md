@@ -1,5 +1,10 @@
 # Unreleased
 
+**Changed**
+
+* Changed SAML2 logs to pass the exception as log context instead of its stack trace, so monitoring integrations can pick it up. See [Nicky Gerritsen - Let's Talk's contribution on GitHub](https://github.com/HEPTACOM/HeptacomShopwarePlatformAdminOpenAuth/pull/62)
+* Changed the SAMLResponse verification to also log the response error of the identity provider, which names the cause behind the failed check. See [Nicky Gerritsen - Let's Talk's contribution on GitHub](https://github.com/HEPTACOM/HeptacomShopwarePlatformAdminOpenAuth/pull/62)
+
 **Fixed**
 
 * Fixed `TypeError` in the login rule execution when a client has no rule association loaded or no `oauthClient` extension set (library usage only). See [Nicky Gerritsen - Let's Talk's contribution on GitHub](https://github.com/HEPTACOM/HeptacomShopwarePlatformAdminOpenAuth/pull/58)
