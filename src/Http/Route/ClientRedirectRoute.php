@@ -6,6 +6,7 @@ namespace Heptacom\AdminOpenAuth\Http\Route;
 
 use Heptacom\AdminOpenAuth\Contract\OpenAuthenticationFlowInterface;
 use Heptacom\AdminOpenAuth\Contract\RedirectBehaviourFactoryInterface;
+use Heptacom\AdminOpenAuth\Contract\Route\Exception\RedirectReceiveInvalidStateException;
 use Heptacom\AdminOpenAuth\Database\ClientCollection;
 use Heptacom\AdminOpenAuth\Database\ClientEntity;
 use Heptacom\AdminOpenAuth\Http\Route\Support\RedirectReceiveRoute;
@@ -76,7 +77,13 @@ final class ClientRedirectRoute extends AbstractController
                 $client,
                 $this->redirectBehaviourFactory->createRedirectBehaviour($clientId, $context),
             );
-        $requestState = (string) $user->getExtensionOfType('requestState', ArrayStruct::class)['requestState'];
+        $requestStateExtension = $user->getExtensionOfType('requestState', ArrayStruct::class);
+        $requestState = (string) ($requestStateExtension?->offsetGet('requestState') ?? '');
+        $login = $this->stateResolver->getLogin($requestState, $context);
+
+        if ($login === null) {
+            throw new RedirectReceiveInvalidStateException($requestState);
+        }
 
         $this->flow->upsertUser($user, $clientId, $requestState, $context);
 
@@ -87,7 +94,7 @@ final class ClientRedirectRoute extends AbstractController
             )
         );
 
-        $statePayload = $this->stateResolver->getPayload($requestState, $context);
+        $statePayload = $login->payload ?? [];
         $targetUrl = $statePayload['redirectTo'] ?? $this->generateUrl(
             'administration.index',
             [],

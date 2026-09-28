@@ -1,5 +1,14 @@
 # Unreleased
 
+# 8.1.1
+
+**Fixed**
+
+* Converted active parts (CSS) in SVG assets to SVG attributes to match Community Store validation (copied from 9.1.1)
+* Fixed `redirectTo` validation in the remote login route to also reject protocol-relative urls. See [Nicky Gerritsen - Let's Talk's contribution on GitHub](https://github.com/HEPTACOM/HeptacomShopwarePlatformAdminOpenAuth/pull/57) (copied from 9.1.1)
+* Fixed `StateResolver` returning the payload of an already expired login. See [Nicky Gerritsen - Let's Talk's contribution on GitHub](https://github.com/HEPTACOM/HeptacomShopwarePlatformAdminOpenAuth/pull/57) (copied from 9.1.1)
+* Fixed the redirect route accepting an expired or unknown login state, it now throws `RedirectReceiveInvalidStateException`. See [Nicky Gerritsen - Let's Talk's contribution on GitHub](https://github.com/HEPTACOM/HeptacomShopwarePlatformAdminOpenAuth/pull/57) (copied from 9.1.1)
+
 # 8.1.0
 
 **Added**
