@@ -10,7 +10,8 @@
                         "groupIds": "Group IDs"
                     }
                 },
-                "tenantId": "Directory (tenant) ID"
+                "tenantId": "Directory (tenant) ID",
+                "fetchPicture": "Import user picture"
             }
         },
         "providers": {

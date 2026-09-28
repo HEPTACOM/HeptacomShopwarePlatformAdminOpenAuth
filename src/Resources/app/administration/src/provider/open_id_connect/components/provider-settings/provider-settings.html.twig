@@ -45,5 +45,9 @@
             :label="$t('heptacomAdminOpenAuthClient.providerFields.open_id_connect.additionalScopes')"
             v-model:value="item.config.scopes"
         ></sw-tagged-field>
+        <mt-switch
+            :label="$t('heptacomAdminOpenAuthClient.providerFields.open_id_connect.fetchPicture')"
+            v-model="item.config.fetchPicture"
+        ></mt-switch>
     </mt-card>
 {% endblock %}

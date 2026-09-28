@@ -21,5 +21,9 @@
             :label="$t('heptacomAdminOpenAuthClient.providerFields.microsoft_entra_id_oidc.additionalScopes')"
             v-model:value="item.config.scopes"
         ></sw-tagged-field>
+        <mt-switch
+            :label="$t('heptacomAdminOpenAuthClient.providerFields.microsoft_entra_id_oidc.fetchPicture')"
+            v-model="item.config.fetchPicture"
+        ></mt-switch>
     </mt-card>
 {% endblock %}

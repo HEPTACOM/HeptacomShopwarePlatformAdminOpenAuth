@@ -21,6 +21,8 @@ final class User extends Struct
 
     public string $displayName = '';
 
+    public ?Picture $picture = null;
+
     public ?string $timezone = null;
 
     public ?string $locale = null;

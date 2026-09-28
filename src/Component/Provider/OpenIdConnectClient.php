@@ -81,6 +81,11 @@ final class OpenIdConnectClient extends ClientContract implements StandaloneClie
         $result->firstName = $user->getGivenName() ?? '';
         $result->lastName = $user->getFamilyName() ?? '';
         $result->displayName = $name;
+
+        if ($this->openIdConnectService->getConfig()->isFetchPicture()) {
+            $result->picture = $this->getInnerClient()->getUserPicture($user->getPicture(), $token);
+        }
+
         $result->primaryEmail = $user->getEmail();
         $result->emails = [$user->getEmail()];
         $result->timezone = $user->getZoneinfo();
@@ -88,10 +93,6 @@ final class OpenIdConnectClient extends ClientContract implements StandaloneClie
         if ($user->getLocale() !== null) {
             $result->locale = \str_replace('_', '-', $user->getLocale());
         }
-
-        $result->addArrayExtension('picture', [
-            'picture' => $user->getPicture(),
-        ]);
 
         $result->addArrayExtension('oidcData', [
             'idTokenPayload' => $token->getIdTokenPayload(),

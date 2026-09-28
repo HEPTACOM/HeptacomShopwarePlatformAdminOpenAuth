@@ -27,6 +27,7 @@
         "Symfony\\Component\\HttpKernel\\Exception\\NotFoundHttpException",
         "Symfony\\Component\\HttpKernel\\KernelEvents",
         "Symfony\\Component\\Messenger\\Attribute\\AsMessageHandler",
+        "Symfony\\Component\\Mime\\MimeTypes",
         "Symfony\\Component\\OptionsResolver\\OptionsResolver",
         "Symfony\\Component\\Routing\\Attribute\\Route",
         "Symfony\\Component\\Routing\\Generator\\UrlGeneratorInterface",
@@ -45,7 +46,8 @@
         "Phar",
         "Reflection",
         "SPL",
-        "standard"
+        "standard",
+        "fileinfo"
     ],
     "scan-files" : []
 }

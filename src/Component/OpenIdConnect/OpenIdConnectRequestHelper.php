@@ -23,14 +23,14 @@ class OpenIdConnectRequestHelper
     /**
      * @throws RequestExceptionInterface
      */
-    public static function verifyRequestSuccess(RequestInterface $request, ResponseInterface $response): void
+    public static function verifyRequestSuccess(RequestInterface $request, ResponseInterface $response, string $expectedContentType = 'application/json'): void
     {
         if ($response->getStatusCode() < 200 || $response->getStatusCode() > 299) {
             throw new RequestException('Request resulted in a non-successful status code: ' . $response->getStatusCode(), $request, $response);
         }
 
-        if (!\str_starts_with($response->getHeaderLine('Content-Type'), 'application/json')) {
-            throw new RequestException('Expected content type to be of type application/json, received ' . $response->getHeaderLine('Content-Type'), $request, $response);
+        if (!\str_starts_with($response->getHeaderLine('Content-Type'), $expectedContentType)) {
+            throw new RequestException(\sprintf('Expected content type to be of type %s, received %s', $expectedContentType, $response->getHeaderLine('Content-Type')), $request, $response);
         }
     }
 }

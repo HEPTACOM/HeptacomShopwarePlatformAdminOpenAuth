@@ -42,11 +42,13 @@ final class MicrosoftEntraIdOidcProvider extends ClientProviderContract
                 'clientSecret',
             ])->setDefaults([
                 'scopes' => [],
+                'fetchPicture' => false,
             ])
             ->setAllowedTypes('tenantId', 'string')
             ->setAllowedTypes('clientId', 'string')
             ->setAllowedTypes('clientSecret', 'string')
-            ->setAllowedTypes('scopes', 'array');
+            ->setAllowedTypes('scopes', 'array')
+            ->setAllowedTypes('fetchPicture', 'bool');
     }
 
     public function getInitialConfiguration(): array

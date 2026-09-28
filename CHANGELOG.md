@@ -1,9 +1,18 @@
 # Unreleased
 
+**Added**
+
+* Added provider setting `fetchPicture` to OpenID Connect and Microsoft Entra ID to import the user picture from the identity provider as avatar of the administration user. See [tinect's contribution on GitHub](https://github.com/HEPTACOM/HeptacomShopwarePlatformAdminOpenAuth/pull/52)
+* Added `User::$picture` to pass a downloaded user picture from a client to the user resolver. See [tinect's contribution on GitHub](https://github.com/HEPTACOM/HeptacomShopwarePlatformAdminOpenAuth/pull/52)
+
 **Changed**
 
 * Changed SAML2 logs to pass the exception as log context instead of its stack trace, so monitoring integrations can pick it up. See [Nicky Gerritsen - Let's Talk's contribution on GitHub](https://github.com/HEPTACOM/HeptacomShopwarePlatformAdminOpenAuth/pull/62)
 * Changed the SAMLResponse verification to also log the response error of the identity provider, which names the cause behind the failed check. See [Nicky Gerritsen - Let's Talk's contribution on GitHub](https://github.com/HEPTACOM/HeptacomShopwarePlatformAdminOpenAuth/pull/62)
+
+**Removed**
+
+* Removed array extension `picture` on `User` from the OpenID Connect client, which only contained the picture URL; use `User::$picture` instead. See [tinect's contribution on GitHub](https://github.com/HEPTACOM/HeptacomShopwarePlatformAdminOpenAuth/pull/52)
 
 **Fixed**
 

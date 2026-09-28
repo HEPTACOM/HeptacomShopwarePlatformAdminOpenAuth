@@ -9,6 +9,7 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;
 use Heptacom\AdminOpenAuth\Contract\ClientFeatureCheckerInterface;
 use Heptacom\AdminOpenAuth\Contract\LoginInterface;
+use Heptacom\AdminOpenAuth\Contract\Picture;
 use Heptacom\AdminOpenAuth\Contract\RoleAssignment;
 use Heptacom\AdminOpenAuth\Contract\User;
 use Heptacom\AdminOpenAuth\Contract\UserEmailInterface;
@@ -47,7 +48,8 @@ final readonly class UserResolver implements UserResolverInterface
         private UserEmailInterface $userEmail,
         private UserKeyInterface $userKey,
         private UserTokenInterface $userToken,
-        private ClientFeatureCheckerInterface $clientFeatureChecker
+        private ClientFeatureCheckerInterface $clientFeatureChecker,
+        private MediaUploadService $mediaUploadService
     ) {
     }
 
@@ -167,6 +169,7 @@ final readonly class UserResolver implements UserResolverInterface
             $userChangeSet['last_name'] = $user->lastName;
         }
 
+        $userChangeSet['avatar_id'] = $this->getAvatarId($user->picture, $context);
         $userChangeSet['email'] = $user->primaryEmail;
         $userChangeSet['time_zone'] = $user->timezone;
         $userChangeSet['locale_id'] = $this->findLocaleId($user->locale ?? '', $context);
@@ -282,5 +285,49 @@ final readonly class UserResolver implements UserResolverInterface
                 );
             }
         }
+    }
+
+    private function getAvatarId(?Picture $picture, Context $context): ?string
+    {
+        if ($picture === null) {
+            return null;
+        }
+
+        $avatarId = $picture->getId();
+        $binAvatarId = Uuid::fromHexToBytes($avatarId);
+
+        $mediaExists = $this->connection->fetchOne(
+            'SELECT id FROM media WHERE id = :id',
+            ['id' => $binAvatarId]
+        ) !== false;
+
+        if ($mediaExists) {
+            return $avatarId;
+        }
+
+        $imageData = $picture->getContent();
+        if ($imageData !== '') {
+            $tempFile = \tempnam(\sys_get_temp_dir(), 'avatar_');
+            if ($tempFile !== false) {
+                \file_put_contents($tempFile, $imageData);
+                try {
+                    $this->mediaUploadService->uploadFromLocalPath(
+                        $tempFile,
+                        $context,
+                        new MediaUploadParameters(
+                            id: $avatarId,
+                            fileName: 'avatar_' . $avatarId . '.' . $picture->fileExtension
+                        )
+                    );
+                } catch (\Throwable) {
+                    // import failed, skip avatar assignment
+                    return null;
+                } finally {
+                    \unlink($tempFile);
+                }
+            }
+        }
+
+        return $avatarId;
     }
 }
