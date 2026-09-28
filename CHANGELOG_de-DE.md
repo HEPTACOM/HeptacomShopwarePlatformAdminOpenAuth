@@ -6,6 +6,9 @@
 
 * Aktive SVG Bestandteile (CSS) in den Vorschaubildern ausgetauscht gegen eindeutige SVG Bestandteile ausgetauscht ohne visuelle Einbußen um den Community Store Richtlinien zu folgen
 * PHP-Deprecation in `ClientAuthorizationMiddleware` behoben, indem der optionale Konstruktorparameter `$clientScopes` hinter den erforderlichen Parameter `$cache` verschoben wurde
+* `redirectTo`-Validierung in der Remote-Login-Route behoben, sodass protokollrelative URLs ebenfalls abgelehnt werden. Siehe [Nicky Gerritsen - Let's Talk's Beitrag auf GitHub](https://github.com/HEPTACOM/HeptacomShopwarePlatformAdminOpenAuth/pull/57)
+* `StateResolver` gibt die Payload eines bereits abgelaufenen Logins nicht mehr zurück. Siehe [Nicky Gerritsen - Let's Talk's Beitrag auf GitHub](https://github.com/HEPTACOM/HeptacomShopwarePlatformAdminOpenAuth/pull/57)
+* Die Redirect-Route akzeptiert keinen abgelaufenen oder unbekannten Login-State mehr, sondern wirft `RedirectReceiveInvalidStateException`. Siehe [Nicky Gerritsen - Let's Talk's Beitrag auf GitHub](https://github.com/HEPTACOM/HeptacomShopwarePlatformAdminOpenAuth/pull/57)
 
 # 9.1.0
 
