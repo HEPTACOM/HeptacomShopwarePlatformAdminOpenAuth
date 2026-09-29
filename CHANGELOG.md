@@ -4,6 +4,7 @@
 
 * Added provider setting `fetchPicture` to OpenID Connect and Microsoft Entra ID to import the user picture from the identity provider as avatar of the administration user. See [tinect's contribution on GitHub](https://github.com/HEPTACOM/HeptacomShopwarePlatformAdminOpenAuth/pull/52)
 * Added `User::$picture` to pass a downloaded user picture from a client to the user resolver. See [tinect's contribution on GitHub](https://github.com/HEPTACOM/HeptacomShopwarePlatformAdminOpenAuth/pull/52)
+* Added event `UserRedirectCompletedEvent` to react to a completed login and to change the url the user is redirected to
 
 **Changed**
 
