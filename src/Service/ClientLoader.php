@@ -14,6 +14,7 @@ use Heptacom\AdminOpenAuth\Contract\ConfigurationRefresherClientProviderContract
 use Heptacom\AdminOpenAuth\Database\ClientCollection;
 use Heptacom\AdminOpenAuth\Database\ClientEntity;
 use Heptacom\AdminOpenAuth\Exception\LoadClientClientNotFoundException;
+use Heptacom\AdminOpenAuth\Exception\LoadClientCriteriaNotFoundException;
 use Heptacom\AdminOpenAuth\Exception\LoadClientException;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
@@ -34,15 +35,24 @@ final readonly class ClientLoader implements ClientLoaderInterface
 
     public function load(string $clientId, Context $context): ClientContract
     {
-        $criteria = new Criteria();
-        $criteria->setIds([$clientId]);
+        try {
+            return $this->loadFromCriteria(new Criteria([$clientId]), $context);
+        } catch (LoadClientCriteriaNotFoundException $exception) {
+            throw new LoadClientClientNotFoundException($clientId, 0, $exception);
+        }
+    }
 
+    /**
+     * @param Criteria<string> $criteria
+     */
+    public function loadFromCriteria(Criteria $criteria, Context $context): ClientContract
+    {
         /** @var ClientCollection $searchResult */
         $searchResult = $this->clientsRepository->search($criteria, $context)->getEntities();
         $client = $searchResult->first();
 
         if (!$client instanceof ClientEntity) {
-            throw new LoadClientClientNotFoundException($clientId);
+            throw new LoadClientCriteriaNotFoundException();
         }
 
         $this->updateClientConfig($client, $context);
@@ -50,7 +60,7 @@ final readonly class ClientLoader implements ClientLoaderInterface
         try {
             return $this->clientFactory->create($client->provider ?? '', $client->config ?? []);
         } catch (FactorizeClientException $exception) {
-            throw new LoadClientException($exception->getMessage(), $clientId, 0, $exception);
+            throw new LoadClientException($exception->getMessage(), $client->getId(), 0, $exception);
         }
     }
 
