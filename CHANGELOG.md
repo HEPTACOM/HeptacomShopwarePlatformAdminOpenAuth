@@ -4,6 +4,7 @@
 
 * Added provider setting `fetchPicture` to OpenID Connect and Microsoft Entra ID to import the user picture from the identity provider as avatar of the administration user. See [tinect's contribution on GitHub](https://github.com/HEPTACOM/HeptacomShopwarePlatformAdminOpenAuth/pull/52)
 * Added `User::$picture` to pass a downloaded user picture from a client to the user resolver. See [tinect's contribution on GitHub](https://github.com/HEPTACOM/HeptacomShopwarePlatformAdminOpenAuth/pull/52)
+* Added `ClientLoaderInterface::loadFromCriteria` to load a client by criteria instead of by id only, throwing the new `LoadClientCriteriaNotFoundException` when nothing matches. Custom implementations of `ClientLoaderInterface` have to implement it
 
 **Changed**
 

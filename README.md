@@ -363,6 +363,18 @@ In case you want to use different settings, you can decorate the `heptacom.admin
 
 Please note that some settings of your HTTP client (like adding default headers) could lead to unwanted side effects, as the authorized HTTP client is used by this plugin as well.
 
+## Loading a client with additional constraints
+
+[`ClientLoaderInterface::load()`](src/Contract/ClientLoaderInterface.php) resolves a client by id alone. `loadFromCriteria()` takes a `Criteria` instead, so you can require the client to also be active, or to be available for a specific sales channel, in the same query.
+
+```php
+$criteria = new Criteria([$clientId]);
+$criteria->addFilter(new EqualsFilter('active', true));
+
+// throws LoadClientCriteriaNotFoundException when nothing matches
+$client = $this->clientLoader->loadFromCriteria($criteria, $context);
+```
+
 ## Storefront login
 
 You want to use this plugin to allow your customers to login using SSO?
