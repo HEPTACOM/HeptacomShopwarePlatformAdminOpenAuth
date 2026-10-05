@@ -1,5 +1,7 @@
 # Unreleased
 
+# 9.2.0-beta4
+
 **Added**
 
 * Added provider setting `fetchPicture` to OpenID Connect and Microsoft Entra ID to import the user picture from the identity provider as avatar of the administration user. See [tinect's contribution on GitHub](https://github.com/HEPTACOM/HeptacomShopwarePlatformAdminOpenAuth/pull/52)
