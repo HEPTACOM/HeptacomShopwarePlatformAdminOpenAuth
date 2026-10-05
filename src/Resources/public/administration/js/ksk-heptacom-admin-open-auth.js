@@ -475,6 +475,7 @@
                     :isLoading="isLoading"
                     :title="$t('heptacom-admin-open-auth-client.pages.edit.ruleActions.title')"
                     position-identifier="heptacom-admin-open-auth-client-edit-page-actions"
+                    large
                 >
                     <template v-if="item && defaultActionTab !== ''">
                         {% block heptacom_admin_open_auth_client_edit_page_content_actions_inner %}
@@ -886,13 +887,14 @@
             required
             :disabled="disabled"
         />
-        <mt-external-link
-            small
+        <mt-link
+            type="external"
+            as="a"
             class="heptacom-admin-open-auth-condition-authenticated-request--documentation-link"
             href="https://jmespath.org/"
         >
             {{ $tc('heptacomAdminOpenAuthClient.providerFields.open_id_connect.condition.rule.jmesPathDocumentation') }}
-        </mt-external-link>
+        </mt-link>
         {% endblock %}
     </div>
 {% endblock %}
@@ -908,13 +910,14 @@
             required
             :disabled="disabled"
         />
-        <mt-external-link
-            small
+        <mt-link
+            as="a"
+            type="external"
             class="heptacom-admin-open-auth-condition-id-token--documentation-link"
             href="https://jmespath.org/"
         >
             {{ $tc('heptacomAdminOpenAuthClient.providerFields.open_id_connect.condition.rule.jmesPathDocumentation') }}
-        </mt-external-link>
+        </mt-link>
         {% endblock %}
     </div>
 {% endblock %}
@@ -1067,7 +1070,7 @@
         {% endblock %}
     </div>
 {% endblock %}
-`});var ut={};a(ut,{default:()=>xi});var xi,_t=o(()=>{mt();xi={template:ht,props:{item:{required:!0}},data(){return{selectedMappingTemplate:null,availableProperties:["firstName","lastName","email","timezone","locale","roles"],availableAuthnContexts:["urn:oasis:names:tc:SAML:2.0:ac:classes:unspecified","urn:oasis:names:tc:SAML:2.0:ac:classes:Kerberos","urn:oasis:names:tc:SAML:2.0:ac:classes:Password","urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport","urn:oasis:names:tc:SAML:2.0:ac:classes:Smartcard","urn:oasis:names:tc:SAML:2.0:ac:classes:SmartcardPKI","urn:oasis:names:tc:SAML:2.0:ac:classes:TLSClient","urn:oasis:names:tc:SAML:2.0:ac:classes:TimeSyncToken","urn:oasis:names:tc:SAML:2.0:ac:classes:X509","urn:federation:authentication:windows"].map(e=>({value:e,label:e.startsWith("urn:oasis:names:tc:SAML:2.0:ac:classes:")?e.substring(39):e})),attributeMappingTemplates:{friendlyNames:{firstName:"givenName",lastName:"surName",email:"emailAddress",roles:"memberOf"},x500:{firstName:"urn:oid:2.5.4.42",lastName:"urn:oid:2.5.4.4",email:"urn:oid:1.2.840.113549.1.9.1",roles:"urn:oid:1.3.6.1.4.1.5923.1.5.1.1"},entraId:{firstName:"http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname",lastName:"http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname",email:"http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress",roles:"http://schemas.microsoft.com/ws/2008/06/identity/claims/role"}}}},computed:{mappingTemplateOptions(){return Object.keys(this.attributeMappingTemplates).map(e=>({value:e,label:this.$t(`heptacomAdminOpenAuthClient.providerFields.saml2.attributeMapping.template.${e}`)}))}},watch:{item(e){e.config.attributeMapping||(e.config.attributeMapping={})}},methods:{onApplyMappingTemplate(e){let t=this.attributeMappingTemplates[e];this.item.config.attributeMapping=Object.assign(this.item.config.attributeMapping,t)}}}});var{Component:v}=Shopware;v.extend("heptacom-admin-open-auth-url-field","sw-url-field",()=>Promise.resolve().then(()=>(O(),C)));v.register("heptacom-admin-open-auth-user-confirm-login",()=>Promise.resolve().then(()=>(R(),F)));v.register("heptacom-admin-open-auth-url-clients",()=>Promise.resolve().then(()=>(L(),M)));var T=`{% block sw_profile_index_general_password %}
+`});var ut={};a(ut,{default:()=>xi});var xi,_t=o(()=>{mt();xi={template:ht,props:{item:{required:!0}},data(){return{selectedMappingTemplate:null,availableProperties:["firstName","lastName","email","timezone","locale","roles"],availableAuthnContexts:["urn:oasis:names:tc:SAML:2.0:ac:classes:unspecified","urn:oasis:names:tc:SAML:2.0:ac:classes:Kerberos","urn:oasis:names:tc:SAML:2.0:ac:classes:Password","urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport","urn:oasis:names:tc:SAML:2.0:ac:classes:Smartcard","urn:oasis:names:tc:SAML:2.0:ac:classes:SmartcardPKI","urn:oasis:names:tc:SAML:2.0:ac:classes:TLSClient","urn:oasis:names:tc:SAML:2.0:ac:classes:TimeSyncToken","urn:oasis:names:tc:SAML:2.0:ac:classes:X509","urn:federation:authentication:windows"].map(e=>({value:e,label:e.startsWith("urn:oasis:names:tc:SAML:2.0:ac:classes:")?e.substring(39):e})),attributeMappingTemplates:{friendlyNames:{firstName:"givenName",lastName:"surName",email:"emailAddress",roles:"memberOf"},x500:{firstName:"urn:oid:2.5.4.42",lastName:"urn:oid:2.5.4.4",email:"urn:oid:1.2.840.113549.1.9.1",roles:"urn:oid:1.3.6.1.4.1.5923.1.5.1.1"},entraId:{firstName:"http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname",lastName:"http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname",email:"http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress",roles:"http://schemas.microsoft.com/ws/2008/06/identity/claims/role"}}}},computed:{mappingTemplateOptions(){return Object.keys(this.attributeMappingTemplates).map(e=>({value:e,label:this.$t(`heptacomAdminOpenAuthClient.providerFields.saml2.attributeMapping.template.${e}`)}))}},watch:{item(e){e.config.attributeMapping||(e.config.attributeMapping={})}},methods:{onApplyMappingTemplate(e){let t=this.attributeMappingTemplates[e];this.item.config.attributeMapping=Object.assign(this.item.config.attributeMapping,t)}}}});var{Component:v}=Shopware;v.extend("heptacom-admin-open-auth-url-field","mt-url-field",()=>Promise.resolve().then(()=>(O(),C)));v.register("heptacom-admin-open-auth-user-confirm-login",()=>Promise.resolve().then(()=>(R(),F)));v.register("heptacom-admin-open-auth-url-clients",()=>Promise.resolve().then(()=>(L(),M)));var T=`{% block sw_profile_index_general_password %}
     <template v-if="!denyPasswordLogin">
         {% parent %}
     </template>
