@@ -18,6 +18,7 @@
 **Fixed**
 
 * Fixed rendering of JMES path documentation link
+* Fixed entering URL for external URL rule configuration (GitHub Issue #63)
 * Fixed `TypeError` in the login rule execution when a client has no rule association loaded or no `oauthClient` extension set (library usage only). See [Nicky Gerritsen - Let's Talk's contribution on GitHub](https://github.com/HEPTACOM/HeptacomShopwarePlatformAdminOpenAuth/pull/58)
 * Fixed missing SSO login buttons on the administration login page since Shopware 6.7.15
 * Fixed the forgot password link still being shown on the administration login page since Shopware 6.7.15, when `denyPasswordLogin` is enabled
