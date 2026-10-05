@@ -18,6 +18,7 @@
 **Behoben**
 
 * Verlinkung zur JMES Path Dokumentation wieder klickbar gemacht
+* Eingabe für externe URLs in Regeleingabemaske korrigiert (GitHub Issue #63)
 * `TypeError` bei der Ausführung der Login-Regeln behoben, wenn ein Client keine geladene Regel-Assoziation oder keine `oauthClient`-Erweiterung besitzt (nur bei Nutzung als Bibliothek). Siehe [Nicky Gerritsen - Let's Talk's Beitrag auf GitHub](https://github.com/HEPTACOM/HeptacomShopwarePlatformAdminOpenAuth/pull/58)
 * Fehlende SSO-Login-Buttons auf der Login-Seite der Administration seit Shopware 6.7.15 behoben
 * Der Link "Passwort vergessen" wird bei aktiviertem `denyPasswordLogin` seit Shopware 6.7.15 nicht mehr auf der Login-Seite der Administration angezeigt
