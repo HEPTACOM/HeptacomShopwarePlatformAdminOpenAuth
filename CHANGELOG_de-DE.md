@@ -1,6 +1,6 @@
 # Unreleased
 
-# 9.2.0-beta4
+# 9.2.0
 
 **Hinzugefügt**
 
