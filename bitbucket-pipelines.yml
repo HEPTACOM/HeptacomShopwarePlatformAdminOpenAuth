@@ -33,7 +33,7 @@ definitions:
                 <<: *default-step
                 name: Tag Gate
                 script:
-                    - '[[ "${BITBUCKET_TAG}" == *"$(jq -r composer.json .version)" ]]'
+                    - '[[ "${BITBUCKET_TAG}" == *"$(jq -r .version composer.json)" ]]'
                     - 'grep -qe "# ${BITBUCKET_TAG}" CHANGELOG.md'
                     - 'grep -qe "# ${BITBUCKET_TAG}" CHANGELOG_de-DE.md'
                 after-script:
