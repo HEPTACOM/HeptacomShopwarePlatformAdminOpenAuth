@@ -65,7 +65,9 @@
     }
 
     {% if heptacom_admin_auth_config('denyPasswordLogin') %}
-        .sw-login-login > :not(.sw-login__content-headline),
+        .sw-login .sw-login-login > :not(.sw-login__content-headline):not(:has(.sw-login__content-headline)),
+        .sw-login .sw-login-login > div > :not(.sw-login__content-headline):not(.sw-login__heading),
+        .sw-login .sw-login__container .sw-login__forgot-password-action,
         .sw-inactivity-login__modal .sw-modal__body .mt-password-field,
         .sw-inactivity-login__modal .sw-modal__body .mt-field--checkbox__container,
         .sw-inactivity-login__modal .sw-modal__footer .mt-button {
@@ -225,7 +227,7 @@
         function handleLoginRoute() {
             // add login buttons
             getClientRoutes().then((data) => {
-                const container = document.querySelector('.sw-login__content');
+                const container = document.querySelector('.sw-login__card, .sw-login__content');
 
                 if (!container) {
                     console.warn('Login modal does not exist anymore.');
