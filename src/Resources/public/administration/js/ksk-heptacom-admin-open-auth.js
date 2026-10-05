@@ -475,10 +475,11 @@
                     :isLoading="isLoading"
                     :title="$t('heptacom-admin-open-auth-client.pages.edit.ruleActions.title')"
                     position-identifier="heptacom-admin-open-auth-client-edit-page-actions"
+                    large
                 >
                     <template v-if="item && defaultActionTab !== ''">
                         {% block heptacom_admin_open_auth_client_edit_page_content_actions_inner %}
-                        <sw-tabs :default-item="defaultActionTab">
+                        <sw-tabs :default-item="defaultActionTab" :small="false" large>
                             <template #default="{ active }">
                                 <template
                                     v-for="action in actions"
@@ -871,7 +872,7 @@
         <heptacom-admin-open-auth-url-field
             v-model:value="requestUrl"
             placeholder="my-company.my-idp.com/api/v1/profile/groups"
-            size="medium"
+            size="default"
             omitUrlHash
             required
             :disabled="disabled"
@@ -886,13 +887,14 @@
             required
             :disabled="disabled"
         />
-        <mt-external-link
-            small
+        <mt-link
+            type="external"
+            as="a"
             class="heptacom-admin-open-auth-condition-authenticated-request--documentation-link"
             href="https://jmespath.org/"
         >
             {{ $tc('heptacomAdminOpenAuthClient.providerFields.open_id_connect.condition.rule.jmesPathDocumentation') }}
-        </mt-external-link>
+        </mt-link>
         {% endblock %}
     </div>
 {% endblock %}
@@ -908,13 +910,14 @@
             required
             :disabled="disabled"
         />
-        <mt-external-link
-            small
+        <mt-link
+            as="a"
+            type="external"
             class="heptacom-admin-open-auth-condition-id-token--documentation-link"
             href="https://jmespath.org/"
         >
             {{ $tc('heptacomAdminOpenAuthClient.providerFields.open_id_connect.condition.rule.jmesPathDocumentation') }}
-        </mt-external-link>
+        </mt-link>
         {% endblock %}
     </div>
 {% endblock %}
