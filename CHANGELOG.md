@@ -9,6 +9,7 @@
 
 * Changed SAML2 logs to pass the exception as log context instead of its stack trace, so monitoring integrations can pick it up. See [Nicky Gerritsen - Let's Talk's contribution on GitHub](https://github.com/HEPTACOM/HeptacomShopwarePlatformAdminOpenAuth/pull/62)
 * Changed the SAMLResponse verification to also log the response error of the identity provider, which names the cause behind the failed check. See [Nicky Gerritsen - Let's Talk's contribution on GitHub](https://github.com/HEPTACOM/HeptacomShopwarePlatformAdminOpenAuth/pull/62)
+* Changed visual area to allow more space to render complex rule editor forms in dynamic role assignment card
 
 **Removed**
 

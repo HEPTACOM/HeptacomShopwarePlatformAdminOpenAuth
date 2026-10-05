@@ -9,6 +9,7 @@
 
 * SAML2-Logs übergeben nun die Exception als Log-Kontext statt ihres Stacktraces, damit Monitoring-Integrationen sie auswerten können. Siehe [Nicky Gerritsen - Let's Talk's Beitrag auf GitHub](https://github.com/HEPTACOM/HeptacomShopwarePlatformAdminOpenAuth/pull/62)
 * Bei der Prüfung der SAMLResponse wird zusätzlich der Response-Fehler des Identity Providers protokolliert, der die Ursache der fehlgeschlagenen Prüfung benennt. Siehe [Nicky Gerritsen - Let's Talk's Beitrag auf GitHub](https://github.com/HEPTACOM/HeptacomShopwarePlatformAdminOpenAuth/pull/62)
+* Bereich zum Ändern von Rollenzuweisungsregeln mehr Platz gegeben für komplexe Regeleingabemasken
 
 **Entfernt**
 
