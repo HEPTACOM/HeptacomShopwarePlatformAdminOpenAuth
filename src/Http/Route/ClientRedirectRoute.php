@@ -11,6 +11,7 @@ use Heptacom\AdminOpenAuth\Database\ClientCollection;
 use Heptacom\AdminOpenAuth\Database\ClientEntity;
 use Heptacom\AdminOpenAuth\Http\Route\Support\RedirectReceiveRoute;
 use Heptacom\AdminOpenAuth\Http\Route\Support\UserRedirectAuthenticationEvent;
+use Heptacom\AdminOpenAuth\Http\Route\Support\UserRedirectCompletedEvent;
 use Heptacom\AdminOpenAuth\KskHeptacomAdminOpenAuth;
 use Heptacom\AdminOpenAuth\Service\StateResolver;
 use Nyholm\Psr7\Factory\Psr17Factory;
@@ -101,8 +102,18 @@ final class ClientRedirectRoute extends AbstractController
         );
         $targetUrl = $this->enrichRedirectUrl($targetUrl, $statePayload['originUrl'] ?? null, $requestState);
 
+        $shopwareUser = $user->getExtensionOfType('shopwareUser', ArrayStruct::class);
+        $redirectEvent = new UserRedirectCompletedEvent(
+            (string) ($shopwareUser?->offsetGet('id') ?? ''),
+            $user,
+            $client,
+            $statePayload,
+            $targetUrl
+        );
+        $this->eventDispatcher->dispatch($redirectEvent);
+
         // redirect with "303 See Other" to ensure the request method becomes GET
-        return new RedirectResponse($targetUrl, Response::HTTP_SEE_OTHER);
+        return new RedirectResponse($redirectEvent->targetUrl, Response::HTTP_SEE_OTHER);
     }
 
     protected function enrichRedirectUrl(string $targetUrl, ?string $originUrl, string $requestState): string
