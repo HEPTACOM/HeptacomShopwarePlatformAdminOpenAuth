@@ -6,7 +6,7 @@
         <heptacom-admin-open-auth-url-field
             v-model:value="requestUrl"
             placeholder="my-company.my-idp.com/api/v1/profile/groups"
-            size="medium"
+            size="default"
             omitUrlHash
             required
             :disabled="disabled"
@@ -21,13 +21,14 @@
             required
             :disabled="disabled"
         />
-        <mt-external-link
-            small
+        <mt-link
+            type="external"
+            as="a"
             class="heptacom-admin-open-auth-condition-authenticated-request--documentation-link"
             href="https://jmespath.org/"
         >
             {{ $tc('heptacomAdminOpenAuthClient.providerFields.open_id_connect.condition.rule.jmesPathDocumentation') }}
-        </mt-external-link>
+        </mt-link>
         {% endblock %}
     </div>
 {% endblock %}
