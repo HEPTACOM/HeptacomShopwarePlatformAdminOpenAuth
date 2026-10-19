@@ -1,5 +1,10 @@
 # Unreleased
 
+**Behoben**
+
+* Der One-Time-Token-Grant stellte auch für inaktive Benutzer ein Access-Token aus. Shopware 6.7.13 und neuer lehnen dieses Token bei jeder API-Anfrage ab, wodurch die Administration nach dem SSO-Login leer blieb; der Grant lehnt nun wie der Passwort-Grant mit `invalid_credentials` ab
+* Die Login-Seite der Administration ignorierte einen fehlgeschlagenen One-Time-Token-Austausch. Sie zeigt nun dieselbe Benachrichtigung wie ein fehlgeschlagener Passwort-Login an und entfernt den `state`-Parameter, damit ein Neuladen den Austausch nicht wiederholt
+
 # 9.2.0
 
 **Hinzugefügt**

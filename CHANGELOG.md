@@ -1,5 +1,10 @@
 # Unreleased
 
+**Fixed**
+
+* Fixed the one-time token grant issuing an access token to an inactive user. Shopware 6.7.13 and later reject that token on every API request, which left the administration blank after an SSO login; the grant now refuses with `invalid_credentials` like the password grant does
+* Fixed the administration login page ignoring a failed one-time token exchange. It now shows the same notification as a failed password login and drops the `state` parameter, so a reload does not retry it
+
 # 9.2.0
 
 **Added**

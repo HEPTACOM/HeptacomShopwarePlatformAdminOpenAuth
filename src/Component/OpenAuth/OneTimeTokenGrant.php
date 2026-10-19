@@ -47,6 +47,11 @@ final class OneTimeTokenGrant extends PasswordGrant
             throw OAuthServerException::invalidRequest('one_time_token', 'Expired');
         }
 
+        // Shopware rejects an inactive user on every API request, so a token would only leave the administration blank
+        if ($loginState->user?->getActive() !== true) {
+            throw OAuthServerException::invalidCredentials();
+        }
+
         return new User($loginState->userId);
     }
 }

@@ -156,14 +156,22 @@
             const loginService = await getShopwareService('loginService');
             const httpClient = (await getShopwareService('userService')).client;
 
-            const response = await httpClient.post('/oauth/token', {
-                grant_type: 'heptacom_admin_open_auth_one_time_token',
-                client_id: 'administration',
-                scopes: 'write',
-                one_time_token: token
-            }, {
-                baseURL: Shopware.Context.api.apiPath
-            });
+            let response;
+
+            try {
+                response = await httpClient.post('/oauth/token', {
+                    grant_type: 'heptacom_admin_open_auth_one_time_token',
+                    client_id: 'administration',
+                    scopes: 'write',
+                    one_time_token: token
+                }, {
+                    baseURL: Shopware.Context.api.apiPath
+                });
+            } catch (error) {
+                handleLoginFailure(error);
+
+                return;
+            }
 
             loginService.setBearerAuthentication({
                 access: response.data.access_token,
@@ -172,6 +180,39 @@
             });
 
             redirectHandler();
+        }
+
+        const LOGIN_ERROR_SNIPPETS = {
+            2: 'messageUnsupportedGrantType',
+            3: 'messageInvalidRequest',
+            4: 'messageInvalidClient',
+            5: 'messageInvalidScope',
+            6: 'messageInvalidCredentials',
+            7: 'messageServerError',
+            8: 'messageInvalidRefreshToken',
+            9: 'messageAccessDenied',
+            10: 'messageInvalidCredentials',
+        };
+
+        function handleLoginFailure(error) {
+            const apiError = error?.response?.data?.errors?.[0];
+            const snippet = LOGIN_ERROR_SNIPPETS[parseInt(apiError?.code, 10)];
+            // same wording as a failed password login; the server text is only a fallback
+            const message = (snippet && Shopware.Snippet?.tc(`sw-login.index.${snippet}`))
+                || apiError?.detail || apiError?.title || error?.message || 'Unknown error';
+
+            console.error(new SsoError(`Login failed: ${message}`));
+
+            // the one-time token is spent, so a reload must not retry the exchange
+            const url = new URL(window.location.href);
+            url.searchParams.delete('state');
+            window.history.replaceState(window.history.state, '', url);
+
+            Shopware.Store.get('notification').createNotification({
+                variant: 'error',
+                title: Shopware.Snippet?.tc('global.default.error') ?? 'Error',
+                message,
+            });
         }
 
         async function getShopwareService(serviceName, timeout = 10000) {
