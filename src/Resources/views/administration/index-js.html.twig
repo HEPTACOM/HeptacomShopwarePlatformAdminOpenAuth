@@ -251,8 +251,28 @@
 
             // check for login token
             checkLogin(() => {
-                window.location = window.location.origin + window.location.pathname;
+                window.location = window.location.origin + window.location.pathname + getPreviousRouteHash();
             }).then();
+        }
+
+        /**
+         * Route the admin router guard saved before it sent the user to the login page.
+         * @returns {string}
+         */
+        function getPreviousRouteHash() {
+            try {
+                const previousRoute = JSON.parse(sessionStorage.getItem('sw-admin-previous-route'));
+                sessionStorage.removeItem('sw-admin-previous-route');
+                const fullPath = previousRoute?.fullPath;
+
+                if (typeof fullPath === 'string' && fullPath.startsWith('/') && !fullPath.startsWith('//') && !fullPath.startsWith('/login')) {
+                    return '#' + fullPath;
+                }
+            } catch (e) {
+                // malformed value: fall back to the start page
+            }
+
+            return '';
         }
 
         function handleInactivityRoute() {

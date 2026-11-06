@@ -1,5 +1,9 @@
 # Unreleased
 
+**Behoben**
+
+* Die SSO-Anmeldung landet nicht mehr immer auf der Startseite der Administration, sondern öffnet wie die Passwort-Anmeldung die ursprünglich aufgerufene Seite, z. B. einen direkten Link auf eine Bestellung oder einen Kunden
+
 # 9.2.0
 
 **Hinzugefügt**

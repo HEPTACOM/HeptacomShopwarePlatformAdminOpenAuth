@@ -1,5 +1,9 @@
 # Unreleased
 
+**Fixed**
+
+* Fixed the SSO login always landing on the administration start page; it now opens the page the user originally requested, e.g. a deep link to an order or customer, like the password login does
+
 # 9.2.0
 
 **Added**
